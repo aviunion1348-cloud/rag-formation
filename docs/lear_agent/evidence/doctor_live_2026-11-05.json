@@ -1,0 +1,132 @@
+{
+  "ready": false,
+  "qualifying": true,
+  "backend": "ollama",
+  "models": {
+    "embedder": "nomic-embed-text",
+    "llm": "qwen2.5:1.5b",
+    "judge": "llama3.2:1b"
+  },
+  "caps": {
+    "embedder": 200000000,
+    "llm": 4000000000,
+    "judge": 4000000000
+  },
+  "indexPresent": false,
+  "sourcePin": null,
+  "requiredFailures": [
+    "ollama.version",
+    "models.installed",
+    "models.embedder",
+    "models.llm",
+    "models.judge",
+    "probe.embedding",
+    "probe.generation_stream",
+    "probe.judge_json"
+  ],
+  "checks": [
+    {
+      "check": "config.loopback_only",
+      "status": "PASS",
+      "required": true,
+      "detail": {
+        "ollamaUrl": "http://127.0.0.1:11434"
+      },
+      "hint": null
+    },
+    {
+      "check": "config.backend",
+      "status": "PASS",
+      "required": true,
+      "detail": {
+        "backend": "ollama",
+        "qualifying": true
+      },
+      "hint": null
+    },
+    {
+      "check": "config.no_cloud_providers",
+      "status": "PASS",
+      "required": false,
+      "detail": {
+        "embedProvider": "ollama",
+        "llmProvider": "ollama",
+        "cloudKeysPresentButIgnored": []
+      },
+      "hint": null
+    },
+    {
+      "check": "ollama.version",
+      "status": "FAIL",
+      "required": true,
+      "detail": {
+        "error": "ollama is not reachable at http://127.0.0.1:11434"
+      },
+      "hint": "start it with `ollama serve` (and keep it bound to 127.0.0.1)"
+    },
+    {
+      "check": "models.installed",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "models.embedder",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "models.llm",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "models.judge",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "probe.embedding",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "probe.generation_stream",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    },
+    {
+      "check": "probe.judge_json",
+      "status": "SKIP",
+      "required": true,
+      "detail": {
+        "reason": "ollama unreachable"
+      },
+      "hint": null
+    }
+  ],
+  "checkedAt": "2026-11-05T17:46:19Z"
+}

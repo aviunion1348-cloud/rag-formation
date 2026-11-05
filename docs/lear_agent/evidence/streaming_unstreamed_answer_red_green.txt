@@ -1,0 +1,15 @@
+# Regression: in streaming mode (the CLI default) an answer that produced no tokens - a scope-guard abstention - printed no text, and answers that never reached the engine were labelled with the ollama defaults on the baseline backend
+# test: tests/test_lear_pipeline.py CliTests.test_streaming_mode_prints_answers_that_were_not_streamed
+## RED (before: lear/cli.py assumed every answer had been streamed; lear/agent.py _scope_answer hard-coded ollama labels)
+AssertionError: "never mentions 'kafka'" not found in '\n\nstatus: abstained   [not qualifying: no live local llm/embedder in this answer]\nmodels: generation=ollama:qwen2.5:1.5b embedding=:nomic-embed-text\ntiming: ttft=n/a  total=1.54 ms  tok/s=n/a  itl_p50=n/a\nwarnings: unknown_term\ncorrelation id: none  prompt=lear-assistant-v1\n'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.045s
+
+FAILED (failures=1)
+## GREEN (after: _StreamPrinter counts streamed characters; LearAgent._configured_models)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.085s
+
+OK

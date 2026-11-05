@@ -1,0 +1,15 @@
+# Regression: ERROR answers mislabelled the models ("embedding=:nomic-embed-text", "ttft=None ms")
+# test: tests/test_lear_pipeline.py CliTests.test_dependency_error_names_the_configured_models
+## RED (before the fix in ragformation/lear/agent.py _error_answer and lear/cli.py timing line)
+KeyError: 'provider'
+
+----------------------------------------------------------------------
+Ran 1 test in 0.037s
+
+FAILED (errors=1)
+## GREEN (after)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.047s
+
+OK

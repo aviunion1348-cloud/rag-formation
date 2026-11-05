@@ -1,0 +1,41 @@
+Defect found while writing tests/test_lear_pipeline.py (2026-11-05)
+==================================================================
+
+Scenario: build the Lear index with an embedder that returns 64-dimension
+vectors, then point the agent at an embedder that returns 32-dimension vectors
+(same model name). The embedder is the labelled STUB HTTP server in
+tests/_lear_stub_ollama.py, so this is a wiring result, not a model result.
+
+Root cause (core, unchanged): ragformation/retrieval.py dot() returns 0.0 when
+vector lengths differ, and RAGEngine.ask() never compares the stored
+embedding_fingerprint with the configured embedder at query time. The semantic
+channel silently scores every chunk 0.0; ties then sort by chunk_id, and that
+arbitrary order is fused into the RRF ranking. A different model with the same
+dimension would produce meaningless scores in the same silent way.
+
+RED (before the fix; LearAgent.ask with no fingerprint check):
+  fp1 ollama:nomic-embed-text:d64:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  fp2 ollama:nomic-embed-text:d32:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  GROUNDED [] hybrid {'retrieval.semantic': {'status': 'completed', 'ms': 0.107}, ...}
+  (stored index fingerprint still d64; no warning)
+
+Fix (Lear layer only, core untouched): ragformation/lear/indexer.py
+check_index_fingerprint() raises EmbeddingMismatch when the stored fingerprint
+differs from the configured embedder. It runs before every LearAgent.ask
+request and every incremental `lear index rebuild`. `lear index rebuild --full`
+now re-embeds stored chunks BEFORE ingesting changed files, so the ingest runs
+against a matching fingerprint.
+
+GREEN (after the fix):
+index fingerprint: ollama:nomic-embed-text:d64:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+configured fingerprint: ollama:nomic-embed-text:d32:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+status: ERROR | error: {'error': 'embedding_mismatch', 'message': 'the index was built with a different embedding model or dimension', 'hint': 'index=ollama:nomic-embed-text:d64:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2, configured=ollama:nomic-embed-text:d32:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2. Run `python -m ragformation lear index rebuild --full` to re-embed.', 'dependencyUnavailable': False}
+
+Regression test: tests/test_lear_pipeline.py
+  StubOllamaTests.test_stub_embedding_dimension_change_is_refused_until_full_rebuild
+  (asserts ERROR + embedding_mismatch, incremental rebuild refuses, --full
+  re-embeds to dimension 32, then the same question is GROUNDED again).
+
+Known gap kept open: the legacy RAGEngine.ask() path (HTTP server, legacy CLI)
+still has no query-time fingerprint check. It is outside the Lear CLI scope and
+a core change, so it is reported, not changed.

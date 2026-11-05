@@ -1,0 +1,78 @@
+$ python3 -m ragformation lear demo effects --plain
+-- motion library: 36 effects (each has a reduced-motion equivalent) -------------------------------
+effect             | family          | trigger            | reduced motion     | data
+----------------------------------------------------------------------------------------------------
+paper_feed         | archival        | a list of real     | all lines at once  | docs verify pages,
+                   |                 | pages/lines is     |                    | transcript lines
+                   |                 | shown              |                    |
+registration_marks | archival        | a scene opens      | plain header rule  | scene id/title
+heading_indent_rev | archival        | a chunk's heading  | indented list      | manifest
+eal                |                 | path is shown      |                    | heading_path
+chunk_segmentation | archival        | index statistics   | same strip, no     | manifest token
+                   |                 | are shown          | delay              | counts
+citation_stamp     | archival        | a citation is      | same text          | answer citations +
+                   |                 | validated          |                    | manifest
+hash_seal          | archival        | a fingerprint or   | full hash          | SOURCE_PIN, dataset
+                   |                 | checksum is shown  |                    | sha256, index
+                   |                 |                    |                    | fingerprint
+quarantine_hatch   | archival        | a retrieved chunk  | text label         | retrieval.quarantin
+                   |                 | is quarantined     | QUARANTINED        | ed
+source_margin      | archival        | a fact is shown    | same               | fact provenance
+query_ribbon       | retrieval       | a question enters  | terms listed       | agent.salient_terms
+                   |                 | the pipeline       |                    |
+candidate_fanout   | retrieval       | retrieval returns  | indented list      | retrieval.candidate
+                   |                 | candidates         |                    | s
+score_ladder       | retrieval       | candidate scores   | numbers only in    | candidate
+                   |                 | exist              | plain              | score/support
+selection_rail     | retrieval       | context is         | SELECTED/EXCLUDED  | retrieval.selected/
+                   |                 | assembled          | words              | excluded
+context_meter      | retrieval       | context tokens are | numbers            | retrieval.contextTo
+                   |                 | known              |                    | kens + settings
+stage_waterfall    | retrieval       | stage timings      | table              | retrieval.stages ms
+                   |                 | exist              |                    |
+teletype           | generation      | a REAL model       | full text at once  | streamed tokens
+                   |                 | stream exists      |                    | only (never for
+                   |                 |                    |                    | extractive output)
+abstention_gate    | generation      | an answer abstains | ABSTAINED: reason  | status +
+                   |                 |                    |                    | abstainReason
+status_stamp       | generation      | an answer          | status line        | status,
+                   |                 | completes          |                    | exit_code_for
+claim_trace        | generation      | an answer has      | list               | citations +
+                   |                 | citations          |                    | manifest
+session_timeline   | sessions        | a session has      | numbered list      | session turns
+                   |                 | turns              |                    |
+compaction_fold    | sessions        | compaction runs    | before/after       | compaction report
+                   |                 |                    | numbers            |
+token_counter      | sessions        | before/after token | before -> after    | tokens_before/after
+                   |                 | counts exist       |                    | (estimated,
+                   |                 |                    |                    | labelled)
+memory_gate        | sessions        | memory is listed   | counts             | MemoryStore.list
+expiry_clock       | sessions        | an expiry          | timestamp          | memory/session
+                   |                 | timestamp exists   |                    | expires_at
+handshake_trace    | instrumentation | doctor runs        | table              | doctor checks
+loopback_lamp      | instrumentation | the Ollama URL is  | word               | settings.ollama_url
+                   |                 | shown              |                    |
+model_card         | instrumentation | model              | table              | doctor summary
+                   |                 | configuration is   |                    |
+                   |                 | shown              |                    |
+percentile_plot    | instrumentation | latency samples    | table              | stats.describe over
+                   |                 | exist              |                    | real samples
+concurrency_lanes  | instrumentation | bench levels exist | table              | bench records
+admission_gate     | instrumentation | rate limiting is   | counts             | limiter counters /
+                   |                 | shown              |                    | RATE_LIMITED
+                   |                 |                    |                    | outcomes
+dependency_panel   | instrumentation | a dependency is    | same text          | doctor /
+                   |                 | unavailable        |                    | ProviderUnavailable
+round_ledger       | evaluation      | evaluation runs    | table              | report.evaluation_r
+                   |                 | are listed         |                    | uns
+delta_arrows       | evaluation      | two comparable     | signed numbers     | run summaries
+                   |                 | runs exist         |                    |
+regression_ledger  | evaluation      | per-case results   | list               | run.json cases
+                   |                 | exist              |                    |
+split_ruler        | evaluation      | the golden set is  | counts             | golden set splits
+                   |                 | shown              |                    |
+exit_code_ledger   | evaluation      | guardrail steps    | table              | real exit codes
+                   |                 | finish             |                    |
+readiness_card     | evaluation      | the walkthrough    | same text          | final_report + live
+                   |                 | ends               |                    | gates
+[exit 0]

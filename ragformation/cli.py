@@ -458,7 +458,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_delete.add_argument("--yes", action="store_true")
 
     p_rebuild = sub.add_parser("rebuild", help="re-embed stored chunks (recovery path)")
-    p_rebuild.add_argument("--force", action="store_true")
+    # --reembed is the spelling used by the recovery hint and the docs
+    # (handoff.md, integration.md); it is an alias of --force.
+    p_rebuild.add_argument(
+        "--force",
+        "--reembed",
+        dest="force",
+        action="store_true",
+        help="re-embed every chunk even if its fingerprint already matches",
+    )
 
     p_ask = sub.add_parser("ask", help="ask a question")
     p_ask.add_argument("question")
@@ -503,6 +511,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_doctor = sub.add_parser("doctor", help="diagnose configuration, providers and index")
     p_doctor.add_argument("--json", action="store_true")
 
+    # The Lear agent has its own strict-local settings; its parser lives in
+    # ragformation/lear/cli.py and imports nothing heavy at parse time.
+    from .lear.cli import add_lear_parser
+
+    add_lear_parser(sub)
+
     p_export = sub.add_parser("export", help="export corpus, chunks and answers as JSON")
     p_export.add_argument("--out", default=None)
     p_export.add_argument("--questions", action="append", default=[])
@@ -535,6 +549,10 @@ COMMANDS = {
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command == "lear":
+        from .lear.cli import run_lear
+
+        return run_lear(args)
     try:
         settings = Settings.from_env()
         settings.validate()

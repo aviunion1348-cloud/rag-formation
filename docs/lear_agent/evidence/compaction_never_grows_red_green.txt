@@ -1,0 +1,23 @@
+# Regression: compaction could GROW the history (agent path, real docs: 71 -> 100 tokens on short turns; 403 -> 466 with long baseline answers, because each path appeared in 3-4 forms in the identifiers section)
+# tests: test_lear_core.CompactionTests.test_never_grows_the_history; test_lear_pipeline.BaselineAgentTests.test_long_session_is_compacted_through_the_agent
+## RED (before the fix)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/rag-formation/tests/test_lear_core.py", line 199, in test_never_grows_the_history
+    self.assertFalse(result.changed)
+AssertionError: True is not false
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+FAILED (failures=1)
+## GREEN (after: never-grow guard with skipped=summary_not_smaller; prune_identifiers keeps the most specific path/module/line form)
+test_extract_identifiers (test_lear_core.CompactionTests.test_extract_identifiers) ... ok
+test_folds_old_turns_and_keeps_identifiers_and_negations (test_lear_core.CompactionTests.test_folds_old_turns_and_keeps_identifiers_and_negations) ... ok
+test_never_grows_the_history (test_lear_core.CompactionTests.test_never_grows_the_history) ... ok
+test_under_budget_is_a_no_op (test_lear_core.CompactionTests.test_under_budget_is_a_no_op) ... ok
+test_long_session_is_compacted_through_the_agent (test_lear_pipeline.BaselineAgentTests.test_long_session_is_compacted_through_the_agent) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.674s
+
+OK
+## agent path on the real docs (budget 300, keep 2): turn 5 compacts 608 -> 561 tokens, folded 6 messages

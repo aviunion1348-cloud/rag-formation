@@ -17,7 +17,7 @@ Deliberate properties:
 
 from __future__ import annotations
 
-from typing import Any, Dict, List, Sequence
+from typing import Any, Dict, List, Optional, Sequence
 
 INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
 
@@ -75,9 +75,13 @@ def build_messages(
     evidence: Sequence[Dict[str, Any]],
     *,
     history: Sequence[Dict[str, str]] = (),
+    system_prompt: Optional[str] = None,
 ) -> List[Dict[str, str]]:
+    # `system_prompt` lets a caller (the Lear agent) supply its own versioned
+    # contract; the default is the generic grounding prompt above.
+    contract = SYSTEM_PROMPT if system_prompt is None else system_prompt
     messages: List[Dict[str, str]] = [
-        {"role": "system", "content": SYSTEM_PROMPT.replace("{sentinel}", INSUFFICIENT_EVIDENCE)}
+        {"role": "system", "content": contract.replace("{sentinel}", INSUFFICIENT_EVIDENCE)}
     ]
     for turn in history[-4:]:
         role = "user" if turn.get("role") == "user" else "assistant"

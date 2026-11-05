@@ -1,0 +1,331 @@
+{
+  "demoVersion": "lear-demo-v1",
+  "mode": "examiner",
+  "backend": "baseline",
+  "qualifying": false,
+  "terminal": {
+    "tty": false,
+    "color": false,
+    "unicode": true,
+    "width": 100,
+    "animate": false,
+    "interactive": false,
+    "reasons": [
+      "output is not a TTY",
+      "--json",
+      "--no-animate"
+    ]
+  },
+  "exitCode": 0,
+  "scenes": [
+    {
+      "id": "S04",
+      "title": "Query admission and request lifecycle",
+      "provenance": "LIVE",
+      "commands": [
+        "python3 -m ragformation lear --backend baseline ask --debug \"Does `prash run --dry-run` execute the action?\""
+      ],
+      "facts": [
+        {
+          "k": "question (golden lear-012)",
+          "v": "Does `prash run --dry-run` execute the action?",
+          "p": "RECORDED",
+          "src": "evals/lear/golden_lear_v1.json"
+        },
+        {
+          "k": "correlation id",
+          "v": "q-2a1f1a545f41",
+          "p": "LIVE",
+          "src": null
+        },
+        {
+          "k": "total time",
+          "v": "56.87 ms (pipeline; baseline has no model decode)",
+          "p": "LIVE",
+          "src": null
+        }
+      ],
+      "steps": [
+        {
+          "name": "ask (golden lear-012)",
+          "expected": "exit 0 (OK)",
+          "observed": "exit 0 (OK)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": ""
+        }
+      ],
+      "data": {
+        "lifecycle": [
+          {
+            "name": "1 input validation (non-empty, ≤2000 chars)",
+            "result": "passed",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "2 per-user / per-session sliding windows",
+            "result": "accepted 0→1",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "3 concurrency admission",
+            "result": "peak in flight 1 (limit 2)",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "4 session lookup/creation (session_id, user_id)",
+            "result": "turn 1",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "5 history load + compaction",
+            "result": "not triggered (first turn)",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "6 memory (≤3 scoped, unexpired items)",
+            "result": "0 used",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "7 whole-corpus term scope guard",
+            "result": "passed (no unknown terms)",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "8 follow-up rewrite (retrieval only)",
+            "result": "not needed (no history)",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "9 embedding fingerprint check",
+            "result": "match",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "10 core RAG request: retrieval",
+            "result": "completed",
+            "ms": 14.009
+          },
+          {
+            "name": "10 core RAG request: generation",
+            "result": "extractive:extractive-synthesis-v1",
+            "ms": 1.911
+          },
+          {
+            "name": "11 output guardrails + citation validation",
+            "result": "1 citations kept; warnings: none",
+            "ms": "not instrumented"
+          },
+          {
+            "name": "12 status mapping + persistence",
+            "result": "GROUNDED → exit 0",
+            "ms": "not instrumented"
+          }
+        ]
+      },
+      "evidence": [],
+      "limitations": [
+        "Stages 1–9 and 11–12 are not separately timed; they are shown as 'not instrumented'."
+      ],
+      "blocked": null,
+      "narrative": "One real LearAgent.ask call, followed through validation, rate limits, concurrency, session, compaction, memory, scope guard, rewrite, fingerprint check, the core RAG request, guardrails and status mapping.",
+      "collectMs": 727.9
+    },
+    {
+      "id": "S06",
+      "title": "Grounded answer and citations",
+      "provenance": "LIVE",
+      "commands": [],
+      "facts": [
+        {
+          "k": "generator",
+          "v": "extractive:extractive-synthesis-v1  — BASELINE / NOT QUALIFYING (no model was called)",
+          "p": "LIVE",
+          "src": null
+        },
+        {
+          "k": "status",
+          "v": "GROUNDED",
+          "p": "LIVE",
+          "src": null
+        },
+        {
+          "k": "model TTFT / ITL / tok/s",
+          "v": "not measured: no model stream",
+          "p": "UNAVAILABLE",
+          "src": null
+        },
+        {
+          "k": "prompt version",
+          "v": "lear-assistant-v1",
+          "p": "LIVE",
+          "src": null
+        },
+        {
+          "k": "recorded round-3 verdict for lear-012",
+          "v": "correct (lenient), key-fact coverage 1.0, citation precision 1.0, status GROUNDED",
+          "p": "RECORDED",
+          "src": "evals/lear/results/round-3/run.json (offline lenient scorer; judge BLOCKED)"
+        }
+      ],
+      "steps": [
+        {
+          "name": "citation [4] resolves",
+          "expected": "manifest entry + retrieved chunk + pinned lines",
+          "observed": "ok",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": ""
+        },
+        {
+          "name": "status → exit code",
+          "expected": "exit 0 (OK)",
+          "observed": "exit 0 (OK)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": ""
+        }
+      ],
+      "data": {
+        "question": "Does `prash run --dry-run` execute the action?",
+        "answer": "Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]",
+        "realStream": false,
+        "citations": [
+          {
+            "id": 4,
+            "chunkId": "src-0aa7224dfb#c004-10cc0499",
+            "document": "docs/lear_backend/api_reference.md",
+            "heading": "API reference > The `prash` CLI",
+            "lines": "32-34",
+            "commit": "60cf9abf8408",
+            "inManifest": true,
+            "retrieved": true,
+            "refs": [
+              {
+                "ref": "prash/cli.py:L1251",
+                "resolved": null,
+                "note": "not checked (no --source)"
+              },
+              {
+                "ref": "prash/cli.py:L351",
+                "resolved": null,
+                "note": "not checked (no --source)"
+              },
+              {
+                "ref": "prash/cli.py:L460",
+                "resolved": null,
+                "note": "not checked (no --source)"
+              }
+            ]
+          }
+        ]
+      },
+      "evidence": [],
+      "limitations": [
+        "Extractive baseline answers are sentence selections, often padded with neighbouring sentences."
+      ],
+      "blocked": null,
+      "narrative": "Each citation marker must map to a retrieved chunk, the chunk to a manifest entry, and the entry to Lear source lines at the pin.",
+      "collectMs": 2.1
+    },
+    {
+      "id": "S08",
+      "title": "Guardrails and refusal",
+      "provenance": "LIVE",
+      "commands": [
+        "python3 -m ragformation lear --backend baseline ask \"Which Kafka topics does Lear publish incident events to?\"   # exit 3"
+      ],
+      "facts": [
+        {
+          "k": "exit-code contract",
+          "v": "0 ok, 1 error, 2 usage, 3 abstained, 4 partial/conflicted, 5 gate failed, 6 dependency unavailable, 7 rate limited",
+          "p": "ILLUSTRATIVE",
+          "src": "ragformation/lear/agent.py exit_code_for"
+        }
+      ],
+      "steps": [
+        {
+          "name": "input over 2000 chars",
+          "expected": "exit 2 (usage or configuration error)",
+          "observed": "exit 2 (usage or configuration error)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "question is too long"
+        },
+        {
+          "name": "unknown term (scope guard): golden lear-068",
+          "expected": "exit 3 (abstained)",
+          "observed": "exit 3 (abstained)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "reason=unknown_term terms=['Kafka']"
+        },
+        {
+          "name": "unanswerable (evidence threshold): golden lear-069",
+          "expected": "exit 3 (abstained)",
+          "observed": "exit 3 (abstained)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "reason=insufficient_support"
+        },
+        {
+          "name": "conflicting evidence: golden lear-059",
+          "expected": "CONFLICTED (exit 4)",
+          "observed": "GROUNDED (exit 0)",
+          "verdict": "LIMITATION",
+          "p": "LIVE",
+          "detail": "the core flags numeric day/hour/%-unit contradictions across two sources; this Lear case is not one"
+        },
+        {
+          "name": "citation marker with no retrieved passage",
+          "expected": "[99] removed, [1] kept (10 passages)",
+          "observed": "removed [99]; kept text: The permission engine has modes [1]. It also signs requests.",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "guardrails.strip_invalid_citations called directly with a synthetic answer string (no LLM)"
+        },
+        {
+          "name": "instruction-like retrieved passage",
+          "expected": "quarantined; answer not taken over",
+          "observed": "1 quarantined (answer_forcing, instruction_override, role_hijack, secret_exfiltration); 'APPROVED' in answer=False",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "hostile page planted in a scratch copy of the corpus only"
+        },
+        {
+          "name": "ollama backend without a reachable model",
+          "expected": "exit 6 (dependency unavailable)",
+          "observed": "exit 6 (dependency unavailable)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "ERROR dependency unavailable; no silent extractive fallback"
+        },
+        {
+          "name": "second request in a 1-per-minute session window",
+          "expected": "exit 7 (rate limited)",
+          "observed": "exit 7 (rate limited)",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": "limit 1/60s; retry in 59.943s"
+        },
+        {
+          "name": "partial coverage",
+          "expected": "PARTIAL (exit 4) with uncertainty language",
+          "observed": "0 PARTIAL answers across 7 recorded runs",
+          "verdict": "LIMITATION",
+          "p": "RECORDED",
+          "detail": "evals/lear/results/*/run.json"
+        }
+      ],
+      "data": {},
+      "evidence": [],
+      "limitations": [
+        "Resistance of a real LLM to injected instructions is untested (no model)."
+      ],
+      "blocked": null,
+      "narrative": "Failure is a feature: unknown terms, missing evidence, injected passages, invalid markers, an unreachable model and rate limits each produce their own honest status and exit code.",
+      "collectMs": 735.8
+    }
+  ]
+}

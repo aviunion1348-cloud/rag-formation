@@ -1,0 +1,38 @@
+Defect found during round 1 (2026-11-05): stale chunks after a chunking change
+=============================================================================
+
+Root cause (core, unchanged): RAGEngine keeps ONE chunking fingerprint for the
+whole index (meta key chunking_fingerprint) and sets it whenever any file is
+re-ingested. During an incremental rebuild after a chunking-setting change,
+the first re-ingested file updates that meta value, so every later file with
+unchanged bytes is skipped as "unchanged" and keeps chunks made with the old
+settings. RAGEngine.rebuild(force=True) also records the new chunking
+fingerprint while only re-embedding the existing chunks.
+
+How it surfaced: round 1 changed the Lear chunk overlap from 40 to 20 tokens.
+The first incremental rebuild of data/lear/index-baseline reported
+{'updated': 12, 'unchanged': 7}; the 7 generated reference pages kept their
+overlap-40 chunks (mixed index).
+
+RED (fixture corpus, overlap 20 -> 0, one file edited, before the fix):
+incremental counts after overlap 20->0 with one edited file: {'new': 0, 'updated': 2, 'unchanged': 1, 'failed': 0, 'deleted': 0}
+chunks incremental: 8 fresh: 8 identical: False
+
+Fix (Lear layer only): ragformation/lear/indexer.py rebuild() compares the
+stored chunking fingerprint with the configured one BEFORE ingesting and, when
+they differ, forces every document through the chunker (force=True). The
+report gains "rechunked". `lear index rebuild --rechunk` forces the same
+behaviour by hand; it was used once to repair the mixed baseline index:
+
+  lear --backend baseline index rebuild --rechunk --json
+    -> {'new': 0, 'updated': 19, 'unchanged': 0, 'failed': 0, 'deleted': 0} 355 chunks, rechunked=True
+  lear --backend baseline index rebuild --json
+    -> {'new': 0, 'updated': 0, 'unchanged': 19, ...} 355 chunks, rechunked=False
+  repaired official index vs a fresh build in an empty directory: identical chunk texts (355 = 355)
+
+GREEN: tests/test_lear_pipeline.py
+  IndexerTests.test_chunking_change_rechunks_every_document
+  (asserts rechunked, updated == 3, and chunk texts identical to a fresh build).
+
+Known gap kept open: the legacy `ragformation ingest` / HTTP ingest path still
+has this behaviour; changing RAGEngine is a core change, so it is reported only.

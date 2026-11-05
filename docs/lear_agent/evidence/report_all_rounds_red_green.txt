@@ -1,0 +1,21 @@
+# Regression: 'lear report' showed only the newest evaluation run, printed 'coverage 0%' without a Lear checkout, and garbled the missing-index line
+# test: tests/test_lear_pipeline.py ReportTests.test_report_lists_every_round_oldest_first_and_flags_missing_coverage
+## RED: the previous report.py (git show HEAD:ragformation/lear/report.py) on the same fixture
+# OLD report.py (HEAD e898095) on two local runs, no --source:
+Lear agent report — backend baseline (offline baseline, NOT qualifying)
+doctor: NOT READY at 2026-11-05T19:01:48Z (failed: ollama.version, models.installed, models.embedder, models.llm, models.judge, probe.embedding, probe.generation_stream, probe.judge_json) [docs/lear_agent/evidence/doctor_live_final_2026-11-05.json]
+docs verify: PASS (9 checks; failing: none); narrative module coverage 0%
+index: missing — run `lear index rebuild` chunks in /tmp/tmpnpawe310/data/index-baseline
+evaluation: round-b — 4 cases, correct 0.75, hit@k 1.0, unanswerable abstained 1.0, judge BLOCKED, qualifying False
+benchmark: PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)
+  users=1 ok=3 rate_limited=0 errors=0 total_p50=34.58 ms ttft_p50=30.9 ms
+  users=2 ok=6 rate_limited=0 errors=0 total_p50=67.6 ms ttft_p50=50.5 ms
+  users=5 ok=15 rate_limited=0 errors=0 total_p50=61.96 ms ttft_p50=53.17 ms
+  users=10 ok=30 rate_limited=0 errors=0 total_p50=63.27 ms ttft_p50=47.38 ms
+# defects: one evaluation line only (whichever run.json is newest, here round-b; the earlier rounds are invisible); 'narrative module coverage 0%' without a checkout; garbled index line when the index is missing
+## GREEN: the new report.py
+
+----------------------------------------------------------------------
+Ran 1 test in 0.005s
+
+OK

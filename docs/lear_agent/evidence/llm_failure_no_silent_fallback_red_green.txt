@@ -1,0 +1,46 @@
+Defect 3 (round 3): an Ollama LLM failure was answered GROUNDED (exit 0) with the engine's extractive fallback
+Date (UTC): 2026-11-05T18:54:54Z
+
+Reproduction: StubOllama answers /api/chat with HTTP 500 (chat_fails=True); backend=ollama; agent.ask(...).
+Before the fix: status GROUNDED, exit 0, qualifying False, models.generation.used=extractive:extractive-synthesis-v1,
+warnings [fallback_provider_used:extractive, generation_provider_failed] - labelled in JSON, but exit code and status said success.
+After the fix: status ERROR, error.code generation_unavailable, exit 6, answer and citations empty,
+warning extractive_fallback_discarded; RAG_LEAR_ALLOW_EXTRACTIVE_FALLBACK=1 returns the labelled extractive answer (qualifying False).
+The core engine fallback (engine.py L931-L945) is unchanged; the Lear layer decides.
+
+Also red here: follow-up expansion carried evidence refs (path:Lx-Ly) from the previous answer.
+
+=== RED (ragformation/lear/{agent,settings,cli}.py at 38bea8c, new tests) ===
+FF
+======================================================================
+FAIL: test_llm_failure_is_an_error_not_a_silent_extractive_answer (test_lear_pipeline.StubOllamaTests.test_llm_failure_is_an_error_not_a_silent_extractive_answer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/rag-formation/tests/test_lear_pipeline.py", line 326, in test_llm_failure_is_an_error_not_a_silent_extractive_answer
+    self.assertEqual(answer["status"], "ERROR")
+AssertionError: 'GROUNDED' != 'ERROR'
+- GROUNDED
++ ERROR
+
+
+======================================================================
+FAIL: test_follow_up_expansion_skips_evidence_refs_and_abstained_answers (test_lear_pipeline.BaselineAgentTests.test_follow_up_expansion_skips_evidence_refs_and_abstained_answers)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/rag-formation/tests/test_lear_pipeline.py", line 249, in test_follow_up_expansion_skips_evidence_refs_and_abstained_answers
+    self.assertNotIn(":L", rewritten)
+AssertionError: ':L' unexpectedly found in 'What is its default window, and where is its state kept? (follow-up to: What does the circuit breaker do in Lear?) prash/permissions.py:L37-L64 max_actions window_seconds tests/test_actions.py:L187-L217 prash/server.py:L397 test_actions'
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.563s
+
+FAILED (failures=2)
+red exit 1
+
+=== GREEN (working tree) ===
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.581s
+
+OK
+green exit 0

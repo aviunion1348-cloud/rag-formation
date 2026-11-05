@@ -1,0 +1,30 @@
+# Lear test suite at pinned commit 60cf9abf8408 — run 3
+# same as run 2 plus LEAR_MOCK_SERVICES=false (AWS/GCP connectors default to mock mode when unset)
+# date: 2026-11-05T18:08:30+00:00
+
+tests/test_aws_connector.py:48: assert True is False
+tests/test_aws_connector.py:61: assert True is False
+tests/test_desktop_api.py:370: assert 0 == 1
+tests/test_desktop_api.py:785: assert 'Restart' in 'data: {"error": "Bridge Error: \'cpu_pct\'", "text": "Bridge Error: \'cpu_pct\'", "done": true}\n\n'
+tests/test_gcp_connector.py:71: assert True is False
+tests/test_gcp_connector.py:107: assert True is False
+tests/test_gcp_connector.py:178: AssertionError: assert <ConnectorState.NOT_FOUND: 'not-found'> is <ConnectorState.UNKNOWN: 'unknown'>
+prash/connectors/grafana.py:243: AttributeError: 'str' object has no attribute 'decode'
+tests/test_intent.py:160: AssertionError: assert Clarify(question='Which grafana target should I investigate? (name or id)', options=[]) is None
+prash/connectors/pagerduty.py:268: AttributeError: 'str' object has no attribute 'decode'
+prash/connectors/pagerduty.py:268: AttributeError: 'str' object has no attribute 'decode'
+prash/connectors/pagerduty.py:268: AttributeError: 'str' object has no attribute 'decode'
+FAILED tests/test_aws_connector.py::test_authenticate_failure_no_credentials
+FAILED tests/test_aws_connector.py::test_authenticate_failure_client_error - ...
+FAILED tests/test_desktop_api.py::test_CHAT_TELEMETRY_INJECTION - assert 0 == 1
+FAILED tests/test_desktop_api.py::test_CHAT_STREAM_SSE - assert 'Restart' in ...
+FAILED tests/test_gcp_connector.py::test_authenticate_requires_project - asse...
+FAILED tests/test_gcp_connector.py::test_authenticate_false_when_gcloud_missing
+FAILED tests/test_gcp_connector.py::test_poll_state_not_found_when_unauthenticated
+FAILED tests/test_grafana_connector.py::test_authenticate_false_on_401 - Attr...
+FAILED tests/test_intent.py::test_resolve_fast_path_returns_none_without_touching_the_llm
+FAILED tests/test_pagerduty_connector.py::test_authenticate_succeeds_with_account_level_key_that_cannot_resolve_identity
+FAILED tests/test_pagerduty_connector.py::test_authenticate_false_on_401 - At...
+FAILED tests/test_pagerduty_connector.py::test_find_incident_by_incident_key_survives_one_incidents_alerts_failing
+12 failed, 842 passed, 10 skipped in 62.35s (0:01:02)
+PYTEST_EXIT=1

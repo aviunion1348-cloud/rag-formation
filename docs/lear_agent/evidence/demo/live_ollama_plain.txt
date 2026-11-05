@@ -1,0 +1,92 @@
+$ python3 -m ragformation lear demo live --plain   # default ollama backend, no Ollama here
+-- RAG Formation / Lear Local Agent - LIVE (ollama backend) ----------------------------------------
+  terminal: no colour, ascii, width 100, motion off (output is not a TTY; --plain)
+
++--- S00  Boot and trust boundary  [LIVE]
+  CONCEPTUAL EXPLANATION The Lear backend repository is the subject; RAG Formation is the instrument
+    that reads its pinned docs and answers. Model traffic may only go to a loopback Ollama.
+  [ILLUSTRATIVE] system: RAG Formation / Lear Local Agent (the answering system)
+  [ILLUSTRATIVE] subject corpus: Lear backend repository, via source-pinned docs in
+      docs/lear_backend
+  [LIVE] rag-formation commit: 132838754d0a on arena/d352c257-rag-formation
+  [RECORDED] source pin: aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408 (main)
+  [LIVE] backend: ollama (qualifying path)
+  [LIVE] Ollama endpoint: 127.0.0.1:11434 (loopback: allowed)
+  [RECORDED] qualification: BLOCKED
+  limitation: Qualification stays BLOCKED until a real local-model run passes doctor, evaluation and
+      the judge.
+
++--- S01  Source-of-truth archaeology  [LIVE]
+  CONCEPTUAL EXPLANATION Every claim in docs/lear_backend cites path:Lx-Ly at one pinned commit. The
+    verifier re-reads the checkout and fails on any stale or invalid reference. Generated pages are
+    regenerated, never hand-edited.
+  [LIVE] verifier result: PASS: 7/9 checks PASS
+  [LIVE] pages: 20 (12 narrative, 8 generated)
+  [UNAVAILABLE] pin checked against: no Lear checkout given: pin and line checks are WARN, coverage
+      not measured
+  WARN   pin: pinned 60cf9abf8408; source checkout not supplied, so path:line references cannot be
+  verified
+  PASS   required_pages: 13/13 present; 0 below 120 words
+  PASS   links: 26 relative links, 0 broken
+  WARN   source_refs: 1237 references found; not verified (no source)
+  PASS   stale_commits: 0 foreign commit ids; 0 narrative pages without the pinned id
+  PASS   claim_labels: 340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite
+  none)
+  PASS   duplicates: 0 repeated paragraphs; 0 identical chunks of 355
+  PASS   guardrails: 0 of 355 chunks would be quarantined by the injection guard
+  PASS   secrets: 0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold
+  the full commit id)
+
+step                       | expected       | observed                   | verdict     | src
+----------------------------------------------------------------------------------------------------
+docs verify                | exit 0 (OK)    | exit 0 (OK)                | MATCH       | LIVE
+docs build reproducibility | byte-identical | not run: needs --source    | UNAVAILABLE | UNAVAILABLE
+                           |                | <Lear checkout>            |             |
+  limitation: Narrative pages cover 43 of 79 Lear modules (every module is cited somewhere); prose
+      is reference-checked, not fully human-reviewed.
+
++--- S02  Knowledge base construction  [UNAVAILABLE]
+  CONCEPTUAL EXPLANATION pinned checkout -> generated + narrative docs -> heading-aware chunks ->
+    manifest (lines, hashes, commit) -> embeddings -> SQLite index. Built here in a scratch
+    directory; your data/ is not touched.
++- BLOCKED ----------------------------------------------------------------------------------------+
+| Ollama is configured as the embedding provider but is not usable                                 |
+| exit code: 6                                                                                     |
+| fix: provider is not reachable                                                                   |
++--------------------------------------------------------------------------------------------------+
+  [LIVE] your index (not opened): data/lear/index present
+  [UNAVAILABLE] scratch index: not built: Ollama is configured as the embedding provider but is not
+      usable
+
++--- S03  Ollama model gate  [LIVE]
+  CONCEPTUAL EXPLANATION doctor probes the loopback Ollama, the three model tags, their parameter
+    caps, an embedding, a stream and a judge JSON call. Without Ollama it exits 6, and nothing
+    downstream may claim a model ran.
++- BLOCKED ----------------------------------------------------------------------------------------+
+| BLOCKED - Ollama/model dependency unavailable (exit 6). No qualifying local model result exists. |
+| exit code: 6                                                                                     |
+| fix: start Ollama on 127.0.0.1 and pull the three models; or run `python3 -m ragformation lear   |
+| demo replay`                                                                                     |
++--------------------------------------------------------------------------------------------------+
+  [LIVE] doctor exit: 6 (dependency unavailable)
+  [UNAVAILABLE] embedder: nomic-embed-text (cap <=200M params)
+  [UNAVAILABLE] answer LLM: qwen2.5:1.5b (cap <=4B)
+  [UNAVAILABLE] judge: llama3.2:1b (cap <=4B, must differ from the LLM)
+  [LIVE] failing probes: ollama.version=FAIL, models.installed=SKIP, models.embedder=SKIP,
+      models.llm=SKIP, models.judge=SKIP, probe.embedding=SKIP, probe.generation_stream=SKIP,
+      probe.judge_json=SKIP
+  [LIVE] required failures: ollama.version, models.installed, models.embedder, models.llm,
+      models.judge, probe.embedding, probe.generation_stream, probe.judge_json
+
+step        | expected          | observed | verdict | src
+-----------------------------------------------------------
+lear doctor | exit 0 to qualify | exit 6   | BLOCKED | LIVE
+  limitation: Model tags and parameter counts are UNVERIFIED: Ollama never ran in the recorded
+      environment.
++- LIVE MODE STOPPED AT THE DEPENDENCY GATE -------------------------------------------------------+
+| No qualifying local model result exists, and none will be fabricated.                            |
+| Recorded evidence: python3 -m ragformation lear demo replay                                      |
+| Offline baseline (NOT QUALIFYING): python3 -m ragformation lear --backend baseline demo live     |
++--------------------------------------------------------------------------------------------------+
+-- demo exit 6 (dependency unavailable) ------------------------------------------------------------
+[exit 6]

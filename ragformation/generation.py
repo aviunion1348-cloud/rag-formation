@@ -78,6 +78,7 @@ class GenerationProvider(Protocol):
         timeout: float,
         on_token: TokenCallback = None,
         history: Sequence[Dict[str, str]] = (),
+        system_prompt: Optional[str] = None,
     ) -> GenerationOutput: ...
 
 
@@ -151,8 +152,9 @@ class OllamaGenerator:
         timeout: float,
         on_token: TokenCallback = None,
         history: Sequence[Dict[str, str]] = (),
+        system_prompt: Optional[str] = None,
     ) -> GenerationOutput:
-        messages = build_messages(question, evidence, history=history)
+        messages = build_messages(question, evidence, history=history, system_prompt=system_prompt)
         payload = {
             "model": self.model,
             "messages": messages,
@@ -230,10 +232,11 @@ class OpenAIGenerator:
         timeout: float,
         on_token: TokenCallback = None,
         history: Sequence[Dict[str, str]] = (),
+        system_prompt: Optional[str] = None,
     ) -> GenerationOutput:
         if not self.api_key:
             raise ProviderUnavailable("OPENAI_API_KEY is not set")
-        messages = build_messages(question, evidence, history=history)
+        messages = build_messages(question, evidence, history=history, system_prompt=system_prompt)
         payload = {
             "model": self.model,
             "messages": messages,
@@ -324,6 +327,7 @@ class ExtractiveGenerator:
         timeout: float,
         on_token: TokenCallback = None,
         history: Sequence[Dict[str, str]] = (),
+        system_prompt: Optional[str] = None,
     ) -> GenerationOutput:
         timing = StreamTiming()
         question_terms = set(content_terms(question))

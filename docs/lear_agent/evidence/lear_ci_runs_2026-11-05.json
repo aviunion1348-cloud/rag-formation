@@ -1,0 +1,106 @@
+{
+  "source": "gh run list -R aviunion1348-cloud/Lear-backend-Avi --limit 10 (GitHub Actions metadata, read-only)",
+  "retrieved": "2026-11-05",
+  "runs": [
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-03T18:29:00Z",
+      "databaseId": 37144354499,
+      "event": "push",
+      "headBranch": "main",
+      "headSha": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+      "status": "completed",
+      "workflowName": "CI"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:47:12Z",
+      "databaseId": 36879083906,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "c32b4d6f8cba42f6187bf151e95c41638a5ab3db",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:41:57Z",
+      "databaseId": 36878387020,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "ffb5b2e92e60d948923d6a1acfddf227276f2919",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:40:24Z",
+      "databaseId": 36878178231,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "c402eec471292cf05f14bebade11fda0d1ca4d85",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:38:56Z",
+      "databaseId": 36877976541,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "dce311d0b1a569aa312398b84a8eb817bc2f52bf",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:37:09Z",
+      "databaseId": 36877745076,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "a374b6a8b4fb719a9edc4aece2eca3d648fdd388",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:36:09Z",
+      "databaseId": 36877614729,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "8c858a975b92a692e8507d892f8abfec9075c063",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:34:37Z",
+      "databaseId": 36877417767,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "0b3abfe4380cb048789cc71e8ea1a084855dcc61",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:30:36Z",
+      "databaseId": 36876889233,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "e0df5ae1777b623892ed7ff9ea2896224f2664dd",
+      "status": "completed",
+      "workflowName": "Security checks"
+    },
+    {
+      "conclusion": "failure",
+      "createdAt": "2026-10-01T14:30:00Z",
+      "databaseId": 36876802779,
+      "event": "push",
+      "headBranch": "arena/01a0ee2a-lear-backend-avi",
+      "headSha": "c844ec9fd799a71aad54268c11d15fc4fd1bfbfd",
+      "status": "completed",
+      "workflowName": "Security checks"
+    }
+  ]
+}

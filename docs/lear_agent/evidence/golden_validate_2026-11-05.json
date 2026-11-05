@@ -1,0 +1,63 @@
+{
+  "valid": true,
+  "dataset": "/home/user/rag-formation/evals/lear/golden_lear_v1.json",
+  "name": "lear-golden",
+  "version": "1.0.0",
+  "cases": 80,
+  "splits": {
+    "calibration": 10,
+    "dev": 32,
+    "test": 24,
+    "holdout": 14
+  },
+  "categories": {
+    "factual": 19,
+    "security": 10,
+    "configuration": 15,
+    "workflow": 12,
+    "multi_hop": 7,
+    "conflict": 1,
+    "follow_up": 6,
+    "unanswerable": 8,
+    "injection": 2
+  },
+  "datasetSha256": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+  "checks": [
+    {
+      "name": "schema",
+      "status": "PASS",
+      "summary": "80 cases, 0 schema problems",
+      "examples": []
+    },
+    {
+      "name": "size",
+      "status": "PASS",
+      "summary": "80 cases (required 50-100, target 70-80)",
+      "examples": []
+    },
+    {
+      "name": "splits",
+      "status": "PASS",
+      "summary": "splits calibration=10, dev=32, test=24, holdout=14; categories configuration=15, conflict=1, factual=19, follow_up=6, injection=2, multi_hop=7, security=10, unanswerable=8, workflow=12",
+      "examples": []
+    },
+    {
+      "name": "answerability",
+      "status": "PASS",
+      "summary": "0 expected-answer term groups not found in the cited docs",
+      "examples": []
+    },
+    {
+      "name": "checksums",
+      "status": "PASS",
+      "summary": "dataset sha256 56050cf2689383ca…; 0 changed, 0 removed, 0 moved, 0 added since checksums; legacy golden sets unchanged",
+      "examples": []
+    },
+    {
+      "name": "evidence",
+      "status": "PASS",
+      "summary": "92 evidence items checked with git show at 60cf9abf8408; 0 problems",
+      "examples": []
+    }
+  ]
+}

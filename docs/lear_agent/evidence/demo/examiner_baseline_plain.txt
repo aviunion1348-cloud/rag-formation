@@ -1,0 +1,389 @@
+$ python3 -m ragformation lear --backend baseline demo examiner --plain --source <Lear checkout>
+-- RAG Formation / Lear Local Agent - EXAMINER (baseline backend) ----------------------------------
+  terminal: no colour, ascii, width 100, motion off (output is not a TTY; --plain; --no-animate)
+
++--- S00  Boot and trust boundary  [LIVE]
+  [ILLUSTRATIVE] system: RAG Formation / Lear Local Agent (the answering system)
+  [ILLUSTRATIVE] subject corpus: Lear backend repository, via source-pinned docs in
+      docs/lear_backend
+  [LIVE] rag-formation commit: 132838754d0a on arena/d352c257-rag-formation  (git rev-parse)
+  [RECORDED] source pin: aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408 (main)
+      (docs/lear_backend/SOURCE_PIN.json)
+  [LIVE] backend: baseline (BASELINE / NOT QUALIFYING)  (LearSettings)
+  [LIVE] Ollama endpoint: 127.0.0.1:11434 (loopback: allowed)  (settings.is_loopback_url)
+  [RECORDED] qualification: BLOCKED  (docs/lear_agent/final_report.md)
+  $ python3 -m ragformation lear --help
+  evidence: docs/lear_backend/SOURCE_PIN.json
+  evidence: docs/lear_agent/final_report.md
+  limitation: Qualification stays BLOCKED until a real local-model run passes doctor, evaluation and
+      the judge.
+
++--- S01  Source-of-truth archaeology  [LIVE]
+  [LIVE] verifier result: PASS: 11/11 checks PASS  (verify_docs)
+  [LIVE] pages: 20 (12 narrative, 8 generated)
+  [LIVE] pin checked against: /home/user/lear-backend
+  [LIVE] module coverage: narrative pages cite 43/79 modules (54%); cited anywhere 79/79
+      (measure_coverage)
+  PASS   pin: pinned aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408; checkout HEAD matches
+  PASS   required_pages: 13/13 present; 0 below 120 words
+  PASS   links: 26 relative links, 0 broken
+  PASS   source_refs: 1237 references, 0 invalid
+  PASS   stale_commits: 0 foreign commit ids; 0 narrative pages without the pinned id
+  PASS   claim_labels: 340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite
+  none)
+  PASS   duplicates: 0 repeated paragraphs; 0 identical chunks of 355
+  PASS   guardrails: 0 of 355 chunks would be quarantined by the injection guard
+  PASS   secrets: 0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold
+  the full commit id)
+  PASS   api_auth_claim: 87 method/path routes from 85 route decorators in prash/server.py; 0
+  declare Depends/Security/dependencies; middleware: CORSMiddleware; custom @app.middleware: 0;
+  documented 'no authentication dependency' claim holds
+  PASS   route_count: reference/http_api.md documents 87 routes; the AST of prash/server.py has 87
+  pin: 60cf9abf 84088c3a 5ec05e87 00c52185 444e215f
+
+step                            | expected                        | observed        | verdict | src
+----------------------------------------------------------------------------------------------------
+docs verify                     | exit 0 (OK)                     | exit 0 (OK)     | MATCH   | LIVE
+docs build from the pin into a  | byte-identical to committed     | 10/10 identical | MATCH   | LIVE
+scratch dir                     | docs                            |                 |         |
+  $ python3 -m ragformation lear docs verify --source <Lear checkout>
+  $ python3 -m ragformation lear docs build --source <Lear checkout>   # regenerate, never hand-edit
+  evidence: docs/lear_agent/documentation_coverage.md
+  evidence: docs/lear_agent/evidence/docs_verify_2026-11-05.json
+  limitation: Narrative pages cover 43 of 79 Lear modules (every module is cited somewhere); prose
+      is reference-checked, not fully human-reviewed.
+
++--- S02  Knowledge base construction  [LIVE]
+  [LIVE] your index (not opened): data/lear/index-baseline present  (path check only)
+  [LIVE] scratch index: 19 documents, 355 chunks, 48676 tokens (max 306, mean 137.1)
+      (indexer.stats)
+  [LIVE] embedding: hashing:hashing-lexical-v1 dim=512 - baseline feature hashing, NOT semantic
+  [LIVE] index fingerprint:
+      hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  [LIVE] line precision: {"lines": 354, "section": 1}
+  [LIVE] source commit in manifest: 60cf9abf8408
+  chunk strip (first 30 chunks; segment width proportional to tokens):
+  ##====#===##==####===####===###====##====####=#=#####=###===###====####=###===#=
+  sample chunk src-9e094965d7#c001-5c378822: docs/lear_backend/README.md lines 6-12
+  `- Lear backend - engineering documentation
+    `- What Lear is
+  content hash: 5c378822 0087e071 153097f0 602d25c9 ec6f70b7 096bdac2 929a7053 018dcd3b
+  $ python3 -m ragformation lear --backend baseline index rebuild
+  $ python3 -m ragformation lear --backend baseline index stats
+  limitation: Only a baseline (hashing) index can be built here; the qualifying Ollama index has
+      never been built.
+
++--- S03  Ollama model gate  [LIVE]
++- BLOCKED ----------------------------------------------------------------------------------------+
+| BLOCKED - Ollama/model dependency unavailable (exit 6). No qualifying local model result exists. |
+| exit code: 6                                                                                     |
+| fix: start Ollama on 127.0.0.1 and pull the three models; or run `python3 -m ragformation lear   |
+| demo replay`                                                                                     |
++--------------------------------------------------------------------------------------------------+
+  [LIVE] doctor exit: 6 (dependency unavailable)  (run_doctor)
+  [UNAVAILABLE] embedder: nomic-embed-text (cap <=200M params)  (parameter count unverified unless
+      doctor passes)
+  [UNAVAILABLE] answer LLM: qwen2.5:1.5b (cap <=4B)
+  [UNAVAILABLE] judge: llama3.2:1b (cap <=4B, must differ from the LLM)
+  [LIVE] failing probes: config.backend=WARN, ollama.version=SKIP
+  [LIVE] required failures: none (baseline backend: never qualifying, so doctor cannot pass)
+
+step        | expected          | observed | verdict | src
+-----------------------------------------------------------
+lear doctor | exit 0 to qualify | exit 6   | BLOCKED | LIVE
+  $ python3 -m ragformation lear doctor
+  $ python3 -m ragformation lear doctor --json
+  evidence: docs/lear_agent/evidence/doctor_live_final_2026-11-05.json
+  evidence: docs/lear_agent/model_compliance.md
+  limitation: Model tags and parameter counts are UNVERIFIED: Ollama never ran in the recorded
+      environment.
+
++--- S04  Query admission and request lifecycle  [LIVE]
+  [RECORDED] question (golden lear-012): Does `prash run --dry-run` execute the action?
+      (evals/lear/golden_lear_v1.json)
+  [LIVE] correlation id: q-28ac130a01dc
+  [LIVE] total time: 108.33 ms (pipeline; baseline has no model decode)
+stage                                        | result                             | ms
+----------------------------------------------------------------------------------------------------
+1 input validation (non-empty, <=2000 chars) | passed                             | not instrumented
+2 per-user / per-session sliding windows     | accepted 0->1                      | not instrumented
+3 concurrency admission                      | peak in flight 1 (limit 2)         | not instrumented
+4 session lookup/creation (session_id,       | turn 1                             | not instrumented
+user_id)                                     |                                    |
+5 history load + compaction                  | not triggered (first turn)         | not instrumented
+6 memory (<=3 scoped, unexpired items)       | 0 used                             | not instrumented
+7 whole-corpus term scope guard              | passed (no unknown terms)          | not instrumented
+8 follow-up rewrite (retrieval only)         | not needed (no history)            | not instrumented
+9 embedding fingerprint check                | match                              | not instrumented
+10 core RAG request: retrieval               | completed                          | 25.408
+10 core RAG request: generation              | extractive:extractive-synthesis-v1 | 3.556
+11 output guardrails + citation validation   | 1 citations kept; warnings: none   | not instrumented
+12 status mapping + persistence              | GROUNDED -> exit 0                 | not instrumented
+
+step                  | expected    | observed    | verdict | src
+------------------------------------------------------------------
+ask (golden lear-012) | exit 0 (OK) | exit 0 (OK) | MATCH   | LIVE
+  $ python3 -m ragformation lear --backend baseline ask --debug "Does `prash run --dry-run` execute
+      the action?"
+  limitation: Stages 1-9 and 11-12 are not separately timed; they are shown as 'not instrumented'.
+
++--- S05  Hybrid retrieval  [LIVE]
+  [ILLUSTRATIVE] chain: cosine + BM25 -> Reciprocal Rank Fusion (k=60) -> heuristic-coverage-v1
+      reranker -> MMR -> context  (ragformation/retrieval.py)
+  [LIVE] dense channel: feature-hash similarity (baseline, NOT semantic)
+  [LIVE] mode: hybrid
+  [LIVE] fingerprint: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  [LIVE] candidates / selected: 10 / 10
+  [LIVE] context tokens: 1684  (estimated, ~4 chars/token)
+  [LIVE] best support: 0.6515
+  [UNAVAILABLE] per-channel ranks (dense, BM25, RRF): not exposed by the engine response
+  candidates (filled = selected), bar = fused score:
+  (*) ################## 0.0320  src-3665f86d99#c002-95a9d20b  cli.md S. Lear backend - CLI
+  reference (`prash`) > prash run
+  (*) #################. 0.0295  src-0441e92281#c001-356e1401  errors_and_operations.md S. Errors
+  and operations > Exit codes of the CLI
+  (*) ########.......... 0.0141  src-51cdac4a6f#c010-89e43766  authentication_authorization.md S.
+  Authentication and authorization > Audit trail
+  (*) #################. 0.0301  src-0aa7224dfb#c004-10cc0499  api_reference.md S. API reference >
+  The `prash` CLI
+  (*) #########......... 0.0161  src-0aa7224dfb#c001-72fa94fe  api_reference.md S. API reference >
+  The `prash` CLI
+  (*) ################.. 0.0284  src-8b2cf583b7#c012-67ed963d  actions.md S. Lear backend - action
+  catalogue > Safe-tier actions > terraform-init
+  (*) ########.......... 0.0149  src-00287151c3#c004-d07ace4a  domain_model.md S. Domain model >
+  Dispatch results (`prash/dispatch.py`)
+  (*) ###############... 0.0267  src-0441e92281#c003-fb54fc53  errors_and_operations.md S. Errors
+  and operations > Failure handling in the pipeline
+  (*) ################.. 0.0288  src-3665f86d99#c007-c141955c  cli.md S. Lear backend - CLI
+  reference (`prash`) > prash fix
+  (*) #########......... 0.0152  src-3665f86d99#c020-264862a8  cli.md S. Lear backend - CLI
+  reference (`prash`) > prash setup
+  ( ) excluded src-0aa7224dfb#c002-9252158c: context_token_budget
+  ( ) excluded src-51cdac4a6f#c008-f9566633: context_token_budget
+  retrieval.semantic           ##################### 17.804 ms
+  retrieval.lexical                                 ### 2.294 ms
+  retrieval.fusion                                    # 0.116 ms
+  retrieval.rerank                                    # 0.023 ms
+  retrieval.mmr                                       ###### 5.171 ms
+  limitation: Context precision on the baseline is low (about .25-.29 across runs).
+
++--- S06  Grounded answer and citations  [LIVE]
+  [LIVE] generator: extractive:extractive-synthesis-v1  - BASELINE / NOT QUALIFYING (no model was
+      called)
+  [LIVE] status: GROUNDED
+  [UNAVAILABLE] model TTFT / ITL / tok/s: not measured: no model stream
+  [LIVE] prompt version: lear-assistant-v1
+  [RECORDED] recorded round-3 verdict for lear-012: correct (lenient), key-fact coverage 1.0,
+      citation precision 1.0, status GROUNDED  (evals/lear/results/round-3/run.json (offline lenient
+      scorer; judge BLOCKED))
+  Q: Does `prash run --dry-run` execute the action?
+  A (BASELINE extractive selection, not a model stream):
+    Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without
+  touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never
+  prompts (a missing secret then returns NEEDS_INPUT). [4]
+  OK [4] src-0aa7224dfb#c004-10cc0499 -> docs/lear_backend/api_reference.md lines 32-34 @
+  60cf9abf8408 -> prash/cli.py:L1251 ok, prash/cli.py:L351 ok, prash/cli.py:L460 ok
+
+step                  | expected                                      | observed    | verdict | src
+----------------------------------------------------------------------------------------------------
+citation [4] resolves | manifest entry + retrieved chunk + pinned     | ok          | MATCH   | LIVE
+                      | lines                                         |             |         |
+status -> exit code   | exit 0 (OK)                                   | exit 0 (OK) | MATCH   | LIVE
+  limitation: Extractive baseline answers are sentence selections, often padded with neighbouring
+      sentences.
+
++--- S07  Sessions, memory and compaction  [LIVE]
+  [LIVE] session / user: demo-s07... / demo-examiner
+  [LIVE] messages stored: 10
+  [LIVE] history budget: 300 tokens, keep 2 recent (demo setting; default 900/4)
+  [LIVE] compaction policy: lear-compaction-v1 (deterministic, never grows the history)
+  [LIVE] compactions recorded: 3
+  [LIVE] memory expiry: 2026-11-05T21:02:17Z (ttl 3600 s)
+  [LIVE] summary version: lear-compaction-v1
+  (*)-- turn 1: GROUNDED  standalone
+  (*)-- turn 2: GROUNDED  retrieval rewrite: What is its default window, and where is its state
+  kept? (follow-up to: What does the circuit breaker do in Le...
+  (*)-- turn 3: GROUNDED  retrieval rewrite: What is Lear's audit log? (follow-up to: What is its
+  default window, and where is its state kept?) max_actions...
+  (*)-- turn 4: GROUNDED  retrieval rewrite: Could two processes write the same sequence number to
+  it? (follow-up to: What is Lear's audit log?) max_action...
+  compaction lear-compaction-v1 (estimated tokens): 487 -> 447
+  compaction lear-compaction-v1 (estimated tokens): 607 -> 453
+  compaction lear-compaction-v1 (estimated tokens): 564 -> 445
+
+step                      | expected                   | observed                   | verdict | src
+----------------------------------------------------------------------------------------------------
+outdated memory vs pinned | answer follows the docs    | docs value present=True,   | MATCH   | LIVE
+docs                      | (5), not memory (50)       | memory value               |         |
+                          |                            | present=False, memory      |         |
+                          |                            | selected=True              |         |
+memory guard refuses      | exit 2 (usage or           | exit 2 (usage or           | MATCH   | LIVE
+instruction-like text     | configuration error)       | configuration error)       |         |
+memory scoping: another   | 0 items                    | 0 items                    | MATCH   | LIVE
+user sees none            |                            |                            |         |
+session isolation:        | exit 2 (usage or           | exit 2 (usage or           | MATCH   | LIVE
+another user opens this   | configuration error)       | configuration error)       |         |
+session                   |                            |                            |         |
+    memory guard refuses instruction-like text: memory text contains instruction-like content; it
+        was not stored
+    session isolation: another user opens this session: session not found
+  $ python3 -m ragformation lear --backend baseline chat --session demo
+  $ python3 -m ragformation lear sessions inspect demo
+  $ python3 -m ragformation lear memory list
+  limitation: Token counts are estimates (~4 chars/token).
+  limitation: The baseline extractive generator never reads memory; whether an LLM obeys 'memory
+      cannot override the docs' is UNVERIFIED.
+
++--- S08  Guardrails and refusal  [LIVE]
+  [ILLUSTRATIVE] exit-code contract: 0 ok, 1 error, 2 usage, 3 abstained, 4 partial/conflicted, 5
+      gate failed, 6 dependency unavailable, 7 rate limited  (ragformation/lear/agent.py
+      exit_code_for)
+
+step                    | expected                | observed                 | verdict    | src
+----------------------------------------------------------------------------------------------------
+input over 2000 chars   | exit 2 (usage or        | exit 2 (usage or         | MATCH      | LIVE
+                        | configuration error)    | configuration error)     |            |
+unknown term (scope     | exit 3 (abstained)      | exit 3 (abstained)       | MATCH      | LIVE
+guard): golden lear-068 |                         |                          |            |
+unanswerable (evidence  | exit 3 (abstained)      | exit 3 (abstained)       | MATCH      | LIVE
+threshold): golden      |                         |                          |            |
+lear-069                |                         |                          |            |
+conflicting evidence:   | CONFLICTED (exit 4)     | GROUNDED (exit 0)        | LIMITATION | LIVE
+golden lear-059         |                         |                          |            |
+citation marker with no | [99] removed, [1] kept  | removed [99]; kept text: | MATCH      | LIVE
+retrieved passage       | (10 passages)           | The permission engine    |            |
+                        |                         | has modes [1]. It also   |            |
+                        |                         | signs requests.          |            |
+instruction-like        | quarantined; answer not | 1 quarantined            | MATCH      | LIVE
+retrieved passage       | taken over              | (answer_forcing,         |            |
+                        |                         | instruction_override,    |            |
+                        |                         | role_hijack,             |            |
+                        |                         | secret_exfiltration);    |            |
+                        |                         | 'APPROVED' in            |            |
+                        |                         | answer=False             |            |
+ollama backend without  | exit 6 (dependency      | exit 6 (dependency       | MATCH      | LIVE
+a reachable model       | unavailable)            | unavailable)             |            |
+second request in a     | exit 7 (rate limited)   | exit 7 (rate limited)    | MATCH      | LIVE
+1-per-minute session    |                         |                          |            |
+window                  |                         |                          |            |
+partial coverage        | PARTIAL (exit 4) with   | 0 PARTIAL answers across | LIMITATION | RECORDED
+                        | uncertainty language    | 7 recorded runs          |            |
+    input over 2000 chars: question is too long
+    unknown term (scope guard): golden lear-068: reason=unknown_term terms=['Kafka']
+    unanswerable (evidence threshold): golden lear-069: reason=insufficient_support
+    conflicting evidence: golden lear-059: the core flags numeric day/hour/%-unit contradictions
+        across two sources; this Lear case is not one
+    citation marker with no retrieved passage: guardrails.strip_invalid_citations called directly
+        with a synthetic answer string (no LLM)
+    instruction-like retrieved passage: hostile page planted in a scratch copy of the corpus only
+    ollama backend without a reachable model: ERROR dependency unavailable; no silent extractive
+        fallback
+    second request in a 1-per-minute session window: limit 1/60s; retry in 59.941s
+    partial coverage: evals/lear/results/*/run.json
+  $ python3 -m ragformation lear --backend baseline ask "Which Kafka topics does Lear publish
+      incident events to?"   # exit 3
+  limitation: Resistance of a real LLM to injected instructions is untested (no model).
+
++--- S09  Evaluation and three improvement rounds  [LIVE]
+  [LIVE] golden set: 80 cases, sha256 56050cf2689383ca...  (evalset.validate)
+  [LIVE] validation: VALID: 6/6 checks PASS
+  [RECORDED] judge: JUDGE BLOCKED - SCORES NOT MEASURED (every recorded run)  (run.json judge.state)
+  [RECORDED] scores shown: deterministic offline scorer (lenient + lear-keyfacts-strict-v1); NOT
+      LLM-judge scores
+  [LIVE] regressions across rounds: 0 cases flipped correct->wrong  (computed now from recorded
+      run.json files)
+  [RECORDED] holdout policy: used once (final-holdout); --allow-holdout required; never used for
+      tuning  (docs/lear_agent/evaluation_dataset.md)
+  calibration:10|---------------dev:32--------------|---------test:24----------|---holdout:14--|
+run           | commit       | cases | correct | strict | MRR   | judge
+-------------------------------------------------------------------------
+round-0       | 6c438d158048 | 42    | 0.452   | 0.405  | 0.587 | BLOCKED
+round-0-test  | 6c438d158048 | 24    | 0.417   | 0.417  | 0.733 | BLOCKED
+round-1       | 6c438d158048 | 42    | 0.5     | 0.429  | 0.621 | BLOCKED
+round-2       | 38bea8cbc6d9 | 42    | 0.524   | 0.452  | 0.621 | BLOCKED
+round-3       | fed7dbf38163 | 42    | 0.548   | 0.476  | 0.626 | BLOCKED
+round-3-test  | fed7dbf38163 | 24    | 0.5     | 0.5    | 0.812 | BLOCKED
+final-holdout | fed7dbf38163 | 14    | 0.643   | 0.643  | 0.736 | BLOCKED
+  cal+dev correct round-0 -> round-3: ^ +0.095   strict: ^ +0.071
+  round-0 -> round-1: fixed lear-005, lear-028; regressed none
+  round-1 -> round-2: fixed lear-068; regressed none
+  round-2 -> round-3: fixed lear-064; regressed none
+  round-0-test -> round-3-test: fixed lear-065, lear-071; regressed none
+
+step          | expected    | observed    | verdict | src
+----------------------------------------------------------
+eval validate | exit 0 (OK) | exit 0 (OK) | MATCH   | LIVE
+  $ python3 -m ragformation lear eval validate --source <Lear checkout>
+  $ python3 -m ragformation lear --backend baseline eval run --suite calibration,dev --label my-run
+      --judge off
+  $ python3 -m ragformation lear eval rescore evals/lear/results/round-3/run.json
+  evidence: evals/lear/golden_lear_v1.checksums.json
+  evidence: docs/lear_agent/evidence/rescore_strict_keyfacts_2026-11-05.json
+  evidence: evals/lear/results/round-0/run.json
+  evidence: evals/lear/results/round-0-test/run.json
+  evidence: evals/lear/results/round-1/run.json
+  evidence: evals/lear/results/round-2/run.json
+  evidence: evals/lear/results/round-3/run.json
+  evidence: evals/lear/results/round-3-test/run.json
+  evidence: evals/lear/results/final-holdout/run.json
+  limitation: All recorded runs are baseline (hashing + extractive): NOT QUALIFYING.
+
++--- S10  Benchmark and percentile lab  [LIVE]
+  [LIVE] live run: PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)
+  [ILLUSTRATIVE] percentiles: nearest-rank (no interpolation), ragformation/lear/stats.py; p99 is
+      unstable for small n
+  [UNAVAILABLE] model TTFT / ITL / tok/s: not measured: no model stream
+  [RECORDED] recorded baseline: RECORDED PIPELINE-ONLY BASELINE (official run: users 1/2/5/10, 3
+      requests each)  (docs/lear_agent/evidence/bench_baseline_users_1_2_5_10_2026-11-05.json)
+  LIVE pipeline-only (this machine, now):
+users | n  | ok | 429 | err | req/s  | mean    | p50    | p85    | p99
+-------------------------------------------------------------------------
+1     | 2  | 2  | 0   | 0   | 18.523 | 48.885  | 48.15  | 49.62  | 49.62
+2     | 4  | 4  | 0   | 0   | 20.018 | 82.02   | 90.45  | 97.63  | 97.63
+5     | 10 | 10 | 0   | 0   | 17.508 | 195.389 | 118.06 | 369.07 | 534.79
+  warning: n < 100 at every level shown, so p99 is effectively the maximum and unstable
+  RECORDED PIPELINE-ONLY BASELINE:
+users | n  | ok | 429 | err | req/s  | mean    | p50   | p85    | p99
+------------------------------------------------------------------------
+1     | 3  | 3  | 0   | 0   | 27.016 | 33.737  | 34.58 | 36.07  | 36.07
+2     | 6  | 6  | 0   | 0   | 26.196 | 70.632  | 67.6  | 85.6   | 85.6
+5     | 15 | 15 | 0   | 0   | 30.311 | 105.155 | 61.96 | 236.36 | 420.79
+10    | 30 | 30 | 0   | 0   | 32.007 | 179.767 | 63.27 | 428.67 | 810.27
+5     | 20 | 10 | 10  | 0   | 32.128 | 100.826 | 54.86 | 199.43 | 278.58
+  warning: n < 100 at every level shown, so p99 is effectively the maximum and unstable
+  lane users=1: ++  2/2 ok
+  lane users=2: ++++  4/4 ok
+  lane users=5: ++++++++++  10/10 ok
+  $ python3 -m ragformation lear --backend baseline bench --users 1,2,5,10 --requests 3 --out
+      bench.json
+  evidence: docs/lear_agent/evidence/bench_baseline_users_1_2_5_10_2026-11-05.json
+  evidence: docs/lear_agent/evidence/bench_baseline_ratelimit_session2_2026-11-05.json
+  evidence: docs/lear_agent/benchmark_report.md
+  limitation: Pipeline-only: no LLM decode is included in any latency shown here.
+
++--- S11  Report and final readiness  [LIVE]
+  [LIVE] report runs listed: 7  (build_report)
+  [LIVE] doctor ready now: False
+  [RECORDED] recorded decision: BLOCKED  (docs/lear_agent/final_report.md)
+  [LIVE] OVERALL: BLOCKED - LOCAL OLLAMA MODEL QUALIFICATION NOT COMPLETED IN THE RECORDED
+      ENVIRONMENT.
++- READINESS --------------------------------------------------------------------------------------+
+| OVERALL: BLOCKED                                                                                 |
+| 1. Install and start Ollama on a machine whose downloads are allowed (it must listen on          |
+| 127.0.0.1).                                                                                      |
+| 2. Pull nomic-embed-text, qwen2.5:1.5b and llama3.2:1b, then verify each from /api/show          |
+| metadata.                                                                                        |
+| 3. Run `python3 -m ragformation lear doctor` and require exit 0.                                 |
+| 4. Build the model-backed index: `python3 -m ragformation lear index rebuild --full`.            |
+| 5. Run real generation and the separate judge: `python3 -m ragformation lear eval run --suite    |
+| calibration,dev --judge on`.                                                                     |
+| 6. Recalibrate the ollama abstention threshold on calibration/dev data only.                     |
+| 7. Score the test split once under the frozen policy; the holdout was already used once, so a    |
+| qualifying final claim needs a new, openly versioned check set.                                  |
+| 8. Run `python3 -m ragformation lear bench --users 1,2,5` with model streaming enabled.          |
++--------------------------------------------------------------------------------------------------+
+  $ python3 -m ragformation lear report --source <Lear checkout>
+  evidence: docs/lear_agent/final_report.md
+  evidence: docs/lear_agent/requirements_matrix.md
+-- demo exit 0 (OK) --------------------------------------------------------------------------------
+[exit 0]

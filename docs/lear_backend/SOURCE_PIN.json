@@ -1,0 +1,22 @@
+{
+  "repository": "aviunion1348-cloud/Lear-backend-Avi",
+  "remote": "https://github.com/aviunion1348-cloud/Lear-backend-Avi.git",
+  "branch": "main",
+  "commit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "commit_short": "60cf9abf8408",
+  "commit_date": "2026-10-01T19:21:30+05:30",
+  "commit_subject": "Merge branch 'Drufiy:main' into main",
+  "worktree_clean": true,
+  "tracked_files": 454,
+  "pinned_by": "python -m ragformation lear docs build",
+  "generated_pages": [
+    "reference/actions.md",
+    "reference/cli.md",
+    "reference/configuration_env.md",
+    "reference/connectors.md",
+    "reference/http_api.md",
+    "reference/modules.md",
+    "reference/tests.md",
+    "source_map.md"
+  ]
+}
