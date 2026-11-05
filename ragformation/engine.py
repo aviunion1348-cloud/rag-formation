@@ -652,12 +652,18 @@ class RAGEngine:
         on_token: Optional[Any] = None,
         save: bool = True,
         principal: Optional[Principal] = None,
+        system_prompt: Optional[str] = None,
+        retrieval_query: Optional[str] = None,
     ) -> QueryResult:
         question = (question or "").strip()
         if not question:
             raise ValidationError("question must not be empty")
         if len(question) > 2000:
             raise ValidationError("question is too long", hint="limit is 2000 characters")
+        # A caller may retrieve with a rewritten, self-contained query (e.g. a
+        # follow-up expanded with the previous turn) while the model still sees
+        # the user's original question. Both are recorded in the trace.
+        search_query = (retrieval_query or "").strip()[:2000] or question
         top_k = top_k or self.settings.top_k
         if not 1 <= top_k <= 50:
             raise ValidationError("topK must be between 1 and 50")
@@ -682,14 +688,31 @@ class RAGEngine:
         result = QueryResult(query_id=query_id, question=question, status=AnswerStatus.FAILED.value, answer="")
         result.provider = describe_generator(self.generator)
 
-        trace.start("query_received", {"topK": top_k, "mode": mode, "questionChars": len(question)})
+        def finish() -> QueryResult:
+            # Report and persist the parameters this request actually used
+            # (after any degradation), not the process-wide defaults.
+            metrics = result.metrics if result.metrics is not None else {}
+            metrics["mode"] = mode
+            metrics["topK"] = top_k
+            metrics["temperature"] = temperature
+            metrics["topP"] = top_p
+            result.metrics = metrics
+            if save and self.settings.persist_traces:
+                self._persist_query(result, principal, top_k=top_k, temperature=temperature)
+            return result
+
+        received = {"topK": top_k, "mode": mode, "questionChars": len(question)}
+        if search_query != question:
+            received["retrievalQueryChars"] = len(search_query)
+            received["retrievalQueryRewritten"] = True
+        trace.start("query_received", received)
 
         # ------------------------------------------------------------ embedding
         self._prepare_embeddings()
         query_vector: List[float] = []
         trace.start("query_embedding", {"provider": self.embedder.name, "model": self.embedder.model})
         try:
-            query_vector = self.embedder.embed_one(question)
+            query_vector = self.embedder.embed_one(search_query)
             trace.end("query_embedding", {"dimension": len(query_vector)})
         except (ProviderError, ProviderUnavailable) as exc:
             trace.fail("query_embedding", {"error": exc.code})
@@ -705,7 +728,7 @@ class RAGEngine:
         trace.start("retrieval", {"mode": mode})
         try:
             retrieval = self.retriever.search(
-                question,
+                search_query,
                 query_vector,
                 top_k=top_k,
                 mode=mode,
@@ -718,9 +741,7 @@ class RAGEngine:
             result.trace = trace.events
             result.metrics = {"totalMs": round((time.perf_counter() - started) * 1000.0, 3)}
             result.warnings = warnings + ["retrieval_failed"]
-            if save and self.settings.persist_traces:
-                self._persist_query(result, principal)
-            return result
+            return finish()
         trace.end(
             "retrieval",
             {
@@ -807,9 +828,7 @@ class RAGEngine:
             result.warnings = warnings
             trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
-            if save and self.settings.persist_traces:
-                self._persist_query(result, principal)
-            return result
+            return finish()
 
         # ----------------------------------------------------- context assembly
         trace.start("context_assembly", {"budgetTokens": self.settings.max_context_tokens})
@@ -819,17 +838,26 @@ class RAGEngine:
             used_tokens = selected[0].chunk.token_count
         selected_ids = {c.chunk.chunk_id for c in selected}
         by_id = {c.chunk.chunk_id: c for c in safe}
+        # Every candidate that did not reach the context is reported exactly once,
+        # with the reason that actually applied. A chunk skipped for the token
+        # budget is not also "outside top-k", and the budget fallback above can
+        # select a chunk that assemble_context had skipped.
         skipped_views = []
+        reported: Set[str] = set()
         for item in skipped:
-            candidate = by_id.get(item["chunkId"])
-            view = candidate.to_dict(include_text=False) if candidate else {"chunkId": item["chunkId"]}
+            chunk_id = item["chunkId"]
+            if chunk_id in selected_ids or chunk_id in reported:
+                continue
+            reported.add(chunk_id)
+            candidate = by_id.get(chunk_id)
+            view = candidate.to_dict(include_text=False) if candidate else {"chunkId": chunk_id}
             view["reason"] = item["reason"]
             skipped_views.append(view)
-        result.excluded = [
+        result.excluded = skipped_views + [
             {**c.to_dict(include_text=False), "reason": "ranked_outside_top_k"}
             for c in safe
-            if c.chunk.chunk_id not in selected_ids
-        ] + skipped_views
+            if c.chunk.chunk_id not in selected_ids and c.chunk.chunk_id not in reported
+        ]
         trace.end(
             "context_assembly",
             {"selected": len(selected), "tokens": used_tokens, "excluded": len(result.excluded)},
@@ -855,9 +883,7 @@ class RAGEngine:
             result.warnings = warnings
             trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
-            if save and self.settings.persist_traces:
-                self._persist_query(result, principal)
-            return result
+            return finish()
 
         # ------------------------------------------------------------ generation
         evidence_payload = [
@@ -900,6 +926,7 @@ class RAGEngine:
                 timeout=self.settings.request_timeout_s,
                 on_token=on_token,
                 history=history,
+                system_prompt=system_prompt,
             )
         except (ProviderError, ProviderUnavailable) as exc:
             trace.fail("generation", {"error": exc.code, "provider": provider_used.name})
@@ -952,9 +979,7 @@ class RAGEngine:
             trace.end("abstention", {"reason": result.abstain_reason})
             trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
-            if save and self.settings.persist_traces:
-                self._persist_query(result, principal)
-            return result
+            return finish()
 
         # ------------------------------------------------- citation validation
         trace.start("citation_validation")
@@ -1024,9 +1049,7 @@ class RAGEngine:
         result.warnings = sorted(set(warnings + output_warnings(text)))
         trace.end("response_ready", {"status": status})
         result.trace = trace.events
-        if save and self.settings.persist_traces:
-            self._persist_query(result, principal)
-        return result
+        return finish()
 
     # -------------------------------------------------------------- internals
     def _abstention_text(self, reason: str, best_support: float) -> str:
@@ -1062,7 +1085,7 @@ class RAGEngine:
     ) -> Dict[str, Any]:
         return {
             "totalMs": round((time.perf_counter() - started) * 1000.0, 3),
-            "retrievalMs": round(retrieval.timings_ms.get("semanticMs", 0.0) + retrieval.timings_ms.get("lexicalMs", 0.0) + retrieval.timings_ms.get("fusionMs", 0.0) + retrieval.timings_ms.get("rerankMs", 0.0), 3),
+            "retrievalMs": round(retrieval.timings_ms.get("semanticMs", 0.0) + retrieval.timings_ms.get("lexicalMs", 0.0) + retrieval.timings_ms.get("fusionMs", 0.0) + retrieval.timings_ms.get("rerankMs", 0.0) + retrieval.timings_ms.get("mmrMs", 0.0), 3),
             "contextTokens": context_tokens,
             "completionTokens": completion_tokens,
             "semanticCandidates": retrieval.semantic_candidates,
@@ -1333,7 +1356,14 @@ class RAGEngine:
                 }
         return None
 
-    def _persist_query(self, result: QueryResult, principal: Optional[Principal] = None) -> None:
+    def _persist_query(
+        self,
+        result: QueryResult,
+        principal: Optional[Principal] = None,
+        *,
+        top_k: Optional[int] = None,
+        temperature: Optional[float] = None,
+    ) -> None:
         metrics = result.metrics or {}
         principal = principal or self.default_principal
         metrics.setdefault("mode", self.settings.retrieval_mode)
@@ -1345,8 +1375,8 @@ class RAGEngine:
                 "mode": result.metrics.get("mode") or self.settings.retrieval_mode,
                 "provider": str(result.provider.get("used") or result.provider.get("provider") or "unknown"),
                 "model": str(result.provider.get("model") or "unknown"),
-                "top_k": self.settings.top_k,
-                "temperature": self.settings.temperature,
+                "top_k": self.settings.top_k if top_k is None else top_k,
+                "temperature": self.settings.temperature if temperature is None else temperature,
                 "latency_ms": metrics.get("totalMs"),
                 "retrieval_ms": metrics.get("retrievalMs"),
                 "generation_ms": metrics.get("generationMs"),

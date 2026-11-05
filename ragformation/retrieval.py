@@ -181,11 +181,14 @@ class Retriever:
             result.reranked = True
 
         if mmr and len(fused) > 1:
+            started = time.perf_counter()
             if not vectors:
                 vectors = self.store.vectors_for([c.chunk.chunk_id for c in fused])
             # Only the prefix that can still reach the context window needs MMR
             # ordering; ranking the whole candidate pool is wasted work.
             fused = self._mmr(fused, limit=min(len(fused), max(top_k * 2, top_k + 4)), vectors=vectors)
+            # Recorded so the trace can report that diversification ran.
+            timings["mmrMs"] = round((time.perf_counter() - started) * 1000.0, 3)
 
         selected = fused[: max(top_k * 2, top_k)]
         for index, candidate in enumerate(selected, start=1):
@@ -264,7 +267,10 @@ class Retriever:
             best_value = -1e9
             for index in remaining:
                 candidate = pool[index]
-                relevance = candidate.support or candidate.score
+                # A support of 0.0 is a real score, not a missing one. Falling back
+                # to the raw channel score there (BM25 is unbounded, often > 1)
+                # used to rank zero-support chunks first in lexical mode.
+                relevance = candidate.support if candidate.support is not None else candidate.score
                 redundancy = max((matrix[index][chosen] for chosen in selected), default=0.0)
                 value = lam * relevance - (1.0 - lam) * redundancy
                 if value > best_value:

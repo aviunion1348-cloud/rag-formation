@@ -458,7 +458,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_delete.add_argument("--yes", action="store_true")
 
     p_rebuild = sub.add_parser("rebuild", help="re-embed stored chunks (recovery path)")
-    p_rebuild.add_argument("--force", action="store_true")
+    # --reembed is the spelling used by the recovery hint and the docs
+    # (handoff.md, integration.md); it is an alias of --force.
+    p_rebuild.add_argument(
+        "--force",
+        "--reembed",
+        dest="force",
+        action="store_true",
+        help="re-embed every chunk even if its fingerprint already matches",
+    )
 
     p_ask = sub.add_parser("ask", help="ask a question")
     p_ask.add_argument("question")

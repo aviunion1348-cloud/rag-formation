@@ -127,11 +127,14 @@ def _aggregate_retrieval(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def _ablation(engine: RAGEngine, cases: Sequence[Dict[str, Any]], sources: Dict[str, Any], k: int) -> Dict[str, Any]:
+    # Every row pins rerank and MMR explicitly. Leaving them unset inherited the
+    # engine defaults (rerank on, MMR on), which made the hybrid rows identical
+    # and reported the same pipeline three times.
     configurations = [
-        ("dense", {"mode": "semantic"}),
-        ("lexical", {"mode": "lexical"}),
-        ("hybrid", {"mode": "hybrid"}),
-        ("hybrid_rerank", {"mode": "hybrid", "rerank": True}),
+        ("dense", {"mode": "semantic", "rerank": False, "mmr": False}),
+        ("lexical", {"mode": "lexical", "rerank": False, "mmr": False}),
+        ("hybrid", {"mode": "hybrid", "rerank": False, "mmr": False}),
+        ("hybrid_rerank", {"mode": "hybrid", "rerank": True, "mmr": False}),
         ("hybrid_rerank_mmr", {"mode": "hybrid", "rerank": True, "mmr": True}),
     ]
     output: Dict[str, Any] = {}

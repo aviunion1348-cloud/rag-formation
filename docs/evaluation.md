@@ -259,6 +259,33 @@ At this corpus size reranking and MMR change nothing measurable. That is the
 finding, not a hidden result: the code and its stages are exercised, but the
 corpus cannot distinguish the variants, and claiming otherwise would be false.
 
+> **Erratum (2026-11-05).** The table above is kept as originally published, but
+> it does not measure what its labels say. `_ablation` never passed `rerank` or
+> `mmr`, so every row inherited the engine defaults (rerank on, MMR on): the three
+> hybrid rows are the same pipeline measured three times, and "dense only" /
+> "lexical only" were each run *with* rerank + MMR. The lexical row was further
+> depressed by an MMR defect (`support or score` let zero-support chunks rank
+> first on their raw BM25 score). Both are fixed and covered by
+> `tests/test_audit_regressions.py`. Re-measured on the same 37 labelled cases
+> (hashing embeddings + extractive answers, `top_k=6`), every row now pins its
+> stages explicitly:
+>
+> | Configuration | Recall@6 | MRR | nDCG@6 |
+> | --- | --- | --- | --- |
+> | dense only (no rerank, no MMR) | 0.838 | 0.759 | 0.764 |
+> | lexical only (no rerank, no MMR) | 1.000 | 0.960 | 0.937 |
+> | hybrid (RRF only) | 0.946 | 0.876 | 0.865 |
+> | hybrid + rerank | 1.000 | 0.909 | 0.896 |
+> | hybrid + rerank + MMR (default pipeline) | 1.000 | 0.921 | 0.915 |
+>
+> The corrected conclusion: with *hashing* vectors the "dense" channel is itself a
+> lexical signal and is the weakest channel; on this small, keyword-friendly
+> corpus plain BM25 is strongest, reranking recovers the recall that RRF loses
+> when it mixes in the weaker dense list, and MMR adds a small MRR gain. The
+> default pipeline's numbers (last row) and the 39/46 pass rate are unchanged.
+> Raw report: `evals/results/golden-v2-hashing-extractive-ablation-fix-2026-11-05.json`.
+> The original report (`golden-v2-hashing-extractive.json`) is preserved unedited.
+
 ## 8.6 Conflicts
 
 The corpus contains a deliberate contradiction: `evidence-retention-memo.md` says

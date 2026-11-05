@@ -39,7 +39,7 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Protocol, Sequence
 
 from .config import Settings
-from .errors import ProviderError, ProviderUnavailable
+from .errors import ConfigError, ProviderError, ProviderUnavailable
 from .store import Store
 from .text import text_hash, tokenize
 

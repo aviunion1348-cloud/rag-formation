@@ -331,8 +331,11 @@ class EventBus:
     def history(self, *, trace_id: Optional[str] = None, since: int = 0, limit: int = 128) -> List[Dict[str, Any]]:
         with self._lock:
             events = list(self._history)
+        # Keep the *newest* `limit` matches (returned oldest-first). Scanning from
+        # the front kept the oldest ones, so a polling client that sends no
+        # cursor stopped seeing new events once the buffer exceeded `limit`.
         out = []
-        for event in events:
+        for event in reversed(events):
             if trace_id and event.trace_id != trace_id:
                 continue
             if since and event.sequence <= since:
@@ -340,6 +343,7 @@ class EventBus:
             out.append(event.to_dict())
             if len(out) >= limit:
                 break
+        out.reverse()
         return out
 
     def replay(self, payloads: Iterable[Dict[str, Any]], *, mode: str = "demo") -> List[RAGEvent]:
