@@ -187,6 +187,20 @@ class CompactionTests(unittest.TestCase):
         self.assertFalse(again.changed)  # idempotent on the same input
         self.assertEqual(again.summary, result.summary)
 
+    def test_never_grows_the_history(self) -> None:
+        # Regression: on short turns the structured summary was larger than the
+        # turns it replaced (71 -> 100 tokens through the agent).
+        rows = []
+        for i in range(3):
+            rows.append({"message_id": 2 * i + 1, "role": "user", "content": f"Which modes exist {i}?"})
+            rows.append({"message_id": 2 * i + 2, "role": "assistant", "status": "GROUNDED", "content": "Five modes exist [1].",
+                         "citations": [{"document": "docs/lear_backend/authentication_authorization.md"}]})
+        result = compact(rows, keep_recent=2, budget_tokens=10)
+        self.assertFalse(result.changed)
+        self.assertEqual(result.skipped, "summary_not_smaller")
+        self.assertEqual(result.tokens_after, result.tokens_before)
+        self.assertEqual(result.summary, "")
+
     def test_extract_identifiers(self) -> None:
         ids = extract_identifiers("Set `PRASH_ENV` or edit prash/credentials.py and call /api/chat/execute")
         for expected in ("PRASH_ENV", "prash/credentials.py", "/api/chat/execute"):

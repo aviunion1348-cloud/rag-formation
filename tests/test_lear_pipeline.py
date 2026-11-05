@@ -236,6 +236,33 @@ class BaselineAgentTests(PipelineCase):
         self.assertEqual(follow["session"]["turn"], 2)
         self.assertEqual(len(self.agent.sessions.messages("s-1", "local")), 4)
 
+    def test_long_session_is_compacted_through_the_agent(self) -> None:
+        # The real Lear docs give long baseline answers, so folding old turns pays off.
+        settings = self.settings(docs_dir=REPO_ROOT / "docs" / "lear_backend", data_dir=self.tmp / "real",
+                                 history_token_budget=300, keep_recent_turns=2)
+        agent = LearAgent(settings)
+        try:
+            indexer.rebuild(agent.engine, settings)
+            questions = ["Which permission modes does the permission engine have?",
+                         "How many actions does the circuit breaker allow per window?",
+                         "Where does the audit log live?",
+                         "What does the circuit breaker do after it opens?",
+                         "Which file holds the circuit breaker state?"]
+            reports = [agent.ask(q, session_id="long", user_id="u1")["session"]["compaction"] for q in questions]
+            done = [r for r in reports if r and r["changed"]]
+            self.assertTrue(done, reports)
+            self.assertEqual(done[0]["version"], "lear-compaction-v1")
+            self.assertLess(done[0]["tokensAfter"], done[0]["tokensBefore"])
+            session = agent.sessions.get("long", "u1")
+            self.assertEqual(session["summary_version"], "lear-compaction-v1")
+            # the oldest exchange may be capped out, but its identifiers survive
+            self.assertIn("environment-scoped", session["summary"])
+            for report in reports:  # never grows the history
+                if report:
+                    self.assertLessEqual(report["tokensAfter"], report["tokensBefore"])
+        finally:
+            agent.close()
+
     def test_follow_up_expansion_skips_evidence_refs_and_abstained_answers(self) -> None:
         question = "What is its default window, and where is its state kept?"
         history = [

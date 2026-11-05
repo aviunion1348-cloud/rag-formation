@@ -61,6 +61,7 @@ class CompactionResult:
     folded: int
     kept: List[Dict[str, Any]] = field(default_factory=list)
     changed: bool = True
+    skipped: Optional[str] = None  # why an over-budget history was left as it was
 
     @property
     def sha256(self) -> str:
@@ -75,8 +76,35 @@ class CompactionResult:
             "latencyMs": self.latency_ms,
             "folded": self.folded,
             "changed": self.changed,
+            "skipped": self.skipped,
             "summarySha256": self.sha256,
         }
+
+
+def prune_identifiers(identifiers: Sequence[str]) -> List[str]:
+    """Drop identifiers that a more specific kept identifier already contains.
+
+    ``setup.py`` and ``prash/setup.py`` add nothing next to
+    ``prash/setup.py:L69-L78``; ``circuit_breaker`` adds nothing next to
+    ``prash.circuit_breaker``. Only path/module/line-range forms count, so a
+    short name such as ``ask`` is never dropped because ``task_state`` exists.
+    """
+
+    def redundant(x: str) -> bool:
+        for y in identifiers:
+            if y == x:
+                continue
+            if (
+                y.startswith(x + ":")
+                or y.endswith("/" + x)
+                or y.endswith("." + x)
+                or ("/" + x + ".") in y
+                or ("/" + x + ":") in y
+            ):
+                return True
+        return False
+
+    return [x for i, x in enumerate(identifiers) if x not in identifiers[:i] and not redundant(x)]
 
 
 def extract_identifiers(text: str) -> List[str]:
@@ -206,10 +234,26 @@ def compact(
     if pending_question is not None:
         sections["exchanges"].append(f"Q: {_first_sentence(pending_question.get('content', ''), 160)} → (unanswered)")
 
+    sections["identifiers"] = prune_identifiers(sections["identifiers"])
     sections = _cap(sections, cap_tokens)
     summary = _render(sections)
     through = int(fold[-1]["message_id"])
     tokens_after = approx_tokens(summary) + sum(approx_tokens(m.get("content", "")) for m in keep)
+    if tokens_after >= tokens_before and not force:
+        # Short turns: the structured summary would cost more than the turns it
+        # replaces. Never grow the history; keep the turns verbatim instead.
+        return CompactionResult(
+            summary=previous_summary,
+            version=COMPACTION_VERSION,
+            through_message_id=previous_through,
+            tokens_before=tokens_before,
+            tokens_after=tokens_before,
+            latency_ms=round((time.perf_counter() - started) * 1000.0, 3),
+            folded=0,
+            kept=pending,
+            changed=False,
+            skipped="summary_not_smaller",
+        )
     return CompactionResult(
         summary=summary,
         version=COMPACTION_VERSION,
