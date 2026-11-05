@@ -1,0 +1,40 @@
+== experience matrix 20261105T153602Z ==
+node: v22.22.3   jsdom: installing into /tmp/experience-4VanRp (not committed)
+jsdom: 31.0.0
+[PASS] webgl2: renderer reports a mode — webgl
+[PASS] webgl2: every scene renders without throwing
+[PASS] webgl2: scenes rendered — 16/16
+[PASS] webgl2: GPU path issues draw calls — 16 drawArrays
+[PASS] webgl1: renderer reports a mode — webgl
+[PASS] webgl1: every scene renders without throwing
+[PASS] webgl1: scenes rendered — 16/16
+[PASS] webgl1: GPU path issues draw calls — 16 drawArrays
+[PASS] canvas2d: renderer reports a mode — canvas2d
+[PASS] canvas2d: every scene renders without throwing
+[PASS] canvas2d: scenes rendered — 16/16
+[PASS] canvas2d: canvas2d path issues draw operations — 13871 ops
+[PASS] no-context: renderer reports a mode — none
+[PASS] no-context: every scene renders without throwing
+[PASS] no-context: scenes rendered — 16/16
+[PASS] no-context: no-context path degrades without drawing — transcript only
+[PASS] sixteen scenes are defined — 16
+[PASS] every scene carries narration text for the transcript — caption + detail per scene
+[PASS] every scene carries a caption and a title
+[PASS] transcript lists every scene — 16
+[PASS] transcript lines are text, not markup
+[PASS] canvas is decorative and the transcript carries the meaning — canvas aria-hidden
+[PASS] page announces updates politely
+[PASS] page exposes the transcript as a list to assistive tech — ordered list inside a labelled section
+[PASS] page honours prefers-reduced-motion in CSS
+[PASS] page honours forced colours
+[PASS] page keeps a visible focus ring
+[PASS] page loads no third-party script or style
+[PASS] page documents its own fallback
+[PASS] webgl2 selects the GPU path — webgl
+[PASS] webgl1 also selects the GPU path — webgl
+[PASS] missing WebGL falls back to canvas2d — canvas2d
+[PASS] missing every context degrades to none — none
+
+experience matrix: 33/33 checks passed
+physical GPU: NOT verified in this sandbox (no /dev/dri, no nvidia-smi) — blocked, not claimed
+exit: 0

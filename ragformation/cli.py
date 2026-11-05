@@ -341,6 +341,7 @@ def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
                 top_k=args.top_k,
                 splits=splits or None,
                 ablations=not getattr(args, "no_ablations", False),
+                fact_matcher=getattr(args, "fact_matcher", "canonical"),
             )
         if getattr(args, "out", None):
             write_report(report, args.out)
@@ -488,6 +489,16 @@ def build_parser() -> argparse.ArgumentParser:
     p_eval.add_argument("--mode", choices=["hybrid", "semantic", "lexical"], default=None)
     p_eval.add_argument("--splits", default="", help="comma separated split names to run (v2)")
     p_eval.add_argument("--no-ablations", action="store_true", help="skip the retrieval ablation matrix (v2)")
+    p_eval.add_argument(
+        "--fact-matcher",
+        choices=["canonical", "legacy"],
+        default="canonical",
+        help=(
+            "how mustContain facts are matched against the answer: 'canonical' folds markdown "
+            "emphasis, number-word hyphens and plurals (default); 'legacy' is the exact substring "
+            "matcher kept so past reports stay reproducible"
+        ),
+    )
     p_eval.add_argument("--out", default=None, help="write the full JSON report to this path")
     p_eval.add_argument(
         "--gate",

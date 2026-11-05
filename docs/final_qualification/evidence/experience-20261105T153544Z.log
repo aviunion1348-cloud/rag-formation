@@ -1,0 +1,16 @@
+== experience matrix 20261105T153544Z ==
+node: v22.22.3   jsdom: installing into /tmp/experience-4LpTnU (not committed)
+jsdom: 31.0.0
+file:///tmp/experience-4LpTnU/experience_matrix.mjs:159
+  canvas.clientWidth = 800;
+                     ^
+
+TypeError: Cannot set property clientWidth of #<Element> which has only a getter
+    at renderCase (file:///tmp/experience-4LpTnU/experience_matrix.mjs:159:22)
+    at file:///tmp/experience-4LpTnU/experience_matrix.mjs:227:21
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:681:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.22.3
+exit: 1

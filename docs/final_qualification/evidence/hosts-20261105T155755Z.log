@@ -1,0 +1,96 @@
+== host fixtures 20261105T155755Z ==
+repo: /home/user/rag-formation   work: /tmp/hosts-uuM0Bs
+wheel: ragformation-0.2.0-py3-none-any.whl (168K)
+ragformation 0.2.0 serving on http://127.0.0.1:18603
+  embedding: hashing/hashing-lexical-v1 (semantic=False, d=512)
+  generation: extractive/extractive-synthesis-v1 (mode=extractive)
+  index: 66 chunks from 14 sources
+  security: host-authenticated — host principal header trusted behind proxy; API key required from the host
+  console: http://127.0.0.1:18603/  ·  experience: /experience
+  api: /api/v1 (contract at /api/v1/openapi.json)
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+engine: pid 6623 on 18603
+
+-- A python-wheel-host
+[PASS] import resolves to the installed wheel, not the checkout — /tmp/hosts-uuM0Bs/hostA/lib/python3.11/site-packages/ragformation/__init__.py
+[PASS] package version — 0.2.0
+[PASS] corpus files available to the host — 14 files
+[PASS] ingest through the installed package — 14 indexed, 66 chunks
+[PASS] answer is grounded — answered
+[PASS] answer cites a chunk — 1 citations
+[PASS] answer states the fact — Audit logs are retained for **400 days** total, because the security team needs a full ann
+[PASS] answer names the source
+[PASS] off-corpus question abstains — abstained
+[PASS] installed server starts and reports healthy — http://127.0.0.1:41623/healthz
+[PASS] HTTP ask returns an answer — answered
+[PASS] HTTP ask returns citations — 1 citations
+[PASS] HTTP ask reports the evidence it used — 12 chunks
+
+host A: 13/13 checks passed
+RESULT A python-wheel-host: PASS
+ * Serving Flask app 'flask_host'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:18604
+[33mPress CTRL+C to quit[0m
+
+-- B flask-host
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+127.0.0.1 - - [05/Nov/2026 15:58:09] "POST /ask HTTP/1.1" 200 -
+flask ask: {"answer":"Audit logs are retained for **400 days** total, because the security team needs a full annual review window plus a buffer. [1]","citations":[{"section":"2. Retention Periods","title":"data-retention-policy"}],
+127.0.0.1 - - [05/Nov/2026 15:58:09] "[31m[1mPOST /ask HTTP/1.1[0m" 401 -
+flask without session -> 401
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+127.0.0.1 - - [05/Nov/2026 15:58:09] "GET /healthz HTTP/1.1" 200 -
+{"engine":null,"engineHttp":200,"host":"ok"}
+
+RESULT B flask-host: PASS
+
+-- C fastapi-host
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+fastapi ask: {"question":"What availability SLO does the ingest-api commit to?","status":"answered","answer":"ingest-api — availability (slo): 99.95% [2]","citations":[{"title":"service-catalog","section":"services: ingest-api"}]}
+fastapi SSE relay (first bytes):
+[ragformation] "GET /api/v1/events HTTP/1.1" 200 -
+retry: 2000
+
+event: rag
+data: {"schemaVersion":"1.0","eventId":"evt-29eb821d85af","traceId":"q-4e71eadd4b97","sequence":1,"timestamp":"2026-11-05T15:58:09.264Z","operationId":null,"stage":"query.received","status":"started","durationMs":null,"counts":{"topK":6
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+fastapi narrowed scope: {"question":"How long are audit logs retained?","status":"abstained","answer":"I could not find this in the indexed sources: retrieval returned no passages at all. This is a statement about the indexe
+RESULT C fastapi-host: PASS
+
+-- D node-host
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+[PASS] health endpoint reachable — status=undefined
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+[PASS] ask returns 200 — status=answered
+[PASS] ask is grounded in evidence — 12 chunks
+[PASS] answer states the fact — Audit logs are retained for **400 days** total, because the security team needs 
+[PASS] citations present — 1
+[PASS] every citation resolves to delivered evidence — src-43ebe09559#c002-64614a26
+[ragformation] "GET /api/v1/events HTTP/1.1" 200 -
+[PASS] event stream returns 200 — status=200
+[PASS] event stream is text/event-stream — text/event-stream; charset=utf-8
+[PASS] event stream delivered frames — 65 frames
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+[PASS] off-corpus question abstains — status=abstained
+[ragformation] "POST /api/v1/ask HTTP/1.1" 401 -
+[PASS] missing API key is rejected — status=401
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+[PASS] healthz without a principal still works (liveness) — status=200
+
+host D: all checks passed
+RESULT D node-host: PASS
+[ragformation] code 400, message Bad request version ('retained?"}')
+[ragformation] "{"question":"How long are audit logs retained?"}" 400 -
+
+-- E unrelated-repo
+import path: /tmp/hosts-uuM0Bs/unrelated-repo/.venv/lib/python3.11/site-packages/ragformation/__init__.py
+ingested: 1 sources, 1 chunks
+status: answered
+answer: Releases are frozen during the audit window for 48 hours. [1]
+citations: 1
+unrelated-repo smoke: OK
+RESULT E unrelated-repo: PASS
+
+== summary: 5/5 hosts passed ==

@@ -1,0 +1,2397 @@
+{
+  "report": "docs/final_qualification/golden_v2_report.json",
+  "datasetRevision": "golden-v2-2026-11-05",
+  "frozenThreshold": 0.24,
+  "decision": "Threshold stays at the value frozen before the holdouts (see release_decision.md section 4). The test-only optimum is reported for completeness and is explicitly NOT adopted: choosing it would be fitting the threshold to the test split.",
+  "sweeps": {
+    "all": {
+      "usable": true,
+      "answerable": 37,
+      "unanswerable": 9,
+      "supportRangeAnswerable": [
+        0.2437,
+        0.8489
+      ],
+      "supportRangeUnanswerable": [
+        0.099,
+        0.3329
+      ],
+      "separation": -0.0892,
+      "bestThreshold": 0.36,
+      "bestBalancedAccuracy": 0.9459,
+      "curve": [
+        {
+          "threshold": 0.05,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.06,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.07,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.08,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.09,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.1,
+          "balancedAccuracy": 0.6111,
+          "abstentionRecall": 0.2222,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.11,
+          "balancedAccuracy": 0.6111,
+          "abstentionRecall": 0.2222,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.12,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.13,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.14,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.15,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.16,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.17,
+          "balancedAccuracy": 0.7222,
+          "abstentionRecall": 0.4444,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.18,
+          "balancedAccuracy": 0.7778,
+          "abstentionRecall": 0.5556,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.19,
+          "balancedAccuracy": 0.7778,
+          "abstentionRecall": 0.5556,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.2,
+          "balancedAccuracy": 0.7778,
+          "abstentionRecall": 0.5556,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.21,
+          "balancedAccuracy": 0.7778,
+          "abstentionRecall": 0.5556,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.22,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.23,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.24,
+          "balancedAccuracy": 0.9444,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.25,
+          "balancedAccuracy": 0.9309,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.973
+        },
+        {
+          "threshold": 0.26,
+          "balancedAccuracy": 0.9309,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.973
+        },
+        {
+          "threshold": 0.27,
+          "balancedAccuracy": 0.9174,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9459
+        },
+        {
+          "threshold": 0.28,
+          "balancedAccuracy": 0.9174,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9459
+        },
+        {
+          "threshold": 0.29,
+          "balancedAccuracy": 0.9174,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9459
+        },
+        {
+          "threshold": 0.3,
+          "balancedAccuracy": 0.9174,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9459
+        },
+        {
+          "threshold": 0.31,
+          "balancedAccuracy": 0.9039,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9189
+        },
+        {
+          "threshold": 0.32,
+          "balancedAccuracy": 0.9039,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9189
+        },
+        {
+          "threshold": 0.33,
+          "balancedAccuracy": 0.9039,
+          "abstentionRecall": 0.8889,
+          "answerRetention": 0.9189
+        },
+        {
+          "threshold": 0.34,
+          "balancedAccuracy": 0.9459,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8919
+        },
+        {
+          "threshold": 0.35,
+          "balancedAccuracy": 0.9459,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8919
+        },
+        {
+          "threshold": 0.36,
+          "balancedAccuracy": 0.9459,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8919
+        },
+        {
+          "threshold": 0.37,
+          "balancedAccuracy": 0.9189,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8378
+        },
+        {
+          "threshold": 0.38,
+          "balancedAccuracy": 0.9189,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8378
+        },
+        {
+          "threshold": 0.39,
+          "balancedAccuracy": 0.9054,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8108
+        },
+        {
+          "threshold": 0.4,
+          "balancedAccuracy": 0.9054,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8108
+        },
+        {
+          "threshold": 0.41,
+          "balancedAccuracy": 0.9054,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8108
+        },
+        {
+          "threshold": 0.42,
+          "balancedAccuracy": 0.8919,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7838
+        },
+        {
+          "threshold": 0.43,
+          "balancedAccuracy": 0.8919,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7838
+        },
+        {
+          "threshold": 0.44,
+          "balancedAccuracy": 0.8919,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7838
+        },
+        {
+          "threshold": 0.45,
+          "balancedAccuracy": 0.8919,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7838
+        },
+        {
+          "threshold": 0.46,
+          "balancedAccuracy": 0.8919,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7838
+        },
+        {
+          "threshold": 0.47,
+          "balancedAccuracy": 0.8784,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7568
+        },
+        {
+          "threshold": 0.48,
+          "balancedAccuracy": 0.8649,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7297
+        },
+        {
+          "threshold": 0.49,
+          "balancedAccuracy": 0.8243,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6486
+        },
+        {
+          "threshold": 0.5,
+          "balancedAccuracy": 0.8243,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6486
+        },
+        {
+          "threshold": 0.51,
+          "balancedAccuracy": 0.8243,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6486
+        },
+        {
+          "threshold": 0.52,
+          "balancedAccuracy": 0.7973,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5946
+        },
+        {
+          "threshold": 0.53,
+          "balancedAccuracy": 0.7838,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5676
+        },
+        {
+          "threshold": 0.54,
+          "balancedAccuracy": 0.7703,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5405
+        },
+        {
+          "threshold": 0.55,
+          "balancedAccuracy": 0.7703,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5405
+        },
+        {
+          "threshold": 0.56,
+          "balancedAccuracy": 0.7297,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.4595
+        },
+        {
+          "threshold": 0.57,
+          "balancedAccuracy": 0.7297,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.4595
+        },
+        {
+          "threshold": 0.58,
+          "balancedAccuracy": 0.7027,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.4054
+        },
+        {
+          "threshold": 0.59,
+          "balancedAccuracy": 0.6757,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3514
+        },
+        {
+          "threshold": 0.6,
+          "balancedAccuracy": 0.6622,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3243
+        },
+        {
+          "threshold": 0.61,
+          "balancedAccuracy": 0.6486,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2973
+        },
+        {
+          "threshold": 0.62,
+          "balancedAccuracy": 0.6486,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2973
+        },
+        {
+          "threshold": 0.63,
+          "balancedAccuracy": 0.6351,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2703
+        },
+        {
+          "threshold": 0.64,
+          "balancedAccuracy": 0.6351,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2703
+        },
+        {
+          "threshold": 0.65,
+          "balancedAccuracy": 0.6351,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2703
+        },
+        {
+          "threshold": 0.66,
+          "balancedAccuracy": 0.6216,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2432
+        },
+        {
+          "threshold": 0.67,
+          "balancedAccuracy": 0.6216,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2432
+        },
+        {
+          "threshold": 0.68,
+          "balancedAccuracy": 0.6081,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2162
+        },
+        {
+          "threshold": 0.69,
+          "balancedAccuracy": 0.5811,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1622
+        },
+        {
+          "threshold": 0.7,
+          "balancedAccuracy": 0.5541,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1081
+        },
+        {
+          "threshold": 0.71,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.72,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.73,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.74,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.75,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.76,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.77,
+          "balancedAccuracy": 0.5405,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0811
+        },
+        {
+          "threshold": 0.78,
+          "balancedAccuracy": 0.527,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0541
+        },
+        {
+          "threshold": 0.79,
+          "balancedAccuracy": 0.527,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0541
+        },
+        {
+          "threshold": 0.8,
+          "balancedAccuracy": 0.527,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0541
+        },
+        {
+          "threshold": 0.81,
+          "balancedAccuracy": 0.527,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0541
+        },
+        {
+          "threshold": 0.82,
+          "balancedAccuracy": 0.5135,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.027
+        },
+        {
+          "threshold": 0.83,
+          "balancedAccuracy": 0.5135,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.027
+        },
+        {
+          "threshold": 0.84,
+          "balancedAccuracy": 0.5135,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.027
+        },
+        {
+          "threshold": 0.85,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.86,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.87,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.88,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.89,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.91,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.92,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.93,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.94,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.95,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        }
+      ]
+    },
+    "calibration": {
+      "usable": true,
+      "answerable": 6,
+      "unanswerable": 6,
+      "supportRangeAnswerable": [
+        0.3398,
+        0.6814
+      ],
+      "supportRangeUnanswerable": [
+        0.099,
+        0.2306
+      ],
+      "separation": 0.1092,
+      "bestThreshold": 0.24,
+      "bestBalancedAccuracy": 1.0,
+      "curve": [
+        {
+          "threshold": 0.05,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.06,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.07,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.08,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.09,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.1,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.11,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.12,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.13,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.14,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.15,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.16,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.17,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.18,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.19,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.2,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.21,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.22,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 0.8333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.23,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 0.8333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.24,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.25,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.26,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.27,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.28,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.29,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.3,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.31,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.32,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.33,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.34,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.35,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.36,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.37,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.38,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.39,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.4,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.41,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.42,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.43,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.44,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.45,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.46,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.47,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.48,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8333
+        },
+        {
+          "threshold": 0.49,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.5,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.51,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.52,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.53,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.54,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.55,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.56,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.57,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.58,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5
+        },
+        {
+          "threshold": 0.59,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.6,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.61,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.62,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.63,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.64,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.65,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.66,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.67,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.68,
+          "balancedAccuracy": 0.5833,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1667
+        },
+        {
+          "threshold": 0.69,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.7,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.71,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.72,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.73,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.74,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.75,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.76,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.77,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.78,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.79,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.8,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.81,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.82,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.83,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.84,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.85,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.86,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.87,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.88,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.89,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.91,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.92,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.93,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.94,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.95,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        }
+      ]
+    },
+    "calibration+dev": {
+      "usable": true,
+      "answerable": 16,
+      "unanswerable": 6,
+      "supportRangeAnswerable": [
+        0.3398,
+        0.7771
+      ],
+      "supportRangeUnanswerable": [
+        0.099,
+        0.2306
+      ],
+      "separation": 0.1092,
+      "bestThreshold": 0.24,
+      "bestBalancedAccuracy": 1.0,
+      "curve": [
+        {
+          "threshold": 0.05,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.06,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.07,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.08,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.09,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.1,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.11,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.12,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.13,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.14,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.15,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.16,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.17,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 0.5,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.18,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.19,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.2,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.21,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.22,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 0.8333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.23,
+          "balancedAccuracy": 0.9167,
+          "abstentionRecall": 0.8333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.24,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.25,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.26,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.27,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.28,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.29,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.3,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.31,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.32,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.33,
+          "balancedAccuracy": 1.0,
+          "abstentionRecall": 1.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.34,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.35,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.36,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.37,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.38,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.39,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.4,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.41,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.42,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.43,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.44,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.45,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.46,
+          "balancedAccuracy": 0.9688,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.9375
+        },
+        {
+          "threshold": 0.47,
+          "balancedAccuracy": 0.9375,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.875
+        },
+        {
+          "threshold": 0.48,
+          "balancedAccuracy": 0.9375,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.875
+        },
+        {
+          "threshold": 0.49,
+          "balancedAccuracy": 0.8438,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6875
+        },
+        {
+          "threshold": 0.5,
+          "balancedAccuracy": 0.8438,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6875
+        },
+        {
+          "threshold": 0.51,
+          "balancedAccuracy": 0.8438,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6875
+        },
+        {
+          "threshold": 0.52,
+          "balancedAccuracy": 0.8125,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.625
+        },
+        {
+          "threshold": 0.53,
+          "balancedAccuracy": 0.8125,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.625
+        },
+        {
+          "threshold": 0.54,
+          "balancedAccuracy": 0.8125,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.625
+        },
+        {
+          "threshold": 0.55,
+          "balancedAccuracy": 0.8125,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.625
+        },
+        {
+          "threshold": 0.56,
+          "balancedAccuracy": 0.7812,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5625
+        },
+        {
+          "threshold": 0.57,
+          "balancedAccuracy": 0.7812,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5625
+        },
+        {
+          "threshold": 0.58,
+          "balancedAccuracy": 0.75,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5
+        },
+        {
+          "threshold": 0.59,
+          "balancedAccuracy": 0.6875,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.375
+        },
+        {
+          "threshold": 0.6,
+          "balancedAccuracy": 0.6875,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.375
+        },
+        {
+          "threshold": 0.61,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.62,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.63,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.64,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.65,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.66,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.67,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.68,
+          "balancedAccuracy": 0.6562,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3125
+        },
+        {
+          "threshold": 0.69,
+          "balancedAccuracy": 0.625,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.25
+        },
+        {
+          "threshold": 0.7,
+          "balancedAccuracy": 0.5625,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.125
+        },
+        {
+          "threshold": 0.71,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.72,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.73,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.74,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.75,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.76,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.77,
+          "balancedAccuracy": 0.5312,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0625
+        },
+        {
+          "threshold": 0.78,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.79,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.8,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.81,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.82,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.83,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.84,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.85,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.86,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.87,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.88,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.89,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.91,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.92,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.93,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.94,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.95,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        }
+      ]
+    },
+    "test": {
+      "usable": true,
+      "answerable": 21,
+      "unanswerable": 3,
+      "supportRangeAnswerable": [
+        0.2437,
+        0.8489
+      ],
+      "supportRangeUnanswerable": [
+        0.166,
+        0.3329
+      ],
+      "separation": -0.0892,
+      "bestThreshold": 0.34,
+      "bestBalancedAccuracy": 0.9286,
+      "curve": [
+        {
+          "threshold": 0.05,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.06,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.07,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.08,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.09,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.1,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.11,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.12,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.13,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.14,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.15,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.16,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 0.0,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.17,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.18,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.19,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.2,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.21,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.22,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.23,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 0.3333,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.24,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 1.0
+        },
+        {
+          "threshold": 0.25,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9524
+        },
+        {
+          "threshold": 0.26,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9524
+        },
+        {
+          "threshold": 0.27,
+          "balancedAccuracy": 0.7857,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9048
+        },
+        {
+          "threshold": 0.28,
+          "balancedAccuracy": 0.7857,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9048
+        },
+        {
+          "threshold": 0.29,
+          "balancedAccuracy": 0.7857,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9048
+        },
+        {
+          "threshold": 0.3,
+          "balancedAccuracy": 0.7857,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.9048
+        },
+        {
+          "threshold": 0.31,
+          "balancedAccuracy": 0.7619,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.32,
+          "balancedAccuracy": 0.7619,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.33,
+          "balancedAccuracy": 0.7619,
+          "abstentionRecall": 0.6667,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.34,
+          "balancedAccuracy": 0.9286,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.35,
+          "balancedAccuracy": 0.9286,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.36,
+          "balancedAccuracy": 0.9286,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.8571
+        },
+        {
+          "threshold": 0.37,
+          "balancedAccuracy": 0.881,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7619
+        },
+        {
+          "threshold": 0.38,
+          "balancedAccuracy": 0.881,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7619
+        },
+        {
+          "threshold": 0.39,
+          "balancedAccuracy": 0.8571,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7143
+        },
+        {
+          "threshold": 0.4,
+          "balancedAccuracy": 0.8571,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7143
+        },
+        {
+          "threshold": 0.41,
+          "balancedAccuracy": 0.8571,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.7143
+        },
+        {
+          "threshold": 0.42,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.43,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.44,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.45,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.46,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.47,
+          "balancedAccuracy": 0.8333,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.6667
+        },
+        {
+          "threshold": 0.48,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.619
+        },
+        {
+          "threshold": 0.49,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.619
+        },
+        {
+          "threshold": 0.5,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.619
+        },
+        {
+          "threshold": 0.51,
+          "balancedAccuracy": 0.8095,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.619
+        },
+        {
+          "threshold": 0.52,
+          "balancedAccuracy": 0.7857,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5714
+        },
+        {
+          "threshold": 0.53,
+          "balancedAccuracy": 0.7619,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.5238
+        },
+        {
+          "threshold": 0.54,
+          "balancedAccuracy": 0.7381,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.4762
+        },
+        {
+          "threshold": 0.55,
+          "balancedAccuracy": 0.7381,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.4762
+        },
+        {
+          "threshold": 0.56,
+          "balancedAccuracy": 0.6905,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.381
+        },
+        {
+          "threshold": 0.57,
+          "balancedAccuracy": 0.6905,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.381
+        },
+        {
+          "threshold": 0.58,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3333
+        },
+        {
+          "threshold": 0.59,
+          "balancedAccuracy": 0.6667,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.3333
+        },
+        {
+          "threshold": 0.6,
+          "balancedAccuracy": 0.6429,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2857
+        },
+        {
+          "threshold": 0.61,
+          "balancedAccuracy": 0.6429,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2857
+        },
+        {
+          "threshold": 0.62,
+          "balancedAccuracy": 0.6429,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2857
+        },
+        {
+          "threshold": 0.63,
+          "balancedAccuracy": 0.619,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2381
+        },
+        {
+          "threshold": 0.64,
+          "balancedAccuracy": 0.619,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2381
+        },
+        {
+          "threshold": 0.65,
+          "balancedAccuracy": 0.619,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.2381
+        },
+        {
+          "threshold": 0.66,
+          "balancedAccuracy": 0.5952,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1905
+        },
+        {
+          "threshold": 0.67,
+          "balancedAccuracy": 0.5952,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1905
+        },
+        {
+          "threshold": 0.68,
+          "balancedAccuracy": 0.5714,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.1429
+        },
+        {
+          "threshold": 0.69,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.7,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.71,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.72,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.73,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.74,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.75,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.76,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.77,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.78,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.79,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.8,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.81,
+          "balancedAccuracy": 0.5476,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0952
+        },
+        {
+          "threshold": 0.82,
+          "balancedAccuracy": 0.5238,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0476
+        },
+        {
+          "threshold": 0.83,
+          "balancedAccuracy": 0.5238,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0476
+        },
+        {
+          "threshold": 0.84,
+          "balancedAccuracy": 0.5238,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0476
+        },
+        {
+          "threshold": 0.85,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.86,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.87,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.88,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.89,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.91,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.92,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.93,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.94,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        },
+        {
+          "threshold": 0.95,
+          "balancedAccuracy": 0.5,
+          "abstentionRecall": 1.0,
+          "answerRetention": 0.0
+        }
+      ]
+    }
+  },
+  "frozenThresholdBySplit": {
+    "all": {
+      "threshold": 0.24,
+      "balancedAccuracy": 0.9444,
+      "answerableKept": 37,
+      "answerableLost": [],
+      "unanswerableCaught": [
+        "c07-off-corpus-weather",
+        "c08-off-corpus-capital",
+        "c09-off-corpus-planet",
+        "c10-off-corpus-salary",
+        "c11-off-corpus-source-code",
+        "c12-off-corpus-holiday",
+        "t21-injection-api-key",
+        "t24-off-scope-competitor"
+      ],
+      "unanswerableLeaked": [
+        "t23-off-scope"
+      ]
+    },
+    "calibration": {
+      "threshold": 0.24,
+      "balancedAccuracy": 1.0,
+      "answerableKept": 6,
+      "answerableLost": [],
+      "unanswerableCaught": [
+        "c07-off-corpus-weather",
+        "c08-off-corpus-capital",
+        "c09-off-corpus-planet",
+        "c10-off-corpus-salary",
+        "c11-off-corpus-source-code",
+        "c12-off-corpus-holiday"
+      ],
+      "unanswerableLeaked": []
+    },
+    "calibration+dev": {
+      "threshold": 0.24,
+      "balancedAccuracy": 1.0,
+      "answerableKept": 16,
+      "answerableLost": [],
+      "unanswerableCaught": [
+        "c07-off-corpus-weather",
+        "c08-off-corpus-capital",
+        "c09-off-corpus-planet",
+        "c10-off-corpus-salary",
+        "c11-off-corpus-source-code",
+        "c12-off-corpus-holiday"
+      ],
+      "unanswerableLeaked": []
+    },
+    "test": {
+      "threshold": 0.24,
+      "balancedAccuracy": 0.8333,
+      "answerableKept": 21,
+      "answerableLost": [],
+      "unanswerableCaught": [
+        "t21-injection-api-key",
+        "t24-off-scope-competitor"
+      ],
+      "unanswerableLeaked": [
+        "t23-off-scope"
+      ]
+    }
+  },
+  "offScopeCase": {
+    "id": "t23-off-scope",
+    "support": 0.3329,
+    "thresholdNeededToAbstain": 0.3339,
+    "costAtThatThreshold": {
+      "threshold": 0.3339,
+      "balancedAccuracy": 0.9595,
+      "answerableKept": 34,
+      "answerableLost": [
+        "t01-paraphrase-audit",
+        "t02-paraphrase-leaver",
+        "t03-paraphrase-rehearsal"
+      ],
+      "unanswerableCaught": [
+        "c07-off-corpus-weather",
+        "c08-off-corpus-capital",
+        "c09-off-corpus-planet",
+        "c10-off-corpus-salary",
+        "c11-off-corpus-source-code",
+        "c12-off-corpus-holiday",
+        "t21-injection-api-key",
+        "t23-off-scope",
+        "t24-off-scope-competitor"
+      ],
+      "unanswerableLeaked": []
+    }
+  },
+  "margins": [
+    {
+      "id": "t23-off-scope",
+      "status": "answered",
+      "bestSupport": 0.3329,
+      "secondSupport": 0.3159,
+      "margin": 0.017,
+      "questionCoverageOfBestChunk": 0.5
+    },
+    {
+      "id": "t01-paraphrase-audit",
+      "status": "answered",
+      "bestSupport": 0.2437,
+      "secondSupport": 0.1787,
+      "margin": 0.0651,
+      "questionCoverageOfBestChunk": 0.5
+    },
+    {
+      "id": "t02-paraphrase-leaver",
+      "status": "answered",
+      "bestSupport": 0.2628,
+      "secondSupport": 0.1858,
+      "margin": 0.077,
+      "questionCoverageOfBestChunk": 0.4
+    },
+    {
+      "id": "t03-paraphrase-rehearsal",
+      "status": "answered",
+      "bestSupport": 0.3069,
+      "secondSupport": 0.3045,
+      "margin": 0.0023,
+      "questionCoverageOfBestChunk": 0.5
+    },
+    {
+      "id": "c06-open-actions",
+      "status": "answered",
+      "bestSupport": 0.3398,
+      "secondSupport": 0.2887,
+      "margin": 0.051,
+      "questionCoverageOfBestChunk": 0.5
+    }
+  ]
+}

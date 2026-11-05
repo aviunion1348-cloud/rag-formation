@@ -1,0 +1,59 @@
+# Environment probe — 2026-11-05T15:32:00Z
+
+## git
+986ba5587648c4d3bdded4e9889ef8cdbcdfb919
+arena/5f16d127-rag-formation
+ M ragformation/chunking.py
+ M ragformation/cli.py
+ M ragformation/engine.py
+ M ragformation/evaluation_v2.py
+ M ragformation/generation.py
+
+## os
+Linux 6.1.158+ x86_64 GNU/Linux
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+
+## cpu / memory
+2
+MemTotal:        4034452 kB
+MemAvailable:    3764432 kB
+
+## python
+Python 3.11.2
+/usr/bin/python3
+
+## node
+v22.22.3
+10.9.8
+
+## gpu
+/bin/bash: line 1: nvidia-smi: command not found
+no /dev/dri (no render device)
+
+## local model runtimes
+ollama: not reachable on 11434
+
+## provider keys
+OPENAI_API_KEY set: False
+
+## installed third-party packages usable by the engine
+  numpy      absent
+  spacy      absent
+  scipy      absent
+  sklearn    absent
+  fastapi    absent
+  flask      absent
+  uvicorn    absent
+  pypdf      absent
+
+## network egress probes
+  https://pypi.org/simple/                   200
+  https://github.com                         200
+  https://codeload.github.com                301
+  https://huggingface.co                     000
+fail
+  https://objects.githubusercontent.com      000
+fail
+  release-assets.githubusercontent.com       000
+TLS failure

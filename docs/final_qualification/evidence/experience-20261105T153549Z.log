@@ -1,0 +1,40 @@
+== experience matrix 20261105T153549Z ==
+node: v22.22.3   jsdom: installing into /tmp/experience-QF79GY (not committed)
+jsdom: 31.0.0
+[PASS] webgl2: renderer reports a mode — webgl
+[FAIL] webgl2: every scene renders without throwing — problem: window is not defined | sources: window is not defined
+[FAIL] webgl2: scenes rendered — 0/16
+[FAIL] webgl2: GPU path issues draw calls — 0 drawArrays
+[PASS] webgl1: renderer reports a mode — webgl
+[FAIL] webgl1: every scene renders without throwing — problem: window is not defined | sources: window is not defined
+[FAIL] webgl1: scenes rendered — 0/16
+[FAIL] webgl1: GPU path issues draw calls — 0 drawArrays
+[PASS] canvas2d: renderer reports a mode — canvas2d
+[FAIL] canvas2d: every scene renders without throwing — problem: window is not defined | sources: window is not defined
+[FAIL] canvas2d: scenes rendered — 0/16
+[FAIL] canvas2d: canvas2d path issues draw operations — 0 ops
+[PASS] no-context: renderer reports a mode — none
+[FAIL] no-context: every scene renders without throwing — problem: window is not defined | sources: window is not defined
+[FAIL] no-context: scenes rendered — 0/16
+[PASS] no-context: no-context path degrades without drawing — transcript only
+[PASS] sixteen scenes are defined — 16
+[FAIL] every scene carries narration text for the transcript
+[PASS] every scene carries a caption and a title
+[PASS] transcript lists every scene — 16
+[FAIL] transcript lines are text, not markup
+[FAIL] canvas has an accessible name
+[PASS] page announces updates politely
+[FAIL] page exposes the transcript list to assistive tech
+[PASS] page honours prefers-reduced-motion in CSS
+[FAIL] page honours forced colours
+[PASS] page keeps a visible focus ring
+[PASS] page loads no third-party script or style
+[PASS] page documents its own fallback
+[PASS] webgl2 selects the GPU path — webgl
+[PASS] webgl1 also selects the GPU path — webgl
+[PASS] missing WebGL falls back to canvas2d — canvas2d
+[PASS] missing every context degrades to none — none
+
+experience matrix: 17/33 checks passed
+physical GPU: NOT verified in this sandbox (no /dev/dri, no nvidia-smi) — blocked, not claimed
+exit: 1

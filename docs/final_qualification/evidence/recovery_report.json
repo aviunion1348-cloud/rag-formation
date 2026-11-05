@@ -1,0 +1,75 @@
+{
+  "checks": [
+    {
+      "check": "baseline ingest",
+      "ok": true,
+      "detail": "14 sources, 66 chunks"
+    },
+    {
+      "check": "online backup while the engine is open",
+      "ok": true,
+      "detail": "792 KB in /tmp/recovery-mmx65h_y/backup/ragformation.db"
+    },
+    {
+      "check": "restored index reports healthy",
+      "ok": true,
+      "detail": "{\"ok\": true, \"service\": \"ragformation\", \"version\": \"0.2.0\", \"apiVersion\": \"1\", \"eventSchemaVersion\": \"1.0\", \"sources\": 14, \"chunks\": 66, \"vectors\": 66, \"lexical"
+    },
+    {
+      "check": "restored index answers identically",
+      "ok": true,
+      "detail": "5/5 answers byte-identical"
+    },
+    {
+      "check": "restored index keeps chunk ids (citations still resolve)",
+      "ok": true,
+      "detail": "citation chunk ids unchanged"
+    },
+    {
+      "check": "restored index has the same chunk count",
+      "ok": true,
+      "detail": "66 chunks (baseline 66)"
+    },
+    {
+      "check": "rebuild keeps the chunk set stable",
+      "ok": true,
+      "detail": "66 -> 66 chunks; rebuild={\"chunks\": 66, \"sources\": 14, \"ms\": 4.475, \"embedding\": {\"provider\": \"hashing\", \"model\": \"hashing-lexical-v1\","
+    },
+    {
+      "check": "rollback restores the previous index generation",
+      "ok": true,
+      "detail": "66 -> 66 chunks; rollback={\"restored\": 66, \"fingerprint\": \"hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv="
+    },
+    {
+      "check": "answers survive rebuild + rollback",
+      "ok": true,
+      "detail": "5/5 identical"
+    },
+    {
+      "check": "ingest killed mid-flight (SIGKILL, not a clean exit)",
+      "ok": true,
+      "detail": "returncode=-9"
+    },
+    {
+      "check": "interrupted database passes integrity_check",
+      "ok": true,
+      "detail": "integrity_check=ok, sources=284"
+    },
+    {
+      "check": "re-ingest after an interruption succeeds",
+      "ok": true,
+      "detail": "embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2 (semantic=False)"
+    },
+    {
+      "check": "recovered index answers correctly",
+      "ok": true,
+      "detail": "400 chunks, status=answered"
+    },
+    {
+      "check": "no duplicated sources after retry",
+      "ok": true,
+      "detail": "400 sources"
+    }
+  ],
+  "failed": []
+}

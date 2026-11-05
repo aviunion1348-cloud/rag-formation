@@ -334,7 +334,45 @@ def _pdf_blocks(data: bytes, max_bytes: int) -> Tuple[List[Block], List[str]]:
 
 
 # ---------------------------------------------------------------- json / csv
+#: Field names that identify the thing a record is about. Evidence rendered
+#: without them is unattributable ("99.95%" alone cannot be cited as *the
+#: ingest-api availability SLO*), which is why they are repeated on every line.
+_RECORD_LABEL_KEYS = ("id", "name", "title", "slug", "key", "service", "macro")
+
+
+def _display_field(path: str) -> str:
+    """Readable form of a flattened JSON path.
+
+    The dotted form (``slo.availability``) is one opaque token to a word-level
+    tokeniser, so a question that says "availability SLO" could never match it.
+    Depth-two paths are therefore rendered as ``availability (slo)``, which
+    keeps both words matchable while staying attributable; deeper paths keep the
+    dotted form because rewriting them buys nothing.
+    """
+    parts = [part for part in path.split(".") if part]
+    if len(parts) == 2:
+        return f"{parts[1]} ({parts[0]})"
+    return path
+
+
 def _json_blocks(raw: str) -> List[Block]:
+    """Render JSON as attributable, quotable evidence.
+
+    A JSON document is a set of records, not a run of loose scalars. The old
+    renderer walked nested objects key-by-key and emitted bare values
+    (``"ingest-api"``, ``1``, ``"platform-team"``), which lost the key -> value
+    mapping: retrieval could match a term but no answer could bind the value to
+    its subject, and citations pointed at a chunk whose text no longer contained
+    the relationship. This renderer:
+
+    * emits one heading block per record, so each service or macro gets its own
+      chunk and a stable section label for citations;
+    * flattens nested objects into dotted field names
+      (``slo.availability``) and joins scalar lists;
+    * repeats the record label on every field line, so a quoted line such as
+      ``ingest-api — slo.availability: 99.95%`` is self-describing evidence.
+    """
+
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError as exc:
@@ -342,24 +380,78 @@ def _json_blocks(raw: str) -> List[Block]:
 
     blocks: List[Block] = []
 
-    def walk(node: Any, path: str) -> None:
-        if isinstance(node, dict):
-            scalars = {
-                k: v for k, v in node.items() if isinstance(v, (str, int, float, bool)) or v is None
-            }
-            if scalars and len(scalars) == len(node):
-                pairs = [f"{k}: {v}" for k, v in scalars.items()]
-                blocks.append(Block("record", "; ".join(str(p) for p in pairs)))
-                return
-            for key, value in node.items():
-                walk(value, f"{path}.{key}" if path else str(key))
-        elif isinstance(node, list):
-            for item in node:
-                walk(item, path)
-        else:
-            blocks.append(Block("paragraph", str(node)))
+    def is_scalar(node: Any) -> bool:
+        return isinstance(node, (str, int, float, bool)) or node is None
 
-    walk(payload, "")
+    def render_scalar(value: Any) -> str:
+        if value is None:
+            return "null"
+        if isinstance(value, bool):
+            return "true" if value else "false"
+        return str(value)
+
+    def label_for(node: Dict[str, Any], fallback: str) -> str:
+        for key in _RECORD_LABEL_KEYS:
+            value = node.get(key)
+            if is_scalar(value) and value not in (None, ""):
+                return str(value)
+        return fallback
+
+    def emit_record(node: Dict[str, Any], path: str) -> None:
+        label = label_for(node, path or "record")
+        fields: List[tuple] = []
+
+        def flatten(prefix: str, value: Any) -> None:
+            if isinstance(value, dict):
+                for key, nested in value.items():
+                    flatten(f"{prefix}.{key}" if prefix else str(key), nested)
+            elif isinstance(value, list):
+                if all(is_scalar(item) for item in value):
+                    joined = ", ".join(render_scalar(item) for item in value)
+                    fields.append((prefix, joined))
+                else:
+                    for index, item in enumerate(value):
+                        emit_any(item, f"{prefix}[{index}]")
+            else:
+                fields.append((prefix, render_scalar(value)))
+
+        for key, value in node.items():
+            flatten(str(key), value)
+
+        blocks.append(Block("heading", f"{path or 'record'}: {label}", level=1))
+        for key, value in fields:
+            if not key:
+                blocks.append(Block("paragraph", value))
+                continue
+            blocks.append(Block("record", f"{label} — {_display_field(key)}: {value}"))
+
+    def emit_any(node: Any, path: str) -> None:
+        if isinstance(node, dict):
+            emit_record(node, path)
+        elif isinstance(node, list):
+            if all(is_scalar(item) for item in node):
+                blocks.append(Block("record", f"{path}: " + ", ".join(render_scalar(i) for i in node)))
+            else:
+                for index, item in enumerate(node):
+                    emit_any(item, f"{path}[{index}]")
+        else:
+            blocks.append(Block("paragraph", render_scalar(node)))
+
+    if isinstance(payload, dict):
+        # Top-level scalars are document metadata, not a record of their own.
+        metadata = {k: v for k, v in payload.items() if is_scalar(v)}
+        for key, value in metadata.items():
+            blocks.append(Block("paragraph", f"{key}: {render_scalar(value)}"))
+        for key, value in payload.items():
+            if is_scalar(value):
+                continue
+            if isinstance(value, list):
+                for index, item in enumerate(value):
+                    emit_any(item, str(key))
+            else:
+                emit_any(value, str(key))
+    else:
+        emit_any(payload, "record")
     return blocks
 
 

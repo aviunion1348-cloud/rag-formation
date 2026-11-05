@@ -304,16 +304,44 @@ class Retriever:
             # Cosine for normalised non-negative hashing vectors sits near 0..1;
             # map the useful band to [0, 1] without pretending it is calibrated.
             semantic = max(0.0, min(1.0, (semantic_score + 0.15) / 1.15))
-        return round(0.65 * lexical + 0.35 * semantic, 6)
+        support = 0.65 * lexical + 0.35 * semantic
+
+        # An identifier the question names exactly (svc-003, MACRO-BILLING-01,
+        # p95) is not one quarter of the question: it is the thing being asked
+        # about. Without this boost a corpus of near-identical documents ranks
+        # by accident — every chunk matches the surrounding words, so the id is
+        # the only discriminating signal there is.
+        identifiers = {term for term in content_terms(query) if len(term) >= 3 and any(c.isdigit() for c in term)}
+        if identifiers:
+            exact = len(identifiers & signals.raw) / len(identifiers)
+            if exact:
+                support = support * (1.0 - 0.45 * exact) + 0.45 * exact
+        return round(min(1.0, support), 6)
 
 
-def coverage_score(text: str, query: str, *, signals: Optional[TextSignals] = None) -> float:
-    """Fraction of question terms the passage covers (prefix tolerant)."""
+def coverage_score(
+    text: str,
+    query: str,
+    *,
+    signals: Optional[TextSignals] = None,
+    weights: Optional[Dict[str, float]] = None,
+) -> float:
+    """Weighted fraction of question terms the passage covers (prefix tolerant).
+
+    Without ``weights`` every term counts the same; with them, a rare term
+    carries more than a term that appears in every candidate.
+    """
     query_terms = set(content_terms(query))
     if not query_terms:
         return 0.0
     signals = signals or TextSignals(tokenize(text))
-    return len(matched_terms_signals(query_terms, signals)) / len(query_terms)
+    matched = matched_terms_signals(query_terms, signals)
+    if not weights:
+        return len(matched) / len(query_terms)
+    total = sum(weights.get(term, 1.0) for term in query_terms)
+    if total <= 0:
+        return 0.0
+    return sum(weights.get(term, 1.0) for term in matched) / total
 
 
 def phrase_score(text: str, query: str) -> float:

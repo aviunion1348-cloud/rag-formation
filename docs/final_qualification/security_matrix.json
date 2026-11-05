@@ -1,0 +1,140 @@
+{
+  "rows": [
+    {
+      "row": "unauthenticated ask is rejected",
+      "ok": true,
+      "detail": "status=401",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "wrong API key is rejected",
+      "ok": true,
+      "detail": "status=401",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "viewer can ask and gets grounded evidence",
+      "ok": true,
+      "detail": "status=200, citations=1",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "viewer cannot ingest (writer required)",
+      "ok": true,
+      "detail": "status=403",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "writer cannot rebuild (admin required)",
+      "ok": true,
+      "detail": "status=403",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "viewer cannot read traces (operator required)",
+      "ok": true,
+      "detail": "status=403",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "operator can read traces",
+      "ok": true,
+      "detail": "status=200",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "admin can rebuild",
+      "ok": true,
+      "detail": "status=200",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "spoofed identity headers are ignored",
+      "ok": true,
+      "detail": "status=200, answer present=True",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "unknown allowedSources yields no evidence, not 'no filter'",
+      "ok": true,
+      "detail": "status=200, answerStatus=abstained, evidence=0",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "allowedSources narrows the evidence server-side",
+      "ok": true,
+      "detail": "status=200, returned=['src-0c62e41fe3']",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "path traversal in an uploaded filename is sanitised",
+      "ok": true,
+      "detail": "status=200, {\"results\": [{\"filename\": \"passwd\", \"sourceId\": \"src-c95da99dba\", \"status\": \"indexed\", \"revision\": 1, \"previousRevision\": null, \"chunks\": 1, \"tokens\": 7, \"warnings\": [\"extension (none) treated as plain text\", \"no heading",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "static file traversal is refused",
+      "ok": true,
+      "detail": "status=404",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "oversized request body is rejected or truncated safely",
+      "ok": true,
+      "detail": "status=400, message=question is too long",
+      "severityIfFailed": "medium"
+    },
+    {
+      "row": "quarantined instruction never becomes an answer",
+      "ok": true,
+      "detail": "status=200, answerStatus=abstained",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "jailbreak request is flagged and obeys nothing",
+      "ok": true,
+      "detail": "status=200, answerStatus=answered, warnings=['possible_meta_disclosure', 'quarantined_instruction_like_content']",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "X-Content-Type-Options: nosniff",
+      "ok": true,
+      "detail": "nosniff",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "CORS is not a wildcard",
+      "ok": true,
+      "detail": "None",
+      "severityIfFailed": "high"
+    },
+    {
+      "row": "cache-control on API responses",
+      "ok": true,
+      "detail": "no-store",
+      "severityIfFailed": "low"
+    },
+    {
+      "row": "OpenAPI document does not leak the API key",
+      "ok": true,
+      "detail": "status=200",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "event log does not leak the API key",
+      "ok": true,
+      "detail": "status=200",
+      "severityIfFailed": "critical"
+    },
+    {
+      "row": "a principal in another tenant sees no local sources",
+      "ok": true,
+      "detail": "status=200, sources=0",
+      "severityIfFailed": "critical"
+    }
+  ],
+  "total": 22,
+  "passed": 22,
+  "failed": [],
+  "note": "Live HTTP probes against a key-protected server with host-principal mode enabled. Every row is a request; none of these results is inferred from reading the source."
+}

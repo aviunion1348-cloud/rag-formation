@@ -74,7 +74,7 @@ class Chunker:
         def current_section() -> List[str]:
             return [part for part in stack if part]
 
-        def flush(next_heading: Optional[str] = None) -> None:
+        def flush(at_heading: bool = False) -> None:
             nonlocal buffer, buffer_tokens, carry, ordinal
             if not buffer:
                 return
@@ -98,13 +98,17 @@ class Chunker:
                 )
             )
             ordinal += 1
-            carry = _tail(body, self.overlap) if self.overlap else ""
+            # Overlap exists to keep a *split section* readable, never to drag
+            # text across a heading. Carrying a tail across a boundary put the
+            # previous record's fields inside the next record's chunk, so a
+            # citation could attribute one service's owner to another service.
+            carry = _tail(body, self.overlap) if (self.overlap and not at_heading) else ""
             buffer = []
             buffer_tokens = 0
 
         for block in source.blocks:
             if block.kind == "heading":
-                flush()
+                flush(at_heading=True)
                 # Maintain the heading hierarchy: deeper headings replace the tail.
                 level = block.level or len(stack) + 1
                 stack = stack[: max(0, level - 1)]

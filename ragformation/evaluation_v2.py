@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import time
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -37,6 +38,48 @@ DEFAULT_DATASET = Path(__file__).resolve().parent.parent / "evals" / "golden_v2.
 
 def _normalise(text: str) -> str:
     return " ".join((text or "").lower().split())
+
+
+def _canonical_tokens(text: str) -> List[str]:
+    """Token sequence used for fact matching.
+
+    The answer text is *rendered evidence*: it keeps the source's markdown
+    emphasis ("**35-day**") because stripping emphasis would make citations
+    unfaithful. A label that asks for "35 days" is therefore compared on tokens,
+    not on characters:
+
+    * markdown emphasis, backticks and underscores are dropped;
+    * a hyphen between a number and a word counts as a space ("35-day" ->
+      "35 day"), because that is a typography choice, not a different fact;
+    * a trailing plural "s" is folded, so "day" and "days" agree.
+
+    Nothing else is relaxed: the fact's tokens must appear *contiguously* and in
+    order, so a paraphrase still fails and no expectation is weakened.
+    """
+
+    cleaned = re.sub(r"[*_`]+", "", (text or "").lower())
+    cleaned = re.sub(r"(?<=[0-9])[\-\u2011\u2013](?=[a-z])", " ", cleaned)
+    tokens = re.findall(r"[a-z0-9]+", cleaned)
+    folded: List[str] = []
+    for token in tokens:
+        if len(token) > 3 and token.endswith("s") and not token.endswith("ss"):
+            folded.append(token[:-1])
+        else:
+            folded.append(token)
+    return folded
+
+
+def _fact_present(fact: str, answer_text: str, matcher: str = "canonical") -> bool:
+    """Is ``fact`` asserted by the answer, under the selected matching rule?"""
+
+    if matcher == "legacy":
+        return _normalise(fact) in _normalise(answer_text)
+    answer_tokens = _canonical_tokens(answer_text)
+    needle = _canonical_tokens(fact)
+    if not needle:
+        return True
+    width = len(needle)
+    return any(answer_tokens[index : index + width] == needle for index in range(0, len(answer_tokens) - width + 1))
 
 
 def _source_matches(item: Dict[str, Any], expected: Sequence[str], sources: Dict[str, Any]) -> bool:
@@ -196,12 +239,15 @@ def run_evaluation(
     top_k: Optional[int] = None,
     splits: Optional[Iterable[str]] = None,
     ablations: bool = True,
+    fact_matcher: str = "canonical",
 ) -> Dict[str, Any]:
     path = Path(dataset_path) if dataset_path else DEFAULT_DATASET
     if not path.exists():
         raise FileNotFoundError(f"dataset not found: {path}")
     dataset = json.loads(path.read_text(encoding="utf-8"))
     cases = dataset["cases"]
+    if fact_matcher not in {"canonical", "legacy"}:
+        raise ValueError(f"unknown fact matcher: {fact_matcher!r}")
     selected_splits = set(splits or [])
     if selected_splits:
         cases = [case for case in cases if case.get("split") in selected_splits]
@@ -229,8 +275,17 @@ def run_evaluation(
         relevance = [1 if _source_matches(item, expected, sources) else 0 for item in retrieved]
         order = [item["chunkId"] for item in retrieved]
 
-        missing = [term for term in case.get("mustContain", []) if _normalise(term) not in text]
-        forbidden = [term for term in case.get("mustNotContain", []) if _normalise(term) in text]
+        answer_text = answer.answer or ""
+        missing = [
+            term
+            for term in case.get("mustContain", [])
+            if not _fact_present(term, answer_text, fact_matcher)
+        ]
+        forbidden = [
+            term
+            for term in case.get("mustNotContain", [])
+            if _fact_present(term, answer_text, fact_matcher)
+        ]
 
         markers = sum(1 for claim in answer.claims if claim.citations)
         claim_count = max(1, sum(1 for claim in answer.claims if claim.text))

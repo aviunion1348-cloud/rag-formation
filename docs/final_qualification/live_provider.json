@@ -1,0 +1,21 @@
+{
+  "generatedAt": "2026-11-05T15:56:18Z",
+  "ollama": {
+    "host": "http://127.0.0.1:11434",
+    "requestedModel": "llama3.2:3b",
+    "reachable": false,
+    "error": "URLError: <urlopen error [Errno 111] Connection refused>"
+  },
+  "openai": {
+    "keyPresent": false
+  },
+  "checks": [],
+  "status": "blocked",
+  "claims": [],
+  "blockedReasons": [
+    "no Ollama endpoint at http://127.0.0.1:11434 (URLError: <urlopen error [Errno 111] Connection refused>)",
+    "no OPENAI_API_KEY in the environment",
+    "no GPU and no local weights: a model cannot be installed here (no /dev/dri, no model host reachable)"
+  ],
+  "note": "BLOCKED, not passed. The deterministic extractive provider is what answered every number in this qualification run; the neural path is covered only by stubbed provider tests (tests/test_ollama_provider.py) and by this gate, which has never been able to run."
+}

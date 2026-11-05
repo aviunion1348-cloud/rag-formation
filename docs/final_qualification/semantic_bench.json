@@ -1,0 +1,825 @@
+{
+  "corpusChunks": null,
+  "configurations": [
+    {
+      "name": "lexical-bm25",
+      "note": "BM25 only, no vectors. Control for 'what does ranking without embeddings buy?'",
+      "embedProvider": "hashing",
+      "retrievalMode": "lexical",
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "semantic": false,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+        "preprocessing": "lower-token-v1",
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": "Deterministic feature hashing (NOT a neural model): similarity reflects shared words and bigrams, not meaning.",
+        "setup": "install a semantic provider: pip install \"ragformation[semantic]\" then RAG_EMBED_PROVIDER=spacy (or run Ollama with an embedding model)"
+      },
+      "semantic": false,
+      "ingestMs": 33.5,
+      "sources": null,
+      "v1": {
+        "recallAtK": 0.8182,
+        "mrrAtK": 0.1561,
+        "ndcgAtK": 0.1743,
+        "casesPassed": 5,
+        "casesTotal": 14,
+        "passed": false,
+        "generation": {
+          "answered": 2,
+          "needsReview": 0,
+          "abstained": 12,
+          "abstainAccuracy": 1.0,
+          "factRecall": 0.1818,
+          "forbiddenFactRate": 1.0,
+          "citationCoverage": 1.0
+        }
+      },
+      "v2": {
+        "cases": 46,
+        "passed": 28,
+        "passRate": 0.6087,
+        "retrieval": {
+          "labelled": 37,
+          "recallAtK": 0.9189,
+          "precisionAtK": 0.245,
+          "hitRateAtK": 0.9189,
+          "mrrAtK": 0.3932,
+          "ndcgAtK": 0.466,
+          "duplicateRate": 0.0,
+          "sourceCoverage": 1.027
+        },
+        "generation": {
+          "answered": 18,
+          "needsReview": 1,
+          "abstained": 27,
+          "factRecall": 0.5405,
+          "forbiddenFreeRate": 1.0,
+          "citationCoverage": 0.5,
+          "citationPrecision": 1.0,
+          "citationLocationValidity": 1.0
+        },
+        "splits": null
+      },
+      "byCategory": {
+        "conflict": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "direct": {
+          "cases": 24,
+          "passed": 12,
+          "passRate": 0.5,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 24,
+          "answerableAnswered": 12
+        },
+        "distractor": {
+          "cases": 1,
+          "passed": 0,
+          "passRate": 0.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 0
+        },
+        "exact-id": {
+          "cases": 2,
+          "passed": 1,
+          "passRate": 0.5,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 1
+        },
+        "injection": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 1,
+          "abstainCorrect": 1,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "multihop": {
+          "cases": 2,
+          "passed": 0,
+          "passRate": 0.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 0
+        },
+        "no-answer": {
+          "cases": 8,
+          "passed": 8,
+          "passRate": 1.0,
+          "abstainCases": 8,
+          "abstainCorrect": 8,
+          "answerableCases": 0,
+          "answerableAnswered": 0
+        },
+        "paraphrase": {
+          "cases": 3,
+          "passed": 2,
+          "passRate": 0.6667,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 2
+        },
+        "structured": {
+          "cases": 3,
+          "passed": 2,
+          "passRate": 0.6667,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 2
+        }
+      },
+      "offCorpusGroup": {
+        "cases": 9,
+        "passed": 9,
+        "passRate": 1.0,
+        "abstainCases": 9,
+        "abstainCorrect": 9,
+        "answerableCases": 0,
+        "answerableAnswered": 0
+      },
+      "latencyMs": {
+        "samples": 46,
+        "p50": 7.14,
+        "p95": 9.68,
+        "mean": 7.48
+      },
+      "deterministic": true,
+      "indexSizeBytes": 1204.0
+    },
+    {
+      "name": "dense-hashing",
+      "note": "Feature-hashed bag-of-words as the 'dense' channel: lexical by construction.",
+      "embedProvider": "hashing",
+      "retrievalMode": "semantic",
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "semantic": false,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+        "preprocessing": "lower-token-v1",
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": "Deterministic feature hashing (NOT a neural model): similarity reflects shared words and bigrams, not meaning.",
+        "setup": "install a semantic provider: pip install \"ragformation[semantic]\" then RAG_EMBED_PROVIDER=spacy (or run Ollama with an embedding model)"
+      },
+      "semantic": false,
+      "ingestMs": 33.2,
+      "sources": null,
+      "v1": {
+        "recallAtK": 1.0,
+        "mrrAtK": 1.0,
+        "ndcgAtK": 0.9513,
+        "casesPassed": 14,
+        "casesTotal": 14,
+        "passed": true,
+        "generation": {
+          "answered": 11,
+          "needsReview": 0,
+          "abstained": 3,
+          "abstainAccuracy": 1.0,
+          "factRecall": 1.0,
+          "forbiddenFactRate": 1.0,
+          "citationCoverage": 1.0
+        }
+      },
+      "v2": {
+        "cases": 46,
+        "passed": 43,
+        "passRate": 0.9348,
+        "retrieval": {
+          "labelled": 37,
+          "recallAtK": 0.973,
+          "precisionAtK": 0.3784,
+          "hitRateAtK": 0.973,
+          "mrrAtK": 0.9169,
+          "ndcgAtK": 0.8842,
+          "duplicateRate": 0.0,
+          "sourceCoverage": 1.1081
+        },
+        "generation": {
+          "answered": 35,
+          "needsReview": 1,
+          "abstained": 10,
+          "factRecall": 0.973,
+          "forbiddenFreeRate": 1.0,
+          "citationCoverage": 0.9189,
+          "citationPrecision": 1.0,
+          "citationLocationValidity": 1.0
+        },
+        "splits": null
+      },
+      "byCategory": {
+        "conflict": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "direct": {
+          "cases": 24,
+          "passed": 24,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 24,
+          "answerableAnswered": 24
+        },
+        "distractor": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "exact-id": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "injection": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 1,
+          "abstainCorrect": 1,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "multihop": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "no-answer": {
+          "cases": 8,
+          "passed": 7,
+          "passRate": 0.875,
+          "abstainCases": 8,
+          "abstainCorrect": 7,
+          "answerableCases": 0,
+          "answerableAnswered": 0
+        },
+        "paraphrase": {
+          "cases": 3,
+          "passed": 2,
+          "passRate": 0.6667,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 2
+        },
+        "structured": {
+          "cases": 3,
+          "passed": 2,
+          "passRate": 0.6667,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 2
+        }
+      },
+      "offCorpusGroup": {
+        "cases": 9,
+        "passed": 8,
+        "passRate": 0.8889,
+        "abstainCases": 9,
+        "abstainCorrect": 8,
+        "answerableCases": 0,
+        "answerableAnswered": 0
+      },
+      "latencyMs": {
+        "samples": 46,
+        "p50": 8.56,
+        "p95": 10.43,
+        "mean": 8.32
+      },
+      "deterministic": true,
+      "indexSizeBytes": 1204.0
+    },
+    {
+      "name": "dense-lsa",
+      "note": "TF-IDF + truncated SVD (LSA) fitted on the corpus: distributional but not pretrained.",
+      "embedProvider": "distributional",
+      "retrievalMode": "semantic",
+      "embedding": {
+        "provider": "distributional",
+        "model": "lsa-tfidf-v1",
+        "dimension": 192,
+        "semantic": true,
+        "fingerprint": "distributional:lsa-tfidf-v1:d192:norm=l2:metric=cosine:pre=tfidf-lsa-v1:fpv=2:fit=6240baa30dd0",
+        "preprocessing": "tfidf-lsa-v1",
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": "Corpus-trained PPMI+SVD vectors. Semantic inside this corpus only.",
+        "setup": null
+      },
+      "semantic": true,
+      "ingestMs": 354.9,
+      "sources": null,
+      "v1": {
+        "recallAtK": 1.0,
+        "mrrAtK": 1.0,
+        "ndcgAtK": 0.8955,
+        "casesPassed": 13,
+        "casesTotal": 14,
+        "passed": false,
+        "generation": {
+          "answered": 12,
+          "needsReview": 0,
+          "abstained": 2,
+          "abstainAccuracy": 0.6667,
+          "factRecall": 1.0,
+          "forbiddenFactRate": 1.0,
+          "citationCoverage": 1.0
+        }
+      },
+      "v2": {
+        "cases": 46,
+        "passed": 44,
+        "passRate": 0.9565,
+        "retrieval": {
+          "labelled": 37,
+          "recallAtK": 1.0,
+          "precisionAtK": 0.4955,
+          "hitRateAtK": 1.0,
+          "mrrAtK": 0.9441,
+          "ndcgAtK": 0.855,
+          "duplicateRate": 0.0,
+          "sourceCoverage": 1.1351
+        },
+        "generation": {
+          "answered": 38,
+          "needsReview": 1,
+          "abstained": 7,
+          "factRecall": 1.0,
+          "forbiddenFreeRate": 1.0,
+          "citationCoverage": 0.973,
+          "citationPrecision": 1.0,
+          "citationLocationValidity": 1.0
+        },
+        "splits": null
+      },
+      "byCategory": {
+        "conflict": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "direct": {
+          "cases": 24,
+          "passed": 24,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 24,
+          "answerableAnswered": 24
+        },
+        "distractor": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "exact-id": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "injection": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 1,
+          "abstainCorrect": 1,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "multihop": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "no-answer": {
+          "cases": 8,
+          "passed": 6,
+          "passRate": 0.75,
+          "abstainCases": 8,
+          "abstainCorrect": 6,
+          "answerableCases": 0,
+          "answerableAnswered": 0
+        },
+        "paraphrase": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        },
+        "structured": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        }
+      },
+      "offCorpusGroup": {
+        "cases": 9,
+        "passed": 7,
+        "passRate": 0.7778,
+        "abstainCases": 9,
+        "abstainCorrect": 7,
+        "answerableCases": 0,
+        "answerableAnswered": 0
+      },
+      "latencyMs": {
+        "samples": 46,
+        "p50": 20.47,
+        "p95": 25.36,
+        "mean": 21.59
+      },
+      "deterministic": true,
+      "indexSizeBytes": 1500.0
+    },
+    {
+      "name": "hybrid-hashing",
+      "note": "Shipped default: RRF fusion of BM25 and hashed vectors.",
+      "embedProvider": "hashing",
+      "retrievalMode": "hybrid",
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "semantic": false,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+        "preprocessing": "lower-token-v1",
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": "Deterministic feature hashing (NOT a neural model): similarity reflects shared words and bigrams, not meaning.",
+        "setup": "install a semantic provider: pip install \"ragformation[semantic]\" then RAG_EMBED_PROVIDER=spacy (or run Ollama with an embedding model)"
+      },
+      "semantic": false,
+      "ingestMs": 26.2,
+      "sources": null,
+      "v1": {
+        "recallAtK": 1.0,
+        "mrrAtK": 1.0,
+        "ndcgAtK": 0.9513,
+        "casesPassed": 14,
+        "casesTotal": 14,
+        "passed": true,
+        "generation": {
+          "answered": 11,
+          "needsReview": 0,
+          "abstained": 3,
+          "abstainAccuracy": 1.0,
+          "factRecall": 1.0,
+          "forbiddenFactRate": 1.0,
+          "citationCoverage": 1.0
+        }
+      },
+      "v2": {
+        "cases": 46,
+        "passed": 45,
+        "passRate": 0.9783,
+        "retrieval": {
+          "labelled": 37,
+          "recallAtK": 1.0,
+          "precisionAtK": 0.4099,
+          "hitRateAtK": 1.0,
+          "mrrAtK": 0.9439,
+          "ndcgAtK": 0.8982,
+          "duplicateRate": 0.0,
+          "sourceCoverage": 1.1351
+        },
+        "generation": {
+          "answered": 37,
+          "needsReview": 1,
+          "abstained": 8,
+          "factRecall": 1.0,
+          "forbiddenFreeRate": 1.0,
+          "citationCoverage": 0.973,
+          "citationPrecision": 1.0,
+          "citationLocationValidity": 1.0
+        },
+        "splits": null
+      },
+      "byCategory": {
+        "conflict": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "direct": {
+          "cases": 24,
+          "passed": 24,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 24,
+          "answerableAnswered": 24
+        },
+        "distractor": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "exact-id": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "injection": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 1,
+          "abstainCorrect": 1,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "multihop": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "no-answer": {
+          "cases": 8,
+          "passed": 7,
+          "passRate": 0.875,
+          "abstainCases": 8,
+          "abstainCorrect": 7,
+          "answerableCases": 0,
+          "answerableAnswered": 0
+        },
+        "paraphrase": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        },
+        "structured": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        }
+      },
+      "offCorpusGroup": {
+        "cases": 9,
+        "passed": 8,
+        "passRate": 0.8889,
+        "abstainCases": 9,
+        "abstainCorrect": 8,
+        "answerableCases": 0,
+        "answerableAnswered": 0
+      },
+      "latencyMs": {
+        "samples": 46,
+        "p50": 10.7,
+        "p95": 13.21,
+        "mean": 10.72
+      },
+      "deterministic": true,
+      "indexSizeBytes": 1204.0
+    },
+    {
+      "name": "hybrid-lsa",
+      "note": "RRF fusion of BM25 and corpus-fitted LSA vectors.",
+      "embedProvider": "distributional",
+      "retrievalMode": "hybrid",
+      "embedding": {
+        "provider": "distributional",
+        "model": "lsa-tfidf-v1",
+        "dimension": 192,
+        "semantic": true,
+        "fingerprint": "distributional:lsa-tfidf-v1:d192:norm=l2:metric=cosine:pre=tfidf-lsa-v1:fpv=2:fit=6240baa30dd0",
+        "preprocessing": "tfidf-lsa-v1",
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": "Corpus-trained PPMI+SVD vectors. Semantic inside this corpus only.",
+        "setup": null
+      },
+      "semantic": true,
+      "ingestMs": 285.6,
+      "sources": null,
+      "v1": {
+        "recallAtK": 1.0,
+        "mrrAtK": 1.0,
+        "ndcgAtK": 0.9048,
+        "casesPassed": 13,
+        "casesTotal": 14,
+        "passed": false,
+        "generation": {
+          "answered": 12,
+          "needsReview": 0,
+          "abstained": 2,
+          "abstainAccuracy": 0.6667,
+          "factRecall": 1.0,
+          "forbiddenFactRate": 1.0,
+          "citationCoverage": 1.0
+        }
+      },
+      "v2": {
+        "cases": 46,
+        "passed": 44,
+        "passRate": 0.9565,
+        "retrieval": {
+          "labelled": 37,
+          "recallAtK": 1.0,
+          "precisionAtK": 0.4775,
+          "hitRateAtK": 1.0,
+          "mrrAtK": 0.9441,
+          "ndcgAtK": 0.8584,
+          "duplicateRate": 0.0,
+          "sourceCoverage": 1.1351
+        },
+        "generation": {
+          "answered": 38,
+          "needsReview": 1,
+          "abstained": 7,
+          "factRecall": 1.0,
+          "forbiddenFreeRate": 1.0,
+          "citationCoverage": 0.973,
+          "citationPrecision": 1.0,
+          "citationLocationValidity": 1.0
+        },
+        "splits": null
+      },
+      "byCategory": {
+        "conflict": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "direct": {
+          "cases": 24,
+          "passed": 24,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 24,
+          "answerableAnswered": 24
+        },
+        "distractor": {
+          "cases": 1,
+          "passed": 1,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "exact-id": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "injection": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 1,
+          "abstainCorrect": 1,
+          "answerableCases": 1,
+          "answerableAnswered": 1
+        },
+        "multihop": {
+          "cases": 2,
+          "passed": 2,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 2,
+          "answerableAnswered": 2
+        },
+        "no-answer": {
+          "cases": 8,
+          "passed": 6,
+          "passRate": 0.75,
+          "abstainCases": 8,
+          "abstainCorrect": 6,
+          "answerableCases": 0,
+          "answerableAnswered": 0
+        },
+        "paraphrase": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        },
+        "structured": {
+          "cases": 3,
+          "passed": 3,
+          "passRate": 1.0,
+          "abstainCases": 0,
+          "abstainCorrect": 0,
+          "answerableCases": 3,
+          "answerableAnswered": 3
+        }
+      },
+      "offCorpusGroup": {
+        "cases": 9,
+        "passed": 7,
+        "passRate": 0.7778,
+        "abstainCases": 9,
+        "abstainCorrect": 7,
+        "answerableCases": 0,
+        "answerableAnswered": 0
+      },
+      "latencyMs": {
+        "samples": 46,
+        "p50": 20.97,
+        "p95": 25.67,
+        "mean": 21.9
+      },
+      "deterministic": true,
+      "indexSizeBytes": 1500.0
+    }
+  ]
+}

@@ -1,0 +1,494 @@
+== local gates 20261105T155552Z ==
+commit: 986ba5587648c4d3bdded4e9889ef8cdbcdfb919  branch: arena/5f16d127-rag-formation
+python: Python 3.11.2  node: v22.22.3
+
+===== unit-tests =====
+[ragformation] "GET /api/v1/sources HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+.[ragformation] "GET /api/sources HTTP/1.1" 401 -
+[ragformation] "GET /api/sources HTTP/1.1" 200 -
+[ragformation] "GET /api/health HTTP/1.1" 200 -
+.[ragformation] "POST /api/ask HTTP/1.1" 200 -
+.[ragformation] "POST /api/ask HTTP/1.1" 400 -
+[ragformation] "POST /api/ask HTTP/1.1" 400 -
+[ragformation] "POST /api/ask HTTP/1.1" 400 -
+.[ragformation] "GET /api/health HTTP/1.1" 200 -
+[ragformation] "GET /api/config HTTP/1.1" 200 -
+.[ragformation] "POST /api/ingest HTTP/1.1" 400 -
+.[ragformation] "POST /api/ask HTTP/1.1" 400 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-0fc5332e50dd HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-does-not-exist HTTP/1.1" 404 -
+.[ragformation] "POST /api/rebuild HTTP/1.1" 200 -
+[ragformation] "POST /api/ask HTTP/1.1" 200 -
+[ragformation] "GET /api/stats HTTP/1.1" 200 -
+[ragformation] "POST /api/feedback HTTP/1.1" 200 -
+[ragformation] "POST /api/feedback HTTP/1.1" 400 -
+.[ragformation] "GET /api/sources HTTP/1.1" 200 -
+[ragformation] "GET /api/sources/src-2c24870c40/chunks HTTP/1.1" 200 -
+[ragformation] "DELETE /api/sources/src-2c24870c40 HTTP/1.1" 200 -
+.[ragformation] "GET / HTTP/1.1" 200 -
+[ragformation] "GET /app.js HTTP/1.1" 200 -
+[ragformation] "GET /../../etc/passwd HTTP/1.1" 404 -
+[ragformation] "GET /api/does-not-exist HTTP/1.1" 404 -
+.[ragformation] "GET /api/sources/src-nope/chunks HTTP/1.1" 404 -
+.[ragformation] "POST /api/sources/upload HTTP/1.1" 200 -
+[ragformation] "POST /api/sources/text HTTP/1.1" 200 -
+.[ragformation] "POST /api/sources/upload HTTP/1.1" 400 -
+.....................................................................[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+...[ragformation] "GET /api/v1/health HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] code 400, message Bad request syntax ('{"question":"x"}')
+[ragformation] "{"question":"x"}" 400 -
+.[proxy] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[proxy] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[proxy] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "GET /api/v1/traces/q-does-not-exist HTTP/1.1" 404 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/events/recent?since=0 HTTP/1.1" 200 -
+.[ragformation] "GET /api/v1/health HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources/src-2c24870c40/chunks HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-cfe9ffbb2af1 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/sources HTTP/1.1" 200 -
+[ragformation] "DELETE /api/v1/sources/src-85a085419b HTTP/1.1" 200 -
+...................................................................
+----------------------------------------------------------------------
+Ran 160 tests in 19.487s
+
+OK
+GATE unit-tests: PASS
+
+===== legacy-engine-tests =====
+[rag] "GET /api/corpus HTTP/1.1" 200 -
+.[rag] "GET /api/health HTTP/1.1" 200 -
+.[rag] "POST /api/lifecycle/update HTTP/1.1" 200 -
+[rag] "POST /api/lifecycle/delete HTTP/1.1" 200 -
+.[rag] "POST /api/query HTTP/1.1" 400 -
+.[rag] "POST /api/query HTTP/1.1" 200 -
+.[rag] "POST /api/query HTTP/1.1" 400 -
+[rag] "POST /api/query HTTP/1.1" 400 -
+.[rag] "GET /api/nope HTTP/1.1" 404 -
+.......................
+----------------------------------------------------------------------
+Ran 29 tests in 0.631s
+
+OK
+GATE legacy-engine-tests: PASS
+
+===== node-experience-contracts =====
+  ok   16 scenes
+  ok   scene numbers are sequential 00..15
+  ok   scene ids are unique
+  ok   every scene has narration and engineering detail
+  ok   every scene declares a stage and a camera
+  ok   every scene formation declares a kind
+  ok   no two scenes share a formation kind
+  ok   stage map is populated
+  ok   every mapped scene id exists
+  ok   sceneForStage resolves a known stage
+  ok   sceneForStage returns null for unknown stages
+  ok   sceneById falls back to the first scene
+  ok   timeline starts on the first scene
+  ok   a paused timeline does not advance
+  ok   tick advances after one dwell
+  ok   playing advances progress
+  ok   speed is clamped inside 0.25..3
+  ok   seek lands on the requested scene
+  ok   previous steps back
+  ok   live advance jumps to a named scene
+  ok   advanceTo ignores the current scene
+  ok   timeline stops at the last scene
+  ok   visited scenes are recorded
+  ok   transcript covers every scene
+  ok   demo fixture is labelled demo
+  ok   demo fixture names its providers
+  ok   demo fixture states that no model was called
+  ok   demo events carry a contract version
+  ok   demo fixture has a real query answer
+  ok   demo plan covers every scene
+  ok   most scenes are backed by recorded events
+  ok   demo plan carries counts
+  ok   valid envelope accepted
+  ok   unknown contract rejected
+  ok   future major version rejected
+  ok   missing stage rejected
+  ok   invalid json rejected
+  ok   payload without contract still accepted
+
+experience contract: all checks passed
+GATE node-experience-contracts: PASS
+  indexed access-control-policy.md: 6 chunks, revision 1 (2.318 ms)
+  indexed backup-restore-runbook.md: 5 chunks, revision 1 (1.707 ms)
+  indexed data-classification.md: 5 chunks, revision 1 (1.501 ms)
+  indexed data-retention-policy.md: 5 chunks, revision 1 (1.766 ms)
+  indexed deployment-standard.txt: 2 chunks, revision 1 (1.354 ms)
+         warning: no headings detected; chunks will follow paragraph boundaries
+  indexed evidence-retention-memo.md: 4 chunks, revision 1 (1.485 ms)
+  indexed incident-response-runbook.md: 5 chunks, revision 1 (1.933 ms)
+  indexed incident-response-standard.md: 6 chunks, revision 1 (1.827 ms)
+  indexed oncall-handbook.md: 6 chunks, revision 1 (1.942 ms)
+  indexed release-process.md: 5 chunks, revision 1 (1.699 ms)
+  indexed safety-injection-fixture.md: 3 chunks, revision 1 (1.497 ms)
+  indexed service-catalog.json: 5 chunks, revision 1 (1.734 ms)
+  indexed support-macros.json: 4 chunks, revision 1 (1.658 ms)
+  indexed vendor-onboarding.html: 5 chunks, revision 1 (1.798 ms)
+
+indexed=14 unchanged=0 failed=0 chunks=66 sources=14
+embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2 (semantic=False)
+
+===== golden-v1 =====
+golden questions: 14  corpus chunks: 66
+  recallAtK        1.0
+  mrrAtK           1.0
+  ndcgAtK          0.9513
+  labelledQuestions 11
+  generation: {"answered": 11, "needsReview": 0, "abstained": 3, "abstainAccuracy": 1.0, "factRecall": 1.0, "forbiddenFactRate": 1.0, "citationCoverage": 1.0}
+  latency: {"totalMs": {"count": 14, "mean": 10.91, "p50": 11.01, "p95": 13.46, "min": 6.84, "max": 14.4}, "ttftMs": {"count": 11, "mean": 1.81, "p50": 1.75, "p95": 2.23, "min": 1.5, "max": 2.45}}
+GATE golden-v1: PASS
+
+===== golden-v2 =====
+dataset: golden_v2.json (golden-v2-2026-11-05)  cases: 46  chunks: 66  embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  retrieval  recall@6=1.0 precision=0.4099 mrr=0.9416 ndcg=0.8964 dupRate=0.0
+  generation answered=37 needsReview=1 abstained=8 factRecall=1.0 forbiddenFree=1.0 citationPrecision=1.0
+  abstention recall=0.8889 falseAnswer=0.1111 falseAbstain=0.0 threshold=0.24
+  conflicts: {"cases": 2, "detected": 1, "precision": 1.0, "recall": 1.0}
+  calibration: {"answerable": 37, "unanswerable": 9, "answerableRange": [0.2437, 0.8489], "unanswerableRange": [0.099, 0.3329], "bestThreshold": 0.34, "balancedAccuracy": 0.9459, "abstentionRecall": 1.0, "answerRetention": 0.8919, "gap": -0.0892}
+  ablations:
+    dense                recall=0.9459 mrr=0.9144 ndcg=0.8837
+    lexical              recall=0.7027 mrr=0.368 ndcg=0.4648
+    hybrid               recall=0.973 mrr=0.9392 ndcg=0.8959
+    hybrid_rerank        recall=0.973 mrr=0.9392 ndcg=0.8959
+    hybrid_rerank_mmr    recall=0.973 mrr=0.9392 ndcg=0.8959
+  split calibration  cases=12 passed=12
+  split dev          cases=10 passed=10
+  split test         cases=24 passed=23
+
+failed cases:
+  - [t23-off-scope] What is the meaning of life?
+      answered an unanswerable question
+
+passed 45/46
+
+report only: 1 case(s) failed. Pass --gate all (or --gate test) to make this exit non-zero.
+GATE golden-v2: PASS
+
+===== golden-v2-legacy-matcher =====
+dataset: golden_v2.json (golden-v2-2026-11-05)  cases: 46  chunks: 66  embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  retrieval  recall@6=1.0 precision=0.4099 mrr=0.9416 ndcg=0.8964 dupRate=0.0
+  generation answered=37 needsReview=1 abstained=8 factRecall=0.973 forbiddenFree=1.0 citationPrecision=1.0
+  abstention recall=0.8889 falseAnswer=0.1111 falseAbstain=0.0 threshold=0.24
+  conflicts: {"cases": 2, "detected": 1, "precision": 1.0, "recall": 1.0}
+  calibration: {"answerable": 37, "unanswerable": 9, "answerableRange": [0.2437, 0.8489], "unanswerableRange": [0.099, 0.3329], "bestThreshold": 0.34, "balancedAccuracy": 0.9459, "abstentionRecall": 1.0, "answerRetention": 0.8919, "gap": -0.0892}
+  ablations:
+    dense                recall=0.9459 mrr=0.9144 ndcg=0.8837
+    lexical              recall=0.7027 mrr=0.368 ndcg=0.4648
+    hybrid               recall=0.973 mrr=0.9392 ndcg=0.8959
+    hybrid_rerank        recall=0.973 mrr=0.9392 ndcg=0.8959
+    hybrid_rerank_mmr    recall=0.973 mrr=0.9392 ndcg=0.8959
+  split calibration  cases=12 passed=12
+  split dev          cases=10 passed=10
+  split test         cases=24 passed=22
+
+failed cases:
+  - [t15-config-backup] How long is configuration state retained in backups?
+      missing facts: ['35 days']
+  - [t23-off-scope] What is the meaning of life?
+      answered an unanswerable question
+
+passed 44/46
+
+report only: 2 case(s) failed. Pass --gate all (or --gate test) to make this exit non-zero.
+GATE golden-v2-legacy-matcher: PASS
+
+===== calibration-sweep =====
+all              answerable=37 unanswerable= 9 best=0.36 bal=0.9459 frozen=0.24 bal=0.9444 separation=-0.0892
+calibration      answerable= 6 unanswerable= 6 best=0.24 bal=1.0000 frozen=0.24 bal=1.0000 separation=+0.1092
+calibration+dev  answerable=16 unanswerable= 6 best=0.24 bal=1.0000 frozen=0.24 bal=1.0000 separation=+0.1092
+test             answerable=21 unanswerable= 3 best=0.34 bal=0.9286 frozen=0.24 bal=0.8333 separation=-0.0892
+t23-off-scope support=0.333 needs threshold>0.334; at that threshold answerable lost=['t01-paraphrase-audit', 't02-paraphrase-leaver', 't03-paraphrase-rehearsal']
+wrote docs/final_qualification/evidence/calibration_sweep.json
+GATE calibration-sweep: PASS
+
+===== holdout-v3 =====
+dataset: holdout_v3.json (holdout-v3-2026-11-05)  cases: 12  chunks: 66  embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  retrieval  recall@6=1.0 precision=0.3889 mrr=1.0 ndcg=0.9248 dupRate=0.0
+  generation answered=8 needsReview=1 abstained=3 factRecall=1.0 forbiddenFree=1.0 citationPrecision=1.0
+  abstention recall=1.0 falseAnswer=0.0 falseAbstain=0.0 threshold=0.24
+  conflicts: {"cases": 1, "detected": 1, "precision": 1.0, "recall": 1.0}
+  calibration: {"answerable": 9, "unanswerable": 3, "answerableRange": [0.3762, 0.8121], "unanswerableRange": [0.1119, 0.149], "bestThreshold": 0.15, "balancedAccuracy": 1.0, "abstentionRecall": 1.0, "answerRetention": 1.0, "gap": 0.2272}
+  ablations:
+    dense                recall=1.0 mrr=1.0 ndcg=0.9207
+    lexical              recall=0.5556 mrr=0.3926 ndcg=0.4132
+    hybrid               recall=1.0 mrr=1.0 ndcg=0.9248
+    hybrid_rerank        recall=1.0 mrr=1.0 ndcg=0.9248
+    hybrid_rerank_mmr    recall=1.0 mrr=1.0 ndcg=0.9248
+  split holdout      cases=12 passed=12
+
+passed 12/12
+GATE holdout-v3: PASS
+
+===== holdout-v4 =====
+dataset: holdout_v4.json (holdout-v4-2026-11-05)  cases: 8  chunks: 66  embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
+  retrieval  recall@6=1.0 precision=0.5 mrr=1.0 ndcg=0.9791 dupRate=0.0
+  generation answered=6 needsReview=0 abstained=2 factRecall=0.8333 forbiddenFree=1.0 citationPrecision=1.0
+  abstention recall=1.0 falseAnswer=0.0 falseAbstain=0.0 threshold=0.24
+  conflicts: {"cases": 1, "detected": 0, "precision": 0.0, "recall": 0.0}
+  calibration: {"answerable": 6, "unanswerable": 2, "answerableRange": [0.3357, 0.5352], "unanswerableRange": [0.0715, 0.2033], "bestThreshold": 0.21, "balancedAccuracy": 1.0, "abstentionRecall": 1.0, "answerRetention": 1.0, "gap": 0.1324}
+  ablations:
+    dense                recall=1.0 mrr=1.0 ndcg=0.9757
+    lexical              recall=0.8333 mrr=0.4861 ndcg=0.5665
+    hybrid               recall=1.0 mrr=1.0 ndcg=0.9757
+    hybrid_rerank        recall=1.0 mrr=1.0 ndcg=0.9757
+    hybrid_rerank_mmr    recall=1.0 mrr=1.0 ndcg=0.9757
+  split holdout      cases=8 passed=7
+
+failed cases:
+  - [h14-vendor-retention-clause] What does a vendor agreement have to specify about keeping data?
+      missing facts: ['retention limits']
+
+passed 7/8
+
+report only: 1 case(s) failed. Pass --gate all (or --gate test) to make this exit non-zero.
+GATE holdout-v4: PASS
+
+===== security-matrix =====
+[PASS] unauthenticated ask is rejected — status=401
+[PASS] wrong API key is rejected — status=401
+[PASS] viewer can ask and gets grounded evidence — status=200, citations=1
+[PASS] viewer cannot ingest (writer required) — status=403
+[PASS] writer cannot rebuild (admin required) — status=403
+[PASS] viewer cannot read traces (operator required) — status=403
+[PASS] operator can read traces — status=200
+[PASS] admin can rebuild — status=200
+[PASS] spoofed identity headers are ignored — status=200, answer present=True
+[PASS] unknown allowedSources yields no evidence, not 'no filter' — status=200, answerStatus=abstained, evidence=0
+[PASS] allowedSources narrows the evidence server-side — status=200, returned=['src-0c62e41fe3']
+[PASS] path traversal in an uploaded filename is sanitised — status=200, {"results": [{"filename": "passwd", "sourceId": "src-c95da99dba", "status": "indexed", "revision": 1, "previousRevision": null, "chunks": 1, "tokens": 7, "warnings": ["extension (none) treated as plain text", "no heading
+[PASS] static file traversal is refused — status=404
+[PASS] oversized request body is rejected or truncated safely — status=400, message=question is too long
+[PASS] quarantined instruction never becomes an answer — status=200, answerStatus=abstained
+[PASS] jailbreak request is flagged and obeys nothing — status=200, answerStatus=answered, warnings=['possible_meta_disclosure', 'quarantined_instruction_like_content']
+[PASS] X-Content-Type-Options: nosniff — nosniff
+[PASS] CORS is not a wildcard — None
+[PASS] cache-control on API responses — no-store
+[PASS] OpenAPI document does not leak the API key — status=200
+[PASS] event log does not leak the API key — status=200
+[PASS] a principal in another tenant sees no local sources — status=200, sources=0
+
+security matrix: 22/22 rows passed → docs/final_qualification/security_matrix.json
+GATE security-matrix: PASS
+
+===== recovery =====
+[PASS] baseline ingest — 14 sources, 66 chunks
+[PASS] online backup while the engine is open — 792 KB in /tmp/recovery-mmx65h_y/backup/ragformation.db
+[PASS] restored index reports healthy — {"ok": true, "service": "ragformation", "version": "0.2.0", "apiVersion": "1", "eventSchemaVersion": "1.0", "sources": 14, "chunks": 66, "vectors": 66, "lexical
+[PASS] restored index answers identically — 5/5 answers byte-identical
+[PASS] restored index keeps chunk ids (citations still resolve) — citation chunk ids unchanged
+[PASS] restored index has the same chunk count — 66 chunks (baseline 66)
+[PASS] rebuild keeps the chunk set stable — 66 -> 66 chunks; rebuild={"chunks": 66, "sources": 14, "ms": 4.475, "embedding": {"provider": "hashing", "model": "hashing-lexical-v1",
+[PASS] rollback restores the previous index generation — 66 -> 66 chunks; rollback={"restored": 66, "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=
+[PASS] answers survive rebuild + rollback — 5/5 identical
+[PASS] ingest killed mid-flight (SIGKILL, not a clean exit) — returncode=-9
+[PASS] interrupted database passes integrity_check — integrity_check=ok, sources=284
+[PASS] re-ingest after an interruption succeeds — embedding: hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2 (semantic=False)
+[PASS] recovered index answers correctly — 400 chunks, status=answered
+[PASS] no duplicated sources after retry — 400 sources
+
+wrote docs/final_qualification/evidence/recovery_report.json
+recovery: 14/14 checks passed
+GATE recovery: PASS
+
+===== live-provider-gate =====
+live provider: BLOCKED
+  - no Ollama endpoint at http://127.0.0.1:11434 (URLError: <urlopen error [Errno 111] Connection refused>)
+  - no OPENAI_API_KEY in the environment
+  - no GPU and no local weights: a model cannot be installed here (no /dev/dri, no model host reachable)
+nothing about neural generation is claimed; see docs/final_qualification/live_llm_validation.md
+  (exit 2 = blocked, which is the expected result here)
+GATE live-provider-gate: PASS
+
+===== experience-matrix =====
+== experience matrix 20261105T155618Z ==
+node: v22.22.3   jsdom: installing into /tmp/experience-qRerUs (not committed)
+jsdom: 31.0.0
+[PASS] webgl2: renderer reports a mode — webgl
+[PASS] webgl2: every scene renders without throwing
+[PASS] webgl2: scenes rendered — 16/16
+[PASS] webgl2: GPU path issues draw calls — 16 drawArrays
+[PASS] webgl1: renderer reports a mode — webgl
+[PASS] webgl1: every scene renders without throwing
+[PASS] webgl1: scenes rendered — 16/16
+[PASS] webgl1: GPU path issues draw calls — 16 drawArrays
+[PASS] canvas2d: renderer reports a mode — canvas2d
+[PASS] canvas2d: every scene renders without throwing
+[PASS] canvas2d: scenes rendered — 16/16
+[PASS] canvas2d: canvas2d path issues draw operations — 13871 ops
+[PASS] no-context: renderer reports a mode — none
+[PASS] no-context: every scene renders without throwing
+[PASS] no-context: scenes rendered — 16/16
+[PASS] no-context: no-context path degrades without drawing — transcript only
+[PASS] sixteen scenes are defined — 16
+[PASS] every scene carries narration text for the transcript — caption + detail per scene
+[PASS] every scene carries a caption and a title
+[PASS] transcript lists every scene — 16
+[PASS] transcript lines are text, not markup
+[PASS] canvas is decorative and the transcript carries the meaning — canvas aria-hidden
+[PASS] page announces updates politely
+[PASS] page exposes the transcript as a list to assistive tech — ordered list inside a labelled section
+[PASS] page honours prefers-reduced-motion in CSS
+[PASS] page honours forced colours
+[PASS] page keeps a visible focus ring
+[PASS] page loads no third-party script or style
+[PASS] page documents its own fallback
+[PASS] webgl2 selects the GPU path — webgl
+[PASS] webgl1 also selects the GPU path — webgl
+[PASS] missing WebGL falls back to canvas2d — canvas2d
+[PASS] missing every context degrades to none — none
+
+experience matrix: 33/33 checks passed
+physical GPU: NOT verified in this sandbox (no /dev/dri, no nvidia-smi) — blocked, not claimed
+exit: 0
+GATE experience-matrix: PASS
+
+===== semantic-benchmark =====
+running lexical-bm25 ...
+running dense-hashing ...
+running dense-lsa ...
+running hybrid-hashing ...
+running hybrid-lsa ...
+config            v2 pass  v1 pass  v1 ndcg  paraphr  exact+struct  abstain  p50 ms
+lexical-bm25      28/46     5/14     0.1743   2/3         3/5       9/9        7.1
+dense-hashing     43/46    14/14     0.9513   2/3         4/5       8/9        8.6
+dense-lsa         44/46    13/14     0.8955   3/3         5/5       7/9       20.5
+hybrid-hashing    45/46    14/14     0.9513   3/3         5/5       8/9       10.7
+hybrid-lsa        44/46    13/14     0.9048   3/3         5/5       7/9       21.0
+wrote docs/final_qualification/semantic_bench.json
+GATE semantic-benchmark: PASS
+
+===== scale-5k-10k =====
+ 5000 requested ->  4375 chunks /  625 sources | ingest   9.38s (  466.5 chunks/s) | query p50 146.71ms p95 165.68ms | answers 10/10 | db 44708KB
+10000 requested ->  8750 chunks / 1250 sources | ingest  35.45s (  246.8 chunks/s) | query p50 414.77ms p95 437.09ms | answers 10/10 | db 85730KB
+
+wrote 2 report(s) under docs/final_qualification/evidence/scale
+GATE scale-5k-10k: PASS
+
+===== host-fixtures =====
+== host fixtures 20261105T155755Z ==
+repo: /home/user/rag-formation   work: /tmp/hosts-uuM0Bs
+wheel: ragformation-0.2.0-py3-none-any.whl (168K)
+ragformation 0.2.0 serving on http://127.0.0.1:18603
+  embedding: hashing/hashing-lexical-v1 (semantic=False, d=512)
+  generation: extractive/extractive-synthesis-v1 (mode=extractive)
+  index: 66 chunks from 14 sources
+  security: host-authenticated — host principal header trusted behind proxy; API key required from the host
+  console: http://127.0.0.1:18603/  ·  experience: /experience
+  api: /api/v1 (contract at /api/v1/openapi.json)
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+engine: pid 6623 on 18603
+
+-- A python-wheel-host
+[PASS] import resolves to the installed wheel, not the checkout — /tmp/hosts-uuM0Bs/hostA/lib/python3.11/site-packages/ragformation/__init__.py
+[PASS] package version — 0.2.0
+[PASS] corpus files available to the host — 14 files
+[PASS] ingest through the installed package — 14 indexed, 66 chunks
+[PASS] answer is grounded — answered
+[PASS] answer cites a chunk — 1 citations
+[PASS] answer states the fact — Audit logs are retained for **400 days** total, because the security team needs a full ann
+[PASS] answer names the source
+[PASS] off-corpus question abstains — abstained
+[PASS] installed server starts and reports healthy — http://127.0.0.1:41623/healthz
+[PASS] HTTP ask returns an answer — answered
+[PASS] HTTP ask returns citations — 1 citations
+[PASS] HTTP ask reports the evidence it used — 12 chunks
+
+host A: 13/13 checks passed
+RESULT A python-wheel-host: PASS
+ * Serving Flask app 'flask_host'
+ * Debug mode: off
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:18604
+[33mPress CTRL+C to quit[0m
+
+-- B flask-host
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+127.0.0.1 - - [05/Nov/2026 15:58:09] "POST /ask HTTP/1.1" 200 -
+flask ask: {"answer":"Audit logs are retained for **400 days** total, because the security team needs a full annual review window plus a buffer. [1]","citations":[{"section":"2. Retention Periods","title":"data-retention-policy"}],
+127.0.0.1 - - [05/Nov/2026 15:58:09] "[31m[1mPOST /ask HTTP/1.1[0m" 401 -
+flask without session -> 401
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+127.0.0.1 - - [05/Nov/2026 15:58:09] "GET /healthz HTTP/1.1" 200 -
+{"engine":null,"engineHttp":200,"host":"ok"}
+
+RESULT B flask-host: PASS
+
+-- C fastapi-host
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+fastapi ask: {"question":"What availability SLO does the ingest-api commit to?","status":"answered","answer":"ingest-api — availability (slo): 99.95% [2]","citations":[{"title":"service-catalog","section":"services: ingest-api"}]}
+fastapi SSE relay (first bytes):
+[ragformation] "GET /api/v1/events HTTP/1.1" 200 -
+retry: 2000
+
+event: rag
+data: {"schemaVersion":"1.0","eventId":"evt-29eb821d85af","traceId":"q-4e71eadd4b97","sequence":1,"timestamp":"2026-11-05T15:58:09.264Z","operationId":null,"stage":"query.received","status":"started","durationMs":null,"counts":{"topK":6
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+fastapi narrowed scope: {"question":"How long are audit logs retained?","status":"abstained","answer":"I could not find this in the indexed sources: retrieval returned no passages at all. This is a statement about the indexe
+RESULT C fastapi-host: PASS
+
+-- D node-host
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+[PASS] health endpoint reachable — status=undefined
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+[PASS] ask returns 200 — status=answered
+[PASS] ask is grounded in evidence — 12 chunks
+[PASS] answer states the fact — Audit logs are retained for **400 days** total, because the security team needs 
+[PASS] citations present — 1
+[PASS] every citation resolves to delivered evidence — src-43ebe09559#c002-64614a26
+[ragformation] "GET /api/v1/events HTTP/1.1" 200 -
+[PASS] event stream returns 200 — status=200
+[PASS] event stream is text/event-stream — text/event-stream; charset=utf-8
+[PASS] event stream delivered frames — 65 frames
+[ragformation] "POST /api/v1/ask HTTP/1.1" 200 -
+[PASS] off-corpus question abstains — status=abstained
+[ragformation] "POST /api/v1/ask HTTP/1.1" 401 -
+[PASS] missing API key is rejected — status=401
+[ragformation] "GET /healthz HTTP/1.1" 200 -
+[PASS] healthz without a principal still works (liveness) — status=200
+
+host D: all checks passed
+RESULT D node-host: PASS
+[ragformation] code 400, message Bad request version ('retained?"}')
+[ragformation] "{"question":"How long are audit logs retained?"}" 400 -
+
+-- E unrelated-repo
+import path: /tmp/hosts-uuM0Bs/unrelated-repo/.venv/lib/python3.11/site-packages/ragformation/__init__.py
+ingested: 1 sources, 1 chunks
+status: answered
+answer: Releases are frozen during the audit window for 48 hours. [1]
+citations: 1
+unrelated-repo smoke: OK
+RESULT E unrelated-repo: PASS
+
+== summary: 5/5 hosts passed ==
+GATE host-fixtures: PASS
+
+== local gates finished: 0 gate(s) failed ==

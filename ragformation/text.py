@@ -66,12 +66,20 @@ def stem(token: str) -> str:
     Not a linguistics engine: it exists so "deleted"/"deletion" or
     "backups"/"backup" line up during coverage scoring. Both sides are stemmed,
     so consistency matters more than grammatical correctness.
+
+    A trailing "e" is also dropped on longer tokens, which is what makes verb
+    forms agree: "restoring" -> "restor" and "restore" -> "restor",
+    "rehearsed" -> "rehears" and "rehearse" -> "rehears". Without it a question
+    phrased as a verb missed the document that used another form of the same
+    verb, which is a common and entirely lexical failure.
     """
     if len(token) <= 5:
         return token
     for suffix in _STEM_SUFFIXES:
         if token.endswith(suffix) and len(token) - len(suffix) >= 4:
             return token[: -len(suffix)]
+    if len(token) > 5 and token.endswith("e"):
+        return token[:-1]
     return token
 
 
@@ -99,7 +107,15 @@ class TextSignals:
     __slots__ = ("raw", "stems", "prefixes")
 
     def __init__(self, tokens: Iterable[str]) -> None:
-        self.raw = set(tokens)
+        raw = set(tokens)
+        # A hyphenated identifier is also its parts: "platform-team" must satisfy
+        # the question term "team", and "ingest-api" the term "api". The whole
+        # token is kept as well, so an exact-identifier query still ranks the
+        # exact token highest.
+        for token in list(raw):
+            if "-" in token:
+                raw.update(part for part in token.split("-") if part)
+        self.raw = raw
         self.stems = {stem(token) for token in self.raw}
         self.prefixes = {
             token[:length] for token in self.raw for length in range(4, len(token) + 1)
@@ -137,6 +153,19 @@ def matched_terms_signals(query_terms: Iterable[str], signals: TextSignals) -> s
                 if signals.has_exact(joined):
                     found.add(first)
                     found.add(second)
+    # A query compound may be written apart in the passage ("rollback" vs
+    # "rolled back"). Splitting the unmatched compound and requiring *both*
+    # halves to match keeps this safe: random splits of unrelated words fail
+    # because one half finds nothing.
+    if len(found) < len(terms):
+        for term in terms:
+            if term in found or len(term) < 8:
+                continue
+            for split in range(4, len(term) - 3):
+                left, right = term[:split], term[split:]
+                if signals.matches(left) and signals.matches(right):
+                    found.add(term)
+                    break
     return found
 
 

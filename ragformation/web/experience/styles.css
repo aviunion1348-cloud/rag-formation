@@ -757,3 +757,29 @@ body[data-reduced-motion="true"] .grain {
     color: #222;
   }
 }
+
+/* ------------------------------------------------------------------ forced colours
+   Windows high-contrast users get system colours; the scene canvas is
+   decorative, so it is hidden and the transcript (always present, always text)
+   becomes the primary channel. This is a rendering-mode statement, not a new
+   feature: the same content was already in the DOM. */
+@media (forced-colors: active) {
+  #stage {
+    display: none;
+  }
+
+  .card,
+  .panel,
+  .side,
+  .transcript {
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+
+  .icon:focus-visible,
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid Highlight;
+  }
+}

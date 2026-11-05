@@ -27,7 +27,7 @@ acceptance scenario itself was executed.
 | CLI | verified | `cli.py` | `test_evaluation_and_cli.py::CliTests` | |
 | Metrics (mean/p50/p95, TTFT, ITL) | verified | `metrics.py`, `queries` table | `test_guardrails.py::MetricsTests`, `stats` output | Percentiles over the recorded window only |
 | Golden evaluation (v1, frozen gate) | verified | `evaluation.py`, `evals/golden.json` | 14/14 cases; `docs/evaluation.md` §1–7 | Small synthetic set |
-| Evaluation v2 (46 cases, splits, ablations) | verified | `evaluation_v2.py`, `evals/golden_v2.json` | 39/46; `docs/evaluation.md` §8; `evals/results/golden-v2-hashing-extractive.json` | 7 known failures with lexical embeddings; labels are single-author |
+| Evaluation v2 (46 cases, splits, ablations) | verified | `evaluation_v2.py`, `evals/golden_v2.json` | **45/46** after the qualification fixes (`docs/final_qualification/golden_v2_report.json`); the pre-fix baseline was 39/46 (`evals/results/qualification/golden-v2-baseline.json`) | One known failure (`t23-off-scope`), analysed in `docs/final_qualification/evaluation_v2_failure_analysis.md` §4; labels are single-author |
 | Health / doctor / rebuild | verified | `engine.health`, `doctor`, `rebuild` | `test_engine_e2e.py::test_missing_vector_is_detected_by_health`, `test_rebuild_re_embeds_without_losing_chunks` | |
 | Crash recovery | verified | job recovery + transactional writes | `test_interrupted_job_is_marked_failed_on_startup` | Not tested against a real kill -9 |
 | Documentation set | verified | `README.md`, `docs/`, `SECURITY.md` | this file; `docs/events.md`, `docs/integration.md`, `docs/experience.md`, `docs/benchmarks.md`, `docs/post_merge_audit.md` | |
@@ -55,6 +55,7 @@ python3 -m ragformation ask "How long are audit logs retained?"   → answered, 
 python3 -m ragformation ask "…lunar payload insurance?"           → abstained
 python3 -m ragformation eval --v1                       → 14/14, recall 1.0, MRR 1.0, nDCG 0.952
 python3 -m ragformation eval                            → 39/46 (report only), listed failures
+                                                        (pre-qualification run; see the ledger entry below)
 python3 -m ragformation eval --gate calibration --min-pass-rate 1.0 → gate held (12/12)
 python3 scripts/bench_scale.py --chunks 100 500 1000    → 91/441/875 chunks, p50 10.8/24.5/42.5 ms
 node tests/experience_contract.mjs                      → 39 checks passed
@@ -63,6 +64,25 @@ python scripts/record_experience_demo.py                → fixture re-recorded 
 bash integrations/curl/quickstart.sh                    → all steps passed against a keyed server
 build wheel → install in clean venv                     → /experience served, cited answer produced
 ```
+
+## Qualification re-run (2026-11-05)
+
+The ledger above records the state at merge. The independent qualification run in
+`docs/final_qualification/` re-executed everything and changed the numbers where
+fixes were made:
+
+```text
+python3 -m unittest discover -s tests -p 'test_*.py'   → Ran 160 tests ... OK
+python3 -m ragformation eval                            → 45/46 (canonical matcher), 44/46 (legacy)
+python3 -m ragformation eval --dataset evals/holdout_v3.json → 12/12 (first run 11/12)
+python3 -m ragformation eval --dataset evals/holdout_v4.json → 7/8
+python3 scripts/security_matrix.py                      → 22/22
+python3 scripts/recovery_check.py                       → 14/14
+bash scripts/run_local_gates.sh                         → 16 gates, 0 failed
+```
+
+Start at `docs/final_qualification/final_report.md`; the binding statement of what
+may and may not be claimed is `docs/final_qualification/release_decision.md`.
 
 ## Deliberate deviations from the specification
 

@@ -1,0 +1,98 @@
+{
+  "revision": "holdout-v4-2026-11-05",
+  "notice": "Second frozen holdout, authored after holdout v3 exposed a defect (a bare digit inside an identifier satisfied the temporal answer-shape rule). These eight cases were written after that fix and had never been executed when they were written. They are run once; the result is reported as-is. Holdout v3's own first-run score (11/12) remains on the record in docs/final_qualification/acceptance_matrix.md, and the fix it motivated is disclosed there.",
+  "corpusNote": "14 synthetic documents, invented for this project. Nothing here is real policy.",
+  "splits": {
+    "holdout": "frozen validation cases, single run, no tuning afterwards"
+  },
+  "cases": [
+    {
+      "id": "h13-secondary-page",
+      "split": "holdout",
+      "category": "direct",
+      "question": "What happens if the primary on-call does not acknowledge a page in time?",
+      "expectedSources": [
+        "oncall-handbook"
+      ],
+      "mustContain": [
+        "secondary"
+      ]
+    },
+    {
+      "id": "h14-vendor-retention-clause",
+      "split": "holdout",
+      "category": "paraphrase",
+      "question": "What does a vendor agreement have to specify about keeping data?",
+      "expectedSources": [
+        "Vendor Onboarding Requirements"
+      ],
+      "mustContain": [
+        "retention limits"
+      ]
+    },
+    {
+      "id": "h15-insights-slo",
+      "split": "holdout",
+      "category": "structured",
+      "question": "Which availability value is recorded for insights-worker?",
+      "expectedSources": [
+        "service-catalog"
+      ],
+      "mustContain": [
+        "99.5"
+      ]
+    },
+    {
+      "id": "h16-key-rotation",
+      "split": "holdout",
+      "category": "direct",
+      "question": "How frequently is the backup encryption key rotated?",
+      "expectedSources": [
+        "backup-restore-runbook"
+      ],
+      "mustContain": [
+        "annually"
+      ]
+    },
+    {
+      "id": "h17-backup-purge",
+      "split": "holdout",
+      "category": "multihop",
+      "question": "How long after contract termination do a tenant's backups disappear?",
+      "expectedSources": [
+        "backup-restore-runbook",
+        "data-retention-policy"
+      ],
+      "mustContain": [
+        "44 days"
+      ]
+    },
+    {
+      "id": "h18-audit-no-conflict",
+      "split": "holdout",
+      "category": "conflict",
+      "question": "How long does the retention policy keep audit logs?",
+      "expectedSources": [
+        "data-retention-policy"
+      ],
+      "expectConflict": false,
+      "mustContain": [
+        "400 days"
+      ]
+    },
+    {
+      "id": "h19-off-corpus-chemistry",
+      "split": "holdout",
+      "category": "no-answer",
+      "question": "At what temperature does water boil at sea level?",
+      "expectAbstain": true
+    },
+    {
+      "id": "h20-off-corpus-currency",
+      "split": "holdout",
+      "category": "no-answer",
+      "question": "What is the current exchange rate between the euro and the yen?",
+      "expectAbstain": true
+    }
+  ]
+}

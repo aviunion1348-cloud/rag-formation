@@ -545,7 +545,10 @@ def make_handler(api: Api, settings: Settings):
             self.send_header("X-Request-Id", getattr(self, "request_id", "-"))
             self.send_header("X-Content-Type-Options", SECURITY_HEADERS["X-Content-Type-Options"])
             for key, value in SECURITY_HEADERS.items():
-                if key in {"X-Content-Type-Options", "Cache-Control"}:
+                # X-Content-Type-Options is already sent above for every response;
+                # Cache-Control is sent here so API payloads (which carry document
+                # text) are never stored by an intermediary.
+                if key == "X-Content-Type-Options":
                     continue
                 self.send_header(key, value)
             for key, value in (extra or {}).items():

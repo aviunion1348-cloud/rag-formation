@@ -58,7 +58,7 @@ from .metrics import summarize
 from .retrieval import Candidate, Retriever, assemble_context, dedupe_overlaps
 from .store import Store, StoredChunk, now_iso, pack_vector
 from .events import EVENT_SCHEMA_VERSION, EventBus, make_event
-from .text import content_terms, sha256_hex, split_sentences
+from .text import TextSignals, content_terms, matched_terms, sha256_hex, split_sentences, tokenize
 
 
 from .contracts import Citation  # noqa: E402  (public type, single definition)
@@ -992,7 +992,9 @@ class RAGEngine:
         # Conflict detection runs over the *assembled evidence*, not only over the
         # sentences the generator happened to cite: a contradiction that exists in
         # the authorised context must surface even if the answer quoted one side.
-        conflict = self._detect_conflict(citations, []) or self._conflict_from_evidence(selected)
+        conflict = self._detect_conflict(
+            citations, [], question=question, selected=selected
+        ) or self._conflict_from_evidence(selected, question=question)
         status = AnswerStatus.ANSWERED.value
         if conflict:
             status = AnswerStatus.NEEDS_REVIEW.value
@@ -1135,7 +1137,9 @@ class RAGEngine:
             return 0.0
         return round(sum(1 for claim in claims if claim.citations) / len(claims), 3)
 
-    def _conflict_from_evidence(self, selected: Sequence[Candidate]) -> Optional[Dict[str, Any]]:
+    def _conflict_from_evidence(
+        self, selected: Sequence[Candidate], *, question: str = ""
+    ) -> Optional[Dict[str, Any]]:
         """Numeric contradiction across two selected chunks (authorised context only)."""
 
         pseudo: List[Citation] = []
@@ -1152,7 +1156,7 @@ class RAGEngine:
                     support=float(candidate.support or 0.0),
                 )
             )
-        return self._detect_conflict(pseudo, [])
+        return self._detect_conflict(pseudo, [], question=question, selected=selected)
 
     def _conflict_note(self, conflict: Dict[str, Any]) -> str:
         parts = []
@@ -1220,7 +1224,12 @@ class RAGEngine:
         return merged
 
     def _detect_conflict(
-        self, citations: Sequence[Citation], evidence: Sequence[Dict[str, Any]]
+        self,
+        citations: Sequence[Citation],
+        evidence: Sequence[Dict[str, Any]],
+        *,
+        question: str = "",
+        selected: Sequence[Candidate] = (),
     ) -> Optional[Dict[str, Any]]:
         """Flag contradictory statements about the *same subject and unit*.
 
@@ -1234,7 +1243,13 @@ class RAGEngine:
         * two different *sources* must be involved (a single document disagreeing
           with itself is a document bug, reported separately);
         * the system never averages or picks a winner: it returns both values
-          with provenance and a ``needs_review`` status.
+          with provenance and a ``needs_review`` status;
+        * when the question is supplied, the contradiction must concern the
+          question: the two statements must share at least two of the question's
+          own content terms, or one term that is rare in the assembled evidence.
+          Two documents disagreeing about access-review retention is a real
+          contradiction, but it is not an answer to "how long is configuration
+          state kept in backups?", and surfacing it as one is a false alarm.
         """
 
         pattern = re.compile(
@@ -1259,6 +1274,13 @@ class RAGEngine:
 
         def anchors(sentence: str) -> set:
             return {token.lower() for token in anchor_pattern.findall(sentence)}
+
+        # If the *question* names an entity (svc-001, MACRO-BILLING-01), a
+        # contradiction only counts when both statements are about that entity.
+        # Without this, two different services that happen to phrase the same
+        # availability sentence differently look like a disagreement about the
+        # one service the caller asked about.
+        question_anchors = anchors(question) if question else set()
 
         def facts(citation: Citation) -> List[Dict[str, Any]]:
             out: List[Dict[str, Any]] = []
@@ -1291,6 +1313,33 @@ class RAGEngine:
                     )
             return out
 
+        # Question relevance: which question terms are distinctive here? A term
+        # that most assembled passages contain cannot tell a contradiction about
+        # the question from a contradiction about something else.
+        question_terms = set(content_terms(question)) if question else set()
+        distinctive: set = set()
+        if question_terms and selected:
+            document_frequency = {term: 0 for term in question_terms}
+            for candidate in selected:
+                signals = TextSignals(tokenize(candidate.chunk.text))
+                for term in question_terms:
+                    if signals.matches(term):
+                        document_frequency[term] += 1
+            # "Distinctive" means confined to a quarter of the assembled
+            # evidence: a term in half the passages cannot tell a contradiction
+            # about the question from one about something else.
+            ceiling = max(1, len(selected) // 4)
+            distinctive = {term for term, df in document_frequency.items() if df and df <= ceiling}
+
+        def about_the_question(shared: set) -> bool:
+            if not question_terms:
+                return True
+            # Stem/plural tolerant: "access reviews" in the question must match
+            # "access review" in the statements, otherwise a genuine
+            # contradiction is dismissed over a plural.
+            cited = set(matched_terms(question_terms, shared))
+            return len(cited) >= 2 or bool(cited & distinctive)
+
         all_facts: List[Dict[str, Any]] = []
         for citation in citations:
             all_facts.extend(facts(citation))
@@ -1311,6 +1360,12 @@ class RAGEngine:
                 smaller = max(1, min(len(left["terms"]), len(right["terms"])))
                 if len(overlap) / smaller < 0.6:
                     continue  # different subjects: not a contradiction
+                if not about_the_question(overlap):
+                    continue  # real contradiction, but about another question
+                if question_anchors and not (
+                    question_anchors & left_anchors and question_anchors & right_anchors
+                ):
+                    continue  # the question names an entity one side never mentions
                 return {
                     "unit": left["unit"],
                     "statements": [

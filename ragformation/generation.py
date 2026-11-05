@@ -18,6 +18,7 @@ which fallback (if any) produced the answer.
 from __future__ import annotations
 
 import json
+import math
 import re
 import time
 import urllib.error
@@ -31,7 +32,14 @@ from .errors import ProviderError, ProviderUnavailable
 from .guardrails import redact_credentials
 from .metrics import StreamTiming
 from .prompts import INSUFFICIENT_EVIDENCE, build_messages
-from .text import approx_tokens, content_terms, matched_terms, split_sentences, tokenize
+from .text import (
+    TextSignals,
+    approx_tokens,
+    content_terms,
+    matched_terms,
+    split_sentences,
+    tokenize,
+)
 
 EXTRACTIVE_ID = "extractive-synthesis-v1"
 TokenCallback = Optional[Callable[[str], None]]
@@ -300,10 +308,12 @@ class ExtractiveGenerator:
     facts or follow injected instructions; it can only quote what retrieval
     found, which is exactly the behaviour a reviewer can verify.
 
-    Sentence selection is deliberately strict: a sentence must share at least
-    two content terms with the question (or half of them), must be a complete
-    sentence, and heading-like lines are dropped first. A question asking "how
-    long" gets a bonus for sentences that contain a number.
+    Selection is scored, not first-match: question terms are weighted by how
+    rare they are *inside the retrieved evidence* (the topic word cannot
+    discriminate between passages), the question's answer type (a duration, an
+    owner) is required of the quoted sentence, and sentences that only restate
+    the question are penalised. Structured ``record — field: value`` lines are
+    quoted whole so the record's identity travels with the value.
     """
 
     name = "extractive"
@@ -326,44 +336,49 @@ class ExtractiveGenerator:
         history: Sequence[Dict[str, str]] = (),
     ) -> GenerationOutput:
         timing = StreamTiming()
-        question_terms = set(content_terms(question))
-        wants_quantity = bool(
-            re.search(
-                r"\b(how (long|many|much|quickly|fast|soon)|when|days?|hours?|minutes?|"
-                r"retention|limit|cost|duration)\b",
-                question,
-                re.I,
-            )
-        )
+        question_terms = list(dict.fromkeys(content_terms(question)))
+        weights = _question_term_weights(question_terms, evidence)
+        total_weight = sum(weights.values()) or 1.0
+        shape = _answer_shape(question)
+
         scored: List[tuple[float, str, int]] = []
         for item in evidence[:5]:
-            best: Optional[tuple[float, str]] = None
             for sentence in _quotable_sentences(item["text"]):
                 terms = set(content_terms(sentence))
                 overlap = matched_terms(question_terms, terms)
                 if not overlap:
                     continue
-                ratio = len(overlap) / max(1, len(question_terms))
-                if len(overlap) < 2 and ratio < 0.5:
+                mass = sum(weights.get(term, 1.0) for term in overlap)
+                coverage = mass / total_weight
+                fits = bool(shape and shape.search(sentence))
+                # One matched term is usually a coincidence ("life" in "life of
+                # the contract"), unless it is a rare term *and* the sentence
+                # has the shape the question asks for (a duration, an owner).
+                if len(overlap) == 1 and coverage < 0.34 and not fits:
                     continue
-                score = ratio + 0.05 * min(4, len(overlap))
-                if wants_quantity and re.search(r"\d", sentence):
-                    score += 0.25
-                # Identifiers (MACRO-AUTH-02, SEV-1, p95) are the strongest
-                # possible signal: if the question names one, prefer the
-                # sentence that contains it.
+                score = coverage + 0.08 * min(4, len(overlap))
+                if shape is not None:
+                    if fits:
+                        score += 0.55
+                    elif shape.strict:
+                        score -= 0.25
+                # Identifiers named in the question (MACRO-BILLING-01, SEV-1,
+                # p95) are the strongest possible signal.
                 if any(re.search(r"\d", term) for term in overlap):
                     score += 0.35
-                if best is None or score > best[0]:
-                    best = (score, sentence)
-            if best is not None:
-                scored.append((best[0], best[1], item["id"]))
+                # A sentence built only from the question's own words restates
+                # the topic instead of answering it ("Production deploys use the
+                # blue/green model." for "when is a deploy promoted?").
+                if _novel_terms(terms, question_terms) <= 2:
+                    score -= 0.15
+                scored.append((score, sentence, item["id"]))
 
         # Keep the strongest pick plus only the picks that are genuinely close
         # to it: three mediocre quotations read like a document dump.
         scored.sort(key=lambda row: -row[0])
         picks: List[str] = []
         seen: List[set] = []
+        covered: set = set()
         for score, sentence, item_id in scored:
             if picks and score < scored[0][0] - 0.18:
                 break
@@ -372,7 +387,13 @@ class ExtractiveGenerator:
             signature = set(tokenize(sentence))
             if any(len(signature & other) / max(1, len(signature | other)) > 0.8 for other in seen):
                 continue
+            # A quote that adds no new content ("id: MACRO-AUTH-02" after the
+            # title and steps) is filler: it lengthens the answer without adding
+            # evidence, so it is dropped.
+            if picks and len(signature - covered) < 3:
+                continue
             seen.append(signature)
+            covered |= signature
             picks.append(f"{sentence.rstrip()} [{item_id}]")
 
         if not picks:
@@ -396,17 +417,133 @@ class ExtractiveGenerator:
         )
 
 
-def _quotable_sentences(text: str) -> List[str]:
-    """Drop heading/label lines, then split into complete sentences.
+def _question_term_weights(question_terms: Sequence[str], evidence: Sequence[Dict[str, Any]]) -> Dict[str, float]:
+    """Rarity of each question term *inside the retrieved evidence*.
 
-    Chunks carry their section heading inside the text (useful for lexical
-    matching), but a heading is not an answer sentence. Removing short lines
-    that do not end in punctuation keeps citations readable.
+    A term that appears in every retrieved passage is the topic, not the answer:
+    "deploy" and "blue/green" are in the question and in the passage that merely
+    restates it. A term confined to one passage ("promoted", "minutes") is the
+    discriminating one. Weights are computed per query from the evidence in
+    front of the generator, so nothing is tuned to a fixed corpus.
+    """
+    if not question_terms:
+        return {}
+    passages = [TextSignals(tokenize(str(item.get("text") or ""))) for item in evidence[:5]]
+    total = max(1, len(passages))
+    weights: Dict[str, float] = {}
+    for term in question_terms:
+        df = sum(1 for passage in passages if passage.matches(term))
+        weights[term] = round(1.0 + math.log((total + 1.0) / (df + 0.5)), 4)
+    return weights
+
+
+def _novel_terms(sentence_terms: set, question_terms: Sequence[str]) -> int:
+    """How many of the sentence's terms the question does not already contain."""
+    novel = 0
+    for term in sentence_terms:
+        if not matched_terms([term], question_terms):
+            novel += 1
+    return novel
+
+
+#: A *quantity* the answer must contain: a number with a unit, or a frequency
+#: word. A bare digit is not a quantity — "SEV-1" and "svc-042" contain digits but
+#: say nothing about duration, and treating them as a match let a sentence that
+#: merely restates the question look like a temporal answer.
+_UNIT = (
+    r"(?:percent|days?|hours?|minutes?|mins?|seconds?|secs?|weeks?|months?|years?|"
+    r"quarters?|ms|milliseconds?)"
+)
+_QUANTITY_RE = re.compile(
+    rf"\b\d+(?:[.,]\d+)?[\s-]*(?:%|(?:business\s+|working\s+)?{_UNIT}\b)"
+    rf"|\b(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fifteen|twenty|thirty|forty|"
+    rf"fifty|sixty|ninety|hundred)\s+(?:(?:business|working)\s+)?{_UNIT}\b"
+    rf"|\b(?:daily|weekly|monthly|quarterly|annual(?:ly)?|hourly|yearly|half day|immediately)\b",
+    re.I,
+)
+
+_ENTITY_RE = re.compile(
+    r"\b[A-Za-z0-9]+-team\b|\b(?:owner|owned|oncall|team|squad|responsible)\b\s*[:=]", re.I
+)
+
+
+class _AnswerShape:
+    """A sentence shape the question asks for, plus how strictly to enforce it.
+
+    ``strict`` shapes (a magnitude was requested: "how long", "what is the
+    window") also *penalise* sentences without the shape, because a sentence
+    with more shared words but no number is almost always the topic restated.
+    ``soft`` shapes (temporal "when ...", ownership) only reward a fitting
+    sentence: penalising there would punish, for example, the procedural answer
+    to "what happens when a break-glass account is used?".
+    """
+
+    __slots__ = ("pattern", "kind", "strict")
+
+    def __init__(self, pattern, kind: str, strict: bool) -> None:
+        self.pattern = pattern
+        self.kind = kind
+        self.strict = strict
+
+    def search(self, sentence: str):
+        return self.pattern.search(sentence)
+
+
+_TEMPORAL_RE = re.compile(
+    _QUANTITY_RE.pattern + r"|\b(?:immediately|immediate|within|after|following|pending|until)\b",
+    re.I,
+)
+
+
+def _answer_shape(question: str) -> Optional[_AnswerShape]:
+    """The shape an answer sentence should have, inferred from the question.
+
+    Extractive answers otherwise drift towards the sentence with the most shared
+    words, which is usually the definition that restates the question.
+    """
+    if re.search(
+        r"\b(?:how (?:long|many|much|quickly|fast|soon|often)|window|period|deadline|"
+        r"ttl|retention|limit|duration|budget|quota|timeout|interval|cost|rate|sla|slo)\b",
+        question,
+        re.I,
+    ):
+        return _AnswerShape(_QUANTITY_RE, "magnitude", True)
+    if re.search(r"\bwhen\b", question, re.I):
+        return _AnswerShape(_TEMPORAL_RE, "temporal", False)
+    if re.search(r"\b(who|whom|which team|which squad|owner|owns|responsible|oncall)\b", question, re.I):
+        return _AnswerShape(_ENTITY_RE, "owner", False)
+    return None
+
+
+_RECORD_LINE_RE = re.compile(
+    r"^(?:[-*+]\s*)?(?P<label>[^—]{1,80}?)\s+—\s+(?P<field>[A-Za-z0-9_. ()]{1,40}):\s+(?P<value>.+)$"
+)
+
+
+def _quotable_sentences(text: str) -> List[str]:
+    """Evidence that can be quoted verbatim, in document order.
+
+    Two shapes are quotable:
+
+    * prose sentences (headings and label lines are dropped — a heading is not
+      an answer), and
+    * structured ``record — field: value`` lines, kept **whole**. Sentence
+      splitting inside such a line would strip the record label from every
+      sentence after the first, and an unattributed value ("5 business days")
+      is exactly the kind of unfalsifiable quote this system must not produce.
     """
     kept: List[str] = []
+    records: List[tuple] = []
     for line in text.split("\n"):
         stripped = line.strip()
         if not stripped:
+            continue
+        record = _RECORD_LINE_RE.match(stripped)
+        if record:
+            value = " ".join(record.group("value").split())
+            label = " ".join(record.group("label").split()).lstrip("-*+ ").strip()
+            field = record.group("field").strip()
+            records.append((len(kept), f"{label} — {field}: {value}"))
             continue
         words = stripped.split()
         # Headings and labels are not answer sentences.
@@ -417,6 +554,7 @@ def _quotable_sentences(text: str) -> List[str]:
         if stripped.count("|") >= 2:
             continue
         kept.append(stripped)
+
     sentences = split_sentences(" ".join(kept))
     output: List[str] = []
     for sentence in sentences:
@@ -425,6 +563,10 @@ def _quotable_sentences(text: str) -> List[str]:
         cleaned = re.sub(r"^(?:[-*+]|\d+[.)])\s+", "", cleaned)
         if len(cleaned.split()) >= 6 and cleaned[:1].isupper():
             output.append(cleaned)
+
+    # Re-interleave the record lines with the prose they sat between.
+    for position, record_text in reversed(records):
+        output.insert(min(position, len(output)), record_text)
     return output
 
 
