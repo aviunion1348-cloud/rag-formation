@@ -1,89 +1,135 @@
-$ python3 -m ragformation lear demo director --plain --auto   # default ollama backend, no Ollama here
 -- RAG Formation / Lear Local Agent - DIRECTOR (ollama backend) ------------------------------------
   terminal: no colour, ascii, width 100, motion off (output is not a TTY; --plain)
-
 +--- S00  Boot and trust boundary  [LIVE]
-  CONCEPTUAL EXPLANATION The Lear backend repository is the subject; RAG Formation is the instrument
-    that reads its pinned docs and answers. Model traffic may only go to a loopback Ollama.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Cold open: one real question about the Lear backend. It may be answered only from pinned Lear    |
+| documentation, and an answer counts only if every claim traces to a retrieved chunk and to Lear  |
+| source lines at one commit; without evidence the agent must abstain. The Lear repository is the  |
+| subject; RAG Formation is the instrument. Model traffic may only go to a loopback Ollama.        |
++--------------------------------------------------------------------------------------------------+
+  [RECORDED] the question (golden lear-012): Does `prash run --dry-run` execute the action?
   [ILLUSTRATIVE] system: RAG Formation / Lear Local Agent (the answering system)
   [ILLUSTRATIVE] subject corpus: Lear backend repository, via source-pinned docs in
       docs/lear_backend
-  [LIVE] rag-formation commit: 132838754d0a on arena/d352c257-rag-formation
+  [LIVE] rag-formation commit: 954c8d624515 on arena/227b3998-rag-formation
   [RECORDED] source pin: aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408 (main)
   [LIVE] backend: ollama (qualifying path)
   [LIVE] Ollama endpoint: 127.0.0.1:11434 (loopback: allowed)
   [RECORDED] qualification: BLOCKED
+  Q -> Does `prash run --dry-run` execute the action?
+  rag-formation commit [9][5][4][c][8][d][6][2][4][5][1][5]
+  [ LOOPBACK ONLY ] model traffic may only reach the local Ollama on this machine
+  LIVE ............ measured or returned by this execution
+  RECORDED ........ loaded from a checksum-verified recording (run id, capture time, commit)
+  ILLUSTRATIVE .... explanation or example only, never a measurement
+  UNAVAILABLE ..... this capability or measurement cannot be observed here
+  BLOCKED ......... a dependency, model or environment prerequisite is missing
+  NOT QUALIFYING .. a real result that does not meet the qualification conditions (baseline)
   limitation: Qualification stays BLOCKED until a real local-model run passes doctor, evaluation and
       the judge.
-
 +--- S01  Source-of-truth archaeology  [LIVE]
-  CONCEPTUAL EXPLANATION Every claim in docs/lear_backend cites path:Lx-Ly at one pinned commit. The
-    verifier re-reads the checkout and fails on any stale or invalid reference. Generated pages are
-    regenerated, never hand-edited.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Every claim in docs/lear_backend cites path:Lx-Ly at one pinned commit. The verifier re-reads    |
+| the checkout and fails on any stale or invalid reference. Generated pages are regenerated, never |
+| hand-edited.                                                                                     |
++--------------------------------------------------------------------------------------------------+
   [LIVE] verifier result: PASS: 7/9 checks PASS
   [LIVE] pages: 20 (12 narrative, 8 generated)
   [UNAVAILABLE] pin checked against: no Lear checkout given: pin and line checks are WARN, coverage
       not measured
-  WARN   pin: pinned 60cf9abf8408; source checkout not supplied, so path:line references cannot be
-  verified
-  PASS   required_pages: 13/13 present; 0 below 120 words
-  PASS   links: 26 relative links, 0 broken
-  WARN   source_refs: 1237 references found; not verified (no source)
-  PASS   stale_commits: 0 foreign commit ids; 0 narrative pages without the pinned id
-  PASS   claim_labels: 340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite
-  none)
-  PASS   duplicates: 0 repeated paragraphs; 0 identical chunks of 355
-  PASS   guardrails: 0 of 355 chunks would be quarantined by the injection guard
-  PASS   secrets: 0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold
-  the full commit id)
+  * WARN pin: pinned 60cf9abf8408; source checkout not supplied, so path:line references cannot be
+    verified
+  + PASS required_pages: 13/13 present; 0 below 120 words
+  + PASS links: 26 relative links, 0 broken
+  * WARN source_refs: 1237 references found; not verified (no source)
+  + PASS stale_commits: 0 foreign commit ids; 0 narrative pages without the pinned id
+  + PASS claim_labels: 340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite
+    none)
+  + PASS duplicates: 0 repeated paragraphs; 0 identical chunks of 355
+  + PASS guardrails: 0 of 355 chunks would be quarantined by the injection guard
+  + PASS secrets: 0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold
+    the full commit id)
+  references per Lear source file (top 6):
+  prash/server.py              ############################## 186
+  prash/cli.py                 ######################........ 139
+  .env.example                 #########..................... 56
+  prash/watcher.py             #####......................... 34
+  prash/connectors/kubernetes. #####......................... 32
+  prash/email_service.py       #####......................... 32
 
-step                       | expected       | observed                   | verdict     | src
-----------------------------------------------------------------------------------------------------
-docs verify                | exit 0 (OK)    | exit 0 (OK)                | MATCH       | LIVE
-docs build reproducibility | byte-identical | not run: needs --source    | UNAVAILABLE | UNAVAILABLE
-                           |                | <Lear checkout>            |             |
+  step                      | expected       | observed                  | verdict     | src
+  --------------------------------------------------------------------------------------------------
+  docs verify               | exit 0 (OK)    | exit 0 (OK)               | MATCH       | LIVE
+  docs build                | byte-identical | not run: needs --source   | UNAVAILABLE | UNAVAILABLE
+  reproducibility           |                | <Lear checkout>           |             |
   limitation: Narrative pages cover 43 of 79 Lear modules (every module is cited somewhere); prose
       is reference-checked, not fully human-reviewed.
-
 +--- S02  Knowledge base construction  [UNAVAILABLE]
-  CONCEPTUAL EXPLANATION pinned checkout -> generated + narrative docs -> heading-aware chunks ->
-    manifest (lines, hashes, commit) -> embeddings -> SQLite index. Built here in a scratch
-    directory; your data/ is not touched.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| pinned checkout -> generated + narrative docs -> heading-aware chunks -> manifest (lines,        |
+| hashes, commit) -> embeddings -> SQLite index. Built here in a scratch directory; your data/ is  |
+| not touched.                                                                                     |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | Ollama is configured as the embedding provider but is not usable                                 |
 | exit code: 6                                                                                     |
 | fix: provider is not reachable                                                                   |
 +--------------------------------------------------------------------------------------------------+
-  [LIVE] your index (not opened): data/lear/index present
+  [LIVE] your index (not opened): data/lear/index absent
   [UNAVAILABLE] scratch index: not built: Ollama is configured as the embedding provider but is not
       usable
-
 +--- S02  Knowledge base construction  [RECORDED]
-  RECORDED REPLAY - run demo-20261105T200214Z captured 2026-11-05T20:02:14Z at 132838754d0a
+  RECORDED REPLAY - run demo-20261105T205915Z captured 2026-11-05T20:59:15Z UTC at 954c8d624515
   (baseline backend)  [LIVE BLOCKED: showing recorded evidence instead]
-  CONCEPTUAL EXPLANATION pinned checkout -> generated + narrative docs -> heading-aware chunks ->
-    manifest (lines, hashes, commit) -> embeddings -> SQLite index. Built here in a scratch
-    directory; your data/ is not touched.
-  [RECORDED] your index (not opened): data/lear/index-baseline present
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| pinned checkout -> generated + narrative docs -> heading-aware chunks -> manifest (lines,        |
+| hashes, commit) -> embeddings -> SQLite index. Built here in a scratch directory; your data/ is  |
+| not touched.                                                                                     |
++--------------------------------------------------------------------------------------------------+
+  [RECORDED] your index (not opened): data/lear/index-baseline absent
   [RECORDED] scratch index: 19 documents, 355 chunks, 48676 tokens (max 306, mean 137.1)
   [RECORDED] embedding: hashing:hashing-lexical-v1 dim=512 - baseline feature hashing, NOT semantic
   [RECORDED] index fingerprint:
       hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2
   [RECORDED] line precision: {"lines": 354, "section": 1}
   [RECORDED] source commit in manifest: 60cf9abf8408
+  chunks embedded |000355| in 19 documents
   chunk strip (first 30 chunks; segment width proportional to tokens):
-  ##====#===##==####===####===###====##====####=#=#####=###===###====####=###===#=
-  sample chunk src-9e094965d7#c001-5c378822: docs/lear_backend/README.md lines 6-12
-  `- Lear backend - engineering documentation
-    `- What Lear is
-  content hash: 5c378822 0087e071 153097f0 602d25c9 ec6f70b7 096bdac2 929a7053 018dcd3b
+  ##=====#===##==####====#####===####====###====####=##=######=####===###=====#####==####===#=====
+  30 segments, total 4783 tokens
+  chunk sizes, first 80 chunks (tokens):
+       #### ####     
+  #### #### ####     
+  #### #### ####     
+  #### #### ####     
+  #### #### ####     
+  <100 100+ 200+ 300+
+  23   27   29   1   
+  chunks per document (top 8):
+  modules.md                   ############################## 92
+  http_api.md                  ############.................. 36
+  actions.md                   ###########................... 34
+  configuration_env.md         ########...................... 26
+  cli.md                       #######....................... 21
+  authentication_authorization #####......................... 16
+  connectors.md                #####......................... 15
+  architecture.md              ####.......................... 12
+  lines .... 354
+  section .. 1
+  sample chunk src-9e094965d7#c001-5c378822: docs/lear_backend/README.md
+  Lear backend - engineering documentation
+     `- What Lear is
+   L6 | chunk starts
+  L12 | chunk ends
+  # content hash: 5c378822 0087e071 153097f0 602d25c9 ec6f70b7 096bdac2 929a7053 018dcd3b
   limitation: Only a baseline (hashing) index can be built here; the qualifying Ollama index has
       never been built.
-
 +--- S03  Ollama model gate  [LIVE]
-  CONCEPTUAL EXPLANATION doctor probes the loopback Ollama, the three model tags, their parameter
-    caps, an embedding, a stream and a judge JSON call. Without Ollama it exits 6, and nothing
-    downstream may claim a model ran.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| doctor probes the loopback Ollama, the three model tags, their parameter caps, an embedding, a   |
+| stream and a judge JSON call. Without Ollama it exits 6, and nothing downstream may claim a      |
+| model ran.                                                                                       |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | BLOCKED - Ollama/model dependency unavailable (exit 6). No qualifying local model result exists. |
 | exit code: 6                                                                                     |
@@ -91,78 +137,111 @@ docs build reproducibility | byte-identical | not run: needs --source    | UNAVA
 | demo replay`                                                                                     |
 +--------------------------------------------------------------------------------------------------+
   [LIVE] doctor exit: 6 (dependency unavailable)
-  [UNAVAILABLE] embedder: nomic-embed-text (cap <=200M params)
-  [UNAVAILABLE] answer LLM: qwen2.5:1.5b (cap <=4B)
-  [UNAVAILABLE] judge: llama3.2:1b (cap <=4B, must differ from the LLM)
+  [BLOCKED] embedder: nomic-embed-text (cap <=200M params)
+  [BLOCKED] answer LLM: qwen2.5:1.5b (cap <=4B)
+  [BLOCKED] judge: llama3.2:1b (cap <=4B, must differ from the LLM)
   [LIVE] failing probes: ollama.version=FAIL, models.installed=SKIP, models.embedder=SKIP,
       models.llm=SKIP, models.judge=SKIP, probe.embedding=SKIP, probe.generation_stream=SKIP,
       probe.judge_json=SKIP
   [LIVE] required failures: ollama.version, models.installed, models.embedder, models.llm,
       models.judge, probe.embedding, probe.generation_stream, probe.judge_json
 
-step        | expected          | observed | verdict | src
------------------------------------------------------------
-lear doctor | exit 0 to qualify | exit 6   | BLOCKED | LIVE
+  step        | expected          | observed | verdict | src
+  --------------------------------------------------------------
+  lear doctor | exit 0 to qualify | exit 6   | BLOCKED | BLOCKED
   limitation: Model tags and parameter counts are UNVERIFIED: Ollama never ran in the recorded
       environment.
-
 +--- S04  Query admission and request lifecycle  [UNAVAILABLE]
-  CONCEPTUAL EXPLANATION One real LearAgent.ask call, followed through validation, rate limits,
-    concurrency, session, compaction, memory, scope guard, rewrite, fingerprint check, the core RAG
-    request, guardrails and status mapping.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| One real LearAgent.ask call, followed through validation, rate limits, concurrency, session,     |
+| compaction, memory, scope guard, rewrite, fingerprint check, the core RAG request, guardrails    |
+| and status mapping.                                                                              |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | Ollama is configured as the embedding provider but is not usable                                 |
 | exit code: 6                                                                                     |
 | fix: provider is not reachable                                                                   |
 +--------------------------------------------------------------------------------------------------+
-
 +--- S04  Query admission and request lifecycle  [RECORDED]
-  RECORDED REPLAY - run demo-20261105T200214Z captured 2026-11-05T20:02:14Z at 132838754d0a
+  RECORDED REPLAY - run demo-20261105T205915Z captured 2026-11-05T20:59:15Z UTC at 954c8d624515
   (baseline backend)  [LIVE BLOCKED: showing recorded evidence instead]
-  CONCEPTUAL EXPLANATION One real LearAgent.ask call, followed through validation, rate limits,
-    concurrency, session, compaction, memory, scope guard, rewrite, fingerprint check, the core RAG
-    request, guardrails and status mapping.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| One real LearAgent.ask call, followed through validation, rate limits, concurrency, session,     |
+| compaction, memory, scope guard, rewrite, fingerprint check, the core RAG request, guardrails    |
+| and status mapping.                                                                              |
++--------------------------------------------------------------------------------------------------+
   [RECORDED] question (golden lear-012): Does `prash run --dry-run` execute the action?
-  [RECORDED] correlation id: q-16d80f008a7d
-  [RECORDED] total time: 53.41 ms (pipeline; baseline has no model decode)
-stage                                        | result                             | ms
-----------------------------------------------------------------------------------------------------
-1 input validation (non-empty, <=2000 chars) | passed                             | not instrumented
-2 per-user / per-session sliding windows     | accepted 0->1                      | not instrumented
-3 concurrency admission                      | peak in flight 1 (limit 2)         | not instrumented
-4 session lookup/creation (session_id,       | turn 1                             | not instrumented
-user_id)                                     |                                    |
-5 history load + compaction                  | not triggered (first turn)         | not instrumented
-6 memory (<=3 scoped, unexpired items)       | 0 used                             | not instrumented
-7 whole-corpus term scope guard              | passed (no unknown terms)          | not instrumented
-8 follow-up rewrite (retrieval only)         | not needed (no history)            | not instrumented
-9 embedding fingerprint check                | match                              | not instrumented
-10 core RAG request: retrieval               | completed                          | 12.364
-10 core RAG request: generation              | extractive:extractive-synthesis-v1 | 2.06
-11 output guardrails + citation validation   | 1 citations kept; warnings: none   | not instrumented
-12 status mapping + persistence              | GROUNDED -> exit 0                 | not instrumented
+  [RECORDED] correlation id: q-6d32b898eff9
+  [RECORDED] lifecycle: lear-lifecycle-v1: 13 contiguous spans, 90.472 ms in total
+  [RECORDED] answer time: 86.28 ms until the answer was mapped (persistence follows); pipeline only,
+      no model decode
+  request lifecycle (lear-lifecycle-v1), bar = measured span on one time axis:
+  validate    #                                    0.003 ms
+  admission   #                                    0.041 ms
+  session     #                                    1.781 ms
+  compaction  #                                    0.044 ms
+  rewrite     #                                    0.003 ms
+  memory      #                                    0.114 ms
+  prompt      #                                    0.021 ms
+  engine.open #                                    0.008 ms
+  fingerprint #                                    0.388 ms
+  scopeGuard  ##############                       36.25 ms
+  engine                     ##################    44.3 ms
+  mapping                                      #   3.384 ms
+  persist                                       ## 4.12 ms
+  stage                                    | what happened                            | ms
+  -------------------------------------------------------------------------------------------
+  input validation (non-empty, length      | passed                                   | 0.003
+  limit)                                   |                                          |
+  rate windows + concurrency admission     | accepted 0 -> 1; peak in flight 1 (limit | 0.041
+  (incl. queue wait)                       | 2)                                       |
+  session lookup/creation (session_id,     | turn 1                                   | 1.781
+  user_id)                                 |                                          |
+  history load + compaction                | not triggered                            | 0.044
+  follow-up rewrite (retrieval only)       | not needed (no history)                  | 0.003
+  memory selection (scoped, unexpired)     | 0 used                                   | 0.114
+  system prompt render                     | lear-assistant-v1                        | 0.021
+  engine handle (lazy open)                | open                                     | 0.008
+  embedding fingerprint check              | match                                    | 0.388
+  whole-corpus term scope guard            | passed (no unknown terms)                | 36.25
+  core RAG request (retrieval, context,    | engine status answered                   | 44.3
+  generation, citation checks)             |                                          |
+  status, citation and timing mapping      | GROUNDED -> exit 0; 1 citations          | 3.384
+  session persistence                      | user + assistant messages saved          | 4.12
+  inside the core request:
+  core.retrieval       ############################.. 20.38 ms
+  core.generation      ###........................... 2.256 ms
+  core.other (derived) ############################## 21.66 ms
+  peak in flight [#.] 1/2
+  correlation id [q][-][6][d][3][2][b][8][9][8][e][f][f][9]
 
-step                  | expected    | observed    | verdict | src
-----------------------------------------------------------------------
-ask (golden lear-012) | exit 0 (OK) | exit 0 (OK) | MATCH   | RECORDED
-  limitation: Stages 1-9 and 11-12 are not separately timed; they are shown as 'not instrumented'.
-
+  step                   | expected                               | observed    | verdict | src
+  --------------------------------------------------------------------------------------------------
+  ask (golden lear-012)  | exit 0 (OK)                            | exit 0 (OK) | MATCH   | RECORDED
+  spans tile the request | sum of spans = lifecycle total (90.472 | 90.456 ms   | MATCH   | RECORDED
+                         | ms, +/-0.1)                            |             |         |
+  limitation: Inside the core request only retrieval and generation are timed by the engine;
+      core.other = engine span - retrieval - generation (derived).
+  limitation: Spans are wall-clock perf_counter intervals of one request; they are not a profile.
 +--- S05  Hybrid retrieval  [UNAVAILABLE]
-  CONCEPTUAL EXPLANATION Dense and BM25 candidates are fused with RRF, re-ranked by a coverage
-    heuristic and diversified with MMR. On the baseline the dense channel is feature hashing, not
-    semantics.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Dense and BM25 candidates are fused with RRF, re-ranked by a coverage heuristic and diversified  |
+| with MMR, then packed into the context budget between trusted instructions and delimited,        |
+| untrusted evidence. On the baseline the dense channel is feature hashing, not semantics.         |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | Ollama is configured as the embedding provider but is not usable                                 |
 | exit code: 6                                                                                     |
 | fix: provider is not reachable                                                                   |
 +--------------------------------------------------------------------------------------------------+
-
 +--- S05  Hybrid retrieval  [RECORDED]
-  RECORDED REPLAY - run demo-20261105T200214Z captured 2026-11-05T20:02:14Z at 132838754d0a
+  RECORDED REPLAY - run demo-20261105T205915Z captured 2026-11-05T20:59:15Z UTC at 954c8d624515
   (baseline backend)  [LIVE BLOCKED: showing recorded evidence instead]
-  CONCEPTUAL EXPLANATION Dense and BM25 candidates are fused with RRF, re-ranked by a coverage
-    heuristic and diversified with MMR. On the baseline the dense channel is feature hashing, not
-    semantics.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Dense and BM25 candidates are fused with RRF, re-ranked by a coverage heuristic and diversified  |
+| with MMR, then packed into the context budget between trusted instructions and delimited,        |
+| untrusted evidence. On the baseline the dense channel is feature hashing, not semantics.         |
++--------------------------------------------------------------------------------------------------+
   [ILLUSTRATIVE] chain: cosine + BM25 -> Reciprocal Rank Fusion (k=60) -> heuristic-coverage-v1
       reranker -> MMR -> context
   [RECORDED] dense channel: feature-hash similarity (baseline, NOT semantic)
@@ -172,204 +251,292 @@ ask (golden lear-012) | exit 0 (OK) | exit 0 (OK) | MATCH   | RECORDED
   [RECORDED] candidates / selected: 10 / 10
   [RECORDED] context tokens: 1684
   [RECORDED] best support: 0.6515
-  [UNAVAILABLE] per-channel ranks (dense, BM25, RRF): not exposed by the engine response
+  [UNAVAILABLE] per-channel ranks (dense, BM25, RRF): UNAVAILABLE - CORE ENGINE DOES NOT EXPOSE THIS
+      STAGE
+  [RECORDED] context assembly: 10 chunks, manifest tokens 1684, engine estimate 1684 of budget 1800
   candidates (filled = selected), bar = fused score:
-  (*) ################## 0.0320  src-3665f86d99#c002-95a9d20b  cli.md S. Lear backend - CLI
-  reference (`prash`) > prash run
-  (*) #################. 0.0295  src-0441e92281#c001-356e1401  errors_and_operations.md S. Errors
-  and operations > Exit codes of the CLI
-  (*) ########.......... 0.0141  src-51cdac4a6f#c010-89e43766  authentication_authorization.md S.
-  Authentication and authorization > Audit trail
-  (*) #################. 0.0301  src-0aa7224dfb#c004-10cc0499  api_reference.md S. API reference >
-  The `prash` CLI
-  (*) #########......... 0.0161  src-0aa7224dfb#c001-72fa94fe  api_reference.md S. API reference >
-  The `prash` CLI
-  (*) ################.. 0.0284  src-8b2cf583b7#c012-67ed963d  actions.md S. Lear backend - action
-  catalogue > Safe-tier actions > terraform-init
-  (*) ########.......... 0.0149  src-00287151c3#c004-d07ace4a  domain_model.md S. Domain model >
-  Dispatch results (`prash/dispatch.py`)
-  (*) ###############... 0.0267  src-0441e92281#c003-fb54fc53  errors_and_operations.md S. Errors
-  and operations > Failure handling in the pipeline
-  (*) ################.. 0.0288  src-3665f86d99#c007-c141955c  cli.md S. Lear backend - CLI
-  reference (`prash`) > prash fix
-  (*) #########......... 0.0152  src-3665f86d99#c020-264862a8  cli.md S. Lear backend - CLI
-  reference (`prash`) > prash setup
-  ( ) excluded src-0aa7224dfb#c002-9252158c: context_token_budget
-  ( ) excluded src-51cdac4a6f#c008-f9566633: context_token_budget
-  retrieval.semantic           ##################### 8.538 ms
-  retrieval.lexical                                ### 1.14 ms
-  retrieval.fusion                                    # 0.07 ms
-  retrieval.rerank                                    # 0.012 ms
-  retrieval.mmr                                       ###### 2.604 ms
+   1 (*) ################ 0.03202  src-3665f86d99#c002-95a9d20b  cli.md S. Lear backend - CLI
+     reference (`prash`) > prash run
+   2 (*) ###############. 0.03009  src-0aa7224dfb#c004-10cc0499  api_reference.md S. API reference >
+     The `prash` CLI
+   3 (*) ###############. 0.02951  src-0441e92281#c001-356e1401  errors_and_operations.md S. Errors
+     and operations > Exit codes of the CLI
+   4 (*) ##############.. 0.02878  src-3665f86d99#c007-c141955c  cli.md S. Lear backend - CLI
+     reference (`prash`) > prash fix
+   5 (*) ##############.. 0.0284  src-8b2cf583b7#c012-67ed963d  actions.md S. Lear backend - action
+     catalogue > Safe-tier actions > terraform-init
+   6 (*) #############... 0.02667  src-0441e92281#c003-fb54fc53  errors_and_operations.md S. Errors
+     and operations > Failure handling in the pipeline
+   7 (*) ########........ 0.01613  src-0aa7224dfb#c001-72fa94fe  api_reference.md S. API reference >
+     The `prash` CLI
+   8 (*) ########........ 0.01515  src-3665f86d99#c020-264862a8  cli.md S. Lear backend - CLI
+     reference (`prash`) > prash setup
+   9 (*) #######......... 0.01493  src-00287151c3#c004-d07ace4a  domain_model.md S. Domain model >
+     Dispatch results (`prash/dispatch.py`)
+  10 (*) #######......... 0.01409  src-51cdac4a6f#c010-89e43766  authentication_authorization.md S.
+    Authentication and authorization > Audit trail
+  [ UNAVAILABLE ] per-channel ranks (dense, BM25, RRF): core engine does not expose this stage
+  #=--:....   min 0.2898 max 0.6515 n=10 (evidence support, candidate order)
+  * EXCLUDED src-0aa7224dfb#c002-9252158c: context_token_budget
+  * EXCLUDED src-51cdac4a6f#c008-f9566633: context_token_budget
+  retrieval.semantic -> retrieval.lexical -> retrieval.fusion -> retrieval.rerank -> retrieval.mmr
+  core stage         | status    | ms
+  --------------------------------------
+  retrieval.semantic | completed | 14.51
+  retrieval.lexical  | completed | 1.634
+  retrieval.fusion   | completed | 0.123
+  retrieval.rerank   | completed | 0.028
+  retrieval.mmr      | completed | 4.086
+  RRF score (ILLUSTRATIVE) .. sum over channels of 1 / (k + rank), k = 60
+  context assembly:
+  context [############################..] 1684/1800 tok (94%)
+  ###########============#########==========############======##########============###########===
+  10 segments, total 1684 manifest tokens, in context order
+  +- SYSTEM (TRUSTED) - prompt lear-assistant-v1  (rules, pin commit, summary, memory)
+  |-- HISTORY - 0 messages  (kept turns after compaction)
+  |-- MEMORY - 0 items  (scoped, unexpired)
+  |-- EVIDENCE (UNTRUSTED) - 10 chunks, 1684 tokens  (each passage wrapped in <evidence id=n>
+    delimiters)
+  +- USER QUESTION - 46 chars
+  query vector (hashing, 512 dims, 13 non-zero; first 12 non-zero shown):
+  d8               |############ +0.2774
+  d25  ############|             -0.2774
+  d114             |############ +0.2774
+  d125             |############ +0.2774
+  d153 ############|             -0.2774
+  d229 ############|             -0.2774
+  d266             |############ +0.2774
+  d291             |############ +0.2774
+  d306             |############ +0.2774
+  d326             |############ +0.2774
+  d329             |############ +0.2774
+  d364 ############|             -0.2774
   limitation: Context precision on the baseline is low (about .25-.29 across runs).
-
 +--- S06  Grounded answer and citations  [UNAVAILABLE]
-  CONCEPTUAL EXPLANATION Each citation marker must map to a retrieved chunk, the chunk to a manifest
-    entry, and the entry to Lear source lines at the pin.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Each citation marker must map to a retrieved chunk, the chunk to a manifest entry, and the entry |
+| to Lear source lines at the pin.                                                                 |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | Ollama is configured as the embedding provider but is not usable                                 |
 | exit code: 6                                                                                     |
 | fix: provider is not reachable                                                                   |
 +--------------------------------------------------------------------------------------------------+
-
 +--- S06  Grounded answer and citations  [RECORDED]
-  RECORDED REPLAY - run demo-20261105T200214Z captured 2026-11-05T20:02:14Z at 132838754d0a
+  RECORDED REPLAY - run demo-20261105T205915Z captured 2026-11-05T20:59:15Z UTC at 954c8d624515
   (baseline backend)  [LIVE BLOCKED: showing recorded evidence instead]
-  CONCEPTUAL EXPLANATION Each citation marker must map to a retrieved chunk, the chunk to a manifest
-    entry, and the entry to Lear source lines at the pin.
-  [RECORDED] generator: extractive:extractive-synthesis-v1  - BASELINE / NOT QUALIFYING (no model
-      was called)
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Each citation marker must map to a retrieved chunk, the chunk to a manifest entry, and the entry |
+| to Lear source lines at the pin.                                                                 |
++--------------------------------------------------------------------------------------------------+
+  [NOT QUALIFYING] generator: extractive:extractive-synthesis-v1  - BASELINE (no model was called)
   [RECORDED] status: GROUNDED
   [UNAVAILABLE] model TTFT / ITL / tok/s: not measured: no model stream
+  [ILLUSTRATIVE] TTFT / ITL definitions: TTFT: time from the start of ask() to the first streamed
+      token of a real model stream; ITL: gap between consecutive streamed tokens of a real model
+      stream (p50 shown)
   [RECORDED] prompt version: lear-assistant-v1
   [RECORDED] recorded round-3 verdict for lear-012: correct (lenient), key-fact coverage 1.0,
       citation precision 1.0, status GROUNDED
   Q: Does `prash run --dry-run` execute the action?
   A (BASELINE extractive selection, not a model stream):
-    Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without
-  touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never
-  prompts (a missing secret then returns NEEDS_INPUT). [4]
-  OK [4] src-0aa7224dfb#c004-10cc0499 -> docs/lear_backend/api_reference.md lines 32-34 @
-  60cf9abf8408 -> prash/cli.py:L1251 ok, prash/cli.py:L351 ok, prash/cli.py:L460 ok
+      | Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans
+        without touching infrastructure, `--grant` pre-grants a single action, and
+        `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+  [ RESOLVED ] [4] src-0aa7224dfb#c004-10cc0499
+  docs/lear_backend/api_reference.md lines 32-34 @ 60cf9abf8408
+    `--> prash/cli.py:L1251 ok
+      `--> prash/cli.py:L351 ok
+        `--> prash/cli.py:L460 ok
+  [ GROUNDED ] -> exit 0
+  [ NOT QUALIFYING ] no model stream: TTFT, ITL and tok/s are not measured
 
-step                  | expected                                  | observed    | verdict | src
-----------------------------------------------------------------------------------------------------
-citation [4] resolves | manifest entry + retrieved chunk + pinned | ok          | MATCH   | RECORDED
-                      | lines                                     |             |         |
-status -> exit code   | exit 0 (OK)                               | exit 0 (OK) | MATCH   | RECORDED
+  step                  | expected                                | observed    | verdict | src
+  --------------------------------------------------------------------------------------------------
+  citation [4] resolves | manifest entry + retrieved chunk +      | ok          | MATCH   | RECORDED
+                        | pinned lines                            |             |         |
+  status -> exit code   | exit 0 (OK)                             | exit 0 (OK) | MATCH   | RECORDED
   limitation: Extractive baseline answers are sentence selections, often padded with neighbouring
       sentences.
-
 +--- S07  Sessions, memory and compaction  [UNAVAILABLE]
-  CONCEPTUAL EXPLANATION A five-turn session with a follow-up, a compaction over a small demo
-    budget, and a deliberately outdated memory note that must lose to the pinned docs.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| A five-turn session with a follow-up, a compaction over a small demo budget, and a deliberately  |
+| outdated memory note that must lose to the pinned docs.                                          |
++--------------------------------------------------------------------------------------------------+
 +- BLOCKED ----------------------------------------------------------------------------------------+
 | Ollama is configured as the embedding provider but is not usable                                 |
 | exit code: 6                                                                                     |
 | fix: provider is not reachable                                                                   |
 +--------------------------------------------------------------------------------------------------+
-
 +--- S07  Sessions, memory and compaction  [RECORDED]
-  RECORDED REPLAY - run demo-20261105T200214Z captured 2026-11-05T20:02:14Z at 132838754d0a
+  RECORDED REPLAY - run demo-20261105T205915Z captured 2026-11-05T20:59:15Z UTC at 954c8d624515
   (baseline backend)  [LIVE BLOCKED: showing recorded evidence instead]
-  CONCEPTUAL EXPLANATION A five-turn session with a follow-up, a compaction over a small demo
-    budget, and a deliberately outdated memory note that must lose to the pinned docs.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| A five-turn session with a follow-up, a compaction over a small demo budget, and a deliberately  |
+| outdated memory note that must lose to the pinned docs.                                          |
++--------------------------------------------------------------------------------------------------+
   [RECORDED] session / user: demo-s07... / demo-examiner
   [RECORDED] messages stored: 10
   [RECORDED] history budget: 300 tokens, keep 2 recent (demo setting; default 900/4)
   [RECORDED] compaction policy: lear-compaction-v1 (deterministic, never grows the history)
   [RECORDED] compactions recorded: 3
-  [RECORDED] memory expiry: 2026-11-05T21:02:12Z (ttl 3600 s)
+  [RECORDED] memory expiry: 2026-11-05T21:59:13Z (ttl 3600 s)
   [RECORDED] summary version: lear-compaction-v1
-  (*)-- turn 1: GROUNDED  standalone
-  (*)-- turn 2: GROUNDED  retrieval rewrite: What is its default window, and where is its state
-  kept? (follow-up to: What does the circuit breaker do in Le...
-  (*)-- turn 3: GROUNDED  retrieval rewrite: What is Lear's audit log? (follow-up to: What is its
-  default window, and where is its state kept?) max_actions...
-  (*)-- turn 4: GROUNDED  retrieval rewrite: Could two processes write the same sequence number to
-  it? (follow-up to: What is Lear's audit log?) max_action...
-  compaction lear-compaction-v1 (estimated tokens): 487 -> 447
-  compaction lear-compaction-v1 (estimated tokens): 607 -> 453
-  compaction lear-compaction-v1 (estimated tokens): 564 -> 445
+  (*) turn 1  GROUNDED  standalone
+  |
+  (*) turn 2  GROUNDED  retrieval rewrite: What is its default window, and where is its state kept?
+    (follow-up to: What does the circuit breaker do in Le...
+  |
+  (*) turn 3  GROUNDED  retrieval rewrite: What is Lear's audit log? (follow-up to: What is its
+    default window, and where is its state kept?) max_actions...
+  |
+  (*) turn 4  GROUNDED  retrieval rewrite: Could two processes write the same sequence number to it?
+    (follow-up to: What is Lear's audit log?) max_action...
+  compaction lear-compaction-v1 (estimated tokens): 487 -> 447  v -40
+  compaction lear-compaction-v1 (estimated tokens): 607 -> 453  v -154
+  compaction lear-compaction-v1 (estimated tokens): 564 -> 445  v -119
 
-step                     | expected                 | observed                  | verdict | src
-----------------------------------------------------------------------------------------------------
-outdated memory vs       | answer follows the docs  | docs value present=True,  | MATCH   | RECORDED
-pinned docs              | (5), not memory (50)     | memory value              |         |
-                         |                          | present=False, memory     |         |
-                         |                          | selected=True             |         |
-memory guard refuses     | exit 2 (usage or         | exit 2 (usage or          | MATCH   | RECORDED
-instruction-like text    | configuration error)     | configuration error)      |         |
-memory scoping: another  | 0 items                  | 0 items                   | MATCH   | RECORDED
-user sees none           |                          |                           |         |
-session isolation:       | exit 2 (usage or         | exit 2 (usage or          | MATCH   | RECORDED
-another user opens this  | configuration error)     | configuration error)      |         |
-session                  |                          |                           |         |
+  step                    | expected                 | observed                 | verdict | src
+  --------------------------------------------------------------------------------------------------
+  outdated memory vs      | answer follows the docs  | docs value present=True, | MATCH   | RECORDED
+  pinned docs             | (5), not memory (50)     | memory value             |         |
+                          |                          | present=False, memory    |         |
+                          |                          | selected=True            |         |
+  memory guard refuses    | exit 2 (usage or         | exit 2 (usage or         | MATCH   | RECORDED
+  instruction-like text   | configuration error)     | configuration error)     |         |
+  memory scoping: another | 0 items                  | 0 items                  | MATCH   | RECORDED
+  user sees none          |                          |                          |         |
+  session isolation:      | exit 2 (usage or         | exit 2 (usage or         | MATCH   | RECORDED
+  another user opens this | configuration error)     | configuration error)     |         |
+  session                 |                          |                          |         |
   limitation: Token counts are estimates (~4 chars/token).
   limitation: The baseline extractive generator never reads memory; whether an LLM obeys 'memory
       cannot override the docs' is UNVERIFIED.
-
 +--- S08  Guardrails and refusal  [LIVE]
-  CONCEPTUAL EXPLANATION Failure is a feature: unknown terms, missing evidence, injected passages,
-    invalid markers, an unreachable model and rate limits each produce their own honest status and
-    exit code.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Failure is a feature: unknown terms, missing evidence, injected passages, invalid markers, an    |
+| unreachable model and rate limits each produce their own honest status and exit code.            |
++--------------------------------------------------------------------------------------------------+
   [ILLUSTRATIVE] exit-code contract: 0 ok, 1 error, 2 usage, 3 abstained, 4 partial/conflicted, 5
       gate failed, 6 dependency unavailable, 7 rate limited
 
-step                   | expected               | observed                | verdict    | src
-----------------------------------------------------------------------------------------------------
-input over 2000 chars  | exit 2 (usage or       | exit 2 (usage or        | MATCH      | LIVE
-                       | configuration error)   | configuration error)    |            |
-retrieval-dependent    | run                    | blocked: no index for   | BLOCKED    | UNAVAILABLE
-guardrails             |                        | this backend            |            |
-ollama backend without | exit 6 (dependency     | exit 6 (dependency      | MATCH      | LIVE
-a reachable model      | unavailable)           | unavailable)            |            |
-second request in a    | exit 7 (rate limited)  | exit 7 (rate limited)   | MATCH      | LIVE
-1-per-minute session   |                        |                         |            |
-window                 |                        |                         |            |
-partial coverage       | PARTIAL (exit 4) with  | 0 PARTIAL answers       | LIMITATION | RECORDED
-                       | uncertainty language   | across 7 recorded runs  |            |
+  step                  | expected               | observed               | verdict    | src
+  --------------------------------------------------------------------------------------------------
+  input over 2000 chars | exit 2 (usage or       | exit 2 (usage or       | MATCH      | LIVE
+                        | configuration error)   | configuration error)   |            |
+  retrieval-dependent   | run                    | blocked: no index for  | BLOCKED    | UNAVAILABLE
+  guardrails            |                        | this backend           |            |
+  ollama backend        | exit 6 (dependency     | exit 6 (dependency     | MATCH      | LIVE
+  without a reachable   | unavailable)           | unavailable)           |            |
+  model                 |                        |                        |            |
+  second request in a   | exit 7 (rate limited)  | exit 7 (rate limited)  | MATCH      | LIVE
+  1-per-minute session  |                        |                        |            |
+  window                |                        |                        |            |
+  partial coverage      | PARTIAL (exit 4) with  | 0 PARTIAL answers      | LIMITATION | RECORDED
+                        | uncertainty language   | across 7 recorded runs |            |
   limitation: Resistance of a real LLM to injected instructions is untested (no model).
-
 +--- S09  Evaluation and three improvement rounds  [LIVE]
-  CONCEPTUAL EXPLANATION 80 frozen golden questions in calibration/dev/test/holdout splits. Three
-    rounds improved the baseline without a single regression; the judge never ran, so no judge
-    scores exist.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| 80 frozen golden questions in calibration/dev/test/holdout splits. Three rounds improved the     |
+| baseline without a single regression; the judge never ran, so no judge scores exist.             |
++--------------------------------------------------------------------------------------------------+
   [LIVE] golden set: 80 cases, sha256 56050cf2689383ca...
   [LIVE] validation: VALID: 5/6 checks PASS
   [RECORDED] judge: JUDGE BLOCKED - SCORES NOT MEASURED (every recorded run)
   [RECORDED] scores shown: deterministic offline scorer (lenient + lear-keyfacts-strict-v1); NOT
       LLM-judge scores
+  [RECORDED] five dimensions: groundedness, citation quality, answer relevance, context precision,
+      context recall: deterministic proxies (0-4); judge versions JUDGE BLOCKED - SCORES NOT
+      MEASURED
   [LIVE] regressions across rounds: 0 cases flipped correct->wrong
   [RECORDED] holdout policy: used once (final-holdout); --allow-holdout required; never used for
       tuning
-  calibration:10|---------------dev:32--------------|---------test:24----------|---holdout:14--|
-run           | commit       | cases | correct | strict | MRR   | judge
--------------------------------------------------------------------------
-round-0       | 6c438d158048 | 42    | 0.452   | 0.405  | 0.587 | BLOCKED
-round-0-test  | 6c438d158048 | 24    | 0.417   | 0.417  | 0.733 | BLOCKED
-round-1       | 6c438d158048 | 42    | 0.5     | 0.429  | 0.621 | BLOCKED
-round-2       | 38bea8cbc6d9 | 42    | 0.524   | 0.452  | 0.621 | BLOCKED
-round-3       | fed7dbf38163 | 42    | 0.548   | 0.476  | 0.626 | BLOCKED
-round-3-test  | fed7dbf38163 | 24    | 0.5     | 0.5    | 0.812 | BLOCKED
-final-holdout | fed7dbf38163 | 14    | 0.643   | 0.643  | 0.736 | BLOCKED
-  cal+dev correct round-0 -> round-3: ^ +0.095   strict: ^ +0.071
-  round-0 -> round-1: fixed lear-005, lear-028; regressed none
-  round-1 -> round-2: fixed lear-068; regressed none
-  round-2 -> round-3: fixed lear-064; regressed none
-  round-0-test -> round-3-test: fixed lear-065, lear-071; regressed none
+  ############======================================#############################=================
+  4 segments, total 80 cases
+  calibration 10 | dev 32 | test 24 | holdout 14
+  run           | commit       | cases | correct | strict | MRR    | judge
+  --------------------------------------------------------------------------
+  round-0       | 6c438d158048 | 42    | 0.4524  | 0.4048 | 0.5874 | BLOCKED
+  round-0-test  | 6c438d158048 | 24    | 0.4167  | 0.4167 | 0.733  | BLOCKED
+  round-1       | 6c438d158048 | 42    | 0.5     | 0.4286 | 0.6212 | BLOCKED
+  round-2       | 38bea8cbc6d9 | 42    | 0.5238  | 0.4524 | 0.6212 | BLOCKED
+  round-3       | fed7dbf38163 | 42    | 0.5476  | 0.4762 | 0.6257 | BLOCKED
+  round-3-test  | fed7dbf38163 | 24    | 0.5     | 0.5    | 0.8124 | BLOCKED
+  final-holdout | fed7dbf38163 | 14    | 0.6429  | 0.6429 | 0.7361 | BLOCKED
+  cal+dev correct, round-0 -> round-3: 0.4524 -> 0.5476  ^ +0.0952
+  five dimensions (deterministic proxies, 0-4; NOT judge scores):
+  run           | grounded | citation | relevance | ctx precision | ctx recall
+  ----------------------------------------------------------------------------
+  round-0       | 3.9      | 1.838    | 2.051     | 1.083         | 3.28
+  round-3       | 3.897    | 1.91     | 2.4       | 1.161         | 3.388
+  round-3-test  | 4        | 1.809    | 2.375     | 1.021         | 3.714
+  final-holdout | 4        | 1.222    | 2.809     | 0.9958        | 3.667
+  [ JUDGE BLOCKED ] SCORES NOT MEASURED - no LLM-judge run exists
+  round-0 -> round-1 ............ fixed lear-005, lear-028; regressed none
+  round-1 -> round-2 ............ fixed lear-068; regressed none
+  round-2 -> round-3 ............ fixed lear-064; regressed none
+  round-0-test -> round-3-test .. fixed lear-065, lear-071; regressed none
+  failure explorer: 8 of 19 incorrect round-3 cases (ids only):
+  case     | category      | status    | key facts | cite prec | RR
+  ---------------------------------------------------------------------
+  lear-001 | factual       | GROUNDED  | 0         | 1         | 0.5
+  lear-020 | factual       | GROUNDED  | 0         | 0         | 0.2
+  lear-031 | factual       | GROUNDED  | 0         | 0.6667    | 1
+  lear-061 | follow_up     | GROUNDED  | 0.5       | 0         | 0.5
+  lear-073 | unanswerable  | GROUNDED  | n/a       | n/a       | n/a
+  lear-077 | factual       | ABSTAINED | 0         | n/a       | 0.25
+  lear-003 | factual       | GROUNDED  | 0         | 0.5       | 0.5
+  lear-006 | configuration | GROUNDED  | 0         | 0         | 0.3333
 
-step          | expected    | observed    | verdict | src
-----------------------------------------------------------
-eval validate | exit 0 (OK) | exit 0 (OK) | MATCH   | LIVE
+  step          | expected    | observed    | verdict | src
+  ----------------------------------------------------------
+  eval validate | exit 0 (OK) | exit 0 (OK) | MATCH   | LIVE
   limitation: All recorded runs are baseline (hashing + extractive): NOT QUALIFYING.
-
 +--- S10  Benchmark and percentile lab  [RECORDED]
-  CONCEPTUAL EXPLANATION Dummy users go through the real service layer, rate limiter included. These
-    are pipeline timings: no model decode is in them.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| Dummy users go through the real service layer, rate limiter included. These are pipeline         |
+| timings: no model decode is in them.                                                             |
++--------------------------------------------------------------------------------------------------+
   [UNAVAILABLE] live run: not run: Ollama is configured as the embedding provider but is not usable
-  [ILLUSTRATIVE] percentiles: nearest-rank (no interpolation), ragformation/lear/stats.py; p99 is
-      unstable for small n
+  [ILLUSTRATIVE] percentiles: nearest-rank (no interpolation), ragformation/lear/stats.py
+  [RECORDED] sample size: INDICATIVE - SMALL SAMPLE: n=3..30 per level; p85/p99 need far more
+      observations (about 1,000 for p99)
   [UNAVAILABLE] model TTFT / ITL / tok/s: not measured: no model stream
   [RECORDED] recorded baseline: RECORDED PIPELINE-ONLY BASELINE (official run: users 1/2/5/10, 3
       requests each)
   RECORDED PIPELINE-ONLY BASELINE:
-users | n  | ok | 429 | err | req/s  | mean    | p50   | p85    | p99
-------------------------------------------------------------------------
-1     | 3  | 3  | 0   | 0   | 27.016 | 33.737  | 34.58 | 36.07  | 36.07
-2     | 6  | 6  | 0   | 0   | 26.196 | 70.632  | 67.6  | 85.6   | 85.6
-5     | 15 | 15 | 0   | 0   | 30.311 | 105.155 | 61.96 | 236.36 | 420.79
-10    | 30 | 30 | 0   | 0   | 32.007 | 179.767 | 63.27 | 428.67 | 810.27
-5     | 20 | 10 | 10  | 0   | 32.128 | 100.826 | 54.86 | 199.43 | 278.58
-  warning: n < 100 at every level shown, so p99 is effectively the maximum and unstable
+  users | n  | ok | 429 | err | req/s | mean  | p50   | p85   | p99
+  -------------------------------------------------------------------
+  1     | 3  | 3  | 0   | 0   | 27.02 | 33.74 | 34.58 | 36.07 | 36.07
+  2     | 6  | 6  | 0   | 0   | 26.2  | 70.63 | 67.6  | 85.6  | 85.6
+  5     | 15 | 15 | 0   | 0   | 30.31 | 105.2 | 61.96 | 236.4 | 420.8
+  10    | 30 | 30 | 0   | 0   | 32.01 | 179.8 | 63.27 | 428.7 | 810.3
+  5     | 20 | 10 | 10  | 0   | 32.13 | 100.8 | 54.86 | 199.4 | 278.6
+  [ INDICATIVE - SMALL SAMPLE ] n=3..30 per level; p99 is close to the maximum here
+  percentile ruler, users=10 (recorded, n=30):
+  0 +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+ 810.3 ms
+         ^ p50=63.27 ms
+                                    ^ p85=428.7 ms
+                                                                ^ p99=810.3 ms
+  throughput, official recorded run:
+  users=1  #########################..... 27.02 req/s
+  users=2  #########################..... 26.2 req/s
+  users=5  ############################.. 30.31 req/s
+  users=10 ############################## 32.01 req/s
+  users=5, rate-limit run ############################## 10 x 429
   limitation: Pipeline-only: no LLM decode is included in any latency shown here.
-
 +--- S11  Report and final readiness  [LIVE]
-  CONCEPTUAL EXPLANATION The report lists every recorded run separately. Readiness follows the
-    weakest gate.
++- CONCEPTUAL EXPLANATION (ILLUSTRATIVE) ----------------------------------------------------------+
+| The report lists every recorded run separately. Readiness follows the weakest gate.              |
++--------------------------------------------------------------------------------------------------+
   [LIVE] report runs listed: 7
   [LIVE] doctor ready now: False
   [RECORDED] recorded decision: BLOCKED
+  [RECORDED] visible limitation: conflicts: the core conflict detector compares numeric day/hour/%
+      units across two sources; golden lear-059 is outside it and comes back GROUNDED on the
+      baseline
+  [LIVE] visible limitation: partial: 0 PARTIAL answers across 7 recorded runs: PARTIAL is not
+      demonstrated
   [LIVE] OVERALL: BLOCKED - LOCAL OLLAMA MODEL QUALIFICATION NOT COMPLETED IN THE RECORDED
       ENVIRONMENT.
 +- READINESS --------------------------------------------------------------------------------------+
@@ -388,4 +555,3 @@ users | n  | ok | 429 | err | req/s  | mean    | p50   | p85    | p99
 | 8. Run `python3 -m ragformation lear bench --users 1,2,5` with model streaming enabled.          |
 +--------------------------------------------------------------------------------------------------+
 -- demo exit 6 (dependency unavailable) ------------------------------------------------------------
-[exit 6]

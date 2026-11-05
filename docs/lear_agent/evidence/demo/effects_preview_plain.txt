@@ -1,0 +1,428 @@
+  [ILLUSTRATIVE] scene_registration: Scene registration marks (registration + stamp) - example data,
+  not a measurement
++--- S00  Boot and trust boundary  [ILLUSTRATIVE]
+  [ILLUSTRATIVE] narrative_reveal: Conceptual explanation feed (box + feed) - example data, not a
+  measurement
++- EXAMPLE ----------------------------------------------------------------------------------------+
+| one line of real text per row                                                                    |
++--------------------------------------------------------------------------------------------------+
+  [ILLUSTRATIVE] provenance_legend: Provenance legend (ledger + feed) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] question_entry: Question entry (chain + type_input) - example data, not a
+  measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] answer_stream: Model answer teletype (margin + type_stream) - example data, not a
+  measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] command_echo: Reproduction command echo (margin + type_input) - example data, not a
+  measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] docs_check_feed: Docs verification feed (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] docs_page_register: Page register (ledger + feed) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] refs_by_file_bars: References per source file (bars + grow) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] chunk_heading_tree: Chunk heading path (tree + feed) - example data, not a
+  measurement
+  Lear backend
+     `- Permission engine
+        `- Modes
+  [ILLUSTRATIVE] document_outline_tree: Document outline (tree + instant) - example data, not a
+  measurement
+  Lear backend
+     `- Permission engine
+        `- Modes
+  [ILLUSTRATIVE] chunk_token_strip: Chunk token strip (strip + grow) - example data, not a
+  measurement
+  ################=========================================###########===========================
+  4 segments, total 597 tokens
+  [ILLUSTRATIVE] chunk_line_margin: Chunk line span (margin + feed) - example data, not a
+  measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] chunk_token_histogram: Chunk size histogram (histogram + instant) - example data,
+  not a measurement
+       ####          
+  #### ####          
+  #### #### ####     
+  #### #### ####     
+  #### #### #### ####
+  0-99 100  200  300 
+  120  140  80   15  
+  [ILLUSTRATIVE] neighbour_chain: Neighbouring chunks (chain + feed) - example data, not a
+  measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] overlap_policy_ledger: Chunking policy (ledger + instant) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] document_chunk_bars: Chunks per document (bars + grow) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] line_precision_ledger: Line precision (ledger + feed) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] coverage_gauge: Module coverage gauge (gauge + grow) - example data, not a
+  measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] embedded_chunk_counter: Embedded chunk counter (counter + count) - example data,
+  not a measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] embedding_batch_slots: Embedding batches (slots + feed) - example data, not a
+  measurement
+  in flight [#.] 1/2
+  [ILLUSTRATIVE] query_vector_axis: Query vector readout (axis + feed) - example data, not a
+  measurement
+  d0               |#####        +0.1200
+  d1            ###|             -0.0800
+  d2               |             +0.0000
+  d3               |############ +0.3100
+  [ILLUSTRATIVE] vector_shape_ledger: Vector shape (ledger + instant) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] score_support_split: Fused score vs support (split + instant) - example data, not a
+  measurement
+  expected                                       | observed
+  CONFLICTED                                     | GROUNDED
+  [ILLUSTRATIVE] support_spark: Support distribution (spark + instant) - example data, not a
+  measurement
+  #+-:   min 0.11 max 0.51 n=5
+  [ILLUSTRATIVE] candidate_fanout: Candidate arrival (margin + feed) - example data, not a
+  measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] candidate_rank_ladder: Rank ladder (ladder + settle) - example data, not a
+  measurement
+   1 (*) ################ 0.031  src-a#c001
+   2 ( ) ##############.. 0.027  src-b#c004
+  [ILLUSTRATIVE] scope_term_checklist: Scope guard terms (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] salient_terms_ledger: Salient terms (ledger + instant) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] dense_stage_bar: Dense retrieval time (bars + grow) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] channel_rank_unavailable: Per-channel ranks unavailable (stamp + stamp) - example
+  data, not a measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] hybrid_stage_chain: Hybrid stage chain (chain + feed) - example data, not a
+  measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] retrieval_mode_stamp: Retrieval mode (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] rrf_definition: RRF definition (ledger + instant) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] fused_score_bars: Fused scores (bars + grow) - example data, not a measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] support_bars: Rerank support (bars + feed) - example data, not a measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] rerank_method_stamp: Reranker identity (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] selection_checklist: Selected vs excluded (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] mmr_lambda_gauge: MMR balance (gauge + instant) - example data, not a measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] context_budget_gauge: Context budget (gauge + grow) - example data, not a
+  measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] context_chunk_strip: Context packing strip (strip + grow) - example data, not a
+  measurement
+  ################=========================================###########===========================
+  4 segments, total 597 tokens
+  [ILLUSTRATIVE] exclusion_checklist: Exclusions (checklist + instant) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] overflow_counter: Candidates left out (counter + count) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] prompt_delimiters: Prompt sections (delimiters + feed) - example data, not a
+  measurement
+  +- SYSTEM - 1 prompt  (trusted)
+  |-- EVIDENCE - 10 chunks  (untrusted)
+  +- USER - 47 chars
+  [ILLUSTRATIVE] prompt_version_flap: Prompt version (flap + flap) - example data, not a measurement
+  prompt [l][e][a][r][-][a][s][s][i][s][t][a][n][t][-][v][1]
+  [ILLUSTRATIVE] quarantine_hatch: Quarantine hatch (hatch + instant) - example data, not a
+  measurement
++/ QUARANTINED ////////////////////////////////////////////////////////////////////////////////////+
+| chunk src-x#c000: instruction_override                                                           |
++//////////////////////////////////////////////////////////////////////////////////////////////////+
+  [ILLUSTRATIVE] quarantine_rule_grid: Quarantine rules (grid + instant) - example data, not a
+  measurement
+          lear-005 lear-028
+  round-0    x        x    
+  round-3    +        +    
+  [ILLUSTRATIVE] citation_stamp: Citation stamp (stamp + stamp) - example data, not a measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] marker_chain: Marker to evidence (chain + feed) - example data, not a measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] source_traceback: Source-line traceback (trace + feed) - example data, not a
+  measurement
+  [4] src-0aa7#c004
+    `--> api_reference.md lines 32-34
+      `--> prash/cli.py:L1251
+  [ILLUSTRATIVE] ref_line_margin: Source ref check (margin + feed) - example data, not a measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] conflict_split: Conflict expectation (split + instant) - example data, not a
+  measurement
+  expected                                       | observed
+  CONFLICTED                                     | GROUNDED
+  [ILLUSTRATIVE] conflict_scope_ledger: Conflict detector scope (ledger + instant) - example data,
+  not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] abstention_gate: Abstention gate (box + instant) - example data, not a measurement
++- EXAMPLE ----------------------------------------------------------------------------------------+
+| one line of real text per row                                                                    |
++--------------------------------------------------------------------------------------------------+
+  [ILLUSTRATIVE] abstain_counter: Recorded abstentions (counter + count) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] session_timeline: Session timeline (timeline + feed) - example data, not a
+  measurement
+  (*) turn 1  GROUNDED
+  |
+  (*) turn 2  GROUNDED (rewritten)
+  [ILLUSTRATIVE] turn_role_grid: Turn roles (grid + instant) - example data, not a measurement
+          lear-005 lear-028
+  round-0    x        x    
+  round-3    +        +    
+  [ILLUSTRATIVE] followup_rewrite_chain: Follow-up rewrite (chain + type_input) - example data, not
+  a measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] session_isolation_stamp: Session isolation (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] compaction_token_diff: Compaction tokens (diff + count) - example data, not a
+  measurement
+  correct: 0.452 -> 0.548  ^ +0.096
+  [ILLUSTRATIVE] compaction_fold_slots: Compaction fold (slots + feed) - example data, not a
+  measurement
+  in flight [#.] 1/2
+  [ILLUSTRATIVE] memory_gate_checklist: Memory gate (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] memory_expiry_counter: Memory expiry (counter + count) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] admission_window: Rate window (window + count) - example data, not a measurement
+  session 60s [#] 1/1  refused 1
+  [ILLUSTRATIVE] rate_limited_bars: Rate-limited requests (bars + grow) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] concurrency_slots: Concurrency slots (slots + flap) - example data, not a
+  measurement
+  in flight [#.] 1/2
+  [ILLUSTRATIVE] queue_timeout_gauge: Queue timeout (gauge + instant) - example data, not a
+  measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] dependency_block: Dependency blocked (box + stamp) - example data, not a
+  measurement
++- EXAMPLE ----------------------------------------------------------------------------------------+
+| one line of real text per row                                                                    |
++--------------------------------------------------------------------------------------------------+
+  [ILLUSTRATIVE] model_card: Model card (ledger + feed) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] loopback_lamp: Loopback lamp (stamp + stamp) - example data, not a measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] doctor_checklist: Doctor probes (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] stream_event_counter: Stream events (counter + count) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] no_stream_stamp: No model stream (stamp + stamp) - example data, not a measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] ttft_itl_ledger: TTFT and ITL (ledger + instant) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] itl_spark: Inter-token latency (spark + instant) - example data, not a measurement
+  #+-:   min 0.11 max 0.51 n=5
+  [ILLUSTRATIVE] lifecycle_waterfall: Request lifecycle spans (waterfall + grow) - example data, not
+  a measurement
+  validate #                                    0.02 ms
+  engine   ##################################   40.1 ms
+  persist                                    #  1.2 ms
+  [ILLUSTRATIVE] percentile_ruler: Percentile ruler (ruler + sweep) - example data, not a
+  measurement
+  0 +-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+ 810.3 ms
+         ^ p50=63.3 ms
+                                    ^ p85=428.7 ms
+                                                                ^ p99=810.3 ms
+  [ILLUSTRATIVE] sample_size_stamp: Sample-size flag (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] round_table: Round scores (table + feed) - example data, not a measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] round_delta: Round delta (diff + count) - example data, not a measurement
+  correct: 0.452 -> 0.548  ^ +0.096
+  [ILLUSTRATIVE] split_strip: Golden splits (strip + instant) - example data, not a measurement
+  ################=========================================###########===========================
+  4 segments, total 597 tokens
+  [ILLUSTRATIVE] judge_blocked_stamp: Judge blocked (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] regression_ledger: Fixed and regressed (ledger + feed) - example data, not a
+  measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] case_flip_grid: Case flips (grid + instant) - example data, not a measurement
+          lear-005 lear-028
+  round-0    x        x    
+  round-3    +        +    
+  [ILLUSTRATIVE] request_lanes: Dummy-user lanes (lanes + feed) - example data, not a measurement
+  users=2      ++=+  3/4 ok
+  [ILLUSTRATIVE] throughput_bars: Throughput (bars + grow) - example data, not a measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] wall_time_bars: Wall time (bars + instant) - example data, not a measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] exit_code_ledger: Exit codes (ledger + instant) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] error_panel: Error panel (box + stamp) - example data, not a measurement
++- EXAMPLE ----------------------------------------------------------------------------------------+
+| one line of real text per row                                                                    |
++--------------------------------------------------------------------------------------------------+
+  [ILLUSTRATIVE] guardrail_grid: Guardrail verdicts (grid + instant) - example data, not a
+  measurement
+          lear-005 lear-028
+  round-0    x        x    
+  round-3    +        +    
+  [ILLUSTRATIVE] status_exit_stamp: Status to exit code (stamp + stamp) - example data, not a
+  measurement
+  [ MATCH ] example
+  [ILLUSTRATIVE] bundle_seal: Replay checksum (seal + flap) - example data, not a measurement
+  # sha256: 56050cf2 689383ca 01234567 89abcdef
+  [ILLUSTRATIVE] evidence_checklist: Evidence integrity (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] source_pin_seal: Source pin seal (seal + flap) - example data, not a measurement
+  # sha256: 56050cf2 689383ca 01234567 89abcdef
+  [ILLUSTRATIVE] golden_seal: Golden set seal (seal + stamp) - example data, not a measurement
+  # sha256: 56050cf2 689383ca 01234567 89abcdef
+  [ILLUSTRATIVE] correlation_seal: Correlation id (flap + flap) - example data, not a measurement
+  prompt [l][e][a][r][-][a][s][s][i][s][t][a][n][t][-][v][1]
+  [ILLUSTRATIVE] readiness_card: Readiness card (box + feed) - example data, not a measurement
++- EXAMPLE ----------------------------------------------------------------------------------------+
+| one line of real text per row                                                                    |
++--------------------------------------------------------------------------------------------------+
+  [ILLUSTRATIVE] evidence_index: Evidence index (margin + feed) - example data, not a measurement
+  L32 | first line
+  L34 | last line
+  [ILLUSTRATIVE] qualify_checklist: Qualification steps (checklist + feed) - example data, not a
+  measurement
+  + PASS links
+  * WARN pin not checked
+  [ILLUSTRATIVE] registry_family_bars: Registry families (bars + instant) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] report_runs_counter: Report runs (counter + count) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] bench_table: Bench table (table + feed) - example data, not a measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] scene_step_table: Step verdicts (table + instant) - example data, not a measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] git_commit_flap: rag-formation commit (flap + flap) - example data, not a
+  measurement
+  prompt [l][e][a][r][-][a][s][s][i][s][t][a][n][t][-][v][1]
+  [ILLUSTRATIVE] doc_rebuild_gauge: Docs rebuild identity (gauge + grow) - example data, not a
+  measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] stage_timing_table: Core stage table (table + instant) - example data, not a
+  measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] memory_used_slots: Memory used (slots + instant) - example data, not a measurement
+  in flight [#.] 1/2
+  [ILLUSTRATIVE] history_budget_gauge: History budget (gauge + instant) - example data, not a
+  measurement
+  context [############################..] 1684/1800 tok (94%)
+  [ILLUSTRATIVE] injection_split: Injected page outcome (split + instant) - example data, not a
+  measurement
+  expected                                       | observed
+  CONFLICTED                                     | GROUNDED
+  [ILLUSTRATIVE] provider_failure_chain: Provider failure path (chain + feed) - example data, not a
+  measurement
+  question -> retrieval -> context -> answer
+  [ILLUSTRATIVE] level_status_grid: Status per level (grid + instant) - example data, not a
+  measurement
+          lear-005 lear-028
+  round-0    x        x    
+  round-3    +        +    
+  [ILLUSTRATIVE] partial_counter: Recorded partial answers (counter + instant) - example data, not a
+  measurement
+  chunks |000355| embedded
+  [ILLUSTRATIVE] readiness_scan: Readiness scan (ledger + scan) - example data, not a measurement
+  backend .. baseline
+  chunks ... 355
+  [ILLUSTRATIVE] chunk_content_seal: Chunk content hash (seal + flap) - example data, not a
+  measurement
+  # sha256: 56050cf2 689383ca 01234567 89abcdef
+  [ILLUSTRATIVE] lifecycle_result_table: Lifecycle results (table + feed) - example data, not a
+  measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] core_substage_bars: Inside the core request (bars + grow) - example data, not a
+  measurement
+  users=1  #########################..... 27 req/s
+  users=10 ############################## 32 req/s
+  [ILLUSTRATIVE] five_dimension_table: Five evaluation dimensions (table + instant) - example data,
+  not a measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548
+  [ILLUSTRATIVE] failure_explorer: Failure explorer (table + feed) - example data, not a measurement
+  run     | correct
+  -----------------
+  round-0 | 0.452
+  round-3 | 0.548

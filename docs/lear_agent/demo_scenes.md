@@ -9,16 +9,24 @@ Provenance labels:
 |---|---|
 | `LIVE` | Produced by a real execution in this process. |
 | `RECORDED` | Taken from a named evidence file or the replay bundle. |
-| `ILLUSTRATIVE` | A conceptual explanation. |
-| `UNAVAILABLE` | Blocked or not measured. |
+| `ILLUSTRATIVE` | A conceptual explanation, or example data in `effects --preview`. |
+| `UNAVAILABLE` | Not measured here, or not exposed by the core engine. |
+| `BLOCKED` | A required dependency (Ollama and its models) is missing. |
+| `NOT QUALIFYING` | Real output of the offline baseline; never a qualifying model result. |
 
-In replay mode every `LIVE` label is rendered as `RECORDED`.
+In replay mode every `LIVE` label is rendered as `RECORDED`, and every scene
+carries `RECORDED REPLAY - run <id> captured <time> at <commit>`.
 
 The tests are in [`tests/test_lear_demo.py`](../../tests/test_lear_demo.py),
 abbreviated **TD** below. The recorded run is
-[`lear_demo_replay_v1.json`](../../ragformation/lear/demo_replay/lear_demo_replay_v1.json)
-(run `demo-20261105T200214Z`, commit `132838754d0a`, baseline backend). Its
-plain rendering is [`evidence/demo/replay_plain.txt`](evidence/demo/replay_plain.txt).
+[`evidence/demo/lear_demo_replay_v2_full.json`](evidence/demo/lear_demo_replay_v2_full.json)
+(run `demo-20261105T204932Z`, commit `3ad0df30b944`, baseline backend, clean
+tree). The wheel ships a redacted copy of the same scenes,
+[`lear_demo_replay_v2.json`](../../ragformation/lear/demo_replay/lear_demo_replay_v2.json)
+(run `demo-20261105T204928Z`). Plain rendering:
+[`evidence/demo/replay_plain.txt`](evidence/demo/replay_plain.txt). The v1
+bundle of the previous version still replays:
+[`evidence/demo/lear_demo_replay_v1.json`](evidence/demo/lear_demo_replay_v1.json).
 
 | Scene | Data source (real function) | Provenance | What it shows | Verified by | Limitations |
 |---|---|---|---|---|---|
@@ -26,14 +34,14 @@ plain rendering is [`evidence/demo/replay_plain.txt`](evidence/demo/replay_plain
 | **S01 Source-of-truth archaeology** | `docverify.verify_docs`; with `--source`, `docgen.build_docs` into scratch plus a byte comparison | LIVE | 11/11 checks PASS with `--source`; narrative coverage 43/79 modules (54%), all 79 cited somewhere; 10/10 generated files byte-identical | [`evidence/demo/examiner_baseline_plain.txt`](evidence/demo/examiner_baseline_plain.txt); `tests/test_lear_docs.py` | Without `--source`, 9 checks run and coverage is not measured |
 | **S02 Knowledge base construction** | `indexer.rebuild` in scratch, `indexer.stats`, `indexer.load_manifest` | LIVE | 19 documents, 355 chunks, 48,676 estimated tokens; hashing fingerprint labelled `NOT semantic`; one full manifest entry with content hash | transcript; `tests/test_lear_pipeline.py` `IndexerTests` | Baseline (hashing) index only. The qualifying index has never been built |
 | **S03 Ollama model gate** | `doctor.run_doctor(probe_generation=True)` | LIVE | Doctor exit 6 and a BLOCKED panel. Embedder, LLM and judge tags are shown as `UNAVAILABLE` and unverified | TD `test_live_mode_stops_at_the_model_gate_with_exit_6`; [`evidence/demo/live_ollama_plain.txt`](evidence/demo/live_ollama_plain.txt) | No model metadata exists, so no parameter count is claimed |
-| **S04 Request lifecycle** | One `LearAgent.ask` (golden **lear-012**, dev split) and `limiter.counters` before and after | LIVE | 12-step lifecycle. Only retrieval and generation have timings; the other steps are `not instrumented` | TD live test (S04) | Per-step timings do not exist in the agent |
-| **S05 Hybrid retrieval** | `answer.retrieval` (candidates, selected, excluded, quarantined, stages) | LIVE + ILLUSTRATIVE | Score ladder of fused scores; stage waterfall in ms; the dense channel is labelled `feature-hash similarity (baseline, NOT semantic)` | transcript; `tests/test_lear_pipeline.py` | Per-channel ranks are not exposed (`UNAVAILABLE`); low context precision (≈.25–.29) |
+| **S04 Request lifecycle** | One `LearAgent.ask` (golden **lear-012**, dev split), its `timings.lifecycle` and `limiter.counters` before and after | LIVE | 13 contiguous `perf_counter` spans (`lear-lifecycle-v1`: validate, admission, session, compaction, rewrite, memory, prompt, engine.open, fingerprint, scopeGuard, engine, mapping, persist) as a waterfall and a table; the core's own retrieval/generation split; peak in flight; correlation id; the check that the spans tile the request (sum = total ±0.1 ms) | TD `LifecycleTests` (contiguous, monotonic, tiling; a scope abstention has `scopeGuard` but no `engine` span) | Wall-clock intervals of one request, not a profile; inside the core only retrieval and generation are timed, `core.other` is derived |
+| **S05 Hybrid retrieval** | `answer.retrieval` (candidates, selected, excluded, quarantined, stages) | LIVE + ILLUSTRATIVE | Rank ladder of the candidates (selected/excluded with reasons); core stage timings; context assembly (budget gauge 1684/1800 tokens, chunk strip, prompt sections SYSTEM/HISTORY/MEMORY/EVIDENCE (untrusted, `<evidence id=n>` delimiters)/USER); the query vector's non-zero hashing dimensions; the dense channel is labelled `feature-hash similarity (baseline, NOT semantic)` | TD `test_selected_ids_are_identical_with_and_without_demo_diagnostics`; transcript; `tests/test_lear_pipeline.py` | Per-channel ranks are not exposed: `UNAVAILABLE — CORE ENGINE DOES NOT EXPOSE THIS STAGE`; low context precision (≈.25–.29) |
 | **S06 Grounded answer and citations** | The same answer; `agent.manifest()`; `docverify._SourceReader` line counts at the pin | LIVE + RECORDED | The answer, labelled `BASELINE / NOT QUALIFYING`; each citation mapped to a retrieved chunk, a manifest entry, the document lines and pinned source lines; the recorded round-3 verdict for lear-012 | TD live test (`inManifest`/`retrieved` asserted, TTFT `UNAVAILABLE`) | Model TTFT, ITL and tok/s are `not measured: no model stream` |
 | **S07 Sessions, memory and compaction** | A second `LearAgent` sharing the engine (budget 300, keep 2, scratch DB); `MemoryStore`; `SessionStore` | LIVE | Five turns, two of them follow-ups with retrieval rewrites; compactions 487→447, 607→453, 564→445 estimated tokens; an outdated memory note ("50") loses to the docs ("5"); the memory guard refuses instructions (exit 2); another user sees 0 memories and cannot open the session (exit 2) | transcript; `tests/test_lear_core.py` compaction and memory tests | The extractive baseline never reads memory. Whether an LLM respects "memory cannot override docs" is UNVERIFIED |
 | **S08 Guardrails and refusal** | `ask` with golden lear-068, lear-069 and lear-059; `strip_invalid_citations`; a scratch injected corpus; a real ollama-backend agent; a real `LearRateLimiter` with 1 request per session per minute | LIVE + RECORDED | Results in the table below | TD live test (exit codes 2/3/6/7 and quarantine asserted) | CONFLICTED and PARTIAL are not reproducible on the baseline |
-| **S09 Evaluation and rounds** | `evalset.validate`, `report.evaluation_runs` (committed runs only), regression flips computed from `run.json` | LIVE (computed) + RECORDED | 80 cases (10/32/24/14); VALID 6/6; 7 recorded runs; flips R0→R1 fixed lear-005 and lear-028, R1→R2 fixed lear-068, R2→R3 fixed lear-064, test R0→R3 fixed lear-065 and lear-071; **0 regressions**; `JUDGE BLOCKED — SCORES NOT MEASURED` | transcript; [evaluation_dataset.md](evaluation_dataset.md) | Offline scorer only. The holdout was used once; a qualifying claim needs a new versioned check set |
-| **S10 Benchmark lab** | Live `run_bench(scratch, users [1,2,5], 2 requests)` plus the recorded official and rate-limit runs | LIVE + RECORDED | Live pipeline-only table, recorded `RECORDED PIPELINE-ONLY BASELINE` table, lanes per request, and the warning `n < 100 … p99 is effectively the maximum and unstable` | transcript; [benchmark_report.md](benchmark_report.md) | No model decode is included; TTFT, ITL and tok/s are `UNAVAILABLE` |
-| **S11 Report and readiness** | `report.build_report(scratch)`, the doctor result, the final report decision line | LIVE + RECORDED | `OVERALL: BLOCKED — LOCAL OLLAMA MODEL QUALIFICATION NOT COMPLETED IN THE RECORDED ENVIRONMENT.` plus the 8 steps to qualify | transcript; [final_report.md](final_report.md) | Readiness follows the weakest gate |
+| **S09 Evaluation and rounds** | `evalset.validate`, `report.evaluation_runs` (committed runs only), regression flips computed from `run.json` | LIVE (computed) + RECORDED | 80 cases (10/32/24/14); VALID 6/6; 7 recorded runs; flips R0→R1 fixed lear-005 and lear-028, R1→R2 fixed lear-068, R2→R3 fixed lear-064, test R0→R3 fixed lear-065 and lear-071; **0 regressions**; five proxy dimensions per run (grounded, citation, relevance, context precision, context recall; deterministic, 0–4, not judge scores); a failure explorer over the round-3 incorrect cases (ids and metrics only); `JUDGE BLOCKED — SCORES NOT MEASURED` | transcript; [evaluation_dataset.md](evaluation_dataset.md) | Offline scorer only. The holdout was used once; a qualifying claim needs a new versioned check set |
+| **S10 Benchmark lab** | Live `run_bench(scratch, users [1,2,5], 2 requests)` plus the recorded official and rate-limit runs | LIVE + RECORDED | Live pipeline-only table, recorded `RECORDED PIPELINE-ONLY BASELINE` table, lanes per request, the warning `n < 100 … p99 is effectively the maximum and unstable`, and `INDICATIVE — SMALL SAMPLE` on every percentile computed from 3–30 requests | transcript; [benchmark_report.md](benchmark_report.md) | No model decode is included; TTFT, ITL and tok/s are `UNAVAILABLE` |
+| **S11 Report and readiness** | `report.build_report(scratch)`, the doctor result, the final report decision line | LIVE + RECORDED | `OVERALL: BLOCKED — LOCAL OLLAMA MODEL QUALIFICATION NOT COMPLETED IN THE RECORDED ENVIRONMENT.` plus the 8 steps to qualify; the CONFLICTED (lear-059) and PARTIAL limitations stay listed | transcript; [final_report.md](final_report.md) | Readiness follows the weakest gate |
 
 ## S08 step results (recorded bundle)
 
