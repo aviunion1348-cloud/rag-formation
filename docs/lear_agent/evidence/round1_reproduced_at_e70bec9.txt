@@ -1,0 +1,23 @@
+# Round 1 provenance check
+# evals/lear/results/round-1/run.json records ragFormation {commit: 6c438d158048, dirty: true}: the official round-1 run was made on the
+# uncommitted round-1 tree, which was committed as e70bec9 33 s later (run startedAt 18:44:50Z, commit 18:45:23Z).
+# Reproduction on the committed tree (git archive e70bec9 into /tmp/e70; fresh baseline index; same suite):
+$ git archive e70bec9 | tar -x -C /tmp/e70 && cd /tmp/e70
+$ python3 -m ragformation lear --backend baseline --data-dir /tmp/e70-data index rebuild
+$ python3 -m ragformation lear --backend baseline --data-dir /tmp/e70-data eval run --suite calibration,dev --label r1-at-e70bec9 --out /tmp/e70-data/r1 --judge off
+Run r1-at-e70bec9 — 42 cases from calibration, dev — backend baseline — NOT QUALIFYING (offline baseline: hashing embeddings + extractive answers)
+dataset lear-golden v1.0.0 sha256 56050cf2689383ca…  rag-formation None
+judge: off
+
+  overall correct                                0.500
+  answerable correct (status + all key facts)    0.486
+  answerable acceptable status                   0.946
+  answerable key-fact coverage                   0.559
+# comparison with the committed round-1 run.json:
+cases 42 42 same ids True
+verdict or status differences: []
+answer text differences: 0
+cited-document differences: 0
+correct 0.5 0.5
+retrieval {'hitAtK': 0.973, 'mrr': 0.6212, 'docRecall': 0.8604, 'contextPrecision': 0.2892} == {'hitAtK': 0.973, 'mrr': 0.6212, 'docRecall': 0.8604, 'contextPrecision': 0.2892}
+citations {'citationPrecision': 0.5048} == {'citationPrecision': 0.5048}

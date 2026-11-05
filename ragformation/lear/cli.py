@@ -134,7 +134,8 @@ def add_lear_parser(sub: Any) -> None:
     p.add_argument("--out", default=None)
     p.add_argument("--json", action="store_true")
 
-    p = lsub.add_parser("report", help="summarise the latest doctor/docs/index/eval/bench artifacts")
+    p = lsub.add_parser("report", help="summarise doctor, docs, index, every evaluation run and the latest bench")
+    p.add_argument("--source", default=None, help="Lear checkout for docs path checks and coverage")
     p.add_argument("--out", default=None)
     p.add_argument("--json", action="store_true")
 
@@ -184,9 +185,14 @@ def _render_answer(answer: Dict[str, Any], streamed: bool) -> str:
     emb = models.get("embedding", {})
     lines.append(f"Models: generation={gen.get('used') or gen.get('configured')} embedding={emb.get('provider', '')}:{emb.get('model', '')}")
     t = answer.get("timings", {})
+
+    def ms(value: Any) -> str:
+        return "n/a" if value is None else f"{value} ms"
+
     lines.append(
-        f"Timing: ttft={t.get('ttftMs')} ms  total={t.get('totalMs')} ms  tok/s={t.get('tokensPerSec')}  "
-        f"itl_p50={((t.get('itlMs') or {}).get('p50'))} ms"
+        f"Timing: ttft={ms(t.get('ttftMs'))}  total={ms(t.get('totalMs'))}  "
+        f"tok/s={'n/a' if t.get('tokensPerSec') is None else t.get('tokensPerSec')}  "
+        f"itl_p50={ms((t.get('itlMs') or {}).get('p50'))}"
     )
     if answer.get("error"):
         lines.append(f"Error: {answer['error'].get('message')} — {answer['error'].get('hint') or ''}")
@@ -278,27 +284,41 @@ def _cmd_index(args, settings) -> int:
         agent.close()
 
 
+class _StreamPrinter:
+    """Writes streamed tokens to stdout and counts what was actually shown."""
+
+    def __init__(self) -> None:
+        self.chars = 0
+
+    def __call__(self, token: str) -> None:
+        self.chars += len(token)
+        sys.stdout.write(token)
+        sys.stdout.flush()
+
+
 def _cmd_ask(args, settings) -> int:
     from .agent import LearAgent, exit_code_for
 
     agent = LearAgent(settings)
-    streamed = not args.json and not args.no_stream
+    streaming = not args.json and not args.no_stream
+    printer = _StreamPrinter()
     try:
         answer = agent.ask(
             args.question,
             user_id=args.user,
             session_id=args.session,
             top_k=args.top_k,
-            on_token=(lambda t: (sys.stdout.write(t), sys.stdout.flush())) if streamed else None,
+            on_token=printer if streaming else None,
         )
     finally:
         agent.close()
-    if streamed:
+    if streaming:
         print()
     if args.json:
         _emit(answer, True)
     else:
-        print(_render_answer(answer, streamed))
+        # Answers that produced no tokens (scope guard, errors) are printed in full.
+        print(_render_answer(answer, printer.chars > 0))
         if args.debug:
             print(_render_debug(answer))
     return exit_code_for(answer)
@@ -316,12 +336,13 @@ def _cmd_chat(args, settings) -> int:
             question = raw.strip()
             if not question or question in {"/exit", "/quit"}:
                 break
+            printer = _StreamPrinter()
             try:
                 answer = agent.ask(
                     question,
                     user_id=args.user,
                     session_id=args.session,
-                    on_token=None if args.json else (lambda t: (sys.stdout.write(t), sys.stdout.flush())),
+                    on_token=None if args.json else printer,
                 )
             except RateLimited as exc:
                 print(json.dumps(exc.to_dict()), file=sys.stderr)
@@ -331,7 +352,7 @@ def _cmd_chat(args, settings) -> int:
                 print(json.dumps(_public(answer), ensure_ascii=False, default=str))
             else:
                 print()
-                print(_render_answer(answer, True))
+                print(_render_answer(answer, printer.chars > 0))
             code = max(code, exit_code_for(answer)) if exit_code_for(answer) in (1, 6) else code
     finally:
         agent.close()
@@ -438,7 +459,9 @@ def _cmd_bench(args, settings) -> int:
 def _cmd_report(args, settings) -> int:
     from .report import build_report
 
-    text, data = build_report(settings, out=Path(args.out) if args.out else None)
+    text, data = build_report(
+        settings, out=Path(args.out) if args.out else None, source=Path(args.source) if args.source else None
+    )
     _emit(data, args.json, text)
     return 0
 

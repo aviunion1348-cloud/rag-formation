@@ -1,0 +1,44 @@
+# Environment probe (commands run in the sandbox; clock is UTC, IST = UTC+5:30)
+$ date -u
+Thu Nov  5 19:15:07 UTC 2026
+$ cat /etc/os-release | grep PRETTY; uname -srm
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+Linux 6.1.158+ x86_64
+$ python3 --version; node --version; sqlite3 (python module) version; git --version
+Python 3.11.2
+v22.22.3
+sqlite 3.40.1
+git version 2.39.5
+$ nproc; free -h; df -h /home/user
+2
+               total        used        free      shared  buff/cache   available
+Mem:           3.8Gi       297Mi       2.7Gi       1.0Mi       1.1Gi       3.6Gi
+/dev/root        21G  1.6G   19G   8% /
+$ which ollama nvidia-smi
+ollama: not installed
+nvidia-smi: absent
+$ curl -s -m 3 http://127.0.0.1:11434/api/version
+curl exit 7 (7 = connection refused)
+# HTTPS reachability (curl -m 6; exit 35 = TLS connect failure, blocked by the sandbox egress policy)
+https://registry.ollama.ai/v2/ -> http 000 (curl exit 35)
+https://ollama.com -> http 000 (curl exit 35)
+https://huggingface.co -> http 000 (curl exit 35)
+https://objects.githubusercontent.com -> http 000 (curl exit 35)
+https://raw.githubusercontent.com -> http 000 (curl exit 35)
+https://github.com -> http 200 (curl exit 0)
+https://pypi.org/simple/ -> http 200 (curl exit 0)
+https://registry.npmjs.org/ -> http 200 (curl exit 0)
+$ git -C /home/user/rag-formation ls-remote --heads origin
+91a82576e5cdd070bda76118fd671152c7795299	refs/heads/arena/56047441-rag-formation
+9e0918b58b48e5560466aa30738166346e06e8a6	refs/heads/arena/5f16d127-rag-formation
+1f92738b13d6e5c2763ae6e8c05044f693448320	refs/heads/arena/9c348a7a-rag-formation
+17ca1eec3a72f8a1b325592720c88fa9d7aaa9bf	refs/heads/feat/01-rag-engine
+986ba5587648c4d3bdded4e9889ef8cdbcdfb919	refs/heads/main
+$ git -C /home/user/rag-formation rev-parse --is-shallow-repository
+true
+$ git -C /home/user/lear-backend log -1 --format='%H %cI %s'; status --short (empty = clean)
+60cf9abf84088c3a5ec05e8700c52185444e215f 2026-10-01T19:21:30+05:30 Merge branch 'Drufiy:main' into main
+$ git ls-remote --heads https://github.com/aviunion1348-cloud/Lear-backend-Avi.git
+c32b4d6f8cba42f6187bf151e95c41638a5ab3db	refs/heads/arena/01a0ee2a-lear-backend-avi
+fcf1ae6fab629773b91cc8a306da88e4f3ea33cf	refs/heads/arena/01a0f7f6-lear-backend-avi
+60cf9abf84088c3a5ec05e8700c52185444e215f	refs/heads/main

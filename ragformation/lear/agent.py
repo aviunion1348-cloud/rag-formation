@@ -496,6 +496,22 @@ class LearAgent:
             "mode": (result.metrics or {}).get("mode"),
         }
 
+    def _configured_models(self) -> Dict[str, Any]:
+        """Model labels for answers that never reached the engine (scope guard, errors)."""
+
+        strict = self.settings.qualifying
+        return {
+            "generation": {
+                "configured": f"ollama:{self.settings.llm_model}" if strict else "extractive (baseline)",
+                "used": None,
+                "fallbackUsed": False,
+            },
+            "embedding": {
+                "provider": "ollama" if strict else "hashing",
+                "model": self.settings.embed_model if strict else "hashing-lexical-v1",
+            },
+        }
+
     def _scope_answer(self, question, missing, started, session_info, retrieval_query) -> Dict[str, Any]:
         names = ", ".join(f"'{t}'" for t in missing)
         return {
@@ -507,8 +523,7 @@ class LearAgent:
             "citations": [],
             "qualifying": self.settings.qualifying,
             "backend": self.settings.backend,
-            "models": {"generation": {"configured": f"ollama:{self.settings.llm_model}", "used": None, "fallbackUsed": False},
-                       "embedding": {"model": self.settings.embed_model}},
+            "models": self._configured_models(),
             "promptVersion": LEAR_PROMPT_VERSION,
             "session": session_info,
             "memoryUsed": [],
@@ -534,7 +549,7 @@ class LearAgent:
             "citations": [],
             "qualifying": False,
             "backend": self.settings.backend,
-            "models": {"generation": {"configured": f"ollama:{self.settings.llm_model}"}, "embedding": {"model": self.settings.embed_model}},
+            "models": self._configured_models(),
             "promptVersion": LEAR_PROMPT_VERSION,
             "session": session_info,
             "memoryUsed": [],

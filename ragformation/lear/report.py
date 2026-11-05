@@ -3,10 +3,14 @@
 Reads what the other commands wrote — it does not re-run anything expensive:
 
 * the latest doctor JSON in ``docs/lear_agent/evidence/`` (or ``--out`` dir),
-* a fresh ``docs verify`` (cheap; needs the Lear checkout for path checks),
+* a fresh ``docs verify`` (cheap; path checks and coverage need the Lear
+  checkout via ``--source`` or ``RAG_LEAR_SOURCE``),
 * index statistics for the configured backend (only if the index exists),
-* the newest ``eval_runs/*/run.json`` and ``bench/*/bench.json`` under the
-  data directory, plus committed results under ``evals/lear/results``.
+* every evaluation run — ``eval_runs/*/run.json`` under the data directory plus
+  the committed copies in ``evals/lear/results`` — oldest first, so the
+  improvement rounds read as one table; strict key-fact scores of runs made
+  before the strict scorer come from the committed rescore evidence,
+* the newest benchmark JSON.
 
 Each section states whether its numbers come from a qualifying (live Ollama)
 run or from the labelled offline baseline.
@@ -36,7 +40,72 @@ def _load(path: Optional[Path]) -> Optional[Dict[str, Any]]:
         return None
 
 
-def build_report(settings: LearSettings, out: Optional[Path] = None) -> Tuple[str, Dict[str, Any]]:
+def _strict_scores(evidence_dir: Path) -> Dict[Tuple[str, str], float]:
+    """(label, commit12) -> correctStrict from ``lear eval rescore`` evidence files."""
+
+    scores: Dict[Tuple[str, str], float] = {}
+    for path in sorted(evidence_dir.glob("rescore_*.json")):
+        for row in (_load(path) or {}).get("runs", []) or []:
+            if row.get("label") and row.get("correctStrict") is not None:
+                scores[(str(row["label"]), str(row.get("commit") or "")[:12])] = row["correctStrict"]
+    return scores
+
+
+def evaluation_runs(settings: LearSettings, *, include_committed: bool = True) -> List[Dict[str, Any]]:
+    """All saved evaluation runs, oldest first; a committed copy of a local run counts once."""
+
+    repo = evalset.REPO_ROOT
+    paths = sorted((Path(settings.data_dir) / "eval_runs").glob("*/run.json"))
+    if include_committed:
+        paths += sorted((repo / "evals" / "lear" / "results").glob("*/run.json"))
+    strict = _strict_scores(repo / "docs" / "lear_agent" / "evidence")
+    rows: Dict[Tuple[Any, Any], Dict[str, Any]] = {}
+    for path in paths:
+        run = _load(path)
+        if not run or "summary" not in run:
+            continue
+        key = (run.get("label"), run.get("startedAt"))
+        if key in rows:
+            continue
+        s = run.get("summary") or {}
+        rf = run.get("ragFormation") or {}
+        commit = str(rf.get("commit") or "")[:12]
+        recorded_strict = s.get("correctStrict")
+        rows[key] = {
+            "file": str(path),
+            "label": run.get("label"),
+            "startedAt": run.get("startedAt"),
+            "suites": run.get("suites") or s.get("suites") or [],
+            "commit": commit or None,
+            "dirty": rf.get("dirty"),
+            "cases": s.get("cases"),
+            "correct": s.get("correct"),
+            "correctStrict": recorded_strict if recorded_strict is not None else strict.get((str(run.get("label")), commit)),
+            "strictSource": "run" if recorded_strict is not None else ("rescore evidence" if (str(run.get("label")), commit) in strict else None),
+            "hitAtK": (s.get("retrieval") or {}).get("hitAtK"),
+            "mrr": (s.get("retrieval") or {}).get("mrr"),
+            "unanswerableAbstained": (s.get("unanswerable") or {}).get("abstained"),
+            "judge": (s.get("judge") or {}).get("state"),
+            "qualifying": s.get("qualifying"),
+        }
+    return sorted(rows.values(), key=lambda r: str(r.get("startedAt") or ""))
+
+
+def _fmt(value: Any, digits: int = 3) -> str:
+    if value is None:
+        return "–"
+    if isinstance(value, float):
+        return f"{value:.{digits}f}"
+    return str(value)
+
+
+def build_report(
+    settings: LearSettings,
+    out: Optional[Path] = None,
+    *,
+    source: Optional[Path] = None,
+    include_committed: bool = True,
+) -> Tuple[str, Dict[str, Any]]:
     repo = evalset.REPO_ROOT
     evidence_dir = repo / "docs" / "lear_agent" / "evidence"
     data: Dict[str, Any] = {"backend": settings.backend, "qualifyingBackend": settings.qualifying}
@@ -54,11 +123,15 @@ def build_report(settings: LearSettings, out: Optional[Path] = None) -> Tuple[st
     try:
         from .docverify import verify_docs
 
-        verify = verify_docs(Path(settings.docs_dir), settings.source_dir)
+        source_dir = Path(source) if source else settings.source_dir
+        verify = verify_docs(Path(settings.docs_dir), source_dir)
+        cov = verify.get("coverage") or {}
         data["docs"] = {
             "passed": verify["passed"],
+            "source": str(source_dir) if source_dir else None,
             "checks": {c["name"]: c["status"] for c in verify["checks"]},
-            "coverage": round(100 * (verify.get("coverage") or {}).get("narrativeCoverage", 0.0)),
+            "coverage": round(100 * cov["narrativeCoverage"]) if "narrativeCoverage" in cov else None,
+            "coverageAny": round(100 * cov["anyCoverage"]) if "anyCoverage" in cov else None,
         }
     except Exception as exc:  # pragma: no cover - reporting must not crash
         data["docs"] = {"error": str(exc)}
@@ -75,21 +148,9 @@ def build_report(settings: LearSettings, out: Optional[Path] = None) -> Tuple[st
     else:
         data["index"] = {"dir": str(settings.index_dir), "status": "missing — run `lear index rebuild`"}
 
-    runs = list((Path(settings.data_dir) / "eval_runs").glob("*/run.json")) + list((repo / "evals" / "lear" / "results").glob("*/run.json"))
-    eval_path = _latest(runs)
-    run = _load(eval_path)
-    if run:
-        s = run.get("summary", {})
-        data["evaluation"] = {
-            "file": str(eval_path),
-            "label": run.get("label"),
-            "qualifying": s.get("qualifying"),
-            "cases": s.get("cases"),
-            "correct": s.get("correct"),
-            "retrievalHitAtK": (s.get("retrieval") or {}).get("hitAtK"),
-            "unanswerableAbstained": (s.get("unanswerable") or {}).get("abstained"),
-            "judge": (s.get("judge") or {}).get("state"),
-        }
+    runs = evaluation_runs(settings, include_committed=include_committed)
+    if runs:
+        data["evaluationRuns"] = runs
 
     benches = list((Path(settings.data_dir) / "bench").glob("*/bench.json")) + list(evidence_dir.glob("bench*.json"))
     bench_path = _latest(benches)
@@ -115,12 +176,34 @@ def build_report(settings: LearSettings, out: Optional[Path] = None) -> Tuple[st
     docs = data.get("docs", {})
     if "passed" in docs:
         failing = [k for k, v in docs["checks"].items() if v == "FAIL"]
-        lines.append(f"docs verify: {'PASS' if docs['passed'] else 'FAIL'} ({len(docs['checks'])} checks; failing: {', '.join(failing) or 'none'}); narrative module coverage {docs.get('coverage')}%")
+        warned = [k for k, v in docs["checks"].items() if v == "WARN"]
+        coverage = (
+            f"module coverage {docs['coverage']}% narrative, {docs['coverageAny']}% anywhere"
+            if docs.get("coverage") is not None
+            else "coverage n/a (needs --source)"
+        )
+        lines.append(
+            f"docs verify: {'PASS' if docs['passed'] else 'FAIL'} ({len(docs['checks'])} checks; failing: {', '.join(failing) or 'none'}"
+            + (f"; warnings: {', '.join(warned)}" if warned else "")
+            + f"); {coverage}"
+        )
+    elif docs.get("error"):
+        lines.append(f"docs verify: error — {docs['error']}")
     idx = data["index"]
-    lines.append(f"index: {idx.get('chunks', idx.get('status'))} chunks in {idx['dir']}" + (f" — {idx['embedding'].get('provider')}:{idx['embedding'].get('model')}" if isinstance(idx.get("embedding"), dict) else ""))
-    if "evaluation" in data:
-        e = data["evaluation"]
-        lines.append(f"evaluation: {e['label']} — {e['cases']} cases, correct {e['correct']}, hit@k {e['retrievalHitAtK']}, unanswerable abstained {e['unanswerableAbstained']}, judge {e['judge']}, qualifying {e['qualifying']}")
+    if "chunks" in idx:
+        lines.append(f"index: {idx['chunks']} chunks in {idx['dir']}" + (f" — {idx['embedding'].get('provider')}:{idx['embedding'].get('model')}" if isinstance(idx.get("embedding"), dict) else ""))
+    else:
+        lines.append(f"index: {idx.get('status')} ({idx['dir']})")
+    if data.get("evaluationRuns"):
+        lines.append("evaluation runs (oldest first):")
+        lines.append(f"  {'label':<16} {'suites':<16} {'commit':<14} {'cases':>5} {'correct':>7} {'strict':>6} {'hit@k':>6} {'MRR':>6} {'unans':>6}  judge     qualifying")
+        for r in data["evaluationRuns"]:
+            commit = (r["commit"] or "–") + ("+" if r.get("dirty") else "")
+            lines.append(
+                f"  {str(r['label'])[:16]:<16} {','.join(r['suites'])[:16]:<16} {commit:<14} {_fmt(r['cases']):>5} {_fmt(r['correct']):>7} "
+                f"{_fmt(r['correctStrict']):>6} {_fmt(r['hitAtK']):>6} {_fmt(r['mrr']):>6} {_fmt(r['unanswerableAbstained']):>6}  {str(r['judge'] or '–'):<9} {r['qualifying']}"
+            )
+        lines.append("  (+ = uncommitted changes at run time; strict = key facts after removing code refs and markers; unans = unanswerable cases abstained)")
     else:
         lines.append("evaluation: none yet (run `lear eval run`)")
     if "benchmark" in data:

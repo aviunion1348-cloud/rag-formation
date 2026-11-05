@@ -31,6 +31,7 @@ from ragformation.lear.evalset import DEFAULT_DATASET, REPO_ROOT
 from ragformation.lear.evaluate import run_evaluation
 from ragformation.lear.judge import LocalJudge
 from ragformation.lear.ratelimit import LearRateLimiter
+from ragformation.lear.report import build_report
 from ragformation.lear.settings import LearSettings
 
 CLOSED_PORT_URL = "http://127.0.0.1:9"  # discard port; nothing listens in the sandbox
@@ -315,6 +316,21 @@ class StubOllamaTests(PipelineCase):
             finally:
                 agent.close()
 
+    def test_context_and_output_caps_reach_the_model(self) -> None:
+        with StubOllama() as stub:
+            settings = self.strict(stub, max_context_tokens=400, max_output_tokens=128)
+            agent = LearAgent(settings)
+            try:
+                indexer.rebuild(agent.engine, settings)
+                answer = agent.ask("Which permission modes does the permission engine have?")
+                self.assertEqual(answer["status"], "GROUNDED", answer.get("warnings"))
+                self.assertLessEqual(answer["retrieval"]["contextTokens"], 400)
+                chat = [r for r in stub.requests if r["path"] == "/api/chat"][-1]["payload"]
+                self.assertEqual(chat["options"]["num_predict"], 128)
+                self.assertEqual((chat["options"]["temperature"], chat["options"]["top_p"]), (0.2, 0.9))
+            finally:
+                agent.close()
+
     def test_llm_failure_is_an_error_not_a_silent_extractive_answer(self) -> None:
         with StubOllama() as stub:
             settings = self.strict(stub)
@@ -444,6 +460,34 @@ class CliTests(PipelineCase):
         self.assertEqual(code, 2)
 
 
+    def test_dependency_error_names_the_configured_models(self) -> None:
+        # Regression: the ERROR answer printed "embedding=:nomic-embed-text" and "ttft=None ms".
+        env = {"RAG_LEAR_OLLAMA_URL": CLOSED_PORT_URL}
+        code, out = self.run_cli("ask", "Which permission modes exist?", "--json", env=env)
+        self.assertEqual(code, 6)
+        models = json.loads(out)["models"]
+        self.assertEqual(models["embedding"]["provider"], "ollama")
+        self.assertTrue(models["generation"]["configured"].startswith("ollama:"))
+        code, text = self.run_cli("ask", "Which permission modes exist?", "--no-stream", env=env)
+        self.assertEqual(code, 6)
+        self.assertIn("embedding=ollama:", text)
+        self.assertNotIn("None ms", text)
+
+
+    def test_streaming_mode_prints_answers_that_were_not_streamed(self) -> None:
+        # Regression: a scope-guard abstention produces no tokens, and streaming
+        # mode then printed nothing at all instead of the explanation.
+        base = ("--backend", "baseline")
+        self.run_cli(*base, "index", "rebuild", "--json")
+        code, text = self.run_cli(*base, "ask", "Which Kafka topics does Lear publish incident events to?")
+        self.assertEqual(code, 3)
+        self.assertIn("never mentions 'kafka'", text.lower())
+        self.assertIn("embedding=hashing:", text)  # baseline labels, not the ollama defaults
+        with mock.patch("sys.stdin", io.StringIO("Which Kafka topics does Lear publish incident events to?\n")):
+            code, text = self.run_cli(*base, "chat", "--session", "s-stream")
+        self.assertIn("never mentions 'kafka'", text.lower())
+
+
 # -------------------------------------------------------------- bench / eval
 class BenchTests(PipelineCase):
     def test_bench_keeps_rate_limited_requests_in_the_results(self) -> None:
@@ -489,3 +533,33 @@ class EvaluationRunTests(unittest.TestCase):
 
 if __name__ == "__main__":  # pragma: no cover
     unittest.main()
+
+
+# ------------------------------------------------------------------- report
+class ReportTests(PipelineCase):
+    def _run(self, label: str, started: str, correct: float, *, strict=None, dirty=False) -> None:
+        run_dir = self.data / "eval_runs" / label
+        run_dir.mkdir(parents=True)
+        summary = {"cases": 4, "correct": correct, "retrieval": {"hitAtK": 1.0, "mrr": 0.5},
+                   "unanswerable": {"abstained": 1.0}, "judge": {"state": "BLOCKED"}, "qualifying": False}
+        if strict is not None:
+            summary["correctStrict"] = strict
+        (run_dir / "run.json").write_text(json.dumps({
+            "label": label, "startedAt": started, "suites": ["dev"],
+            "ragFormation": {"commit": "abcdef1234567890", "dirty": dirty}, "summary": summary}), encoding="utf-8")
+
+    def test_report_lists_every_round_oldest_first_and_flags_missing_coverage(self) -> None:
+        # Regression: the report showed only the newest run (so not the rounds)
+        # and printed "coverage 0%" when no Lear checkout was supplied.
+        self._run("round-b", "2026-11-05T10:00:00Z", 0.75, strict=0.5)
+        self._run("round-a", "2026-11-05T09:00:00Z", 0.5, dirty=True)
+        text, data = build_report(self.settings(), include_committed=False)
+        self.assertEqual([r["label"] for r in data["evaluationRuns"]], ["round-a", "round-b"])
+        self.assertLess(text.index("round-a"), text.index("round-b"))
+        self.assertIn("abcdef123456+", text)  # dirty tree is visible
+        self.assertEqual(data["evaluationRuns"][1]["correctStrict"], 0.5)
+        self.assertIsNone(data["evaluationRuns"][0]["correctStrict"])
+        self.assertIn("coverage n/a (needs --source)", text)
+        self.assertNotIn("coverage 0%", text)
+        self.assertIn("index: missing — run `lear index rebuild`", text)
+
