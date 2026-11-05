@@ -511,6 +511,12 @@ def build_parser() -> argparse.ArgumentParser:
     p_doctor = sub.add_parser("doctor", help="diagnose configuration, providers and index")
     p_doctor.add_argument("--json", action="store_true")
 
+    # The Lear agent has its own strict-local settings; its parser lives in
+    # ragformation/lear/cli.py and imports nothing heavy at parse time.
+    from .lear.cli import add_lear_parser
+
+    add_lear_parser(sub)
+
     p_export = sub.add_parser("export", help="export corpus, chunks and answers as JSON")
     p_export.add_argument("--out", default=None)
     p_export.add_argument("--questions", action="append", default=[])
@@ -543,6 +549,10 @@ COMMANDS = {
 def main(argv: Optional[Sequence[str]] = None) -> int:
     parser = build_parser()
     args = parser.parse_args(argv)
+    if args.command == "lear":
+        from .lear.cli import run_lear
+
+        return run_lear(args)
     try:
         settings = Settings.from_env()
         settings.validate()

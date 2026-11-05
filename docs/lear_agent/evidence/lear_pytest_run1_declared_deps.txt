@@ -1,0 +1,96 @@
+# Lear test suite at pinned commit 60cf9abf8408 — run 1 (clean install of declared deps)
+# date: 2026-11-05T18:03:48+00:00
+# setup: git archive of the pinned commit -> /tmp/lear-run; python3 -m venv; pip install -e '/tmp/lear-run[dev]'
+# python: Python 3.11.2
+# invocation: python -m pytest -q -p no:cacheprovider (DEEPSEEK_API_KEY/KIMI_API_KEY unset)
+
+
+==================================== ERRORS ====================================
+__________________ ERROR collecting tests/test_desktop_api.py __________________
+tests/test_desktop_api.py:20: in <module>
+    from prash.server import APIBridgeException, app, _active_watches
+prash/server.py:3641: in <module>
+    @app.post("/api/chat/upload")
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3109: in decorator
+    self.add_api_route(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3044: in add_api_route
+    route = route_class(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1246: in __init__
+    _populate_api_route_state(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1114: in _populate_api_route_state
+    ) = _build_dependant_with_parameterless_dependencies(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:914: in _build_dependant_with_parameterless_dependencies
+    dependant = get_dependant(path=path, call=call, scope="function")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:324: in get_dependant
+    param_details = analyze_param(
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:563: in analyze_param
+    ensure_multipart_is_installed()
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:141: in ensure_multipart_is_installed
+    raise RuntimeError(multipart_not_installed_error) from None
+E   RuntimeError: Form data requires "python-multipart" to be installed. 
+E   You can install "python-multipart" with: 
+E   
+E   pip install python-multipart
+______________ ERROR collecting tests/test_service_connections.py ______________
+tests/test_service_connections.py:11: in <module>
+    from prash.server import _active_watches, _connection_states, _verify_persisted_connector, app
+prash/server.py:3641: in <module>
+    @app.post("/api/chat/upload")
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3109: in decorator
+    self.add_api_route(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3044: in add_api_route
+    route = route_class(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1246: in __init__
+    _populate_api_route_state(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1114: in _populate_api_route_state
+    ) = _build_dependant_with_parameterless_dependencies(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:914: in _build_dependant_with_parameterless_dependencies
+    dependant = get_dependant(path=path, call=call, scope="function")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:324: in get_dependant
+    param_details = analyze_param(
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:563: in analyze_param
+    ensure_multipart_is_installed()
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:141: in ensure_multipart_is_installed
+    raise RuntimeError(multipart_not_installed_error) from None
+E   RuntimeError: Form data requires "python-multipart" to be installed. 
+E   You can install "python-multipart" with: 
+E   
+E   pip install python-multipart
+_______________ ERROR collecting tests/test_widget_generation.py _______________
+tests/test_widget_generation.py:6: in <module>
+    from prash.server import app
+prash/server.py:3641: in <module>
+    @app.post("/api/chat/upload")
+     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3109: in decorator
+    self.add_api_route(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:3044: in add_api_route
+    route = route_class(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1246: in __init__
+    _populate_api_route_state(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:1114: in _populate_api_route_state
+    ) = _build_dependant_with_parameterless_dependencies(
+../learvenv/lib/python3.11/site-packages/fastapi/routing.py:914: in _build_dependant_with_parameterless_dependencies
+    dependant = get_dependant(path=path, call=call, scope="function")
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:324: in get_dependant
+    param_details = analyze_param(
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:563: in analyze_param
+    ensure_multipart_is_installed()
+../learvenv/lib/python3.11/site-packages/fastapi/dependencies/utils.py:141: in ensure_multipart_is_installed
+    raise RuntimeError(multipart_not_installed_error) from None
+E   RuntimeError: Form data requires "python-multipart" to be installed. 
+E   You can install "python-multipart" with: 
+E   
+E   pip install python-multipart
+=========================== short test summary info ============================
+ERROR tests/test_desktop_api.py - RuntimeError: Form data requires "python-mu...
+ERROR tests/test_service_connections.py - RuntimeError: Form data requires "p...
+ERROR tests/test_widget_generation.py - RuntimeError: Form data requires "pyt...
+!!!!!!!!!!!!!!!!!!! Interrupted: 3 errors during collection !!!!!!!!!!!!!!!!!!!!
+3 errors in 3.36s
+PYTEST_EXIT=2
