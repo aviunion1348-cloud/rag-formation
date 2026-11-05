@@ -181,13 +181,13 @@
  "latency": {
   "totalMs": {
    "count": 46,
-   "mean": 14.16,
-   "p50": 12.53,
-   "p95": 23.12,
-   "min": 8.47,
-   "max": 25.15
+   "mean": 10.79,
+   "p50": 10.67,
+   "p95": 14.55,
+   "min": 7.46,
+   "max": 16.42
   },
-  "wallMs": 656.4
+  "wallMs": 500.0
  },
  "casesPassed": 39,
  "casesTotal": 46,
@@ -286,7 +286,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 25.148,
+   "latencyMs": 14.811,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -373,7 +373,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 24.411,
+   "latencyMs": 13.255,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -462,7 +462,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 23.512,
+   "latencyMs": 13.144,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -550,7 +550,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 21.957,
+   "latencyMs": 14.745,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -637,7 +637,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 19.199,
+   "latencyMs": 10.958,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -728,7 +728,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 20.502,
+   "latencyMs": 11.639,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -816,7 +816,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.323,
+   "latencyMs": 10.98,
    "warnings": [],
    "failures": [
     "missing facts: ['15 minutes']"
@@ -920,7 +920,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.235,
+   "latencyMs": 10.844,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1009,7 +1009,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.0,
+   "latencyMs": 9.553,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1096,7 +1096,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.84,
+   "latencyMs": 10.54,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -1184,7 +1184,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.163,
+   "latencyMs": 10.676,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1270,7 +1270,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 17.171,
+   "latencyMs": 10.921,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1358,7 +1358,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.07,
+   "latencyMs": 10.322,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1447,7 +1447,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 10.908,
+   "latencyMs": 9.754,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1534,7 +1534,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.447,
+   "latencyMs": 10.62,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -1625,7 +1625,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 20.588,
+   "latencyMs": 11.309,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1697,7 +1697,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 17.116,
+   "latencyMs": 8.468,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -1770,7 +1770,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 14.753,
+   "latencyMs": 7.89,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -1844,7 +1844,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 15.325,
+   "latencyMs": 8.227,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -1916,7 +1916,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 15.135,
+   "latencyMs": 7.458,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -1988,7 +1988,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 10.656,
+   "latencyMs": 8.493,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2060,7 +2060,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 13.389,
+   "latencyMs": 8.721,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2152,7 +2152,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 14.466,
+   "latencyMs": 10.355,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -2241,14 +2241,14 @@
     },
     {
      "evidenceId": 2,
-     "chunkId": "src-27037c968a#c005-6dc6b87d",
+     "chunkId": "src-27037c968a#c003-16e7d442",
      "sourceId": "src-27037c968a",
      "sourceTitle": "access-control-policy",
-     "section": "5. Break-glass",
+     "section": "3. Offboarding",
      "page": 1,
-     "location": "5. Break-glass p.1",
+     "location": "3. Offboarding p.1",
      "excerpt": "Evidence of each review is retained for **3 years**.",
-     "support": 0.0975,
+     "support": 0.1874,
      "valid": true,
      "note": "conflicting value: 3 year"
     },
@@ -2266,7 +2266,7 @@
      "note": "conflicting value: 5 year"
     }
    ],
-   "latencyMs": 13.166,
+   "latencyMs": 11.037,
    "warnings": [
     "conflicting_evidence"
    ],
@@ -2355,7 +2355,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 16.892,
+   "latencyMs": 16.42,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2459,7 +2459,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 19.848,
+   "latencyMs": 13.954,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2550,7 +2550,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 19.252,
+   "latencyMs": 13.514,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -2638,7 +2638,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 16.893,
+   "latencyMs": 11.064,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2732,7 +2732,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.617,
+   "latencyMs": 9.676,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -2806,7 +2806,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 10.078,
+   "latencyMs": 9.486,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -2885,7 +2885,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 10.673,
+   "latencyMs": 9.894,
    "warnings": [],
    "failures": [
     "abstained on an answerable question",
@@ -2989,7 +2989,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.198,
+   "latencyMs": 10.87,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -3075,7 +3075,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 10.96,
+   "latencyMs": 10.666,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -3164,7 +3164,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 10.435,
+   "latencyMs": 10.298,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -3251,7 +3251,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.2,
+   "latencyMs": 10.973,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -3337,7 +3337,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 13.188,
+   "latencyMs": 9.967,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -3452,7 +3452,7 @@
      "note": "conflicting value: 5 year"
     }
    ],
-   "latencyMs": 11.37,
+   "latencyMs": 11.614,
    "warnings": [
     "conflicting_evidence",
     "quarantined_instruction_like_content"
@@ -3542,7 +3542,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.488,
+   "latencyMs": 11.531,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -3632,7 +3632,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 9.847,
+   "latencyMs": 9.569,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -3722,7 +3722,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 10.822,
+   "latencyMs": 10.54,
    "warnings": [],
    "failures": [
     "missing facts: ['10 minutes']"
@@ -3814,19 +3814,19 @@
     },
     {
      "evidenceId": 2,
-     "chunkId": "src-27037c968a#c005-6dc6b87d",
+     "chunkId": "src-27037c968a#c002-fe2a6386",
      "sourceId": "src-27037c968a",
      "sourceTitle": "access-control-policy",
-     "section": "5. Break-glass",
+     "section": "2. Access Reviews",
      "page": 1,
-     "location": "5. Break-glass p.1",
+     "location": "2. Access Reviews p.1",
      "excerpt": "Evidence of each review is retained for **3 years**.",
-     "support": 0.165,
+     "support": 0.5407,
      "valid": true,
      "note": "conflicting value: 3 year"
     }
    ],
-   "latencyMs": 10.927,
+   "latencyMs": 10.677,
    "warnings": [
     "conflicting_evidence"
    ],
@@ -3918,7 +3918,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 10.934,
+   "latencyMs": 10.612,
    "warnings": [],
    "failures": [],
    "passed": true
@@ -3991,7 +3991,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 9.633,
+   "latencyMs": 9.624,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -4090,7 +4090,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 12.873,
+   "latencyMs": 11.507,
    "warnings": [
     "quarantined_instruction_like_content"
    ],
@@ -4194,7 +4194,7 @@
      "note": "citation bound to a retrieved chunk at validation time"
     }
    ],
-   "latencyMs": 11.153,
+   "latencyMs": 10.863,
    "warnings": [],
    "failures": [
     "answered an unanswerable question"
@@ -4269,7 +4269,7 @@
     "citationLocationValidity": 0.0
    },
    "citations": [],
-   "latencyMs": 8.466,
+   "latencyMs": 8.268,
    "warnings": [],
    "failures": [],
    "passed": true

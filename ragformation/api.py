@@ -278,6 +278,30 @@ class Api:
             except (TypeError, ValueError) as exc:
                 raise ValidationError("topP must be a number") from exc
 
+        # A caller may *narrow* the sources it searches. It can never widen its
+        # principal's scope: the intersection happens here, server-side, and an
+        # empty filter means "nothing is allowed" (which abstains) rather than
+        # "no filter" (which would leak the whole index).
+        requested_sources = body.get("allowedSources", body.get("allowed_sources"))
+        if requested_sources is not None:
+            if isinstance(requested_sources, str):
+                raise ValidationError("allowedSources must be a list of source ids")
+            if not isinstance(requested_sources, (list, tuple)):
+                raise ValidationError("allowedSources must be a list of source ids")
+            if len(requested_sources) > 200:
+                raise ValidationError("allowedSources may contain at most 200 ids")
+            cleaned = []
+            for value in requested_sources:
+                if not isinstance(value, str) or not value.strip():
+                    raise ValidationError("allowedSources entries must be non-empty strings")
+                if len(value) > 200:
+                    raise ValidationError("allowedSources entries are too long")
+                cleaned.append(value.strip())
+            requested_sources = cleaned
+        scoped_sources = (
+            ctx.principal.scope(requested_sources) if requested_sources is not None else ctx.principal.scope()
+        )
+
         if not self._query_slots.acquire(blocking=False):
             raise RateLimited(
                 "the service is at its concurrency limit",
@@ -290,6 +314,7 @@ class Api:
                 mode=mode,
                 temperature=temperature,
                 top_p=top_p,
+                allowed_sources=scoped_sources,
                 principal=ctx.principal,
             )
         finally:

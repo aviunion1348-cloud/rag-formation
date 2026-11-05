@@ -167,6 +167,27 @@ class ExperienceAssetsTests(unittest.TestCase):
         self.assertIn('class="skip-link"', html)
         self.assertIn('id="transcript"', html)
 
+    def test_package_data_patterns_cover_every_experience_asset(self):
+        """A shipped wheel must contain the experience, not just the source tree."""
+
+        import fnmatch
+
+        try:
+            import tomllib
+        except ModuleNotFoundError:  # Python < 3.11
+            self.skipTest("tomllib is only available on Python 3.11+")
+
+        manifest = tomllib.loads(read(REPO_ROOT / "pyproject.toml"))
+        patterns = manifest["tool"]["setuptools"]["package-data"]["ragformation"]
+        package_root = REPO_ROOT / "ragformation"
+        assets = [path for path in (package_root / "web").rglob("*") if path.is_file()]
+        missing = []
+        for path in assets:
+            relative = path.relative_to(package_root).as_posix()
+            if not any(fnmatch.fnmatch(relative, pattern) for pattern in patterns):
+                missing.append(relative)
+        self.assertFalse(missing, f"assets that would be missing from a wheel: {sorted(missing)}")
+
     def test_page_documents_its_own_fallbacks(self):
         main = read(JS / "main.js")
         renderer = read(JS / "renderer.js")

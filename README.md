@@ -5,10 +5,10 @@ grounded answers with resolvable citations come out. Python standard library
 only — no framework, no build step, no cloud account required.
 
 ```bash
-make ingest                                         # index the sample corpus
+make ingest                                         # index the fixture corpus (14 documents)
 make ask Q="How long are audit logs retained?"      # cited answer in the terminal
-make serve                                          # web console on :8787
-make test                                           # 107 tests, no network
+make serve                                          # console on :8787, film at /experience
+make test                                           # 143 tests, no network
 ```
 
 ```
@@ -22,10 +22,15 @@ Sources → extraction → normalisation → heading-aware chunking → embeddin
 
 | Path | What it is | Status |
 |---|---|---|
-| `ragformation/` | The RAG system: ingestion, retrieval, generation, guardrails, API, console, CLI | Verified (107 tests, golden evaluation) |
-| `corpus/` | Six synthetic documents used as the demonstration corpus (clearly labelled as invented) | Fixtures |
-| `evals/golden.json` | 14 golden questions with expected sources and required/forbidden facts | Used by `make eval` |
-| `docs/` | Source register, requirements, architecture, ingestion, retrieval, evaluation, operations, ADRs | Current |
+| `ragformation/` | The RAG system: ingestion, retrieval, generation, guardrails, API, console, CLI | Verified (143 tests, two evaluation sets) |
+| `ragformation/web/experience/` | The S3 Experience: a 16-scene walkthrough with Director / Live / Explorer modes | Verified headlessly; WebGL unchecked on a GPU (see `docs/experience.md`) |
+| `corpus/` | Fourteen synthetic documents, clearly labelled as invented (one pair deliberately contradicts) | Fixtures |
+| `evals/golden.json` | 14 golden questions, frozen: the regression gate | `make eval` |
+| `evals/golden_v2.json` | 46 versioned cases with dev/calibration/test splits and ten categories | `ragformation eval` |
+| `evals/results/` | Committed reports: golden v1/v2, paraphrases, scale benchmarks | Measurements |
+| `integrations/` | Python client, Node client, host-principal proxy example, curl quickstart | Executed by tests |
+| `scripts/` | Demo recorder, scale benchmark, paraphrase benchmark, experience smoke test | Tools |
+| `docs/` | Architecture, ingestion, retrieval, evaluation, benchmarks, events, integration, experience, operations, ADRs | Current |
 | `engine/` | The earlier deterministic walkthrough engine (fixture corpus, trace events for a visual frontend) | Kept from PR #1, 29 tests pass |
 
 `engine/` is the previous increment: a self-contained demo that replays a fixed
@@ -35,7 +40,7 @@ code; `docs/source_register.md` explains why both are kept.
 
 ## Quick start
 
-Requirements: **Python 3.10+**. Nothing else. (Optional: Ollama for neural
+Requirements: **Python 3.9+**. Nothing else. (Optional: Ollama for neural
 embeddings and generated prose — see below.)
 
 ```bash
@@ -69,7 +74,7 @@ stage is real even without a model server:
 
 | Stage | Default without Ollama | With Ollama |
 |---|---|---|
-| Embeddings | `hashing-lexical-v1` — deterministic feature hashing. **Not** a neural encoder; similarity reflects shared words/bigrams | `nomic-embed-text` (768-d neural embeddings) |
+| Embeddings | `hashing-lexical-v1` — deterministic feature hashing. **Not** a neural encoder; similarity reflects shared words/bigrams. `lsa` (corpus-trained TF-IDF + SVD, `pip install "ragformation[lsa]"`) is available and still labelled honestly | `nomic-embed-text` (768-d neural embeddings) |
 | Generation | `extractive-synthesis-v1` — quotes the best evidence sentences, each bound to its chunk id | `llama3.2:3b` streamed from Ollama |
 
 Nothing silently substitutes one for the other: the provider, model and a
@@ -98,7 +103,7 @@ Streaming is used for every generator, so **TTFT** (time to first token) and
 | `ask "QUESTION"` | Ask (`--stream`, `--json`, `--show-trace`, `--show-evidence`, `--top-k`, `--mode`) |
 | `serve` | HTTP API + web console |
 | `stats` | Mean / p50 / p95 for latency, retrieval, generation, TTFT, ITL |
-| `eval` | Run the golden set (retrieval and generation measured separately) |
+| `eval` | Run the v2 set (measurement) or `--v1` (frozen gate); `--gate test` makes it a CI verdict |
 | `doctor` | Provider, index-integrity and corpus checks |
 | `rebuild` | Re-embed stored chunks (recovery path after a model change) |
 | `delete SOURCE_ID` | Remove a source and every derived chunk, vector and lexical row |
@@ -114,7 +119,12 @@ Exit codes: `0` answered · `3` abstained · `4` needs review · `2` usage error
 
 | Method | Route | Purpose |
 |---|---|---|
-| GET | `/api/health` | Provider reality, index counts, integrity problems |
+| GET | `/api/v1/health` | Provider reality, index counts, integrity problems, security posture |
+| GET | `/api/v1/ready` | Readiness with reasons |
+| POST | `/api/v1/query` | `{question, topK, mode, allowedSources}` → answer, citations, warnings |
+| GET | `/api/v1/traces/{queryId}` | Stored stage trace (no document text) |
+| GET | `/api/v1/events` | Server-sent stage stream; `…/events/recent` polls |
+| GET | `/api/health` | Legacy alias kept for the console |
 | GET | `/api/config` | Effective configuration (no secrets, no paths) |
 | GET | `/api/sources` | Indexed sources with chunk counts and revisions |
 | GET | `/api/sources/{id}/chunks` | Chunk inventory with provenance |
@@ -128,6 +138,16 @@ Exit codes: `0` answered · `3` abstained · `4` needs review · `2` usage error
 | POST | `/api/feedback` | `{queryId, rating, note}` |
 
 Set `RAG_API_KEY` to require `x-api-key` on every `/api` route except health.
+Put the engine behind your own authenticated proxy and set `RAG_TRUST_PROXY=1` to
+have it trust a server-side principal header — the whole boundary is documented
+in `docs/integration.md`, and `integrations/host_principal/proxy_example.py` is a
+working example (the tests prove an impersonation attempt is dropped).
+
+The walkthrough film is at **`/experience`**: Director mode replays a recording
+made from a real run, Live mode follows the running server's event stream, and
+Explorer mode reads the real index. It runs offline, ships in the wheel, honours
+`prefers-reduced-motion`, and falls back from WebGL2 → WebGL1 → Canvas 2D →
+transcript. `docs/experience.md` states precisely what was and was not verified.
 
 ## Verification status
 
@@ -137,17 +157,22 @@ environment):
 
 | Signal | Result |
 |---|---|
-| Test suite | **107/107 pass** (`python3 -m unittest discover -s tests`) — no network, no paid API |
+| Test suite | **143/143 pass** (`python3 -m unittest discover -s tests`, ~20 s) — no network, no paid API |
 | Legacy `engine/` suite | 29/29 pass |
-| Golden evaluation | 14/14 cases, recall@6 **1.00**, MRR **1.00**, nDCG@6 **0.967**, abstain accuracy **1.00**, fact recall **1.00**, forbidden-fact rate **1.00** |
-| Ingest | 6 documents → 21 chunks in **11 ms**; re-ingest (idempotent) **1.8 ms** |
-| Query latency | mean **5.8 ms**, p50 **5.6 ms**, p95 **7.0 ms** over 300 queries (~165 q/s sequential) |
+| Golden v1 (frozen gate) | 14/14 cases, recall@6 **1.00**, MRR **1.00**, nDCG@6 **0.952**, abstain accuracy **1.00**, fact recall **1.00**, forbidden-fact rate **1.00** |
+| Evaluation v2 (measurement) | **39/46** cases on 59 chunks: recall@6 1.00, precision@6 0.365, MRR 0.921, nDCG 0.918; answered 33 / needs_review 3 / abstained 10; citation precision 1.00; abstention recall 0.889. Seven failures are listed, not hidden |
+| Conflict detection | The corpus contains a deliberate 5-years vs 3-years contradiction: both values are surfaced with provenance and the answer is marked `needs_review`; a control question stays `answered` |
+| Ingest | 14 documents → 59 chunks in **~40 ms**; re-ingest is idempotent |
+| Query latency | mean **10.8 ms**, p95 **14.6 ms** at 59 chunks; **10.8 / 42.5 ms** p50 at 91 / 875 chunks (`docs/benchmarks.md`) |
+| The S3 Experience | 16 scenes; booted headlessly in all three modes (23 checks) plus 39 DOM-free contract checks; **WebGL not verified on a GPU** |
+| Packaging | Wheel built, installed in a clean venv, served `/experience` and answered a cited query from site-packages |
 | Ollama adapter | Verified against a local stub speaking `/api/tags`, `/api/embed`, `/api/chat` (streaming, TTFT/ITL measured) — **not** verified against a live model in this environment |
-| Tested scale | 6 documents / 21 chunks. Retrieval is brute-force over in-memory vectors; see `docs/retrieval.md` for the documented limit |
+| Tested scale | 875 chunks / 125 sources measured; retrieval is a brute-force scan over in-memory vectors, so treat thousands of chunks as the comfortable range |
 
-Honest gaps are listed in `docs/implementation_status.md` and §3 of
-`SECURITY.md`. The short version: no live LLM was available here, injection
-detection is heuristic, and this is a single-user local deployment.
+Honest gaps are listed in `docs/implementation_status.md`, `docs/post_merge_audit.md`
+§4 and §3 of `SECURITY.md`. The short version: no live LLM or GPU was available
+here, no pretrained embedding model was measured, injection detection is
+heuristic, and the default deployment is single-user local.
 
 ## Documentation
 
@@ -157,12 +182,16 @@ detection is heuristic, and this is a single-user local deployment.
 * [docs/implementation_status.md](docs/implementation_status.md) — requirement-by-requirement status with evidence
 * [docs/tutorial_to_implementation_map.md](docs/tutorial_to_implementation_map.md) — whiteboard/notes → code
 * [docs/ingestion.md](docs/ingestion.md), [docs/retrieval.md](docs/retrieval.md) — the two halves that decide quality
-* [docs/evaluation.md](docs/evaluation.md) — corpus, methodology, measured results, threshold calibration
+* [docs/evaluation.md](docs/evaluation.md) — both evaluation sets, methodology, measured results, calibration, ablations
+* [docs/benchmarks.md](docs/benchmarks.md) — measured ingest/query behaviour at 100 / 500 / 1000 chunks
+* [docs/events.md](docs/events.md) — the versioned event contract and how to consume it
+* [docs/integration.md](docs/integration.md) — deployment shapes, auth modes, tenancy, error contract
+* [docs/experience.md](docs/experience.md) — the film, its modes, its fallbacks, and what was not verified
+* [docs/post_merge_audit.md](docs/post_merge_audit.md) — post-merge audit: gaps found, fixes, remaining work
 * [SECURITY.md](SECURITY.md) — threat model, controls with tests, stated limits
 * [evals/results/](evals/results/) — committed evaluation reports
 * [docs/operations.md](docs/operations.md) — run, configure, monitor, rebuild, back up
 * [docs/decisions/](docs/decisions/) — ADRs: vector store, stdlib stack, embeddings, ranking, generation, citations/abstention, scope
-* [SECURITY.md](SECURITY.md) — threat model, controls, limits
 
 ## Licence
 

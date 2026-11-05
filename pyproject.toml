@@ -55,7 +55,7 @@ ragformation = [
   "web/experience/*.css",
   "web/experience/*.js",
   "web/experience/*.json",
-  "web/experience/scenes/*.js",
+  "web/experience/js/*.js",
 ]
 
 [tool.coverage.run]

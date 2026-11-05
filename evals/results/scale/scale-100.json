@@ -1,0 +1,59 @@
+{
+  "label": "scale-100",
+  "generatedAt": "2026-11-05T14:39:53Z",
+  "machine": {
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+    "python": "3.11.2",
+    "cpuCount": 2
+  },
+  "provider": {
+    "embedding": "hashing",
+    "semantic": false,
+    "dimension": 512,
+    "generation": "extractive",
+    "generationMode": "extractive"
+  },
+  "corpus": {
+    "requestedChunks": 100,
+    "sources": 13,
+    "chunks": 91,
+    "bytes": 19513,
+    "dbBytes": 3839656
+  },
+  "ingest": {
+    "seconds": 0.048,
+    "chunksPerSecond": 1906.1,
+    "sourcesPerSecond": 272.3,
+    "statuses": {
+      "indexed": 13,
+      "unchanged": 0,
+      "failed": 0,
+      "chunks": 91
+    }
+  },
+  "query": {
+    "count": 24,
+    "meanMs": 10.469,
+    "p50Ms": 10.78,
+    "p95Ms": 12.303,
+    "maxMs": 13.869,
+    "statuses": {
+      "answered": 12,
+      "abstained": 12
+    },
+    "answerableChecked": 12,
+    "answerableCorrect": 12
+  },
+  "sampleAnswer": {
+    "question": "What availability target does svc-001 report?",
+    "status": "answered",
+    "answer": "Service svc-001 is owned by team-01 and reports an availability target of 99.01% over a rolling 30 day window. [1]",
+    "citations": 1
+  },
+  "limits": [
+    "single process, single thread, no cache warm-up",
+    "hashing embeddings (semantic: false) and the extractive answer path",
+    "synthetic corpus: uniform documents, no PDF or OCR work",
+    "SQLite on local disk; numbers will differ on other hardware"
+  ]
+}

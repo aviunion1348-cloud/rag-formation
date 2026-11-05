@@ -16,6 +16,7 @@ Answer statuses
 
 from __future__ import annotations
 
+import json
 import re
 import time
 import uuid
@@ -1186,7 +1187,18 @@ class RAGEngine:
                 statement.setdefault("sourceTitle", candidate_for_title.chunk.source_title)
             if source_id in existing:
                 continue
-            candidate = by_source.get(source_id)
+            # Pick the candidate that actually contains the conflicting
+            # sentence: citing the first chunk of a source can point the reader
+            # at the wrong section of a long document.
+            statement_sentence = " ".join((statement.get("sentence") or "").split())
+            candidates = [c for c in selected if c.chunk.source_id == source_id]
+            candidate = None
+            if statement_sentence:
+                candidate = next(
+                    (c for c in candidates if statement_sentence[:80] in " ".join(c.chunk.text.split())),
+                    None,
+                )
+            candidate = candidate or by_source.get(source_id)
             if candidate is None:
                 continue
             citation = self._citation_for(
@@ -1239,18 +1251,29 @@ class RAGEngine:
             words = {w for w in re.findall(r"[a-z0-9]+", sentence.lower()) if w not in stop}
             return {w for w in words if not w.isdigit()}
 
+        # Named things (``svc-001``, ``MACRO-BILLING-01``, ``team-04``) are the
+        # strongest subject signal available without a parser: two sentences
+        # that name *different* entities are talking about different subjects
+        # even when the surrounding words are identical templates.
+        anchor_pattern = re.compile(r"\b[a-z][a-z0-9]*(?:-[a-z0-9]+)+\b", re.I)
+
+        def anchors(sentence: str) -> set:
+            return {token.lower() for token in anchor_pattern.findall(sentence)}
+
         def facts(citation: Citation) -> List[Dict[str, Any]]:
             out: List[Dict[str, Any]] = []
             for sentence in re.split(r"(?<=[.!?])\s+", citation.excerpt or ""):
                 terms = subject_terms(sentence)
                 if not terms:
                     continue
+                sentence_anchors = anchors(sentence)
                 for value, unit in pattern.findall(sentence):
                     out.append(
                         {
                             "unit": unit.lower().rstrip("s"),
                             "value": value,
                             "terms": terms,
+                            "anchors": sentence_anchors,
                             "sentence": " ".join(sentence.split())[:200],
                             "sourceId": citation.source_id,
                         }
@@ -1261,6 +1284,7 @@ class RAGEngine:
                             "unit": "percent",
                             "value": value,
                             "terms": terms,
+                            "anchors": sentence_anchors,
                             "sentence": " ".join(sentence.split())[:200],
                             "sourceId": citation.source_id,
                         }
@@ -1279,6 +1303,10 @@ class RAGEngine:
                     continue
                 if left["value"] == right["value"]:
                     continue
+                left_anchors = left.get("anchors") or set()
+                right_anchors = right.get("anchors") or set()
+                if left_anchors and right_anchors and not (left_anchors & right_anchors):
+                    continue  # different named entities: different subjects
                 overlap = left["terms"] & right["terms"]
                 smaller = max(1, min(len(left["terms"]), len(right["terms"])))
                 if len(overlap) / smaller < 0.6:

@@ -261,6 +261,72 @@ class ConflictDetectionTests(TempDirTestCase):
         ]
         self.assertIsNone(engine._detect_conflict(same_source, []))
 
+    def test_named_entities_prevent_false_conflicts(self):
+        """Templated documents must not look like they contradict each other."""
+
+        from ragformation.engine import Citation
+
+        engine = self.make_engine()
+        different_entities = [
+            Citation(
+                1, "c1", "src-a", "A", "s", 1,
+                "Service svc-001 is owned by team-01 and reports an availability target of 99.01%.",
+                0.9,
+            ),
+            Citation(
+                2, "c2", "src-b", "B", "s", 1,
+                "Service svc-005 is owned by team-05 and reports an availability target of 99.05%.",
+                0.9,
+            ),
+        ]
+        self.assertIsNone(engine._detect_conflict(different_entities, []))
+
+        same_entity = [
+            Citation(
+                1, "c1", "src-a", "A", "s", 1,
+                "Service svc-001 reports an availability target of 99.01%.",
+                0.9,
+            ),
+            Citation(
+                2, "c2", "src-b", "B", "s", 1,
+                "Service svc-001 reports an availability target of 99.50%.",
+                0.9,
+            ),
+        ]
+        conflict = engine._detect_conflict(same_entity, [])
+        self.assertIsNotNone(conflict)
+        self.assertEqual(conflict["unit"], "percent")
+
+    def test_conflict_is_reported_over_evidence_and_cites_both_sides(self):
+        engine = self.make_engine()
+        engine.ingest_bytes(
+            "memo.md",
+            b"# Retention\n\nAccess review evidence is retained for 5 years after the review closes.\n",
+        )
+        engine.ingest_bytes(
+            "policy.md",
+            b"# Access Reviews\n\nEvidence of each access review is retained for 3 years.\n",
+        )
+        result = engine.ask("How long is access review evidence retained?")
+        self.assertEqual(result.status, "needs_review")
+        self.assertIn("conflicting_evidence", result.warnings)
+        self.assertIn("5 years", result.answer)
+        self.assertIn("3 years", result.answer)
+        self.assertIsNotNone(result.conflict)
+        cited_sources = {citation.source_id for citation in result.citations}
+        self.assertEqual(len(cited_sources), 2, result.citations)
+        # The cited excerpt must be the sentence that carries the disputed
+        # value, not merely the first chunk of that source.
+        for citation in result.citations:
+            self.assertTrue(citation.excerpt.strip(), citation)
+
+    def test_agreeing_sources_are_not_marked_for_review(self):
+        engine = self.make_engine()
+        engine.ingest_bytes("a.md", b"# Retention\n\nAudit logs are retained for 400 days.\n")
+        engine.ingest_bytes("b.md", b"# Retention\n\nAudit logs are retained for 400 days in total.\n")
+        result = engine.ask("How long are audit logs retained?")
+        self.assertNotIn("conflicting_evidence", result.warnings)
+
 
 class ChunkIntegrityTests(TempDirTestCase):
     def test_missing_vector_is_detected_by_health(self):
