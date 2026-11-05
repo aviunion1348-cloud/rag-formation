@@ -1,0 +1,3864 @@
+{
+  "kind": "demo",
+  "labelling": {
+    "mode": "demo",
+    "note": "Recorded from a real local run of this repository: real ingest of the bundled fixture corpus, real query, real event stream. No language model was called — answers are produced by the extractive fallback.",
+    "recordedAt": "2026-11-05T14:32:06Z",
+    "embeddingProvider": "hashing",
+    "embeddingModel": "hashing-lexical-v1",
+    "dimension": 512,
+    "semantic": false,
+    "generationProvider": "extractive",
+    "generationModel": "extractive-synthesis-v1",
+    "generationMode": "extractive",
+    "corpus": "14 fixture documents"
+  },
+  "question": "How long is access review evidence retained?",
+  "answer": "Access review evidence is retained for **5 years** after the review period closes, in the compliance archive. [1]\n\nSources disagree: **5 years** according to evidence-retention-memo; **3 years** according to access-control-policy. Both statements are cited with provenance; this answer is marked for review instead of choosing one.",
+  "status": "needs_review",
+  "citations": [
+    {
+      "evidenceId": 1,
+      "chunkId": "src-0c62e41fe3#c002-ec9f67fd",
+      "sourceId": "src-0c62e41fe3",
+      "sourceTitle": "evidence-retention-memo",
+      "section": "2. Retention",
+      "page": 1,
+      "location": "2. Retention p.1",
+      "excerpt": "Retention\n\nAccess review evidence is retained for **5 years** after the review period closes, in the compliance archive.",
+      "support": 0.6048,
+      "valid": true,
+      "note": "citation bound to a retrieved chunk at validation time"
+    },
+    {
+      "evidenceId": 2,
+      "chunkId": "src-d28906d4bc#c005-6dc6b87d",
+      "sourceId": "src-d28906d4bc",
+      "sourceTitle": "access-control-policy",
+      "section": "5. Break-glass",
+      "page": 1,
+      "location": "5. Break-glass p.1",
+      "excerpt": "Evidence of each review is retained for **3 years**.",
+      "support": 0.165,
+      "valid": true,
+      "note": "conflicting value: 3 year"
+    }
+  ],
+  "warnings": [
+    "conflicting_evidence"
+  ],
+  "events": [
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e2b9d7a508a6",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.654Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "mediaType": "text/markdown",
+        "bytes": 1173,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1173
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-21ad11e27c58",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.654Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.325,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-7e0e6c38ece8",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.654Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1153,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1153,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2373e59c8642",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.654Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d28906d4bc"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-b00f6cb1bf8a",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.655Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.299,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 6 chunks, 445 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c443eed9c3f6",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.655Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-853c87606d65",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.657Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.672,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "chunks": 6,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 6,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-86a41ebde0fd",
+      "traceId": "job-6d15c51e1a58",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.657Z",
+      "operationId": "job-6d15c51e1a58",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d28906d4bc",
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d28906d4bc"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-48aa7f86c7b4",
+      "traceId": "job-4522378823e0",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "mediaType": "text/markdown",
+        "bytes": 1174,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1174
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a7190245196a",
+      "traceId": "job-4522378823e0",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.094,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-19fbf961ef45",
+      "traceId": "job-4522378823e0",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1157,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1157,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-fb7c6f223c04",
+      "traceId": "job-4522378823e0",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d9ee799e90"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-21a9a4ffb551",
+      "traceId": "job-4522378823e0",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.234,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 388 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3c6dac473d97",
+      "traceId": "job-4522378823e0",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.658Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-9ecee6752c23",
+      "traceId": "job-4522378823e0",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.660Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.269,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-b474484761d9",
+      "traceId": "job-4522378823e0",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.660Z",
+      "operationId": "job-4522378823e0",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d9ee799e90",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d9ee799e90"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a1c454b63edb",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.660Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "mediaType": "text/markdown",
+        "bytes": 1108,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1108
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-38525f1e2418",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.661Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.141,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-b4407425d6cc",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.661Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1091,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1091,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-dea109690984",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.661Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3711555bac04",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.661Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.188,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 392 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2746682022fa",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.661Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e0d0ff20ced3",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.662Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.211,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-da8f58d5f326",
+      "traceId": "job-5946cc3737f1",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-5946cc3737f1",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-ba0ccfe31e",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-ba0ccfe31e"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d7f9a5ddcb53",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "mediaType": "text/markdown",
+        "bytes": 1401,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1401
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-16b284896c3c",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.087,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-79cb3f9b09e7",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1384,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1384,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6241b1ac0703",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-43ebe09559"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2e528a3e3bfe",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.663Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.197,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 484 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d1140f5a4063",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.664Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-9db0fc7c0f88",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.665Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.5,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-845cc94229bc",
+      "traceId": "job-c2b5fa1ff821",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-c2b5fa1ff821",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-43ebe09559",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-43ebe09559"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3bd7f0e4803b",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "mediaType": "text/plain",
+        "bytes": 1057,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1057
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-8b2ab16d3d09",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.092,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "mediaType": "text/plain"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-8e6b0e973499",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "blocks": 8,
+        "pages": 8,
+        "characters": 1056,
+        "parser": "loaders-v1",
+        "warnings": 1
+      },
+      "metrics": {
+        "blocks": 8,
+        "pages": 8,
+        "characters": 1056,
+        "warnings": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-bae6bbf39820",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d19a708f12"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-71b3faa00b17",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.666Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.135,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "chunks": 2
+      },
+      "metrics": {
+        "chunks": 2
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 2 chunks, 297 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2b8c08309655",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.667Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "chunks": 2
+      },
+      "metrics": {
+        "chunks": 2
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 2 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-da67c9955bfe",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.667Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 0.772,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "chunks": 2,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 2,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 2 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-af74a1c25816",
+      "traceId": "job-6457a0675bc3",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-6457a0675bc3",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d19a708f12",
+        "chunks": 2,
+        "revision": 1,
+        "vectors": 2,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 2,
+        "revision": 1,
+        "vectors": 2,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d19a708f12"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 2 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d31a34dcf193",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "mediaType": "text/markdown",
+        "bytes": 818,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 818
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-5cfff554426e",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.085,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f1707447eb7b",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "blocks": 8,
+        "pages": 1,
+        "characters": 804,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 8,
+        "pages": 1,
+        "characters": 804,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-49d7be79cd1f",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-0c62e41fe3"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2dffdcf8579c",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.668Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.159,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "chunks": 4
+      },
+      "metrics": {
+        "chunks": 4
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 4 chunks, 297 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e8b2cfd947ce",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.669Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "chunks": 4
+      },
+      "metrics": {
+        "chunks": 4
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 4 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6f85f6232700",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.670Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.179,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "chunks": 4,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 4,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 4 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-45f4b986eadb",
+      "traceId": "job-fb6f0a2d3234",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.670Z",
+      "operationId": "job-fb6f0a2d3234",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-0c62e41fe3",
+        "chunks": 4,
+        "revision": 1,
+        "vectors": 4,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 4,
+        "revision": 1,
+        "vectors": 4,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-0c62e41fe3"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 4 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3fdb9d1849c4",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "mediaType": "text/markdown",
+        "bytes": 2049,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 2049
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-10edb646cb82",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.08,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c222140ed04b",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "blocks": 18,
+        "pages": 1,
+        "characters": 2048,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 18,
+        "pages": 1,
+        "characters": 2048,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-0df0f246490e",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-f50578c45c"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-4465c1bd7258",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.25,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 693 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-612cee95da9b",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.671Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-0d64b4fe1531",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.673Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.703,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-abfea67d1b3a",
+      "traceId": "job-6df6133a26ce",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-6df6133a26ce",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-f50578c45c",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-f50578c45c"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-fefe6432aad6",
+      "traceId": "job-4133eabdd938",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "mediaType": "text/markdown",
+        "bytes": 1237,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1237
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-35fd3f42180f",
+      "traceId": "job-4133eabdd938",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.122,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3f82ced17783",
+      "traceId": "job-4133eabdd938",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1217,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1217,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-927eed6d3a53",
+      "traceId": "job-4133eabdd938",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-61c4676f73"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-0090bab5f77d",
+      "traceId": "job-4133eabdd938",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.674Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.199,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 6 chunks, 425 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-fe8a6844d6be",
+      "traceId": "job-4133eabdd938",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.675Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-1025f594d606",
+      "traceId": "job-4133eabdd938",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.676Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.479,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "chunks": 6,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 6,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e18370f51b6e",
+      "traceId": "job-4133eabdd938",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-4133eabdd938",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-61c4676f73",
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-61c4676f73"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-de5130eebf2f",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "mediaType": "text/markdown",
+        "bytes": 1285,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1285
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-57a8fa1aea87",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.101,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-15994a93b4d1",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1265,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 12,
+        "pages": 1,
+        "characters": 1265,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a9a038f2f45a",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-5d95a754fb"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-330f36fae812",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.677Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.202,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 6 chunks, 453 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-8458533e6db6",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.678Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "chunks": 6
+      },
+      "metrics": {
+        "chunks": 6
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6ea588b39031",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.679Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.508,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "chunks": 6,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 6,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f2f8c2a80880",
+      "traceId": "job-db1d13c2e3c6",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-db1d13c2e3c6",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-5d95a754fb",
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 6,
+        "revision": 1,
+        "vectors": 6,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-5d95a754fb"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 6 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-edb26921a41d",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "mediaType": "text/markdown",
+        "bytes": 1133,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1133
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-fdb55f09a1fc",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.084,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-7f8b84b4ca72",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1116,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 10,
+        "pages": 1,
+        "characters": 1116,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ddd6d906272a",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-44956a4c64"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3d3b87656a4f",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.680Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.183,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 404 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a76010369d56",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.681Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-25bf8b517b52",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.682Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.353,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3e47ac111d2a",
+      "traceId": "job-f07c7b36eb07",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-f07c7b36eb07",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-44956a4c64",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-44956a4c64"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-26be41a889f4",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "mediaType": "text/markdown",
+        "bytes": 798,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 798
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ce5b88483ffe",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.088,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "mediaType": "text/markdown"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-691dbffd0531",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "blocks": 7,
+        "pages": 1,
+        "characters": 787,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 7,
+        "pages": 1,
+        "characters": 787,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-bf0dc50eb165",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-7adaf5fc91"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-098e469c574b",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.683Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.136,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "chunks": 3
+      },
+      "metrics": {
+        "chunks": 3
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 3 chunks, 221 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-4093b2035565",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.684Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "chunks": 3
+      },
+      "metrics": {
+        "chunks": 3
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 3 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ae96416087ab",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 0.859,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "chunks": 3,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 3,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 3 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ecc37228b2a7",
+      "traceId": "job-ff60e966abdd",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-ff60e966abdd",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-7adaf5fc91",
+        "chunks": 3,
+        "revision": 1,
+        "vectors": 3,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 3,
+        "revision": 1,
+        "vectors": 3,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-7adaf5fc91"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 3 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a6e12b0c7dbf",
+      "traceId": "job-8a16351b9331",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "mediaType": "application/json",
+        "bytes": 1222,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1222
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c28d8b9b8392",
+      "traceId": "job-8a16351b9331",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.086,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "mediaType": "application/json"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-5c1073edf055",
+      "traceId": "job-8a16351b9331",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "blocks": 32,
+        "pages": 1,
+        "characters": 616,
+        "parser": "loaders-v1",
+        "warnings": 1
+      },
+      "metrics": {
+        "blocks": 32,
+        "pages": 1,
+        "characters": 616,
+        "warnings": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-65481fcf30c8",
+      "traceId": "job-8a16351b9331",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.685Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-652580a997"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6cd4292268f1",
+      "traceId": "job-8a16351b9331",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.686Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.115,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "chunks": 1
+      },
+      "metrics": {
+        "chunks": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 1 chunks, 156 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6c8d05b0bf8b",
+      "traceId": "job-8a16351b9331",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.686Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "chunks": 1
+      },
+      "metrics": {
+        "chunks": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-1c704dd24d34",
+      "traceId": "job-8a16351b9331",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.686Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 0.36,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "chunks": 1,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 1,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f5b681d062f1",
+      "traceId": "job-8a16351b9331",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-8a16351b9331",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-652580a997",
+        "chunks": 1,
+        "revision": 1,
+        "vectors": 1,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 1,
+        "revision": 1,
+        "vectors": 1,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-652580a997"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d2c43e41d30c",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "mediaType": "application/json",
+        "bytes": 1100,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1100
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-876f35e34c8d",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.084,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "mediaType": "application/json"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2f5c6a93565f",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "blocks": 4,
+        "pages": 1,
+        "characters": 877,
+        "parser": "loaders-v1",
+        "warnings": 1
+      },
+      "metrics": {
+        "blocks": 4,
+        "pages": 1,
+        "characters": 877,
+        "warnings": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-7550e3ee34a9",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-cdcd05d209"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-32d344786d88",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.687Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.103,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "chunks": 1
+      },
+      "metrics": {
+        "chunks": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 1 chunks, 221 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-72dc3d394cf5",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.688Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "chunks": 1
+      },
+      "metrics": {
+        "chunks": 1
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-8615e9913448",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.688Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 0.509,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "chunks": 1,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 1,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-dfa6a53eb1e0",
+      "traceId": "job-36893d3b3bc8",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-36893d3b3bc8",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-cdcd05d209",
+        "chunks": 1,
+        "revision": 1,
+        "vectors": 1,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 1,
+        "revision": 1,
+        "vectors": 1,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-cdcd05d209"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 1 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-1520dc4fb1cc",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.source.accepted",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "mediaType": "text/html",
+        "bytes": 1327,
+        "tenantId": "local"
+      },
+      "metrics": {
+        "bytes": 1327
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e8f406162b13",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.source.accepted",
+      "status": "completed",
+      "durationMs": 0.076,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "mediaType": "text/html"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.source.accepted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-3872a621f158",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.extracted",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "blocks": 11,
+        "pages": 1,
+        "characters": 1048,
+        "parser": "loaders-v1",
+        "warnings": 0
+      },
+      "metrics": {
+        "blocks": 11,
+        "pages": 1,
+        "characters": 1048,
+        "warnings": 0
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.extracted completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-27c5ee7426fd",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.chunking",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.chunking started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-e1ea49ff43c1",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.689Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.chunking",
+      "status": "completed",
+      "durationMs": 0.204,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.chunking completed: 5 chunks, 354 tokens",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-4c7b59d582d0",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.690Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "chunks": 5
+      },
+      "metrics": {
+        "chunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.embedding started: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-13a8ba293971",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.691Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.embedding",
+      "status": "completed",
+      "durationMs": 1.254,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "chunks": 5,
+        "dimension": 512,
+        "provider": "hashing",
+        "semantic": false
+      },
+      "metrics": {
+        "chunks": 5,
+        "dimension": 512,
+        "semantic": false
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.embedding completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-758ce98c6754",
+      "traceId": "job-7b87bafe8097",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.692Z",
+      "operationId": "job-7b87bafe8097",
+      "stage": "ingestion.index.committed",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "metrics": {
+        "chunks": 5,
+        "revision": 1,
+        "vectors": 5,
+        "dimension": 512
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "ingestion.index.committed completed: 5 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-15217e037c57",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.692Z",
+      "operationId": null,
+      "stage": "query.received",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 44
+      },
+      "metrics": {
+        "topK": 6,
+        "questionChars": 44
+      },
+      "references": [],
+      "safeSummary": "query.received started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f5ee92c8b257",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.692Z",
+      "operationId": null,
+      "stage": "query.embedding",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      },
+      "metrics": {},
+      "references": [],
+      "safeSummary": "query.embedding started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6850c5fdc0ba",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 3,
+      "timestamp": "2026-11-05T14:32:06.693Z",
+      "operationId": null,
+      "stage": "query.embedding",
+      "status": "completed",
+      "durationMs": 0.288,
+      "counts": {
+        "dimension": 512
+      },
+      "metrics": {
+        "dimension": 512
+      },
+      "references": [],
+      "safeSummary": "query.embedding completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-081737d234af",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 4,
+      "timestamp": "2026-11-05T14:32:06.693Z",
+      "operationId": null,
+      "stage": "retrieval",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "mode": "hybrid"
+      },
+      "metrics": {},
+      "references": [],
+      "safeSummary": "retrieval started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d72bc5574b58",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 5,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval",
+      "status": "completed",
+      "durationMs": 9.167,
+      "counts": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.6048
+      },
+      "metrics": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.6048
+      },
+      "references": [],
+      "safeSummary": "retrieval completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-b7e297181dc7",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 6,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 1.512
+      },
+      "metrics": {
+        "candidates": 24,
+        "ms": 1.512
+      },
+      "references": [],
+      "safeSummary": "retrieval.semantic completed: 24 candidates",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ecad7bfd119b",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 7,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "candidates": 24,
+        "ms": 0.644
+      },
+      "metrics": {
+        "candidates": 24,
+        "ms": 0.644
+      },
+      "references": [],
+      "safeSummary": "retrieval.lexical completed: 24 candidates",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f5a3283eca97",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 8,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.069
+      },
+      "metrics": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.069
+      },
+      "references": [],
+      "safeSummary": "retrieval.fusion completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c4a58b8dab6b",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 9,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.013
+      },
+      "metrics": {
+        "reranked": true,
+        "ms": 0.013
+      },
+      "references": [],
+      "safeSummary": "retrieval.rerank completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-d7d13549b0e9",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 10,
+      "timestamp": "2026-11-05T14:32:06.702Z",
+      "operationId": null,
+      "stage": "retrieval.mmr",
+      "status": "skipped",
+      "durationMs": null,
+      "counts": {
+        "reason": "diversification not run"
+      },
+      "metrics": {},
+      "references": [],
+      "safeSummary": "retrieval.mmr skipped",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-6cd2e06da3d2",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 11,
+      "timestamp": "2026-11-05T14:32:06.703Z",
+      "operationId": null,
+      "stage": "guardrail.scan",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "candidates": 12
+      },
+      "metrics": {
+        "candidates": 12
+      },
+      "references": [],
+      "safeSummary": "guardrail.scan started: 12 candidates",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-ad4bb417a6fd",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 12,
+      "timestamp": "2026-11-05T14:32:06.703Z",
+      "operationId": null,
+      "stage": "guardrail.scan",
+      "status": "completed",
+      "durationMs": 0.686,
+      "counts": {
+        "quarantined": 0,
+        "usable": 12
+      },
+      "metrics": {
+        "quarantined": 0,
+        "usable": 12
+      },
+      "references": [],
+      "safeSummary": "guardrail.scan completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-12b87ab08234",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 13,
+      "timestamp": "2026-11-05T14:32:06.703Z",
+      "operationId": null,
+      "stage": "context.assembly",
+      "status": "started",
+      "durationMs": null,
+      "counts": {},
+      "metrics": {},
+      "references": [],
+      "safeSummary": "context.assembly started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-2d762cd529af",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 14,
+      "timestamp": "2026-11-05T14:32:06.703Z",
+      "operationId": null,
+      "stage": "context.assembly",
+      "status": "completed",
+      "durationMs": 0.042,
+      "counts": {
+        "selected": 12,
+        "excluded": 0
+      },
+      "metrics": {
+        "selected": 12,
+        "excluded": 0
+      },
+      "references": [],
+      "safeSummary": "context.assembly completed: 1207 tokens",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-7c7c5f0f690d",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 15,
+      "timestamp": "2026-11-05T14:32:06.704Z",
+      "operationId": null,
+      "stage": "generation",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.3,
+        "topP": 0.9
+      },
+      "metrics": {
+        "temperature": 0.3,
+        "topP": 0.9
+      },
+      "references": [],
+      "safeSummary": "generation started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c7fb3034d5d2",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 16,
+      "timestamp": "2026-11-05T14:32:06.705Z",
+      "operationId": null,
+      "stage": "generation",
+      "status": "completed",
+      "durationMs": 1.74,
+      "counts": {
+        "provider": "extractive",
+        "chars": 113,
+        "ttftMs": 1.238,
+        "itlMs": 0.089,
+        "finishReason": "stop"
+      },
+      "metrics": {
+        "chars": 113,
+        "ttftMs": 1.238,
+        "itlMs": 0.089
+      },
+      "references": [],
+      "safeSummary": "generation completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-85961a907a21",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 17,
+      "timestamp": "2026-11-05T14:32:06.705Z",
+      "operationId": null,
+      "stage": "citation.validation",
+      "status": "started",
+      "durationMs": null,
+      "counts": {},
+      "metrics": {},
+      "references": [],
+      "safeSummary": "citation.validation started",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-53a18aa704fb",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 18,
+      "timestamp": "2026-11-05T14:32:06.706Z",
+      "operationId": null,
+      "stage": "citation.validation",
+      "status": "completed",
+      "durationMs": 0.475,
+      "counts": {
+        "cited": 1,
+        "invalid": 0,
+        "uncited": false
+      },
+      "metrics": {
+        "cited": 1,
+        "invalid": 0,
+        "uncited": false
+      },
+      "references": [],
+      "safeSummary": "citation.validation completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-a220c4bbdfe7",
+      "traceId": "q-5968b5c8aaf1",
+      "sequence": 19,
+      "timestamp": "2026-11-05T14:32:06.707Z",
+      "operationId": null,
+      "stage": "response.ready",
+      "status": "completed",
+      "durationMs": null,
+      "counts": {
+        "status": "needs_review"
+      },
+      "metrics": {},
+      "references": [],
+      "safeSummary": "response.ready completed",
+      "mode": "extractive",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-f4fb6b639521",
+      "traceId": "job-17f80024f95f",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.710Z",
+      "operationId": "job-17f80024f95f",
+      "stage": "source.delete",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "sourceId": "src-d69d8db838"
+      },
+      "metrics": {},
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "source.delete started",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-023a6aafada5",
+      "traceId": "job-17f80024f95f",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.711Z",
+      "operationId": "job-17f80024f95f",
+      "stage": "source.delete",
+      "status": "completed",
+      "durationMs": 0.475,
+      "counts": {
+        "sourceId": "src-d69d8db838",
+        "existed": true,
+        "removedChunks": 5
+      },
+      "metrics": {
+        "existed": true,
+        "removedChunks": 5
+      },
+      "references": [
+        {
+          "type": "source",
+          "id": "src-d69d8db838"
+        }
+      ],
+      "safeSummary": "source.delete completed",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-001c3ea5e96b",
+      "traceId": "job-e3be5c7a5ba8",
+      "sequence": 1,
+      "timestamp": "2026-11-05T14:32:06.711Z",
+      "operationId": "job-e3be5c7a5ba8",
+      "stage": "index.rebuild",
+      "status": "started",
+      "durationMs": null,
+      "counts": {
+        "chunks": 54
+      },
+      "metrics": {
+        "chunks": 54
+      },
+      "references": [],
+      "safeSummary": "index.rebuild started: 54 chunks",
+      "mode": "live",
+      "warningCodes": []
+    },
+    {
+      "schemaVersion": "1.0",
+      "eventId": "evt-c185c3cace7f",
+      "traceId": "job-e3be5c7a5ba8",
+      "sequence": 2,
+      "timestamp": "2026-11-05T14:32:06.716Z",
+      "operationId": "job-e3be5c7a5ba8",
+      "stage": "index.rebuild",
+      "status": "completed",
+      "durationMs": 4.375,
+      "counts": {
+        "chunks": 54,
+        "installed": 54,
+        "backedUp": 54,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "chunks": 54,
+        "installed": 54,
+        "backedUp": 54
+      },
+      "references": [],
+      "safeSummary": "index.rebuild completed: 54 chunks",
+      "mode": "live",
+      "warningCodes": []
+    }
+  ],
+  "summary": {
+    "sources": 14,
+    "chunks": 59,
+    "vectors": 59,
+    "lexicalRows": 59,
+    "dimension": 512,
+    "evidenceChunks": 12,
+    "contextChunks": 12,
+    "contextTokens": 1207,
+    "citations": 2,
+    "unresolvedCitations": 0,
+    "status": "needs_review",
+    "support": 0.6048,
+    "warnings": [
+      "conflicting_evidence"
+    ],
+    "quarantined": 0,
+    "latencyMs": 14.879,
+    "retrievalMs": 2.238,
+    "ttftMs": null,
+    "denseCandidates": 24,
+    "lexicalCandidates": 24,
+    "fused": 24,
+    "rerankStatus": "completed",
+    "mmrStatus": "skipped",
+    "revision": "2026-11-05T14:32:06Z",
+    "lifecycle": {
+      "deletedSourceId": "src-d69d8db838",
+      "deletedChunks": null,
+      "chunksAfterDelete": 54,
+      "rebuildChunks": 54,
+      "rebuildSeconds": null,
+      "rollbackAvailable": true
+    },
+    "recordMs": 79.9,
+    "ingestedFiles": [
+      "access-control-policy.md",
+      "backup-restore-runbook.md",
+      "data-classification.md",
+      "data-retention-policy.md",
+      "deployment-standard.txt",
+      "evidence-retention-memo.md",
+      "incident-response-runbook.md",
+      "incident-response-standard.md",
+      "oncall-handbook.md",
+      "release-process.md",
+      "safety-injection-fixture.md",
+      "service-catalog.json",
+      "support-macros.json",
+      "vendor-onboarding.html"
+    ],
+    "ingestJob": "{'results': [{'filename': 'access-control-policy.md', 'sourceId': 'src-d28906d4bc', 'status': 'indexed', 'revision': 1, "
+  }
+}

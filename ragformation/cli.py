@@ -344,11 +344,46 @@ def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
             )
         if getattr(args, "out", None):
             write_report(report, args.out)
+        if not args.json:
+            _print_v2(report)
+        gate = [part.strip() for part in (getattr(args, "gate", "") or "").split(",") if part.strip()]
+        # In --json mode stdout must stay machine-parseable, so diagnostics go
+        # to stderr.
+        emit = (lambda *a, **k: print(*a, file=sys.stderr, **k)) if args.json else print
+        if not gate:
+            if report["failedIds"]:
+                emit(
+                    "\nreport only: "
+                    f"{len(report['failedIds'])} case(s) failed. "
+                    "Pass --gate all (or --gate test) to make this exit non-zero."
+                )
+            report["gate"] = None
+            if args.json:
+                _print_json(report)
+            return 0
+        minimum = float(getattr(args, "min_pass_rate", 0.95))
+        verdicts = {}
+        ok = True
+        for split in gate:
+            if split == "all":
+                passed = report["casesPassed"]
+                total = report["casesTotal"]
+            else:
+                values = report.get("bySplit", {}).get(split)
+                if not values:
+                    emit(f"gate: split {split!r} was not run")
+                    return 2
+                passed = values["passed"]
+                total = values["cases"]
+            rate = passed / total if total else 0.0
+            held = rate >= minimum
+            verdicts[split] = {"passed": passed, "total": total, "rate": round(rate, 4), "held": held}
+            ok = ok and held
+        report["gate"] = {"minimumPassRate": minimum, "splits": verdicts, "held": ok}
+        emit(f"gate: minimum pass rate {minimum:.2f} -> {json.dumps(verdicts)}")
         if args.json:
             _print_json(report)
-        else:
-            _print_v2(report)
-        return 0 if not report["failedIds"] else 5
+        return 0 if ok else 5
 
     with RAGEngine(settings) as engine:
         report = run_evaluation(
@@ -454,6 +489,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_eval.add_argument("--splits", default="", help="comma separated split names to run (v2)")
     p_eval.add_argument("--no-ablations", action="store_true", help="skip the retrieval ablation matrix (v2)")
     p_eval.add_argument("--out", default=None, help="write the full JSON report to this path")
+    p_eval.add_argument(
+        "--gate",
+        default="",
+        help=(
+            "comma separated split names (dev, calibration, test) or 'all': fail with exit 5 when the "
+            "pass rate on those splits is below --min-pass-rate (v2)"
+        ),
+    )
+    p_eval.add_argument("--min-pass-rate", type=float, default=0.95, help="gate threshold (default 0.95)")
     p_eval.add_argument("--json", action="store_true")
 
     p_doctor = sub.add_parser("doctor", help="diagnose configuration, providers and index")

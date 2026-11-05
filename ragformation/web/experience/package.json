@@ -1,0 +1,10 @@
+{
+  "name": "ragformation-experience",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "S3 cinematic walkthrough for RagFormation. The marker exists so Node-based tests can import these modules as ES modules; the page itself needs no package manager.",
+  "scripts": {
+    "test": "node ../../../scripts/experience_smoke.mjs"
+  }
+}

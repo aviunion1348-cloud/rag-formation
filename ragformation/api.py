@@ -160,6 +160,7 @@ class Api:
             ("POST", re.compile(r"^/api/v1/index/rebuild$"), lambda ctx, body, m: self.rebuild(ctx, body)),
             ("POST", re.compile(r"^/api/v1/index/rollback$"), lambda ctx, body, m: self.rollback(ctx, body)),
             ("GET", re.compile(r"^/api/v1/events$"), lambda ctx, body, m: self.v1_events_info(ctx, body)),
+            ("GET", re.compile(r"^/api/v1/events/recent$"), lambda ctx, body, m: self.v1_events_recent(ctx, body)),
             ("GET", re.compile(r"^/api/v1/openapi.json$"), lambda ctx, body, m: openapi_document(self.settings)),
         ]
 
@@ -436,6 +437,24 @@ class Api:
             "subscribers": self.events.subscriber_count,
             "history": len(self.events.history(limit=1)),
             "hint": "connect with EventSource; pass ?trace_id=… to follow one trace",
+        }
+
+    def v1_events_recent(self, ctx: RequestContext, body: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+        """Polling fallback for clients without EventSource (or behind a proxy)."""
+
+        try:
+            since = int(ctx.query.get("since") or 0)
+        except (TypeError, ValueError):
+            since = 0
+        trace_id = ctx.query.get("trace_id") or None
+        events = list(self.events.history(trace_id=trace_id, since=since, limit=64))
+        return {
+            "events": events,
+            "count": len(events),
+            "contract": "ragformation.events",
+            "eventVersion": self.engine.health()["eventSchemaVersion"],
+            "stream": "/api/v1/events",
+            "transport": "sse-with-polling-fallback",
         }
 
     # -------------------------------------------------------------- dispatcher

@@ -442,6 +442,18 @@ class RAGEngine:
                 )
 
             trace.end("ingestion.source_accepted", {"sourceId": source_id, "mediaType": source.media_type})
+            trace.note(
+                "ingestion.extracted",
+                "completed",
+                {
+                    "sourceId": source_id,
+                    "blocks": len(source.blocks),
+                    "pages": source.page_count,
+                    "characters": len(source.text),
+                    "parser": source.parser,
+                    "warnings": len(source.warnings),
+                },
+            )
             trace.start("ingestion.chunking", {"sourceId": source_id})
             self.store.update_job(job_id, "chunking")
             chunks = self.chunker.chunk(source, source_id)
