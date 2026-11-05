@@ -1,0 +1,425 @@
+{
+  "benchVersion": "lear-bench-v1",
+  "startedAt": "20261105T185555Z",
+  "backend": "baseline",
+  "qualifying": false,
+  "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)",
+  "models": {
+    "llm": "extractive (baseline)",
+    "embedding": "hashing (baseline)"
+  },
+  "limits": {
+    "perUserPerMin": 30,
+    "perSessionPerMin": 2,
+    "maxConcurrent": 2,
+    "queueTimeoutS": 30.0
+  },
+  "requestsPerUser": 4,
+  "questions": 12,
+  "warmup": "ok",
+  "levels": [
+    {
+      "users": 5,
+      "requests": 20,
+      "ok": 10,
+      "rateLimited": 10,
+      "errors": 0,
+      "wallSeconds": 0.311,
+      "throughputRps": 32.128,
+      "ttftMs": {
+        "count": 10,
+        "mean": 95.315,
+        "p50": 48.83,
+        "p85": 193.19,
+        "p99": 275.14,
+        "min": 22.83,
+        "max": 275.14
+      },
+      "itlMs": {
+        "count": 152,
+        "mean": 0.098,
+        "p50": 0.081,
+        "p85": 0.097,
+        "p99": 0.321,
+        "min": 0.072,
+        "max": 0.465
+      },
+      "totalMs": {
+        "count": 10,
+        "mean": 100.826,
+        "p50": 54.86,
+        "p85": 199.43,
+        "p99": 278.58,
+        "min": 25.24,
+        "max": 278.58
+      },
+      "totalMsAllOutcomes": {
+        "count": 20,
+        "mean": 50.425,
+        "p50": 0.05,
+        "p85": 75.98,
+        "p99": 278.58,
+        "min": 0.01,
+        "max": 278.58
+      },
+      "tokensPerSec": {
+        "count": 10,
+        "mean": 29985.871,
+        "p50": 29341.03,
+        "p85": 35527.95,
+        "p99": 49818.84,
+        "min": 17474.01,
+        "max": 49818.84
+      },
+      "streamEventsPerSec": {
+        "count": 10,
+        "mean": 10221.56,
+        "p50": 10264.92,
+        "p85": 12184.52,
+        "p99": 12701.74,
+        "min": 7750.9,
+        "max": 12701.74
+      },
+      "retrievalMs": {
+        "count": 10,
+        "mean": 12.861,
+        "p50": 12.329,
+        "p85": 15.709,
+        "p99": 16.828,
+        "min": 9.7,
+        "max": 16.828
+      },
+      "generationMs": {
+        "count": 10,
+        "mean": 3.229,
+        "p50": 3.043,
+        "p85": 4.429,
+        "p99": 4.521,
+        "min": 2.071,
+        "max": 4.521
+      },
+      "statusCounts": {
+        "GROUNDED": 10,
+        "RATE_LIMITED": 10
+      },
+      "records": [
+        {
+          "user": "bench-u5",
+          "request": 1,
+          "question": "What exit code does `prash run` return when the action needs a secret that was not supplied?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 38.39,
+          "totalMs": 45.9,
+          "tokensPerSec": 35527.95,
+          "streamEventsPerSec": 12701.74,
+          "completionTokens": 143,
+          "retrievalMs": 16.828,
+          "generationMs": 4.025,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 23
+        },
+        {
+          "user": "bench-u1",
+          "request": 1,
+          "question": "Can an action in the NEVER risk tier run if the user gives an explicit grant in bypass mode?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 70.39,
+          "totalMs": 75.98,
+          "tokensPerSec": 19448.55,
+          "streamEventsPerSec": 11037.73,
+          "completionTokens": 79,
+          "retrievalMs": 15.709,
+          "generationMs": 4.062,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 13
+        },
+        {
+          "user": "bench-u5",
+          "request": 2,
+          "question": "Does `prash run --dry-run` execute the action?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 42.42,
+          "totalMs": 48.52,
+          "tokensPerSec": 26884.09,
+          "streamEventsPerSec": 8022.22,
+          "completionTokens": 61,
+          "retrievalMs": 12.282,
+          "generationMs": 2.269,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 10
+        },
+        {
+          "user": "bench-u5",
+          "request": 3,
+          "question": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.889
+          },
+          "totalMs": 0.04,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u5",
+          "request": 4,
+          "question": "Which subcommands does the prash CLI provide?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.889
+          },
+          "totalMs": 0.01,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u1",
+          "request": 2,
+          "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 48.83,
+          "totalMs": 54.86,
+          "tokensPerSec": 34834.05,
+          "streamEventsPerSec": 11394.71,
+          "completionTokens": 106,
+          "retrievalMs": 11.277,
+          "generationMs": 3.043,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 17
+        },
+        {
+          "user": "bench-u1",
+          "request": 3,
+          "question": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.86
+          },
+          "totalMs": 0.03,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u1",
+          "request": 4,
+          "question": "Where does Lear write its audit log by default?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.86
+          },
+          "totalMs": 0.02,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u4",
+          "request": 1,
+          "question": "Can an action in the NEVER risk tier run if the user gives an explicit grant in bypass mode?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 161.37,
+          "totalMs": 167.45,
+          "tokensPerSec": 17474.01,
+          "streamEventsPerSec": 8144.14,
+          "completionTokens": 79,
+          "retrievalMs": 12.349,
+          "generationMs": 4.521,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 13
+        },
+        {
+          "user": "bench-u2",
+          "request": 1,
+          "question": "What exit code does `prash run` return when the action needs a secret that was not supplied?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 193.19,
+          "totalMs": 199.43,
+          "tokensPerSec": 32287.2,
+          "streamEventsPerSec": 10264.92,
+          "completionTokens": 143,
+          "retrievalMs": 13.369,
+          "generationMs": 4.429,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 23
+        },
+        {
+          "user": "bench-u4",
+          "request": 2,
+          "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 54.19,
+          "totalMs": 59.83,
+          "tokensPerSec": 29617.21,
+          "streamEventsPerSec": 8738.81,
+          "completionTokens": 106,
+          "retrievalMs": 13.943,
+          "generationMs": 3.579,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 17
+        },
+        {
+          "user": "bench-u4",
+          "request": 3,
+          "question": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.76
+          },
+          "totalMs": 0.05,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u4",
+          "request": 4,
+          "question": "Where does Lear write its audit log by default?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.76
+          },
+          "totalMs": 0.01,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u2",
+          "request": 2,
+          "question": "Does `prash run --dry-run` execute the action?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 46.4,
+          "totalMs": 52.47,
+          "tokensPerSec": 29341.03,
+          "streamEventsPerSec": 7750.9,
+          "completionTokens": 61,
+          "retrievalMs": 12.329,
+          "generationMs": 2.079,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 10
+        },
+        {
+          "user": "bench-u2",
+          "request": 3,
+          "question": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.74
+          },
+          "totalMs": 0.03,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u2",
+          "request": 4,
+          "question": "Which subcommands does the prash CLI provide?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.74
+          },
+          "totalMs": 0.01,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u3",
+          "request": 1,
+          "question": "Which permission mode does `prash run` use when --mode is not given?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 275.14,
+          "totalMs": 278.58,
+          "tokensPerSec": 49818.84,
+          "streamEventsPerSec": 11975.91,
+          "completionTokens": 110,
+          "retrievalMs": 10.823,
+          "generationMs": 2.208,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 18
+        },
+        {
+          "user": "bench-u3",
+          "request": 2,
+          "question": "Which fields of the brain's Diagnosis schema are required?",
+          "outcome": "ok",
+          "status": "GROUNDED",
+          "ttftMs": 22.83,
+          "totalMs": 25.24,
+          "tokensPerSec": 24625.78,
+          "streamEventsPerSec": 12184.52,
+          "completionTokens": 51,
+          "retrievalMs": 9.7,
+          "generationMs": 2.071,
+          "qualifying": false,
+          "error": null,
+          "itlCount": 8
+        },
+        {
+          "user": "bench-u3",
+          "request": 3,
+          "question": "Which brain recommendations can `prash fix` turn into an action automatically?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.69
+          },
+          "totalMs": 0.04,
+          "itlCount": 0
+        },
+        {
+          "user": "bench-u3",
+          "request": 4,
+          "question": "What happens to diagnosis when DEEPSEEK_API_KEY is not configured?",
+          "outcome": "rate_limited",
+          "status": "RATE_LIMITED",
+          "error": "per-session request limit reached",
+          "detail": {
+            "scope": "session",
+            "retryAfterS": 59.69
+          },
+          "totalMs": 0.01,
+          "itlCount": 0
+        }
+      ]
+    }
+  ],
+  "machine": {
+    "python": "3.11.2",
+    "platform": "Linux-6.1.158+-x86_64-with-glibc2.36",
+    "cpus": 2,
+    "memTotalKiB": 4034452
+  }
+}

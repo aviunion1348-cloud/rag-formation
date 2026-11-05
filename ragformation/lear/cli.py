@@ -121,6 +121,10 @@ def add_lear_parser(sub: Any) -> None:
     p.add_argument("--out", default=None, help="output directory (default <data-dir>/eval_runs/<label>)")
     p.add_argument("--allow-holdout", action="store_true", help="required to score the holdout split")
     p.add_argument("--json", action="store_true")
+    p = esub.add_parser("rescore", help="re-score saved run.json files (lenient and strict key facts); no model calls")
+    p.add_argument("runs", nargs="+", help="run.json paths")
+    p.add_argument("--dataset", default=None)
+    p.add_argument("--json", action="store_true")
 
     p = lsub.add_parser("bench", help="dummy-user load benchmark through the agent service layer")
     p.add_argument("--users", default="1,2,5")
@@ -380,6 +384,17 @@ def _cmd_eval(args, settings) -> int:
         report = evalset.validate(dataset, source=source)
         _emit(report, args.json, evalset.render_validation(report))
         return 0 if report["valid"] else 5
+    if args.eval_command == "rescore":
+        from .evaluate import rescore_run
+
+        rows = [rescore_run(Path(r), dataset=Path(args.dataset) if args.dataset else None) for r in args.runs]
+        text = "\n".join(
+            f"{r['label'] or r['run']}: {r['cases']} cases  recorded {r['recordedCorrect']}  lenient {r['correct']}  "
+            f"strict {r['correctStrict']}  (strict changes: {', '.join(r['changedByStrict']) or 'none'})"
+            for r in rows
+        )
+        _emit({"runs": rows}, args.json, text)
+        return 0
     from .evaluate import render_run, run_evaluation
 
     report = run_evaluation(

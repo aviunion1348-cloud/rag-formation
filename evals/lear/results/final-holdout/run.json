@@ -1,0 +1,1543 @@
+{
+  "evalVersion": "lear-eval-v1",
+  "label": "final-holdout",
+  "startedAt": "2026-11-05T18:55:37Z",
+  "dataset": {
+    "path": "/home/user/rag-formation/evals/lear/golden_lear_v1.json",
+    "name": "lear-golden",
+    "version": "1.0.0",
+    "sha256": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e"
+  },
+  "suites": [
+    "holdout"
+  ],
+  "backend": "baseline",
+  "qualifying": false,
+  "settings": {
+    "data_dir": "data/lear",
+    "docs_dir": "docs/lear_backend",
+    "backend": "baseline",
+    "ollama_url": "http://127.0.0.1:11434",
+    "embed_model": "nomic-embed-text",
+    "llm_model": "qwen2.5:1.5b",
+    "judge_model": "llama3.2:1b",
+    "embed_max_params": 200000000,
+    "model_max_params": 4000000000,
+    "top_k": 6,
+    "max_context_tokens": 1800,
+    "max_output_tokens": 512,
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "abstain_threshold": null,
+    "request_timeout_s": 180.0,
+    "chunk_target_tokens": 180,
+    "chunk_max_tokens": 300,
+    "chunk_overlap_tokens": 20,
+    "session_ttl_s": 604800,
+    "history_token_budget": 900,
+    "keep_recent_turns": 4,
+    "memory_items": 3,
+    "rate_user_per_min": 30,
+    "rate_session_per_min": 20,
+    "max_concurrent": 2,
+    "queue_timeout_s": 30.0,
+    "max_input_chars": 2000,
+    "scope_guard": true,
+    "allow_extractive_fallback": false,
+    "agent_db_path": null,
+    "qualifying": false,
+    "effective_abstain_threshold": 0.215,
+    "abstain_threshold_source": "calibrated (baseline, calibration split)"
+  },
+  "ragFormation": {
+    "commit": "fed7dbf38163",
+    "dirty": false
+  },
+  "outDir": "data/lear/eval_runs/final-holdout",
+  "judge": {
+    "mode": "auto",
+    "available": false,
+    "status": "BLOCKED",
+    "reason": "ollama is not reachable at http://127.0.0.1:11434",
+    "hint": "start it with `ollama serve` (and keep it bound to 127.0.0.1)",
+    "version": "lear-judge-v1",
+    "model": "llama3.2:1b"
+  },
+  "finishedAt": "2026-11-05T18:55:37Z",
+  "summary": {
+    "cases": 14,
+    "statusCounts": {
+      "GROUNDED": 12,
+      "ABSTAINED": 2
+    },
+    "correct": 0.6429,
+    "answerable": {
+      "cases": 12,
+      "correct": 0.5833,
+      "statusOk": 1.0,
+      "keyFactCoverage": 0.6528,
+      "falseAbstention": 0.0,
+      "errors": 0
+    },
+    "unanswerable": {
+      "cases": 2,
+      "abstained": 1.0,
+      "answeredAnyway": 0.0
+    },
+    "injection": {
+      "cases": 0,
+      "forbiddenHits": 0,
+      "resisted": null
+    },
+    "retrieval": {
+      "cases": 12,
+      "hitAtK": 1.0,
+      "mrr": 0.7361,
+      "docRecall": 0.9167,
+      "contextPrecision": 0.2491
+    },
+    "citations": {
+      "answersWithCitations": 1.0,
+      "citationPrecision": 0.3055,
+      "withLineRanges": 1.0,
+      "spanLines": {
+        "count": 19,
+        "mean": 6.579,
+        "p50": 6.0,
+        "p85": 9.0,
+        "p99": 18.0,
+        "min": 2.0,
+        "max": 18.0
+      },
+      "within40Lines": 1.0
+    },
+    "proxyScores": {
+      "citation_quality": 1.2217,
+      "groundedness": 4.0,
+      "answer_relevance": 2.8093,
+      "context_precision": 0.9958,
+      "context_recall": 3.6667
+    },
+    "latencyMs": {
+      "total": {
+        "count": 14,
+        "mean": 26.933,
+        "p50": 26.55,
+        "p85": 29.55,
+        "p99": 54.45,
+        "min": 1.73,
+        "max": 54.45
+      },
+      "ttft": {
+        "count": 13,
+        "mean": 25.732,
+        "p50": 23.02,
+        "p85": 28.37,
+        "p99": 49.4,
+        "min": 21.46,
+        "max": 49.4
+      },
+      "retrieval": {
+        "count": 13,
+        "mean": 10.305,
+        "p50": 10.034,
+        "p85": 11.035,
+        "p99": 13.483,
+        "min": 9.535,
+        "max": 13.483
+      }
+    },
+    "bySplit": {
+      "holdout": {
+        "cases": 14,
+        "correct": 0.6429
+      }
+    },
+    "byCategory": {
+      "configuration": {
+        "cases": 3,
+        "correct": 0.3333
+      },
+      "factual": {
+        "cases": 1,
+        "correct": 0.0
+      },
+      "follow_up": {
+        "cases": 1,
+        "correct": 1.0
+      },
+      "multi_hop": {
+        "cases": 2,
+        "correct": 0.5
+      },
+      "security": {
+        "cases": 4,
+        "correct": 0.75
+      },
+      "unanswerable": {
+        "cases": 2,
+        "correct": 1.0
+      },
+      "workflow": {
+        "cases": 1,
+        "correct": 1.0
+      }
+    },
+    "judge": {
+      "statusCounts": {
+        "not_run": 14
+      },
+      "scores": null,
+      "state": "BLOCKED",
+      "reason": "ollama is not reachable at http://127.0.0.1:11434"
+    },
+    "label": "final-holdout",
+    "backend": "baseline",
+    "qualifying": false,
+    "datasetSha256": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+    "suites": [
+      "holdout"
+    ]
+  },
+  "cases": [
+    {
+      "id": "lear-009",
+      "split": "holdout",
+      "category": "security",
+      "difficulty": "medium",
+      "question": "How does Lear store a runtime secret that an action asks for?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/connectors/base.py:L75-L90`. - [implemented] Secrets requested at runtime are stored as `PRASH_SECRET_<name>` entries and exposed to actions through `ActionContext.secrets`. [1]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "heading": "Authentication and authorization > Identity and credentials",
+          "lines": "5-13",
+          "sourceRefs": [
+            "prash/credentials.py:L1-L10",
+            "prash/credentials.py:L28-L36",
+            "prash/connectors/base.py:L75-L90",
+            "prash/credentials.py:L21",
+            "prash/credentials.py:L52-L66",
+            "prash/cli.py:L880-L894"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/reference/http_api.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/services_and_workflows.md",
+        "docs/lear_backend/domain_model.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/reference/modules.md",
+        "docs/lear_backend/reference/actions.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.4908,
+      "warnings": [],
+      "correlationId": "q-55d184841fdc",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 49.4,
+        "totalMs": 54.45,
+        "streamEvents": 9,
+        "completionTokens": 49,
+        "tokensEstimated": true,
+        "tokensPerSec": 23501.2,
+        "decodeEventsPerSec": 13399.08,
+        "itlMs": {
+          "count": 8,
+          "mean": 0.075,
+          "p50": 0.073,
+          "p85": 0.075,
+          "p99": 0.084,
+          "min": 0.073,
+          "max": 0.084
+        },
+        "stages": {
+          "retrievalMs": 13.483,
+          "generationMs": 2.085,
+          "ttftMs": 1.396,
+          "contextTokens": 1726,
+          "promptTokens": 16,
+          "evidenceTokens": 1726
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.5,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          9
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 0.5,
+        "contextPrecision": 0.1667,
+        "citationPrecision": 1.0,
+        "correct": false,
+        "proxy": {
+          "citation_quality": 4.0,
+          "groundedness": 4.0,
+          "answer_relevance": 2.0,
+          "context_precision": 0.67,
+          "context_recall": 2.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-016",
+      "split": "holdout",
+      "category": "security",
+      "difficulty": "easy",
+      "question": "Does `prash config` print the values of stored secrets?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Reversible: True. - Class: `EditSecretAction` at `prash/actions/edit_config.py:L118-L157`; spec at `prash/actions/edit_config.py:L120-L127`. - Registered in the CLI dispatcher: yes. - Contract methods defined in the class: execute, verify. - Summary (from the spec): Merge-patch keys into an existing Secret (values never logged or printed) - Approval hint (from the spec): Always prompts, even in bypass mode. [2]",
+      "citations": [
+        {
+          "id": 2,
+          "document": "docs/lear_backend/reference/actions.md",
+          "heading": "Lear backend — action catalogue > Approval-tier actions > edit-secret",
+          "lines": "163-169",
+          "sourceRefs": [
+            "prash/actions/edit_config.py:L118-L157",
+            "prash/actions/edit_config.py:L120-L127"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/reference/actions.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/reference/http_api.md",
+        "docs/lear_backend/configuration.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/database.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.517,
+      "warnings": [],
+      "correlationId": "q-616d6822b880",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 24.0,
+        "totalMs": 26.83,
+        "streamEvents": 18,
+        "completionTokens": 104,
+        "tokensEstimated": true,
+        "tokensPerSec": 44808.27,
+        "decodeEventsPerSec": 13199.81,
+        "itlMs": {
+          "count": 17,
+          "mean": 0.076,
+          "p50": 0.073,
+          "p85": 0.074,
+          "p99": 0.119,
+          "min": 0.073,
+          "max": 0.119
+        },
+        "stages": {
+          "retrievalMs": 11.035,
+          "generationMs": 2.321,
+          "ttftMs": 0.944,
+          "contextTokens": 1620,
+          "promptTokens": 14,
+          "evidenceTokens": 1620
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          7
+        ],
+        "hit": true,
+        "reciprocalRank": 0.1667,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2,
+        "citationPrecision": 0.0,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 0.8,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-019",
+      "split": "holdout",
+      "category": "configuration",
+      "difficulty": "easy",
+      "question": "Which target environment does Lear assume when none is given?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/fix.py:L59-L84`, `prash/cli.py:L649-L652`. - [implemented] On the Kubernetes path the target environment defaults to the namespace name when `--env` is not given. [2]",
+      "citations": [
+        {
+          "id": 2,
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash fix`: diagnose, then act",
+          "lines": "27-28",
+          "sourceRefs": [
+            "prash/fix.py:L59-L84",
+            "prash/cli.py:L649-L652",
+            "prash/cli.py:L631-L636"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/services_and_workflows.md",
+        "docs/lear_backend/configuration.md",
+        "docs/lear_backend/reference/modules.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/domain_model.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.3727,
+      "warnings": [],
+      "correlationId": "q-5be649ff208d",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 23.02,
+        "totalMs": 24.89,
+        "streamEvents": 8,
+        "completionTokens": 46,
+        "tokensEstimated": true,
+        "tokensPerSec": 43893.13,
+        "decodeEventsPerSec": 13431.55,
+        "itlMs": {
+          "count": 7,
+          "mean": 0.075,
+          "p50": 0.073,
+          "p85": 0.074,
+          "p99": 0.083,
+          "min": 0.073,
+          "max": 0.083
+        },
+        "stages": {
+          "retrievalMs": 10.142,
+          "generationMs": 1.048,
+          "ttftMs": 0.438,
+          "contextTokens": 1677,
+          "promptTokens": 16,
+          "evidenceTokens": 1677
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          2
+        ],
+        "hit": true,
+        "reciprocalRank": 0.3333,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2,
+        "citationPrecision": 0.0,
+        "correct": false,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 0.0,
+          "context_precision": 0.8,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-023",
+      "split": "holdout",
+      "category": "factual",
+      "difficulty": "easy",
+      "question": "What values can a diagnosis fix_type take?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/connectors/base.py:L46-L72`. - [implemented] `Diagnosis` requires `problem_summary` (10–500 chars), `root_cause` and `fix_description` (20–2000 chars each), `fix_type`, `confidence` between 0 and 1, and a `category`. [1] Reversible: True. - Class: `EditConfigMapAction` at `prash/actions/edit_config.py:L77-L115`; spec at `prash/actions/edit_config.py:L79-L86`. - Registered in the CLI dispatcher: yes. - Contract methods defined in the class: execute, verify. - Summary (from the spec): Merge-patch keys into an existing ConfigMap - Approval hint (from the spec): Always prompts, even in bypass mode -- a bad config value can take a running service down as surely as a bad rollback. - Capabilities: `('get_configmap', 'update_configmap')`. [2] Evidence: `prash/cli.py:L585-L608`. - [implemented] When the diagnosis returns a ranked options menu, non-interactive runs report the menu and take no action; interactive runs let the operator pick, and the pick still goes through risk tiers, the circuit breaker and the audit log. [3]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/domain_model.md",
+          "heading": "Domain model > Diagnosis schema (`prash/brain/schemas.py`)",
+          "lines": "30-35",
+          "sourceRefs": [
+            "prash/connectors/base.py:L46-L72",
+            "prash/brain/schemas.py:L347-L355",
+            "prash/brain/schemas.py:L351",
+            "prash/brain/schemas.py:L355",
+            "prash/brain/schemas.py:L25-L39",
+            "prash/brain/schemas.py:L353-L369"
+          ]
+        },
+        {
+          "id": 2,
+          "document": "docs/lear_backend/reference/actions.md",
+          "heading": "Lear backend — action catalogue > Approval-tier actions > edit-configmap",
+          "lines": "151-166",
+          "sourceRefs": [
+            "prash/actions/edit_config.py:L77-L115",
+            "prash/actions/edit_config.py:L79-L86"
+          ]
+        },
+        {
+          "id": 3,
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash fix`: diagnose, then act",
+          "lines": "24-26",
+          "sourceRefs": [
+            "prash/cli.py:L563-L583",
+            "prash/fix.py:L72-L76",
+            "prash/fix.py:L87-L175",
+            "prash/cli.py:L585-L608",
+            "prash/cli.py:L610-L647",
+            "prash/fix.py:L59-L84"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/domain_model.md",
+        "docs/lear_backend/reference/actions.md",
+        "docs/lear_backend/services_and_workflows.md",
+        "docs/lear_backend/reference/modules.md",
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/authentication_authorization.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.3297,
+      "warnings": [],
+      "correlationId": "q-f6b0513d3a6d",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 22.83,
+        "totalMs": 28.47,
+        "streamEvents": 44,
+        "completionTokens": 262,
+        "tokensEstimated": true,
+        "tokensPerSec": 57887.76,
+        "decodeEventsPerSec": 12453.06,
+        "itlMs": {
+          "count": 43,
+          "mean": 0.08,
+          "p50": 0.081,
+          "p85": 0.082,
+          "p99": 0.1,
+          "min": 0.073,
+          "max": 0.1
+        },
+        "stages": {
+          "retrievalMs": 9.535,
+          "generationMs": 4.526,
+          "ttftMs": 0.973,
+          "contextTokens": 1792,
+          "promptTokens": 11,
+          "evidenceTokens": 1792
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 3,
+        "citationsWithLines": 3,
+        "citationSpanLines": [
+          6,
+          16,
+          3
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.3,
+        "citationPrecision": 0.3333,
+        "correct": false,
+        "proxy": {
+          "citation_quality": 1.33,
+          "groundedness": 4.0,
+          "answer_relevance": 0.0,
+          "context_precision": 1.2,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-034",
+      "split": "holdout",
+      "category": "security",
+      "difficulty": "medium",
+      "question": "Does the desktop HTTP API require authentication on its routes?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/server.py:L2702-L2710`. - [inferred] The desktop API has no authentication on any of its 87 method/path routes and allows every origin with credentials. [1]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/unknowns_and_gaps.md",
+          "heading": "Unknowns and gaps > Security-relevant observations",
+          "lines": "22-27",
+          "sourceRefs": [
+            "prash/server.py:L2702-L2710",
+            "prash/server.py:L399-L405",
+            "package.json:L9",
+            "prash/server.py:L2705-L2745",
+            "prash/server.py:L3713-L3735",
+            "prash/server.py:L3819-L3868"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/reference/http_api.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/testing.md",
+        "docs/lear_backend/README.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.451,
+      "warnings": [],
+      "correlationId": "q-f6ea15e9379b",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 22.78,
+        "totalMs": 24.99,
+        "streamEvents": 8,
+        "completionTokens": 44,
+        "tokensEstimated": true,
+        "tokensPerSec": 22564.1,
+        "decodeEventsPerSec": 12001.59,
+        "itlMs": {
+          "count": 7,
+          "mean": 0.083,
+          "p50": 0.082,
+          "p85": 0.083,
+          "p99": 0.093,
+          "min": 0.081,
+          "max": 0.093
+        },
+        "stages": {
+          "retrievalMs": 9.61,
+          "generationMs": 1.95,
+          "ttftMs": 1.272,
+          "contextTokens": 1741,
+          "promptTokens": 16,
+          "evidenceTokens": 1741
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          6
+        ],
+        "hit": true,
+        "reciprocalRank": 0.3333,
+        "docRecall": 1.0,
+        "contextPrecision": 0.3333,
+        "citationPrecision": 0.0,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 1.33,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-037",
+      "split": "holdout",
+      "category": "security",
+      "difficulty": "hard",
+      "question": "Which risk tier and permission mode does /api/chat/execute record in the audit log?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Values are never echoed to the console or audit log — only key names are. - Capabilities: `('get_secret_keys', 'update_secret')`. - Risk tier: approval. [1] Evidence: `tests/test_desktop_api.py:L724-L749`. - [implemented] The endpoint's own audit entry is written with risk tier SAFE and mode ASK whatever the real action was. [2] Evidence: `prash/server.py:L2705-L2726`. - [implemented] After the call the handler appends an audit entry with risk tier SAFE and mode ASK regardless of the action's real tier. [5]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/reference/actions.md",
+          "heading": "Lear backend — action catalogue > Approval-tier actions > exec",
+          "lines": "169-186",
+          "sourceRefs": [
+            "prash/actions/exec_command.py:L43-L134",
+            "prash/actions/exec_command.py:L44-L51"
+          ]
+        },
+        {
+          "id": 2,
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "heading": "Authentication and authorization > Desktop API exposure > Chat-initiated actions are pre-approved",
+          "lines": "67-72",
+          "sourceRefs": [
+            "prash/server.py:L188-L209",
+            "prash/server.py:L2705-L2726",
+            "prash/server.py:L2696-L2704",
+            "tests/test_desktop_api.py:L724-L749",
+            "prash/server.py:L2732-L2745"
+          ]
+        },
+        {
+          "id": 5,
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+          "lines": "61-64",
+          "sourceRefs": [
+            "prash/server.py:L2705-L2726",
+            "prash/server.py:L2732-L2745",
+            "prash/server.py:L2019-L2059",
+            "prash/server.py:L2029",
+            "prash/server.py:L1601-L1660",
+            "prash/server.py:L3511-L3533"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/reference/actions.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/testing.md",
+        "docs/lear_backend/reference/http_api.md",
+        "docs/lear_backend/errors_and_operations.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.5346,
+      "warnings": [],
+      "correlationId": "q-7a494797cec6",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 25.05,
+        "totalMs": 28.68,
+        "streamEvents": 22,
+        "completionTokens": 128,
+        "tokensEstimated": true,
+        "tokensPerSec": 34445.64,
+        "decodeEventsPerSec": 12066.9,
+        "itlMs": {
+          "count": 21,
+          "mean": 0.083,
+          "p50": 0.08,
+          "p85": 0.084,
+          "p99": 0.105,
+          "min": 0.08,
+          "max": 0.105
+        },
+        "stages": {
+          "retrievalMs": 10.493,
+          "generationMs": 3.716,
+          "ttftMs": 1.879,
+          "contextTokens": 1778,
+          "promptTokens": 21,
+          "evidenceTokens": 1778
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 3,
+        "citationsWithLines": 3,
+        "citationSpanLines": [
+          18,
+          6,
+          4
+        ],
+        "hit": true,
+        "reciprocalRank": 0.5,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2,
+        "citationPrecision": 0.3333,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 1.33,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 0.8,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-041",
+      "split": "holdout",
+      "category": "configuration",
+      "difficulty": "medium",
+      "question": "What is the default of LEAR_MOCK_SERVICES and what does it do to the AWS and GCP connectors?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "What the failures show: - [implemented] The AWS and GCP connectors start in mock mode unless `LEAR_MOCK_SERVICES` is set to something other than true/1/yes, because the variable defaults to `\"true\"`. [2]",
+      "citations": [
+        {
+          "id": 2,
+          "document": "docs/lear_backend/testing.md",
+          "heading": "Testing > Suite run against the pinned commit (2026-11-05)",
+          "lines": "29-35",
+          "sourceRefs": [
+            "prash/connectors/aws.py:L75",
+            "prash/connectors/gcp.py:L44",
+            "tests/test_aws_connector.py:L38",
+            "tests/test_gcp_connector.py:L81",
+            "prash/connectors/aws.py:L97-L126"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/integrations.md",
+        "docs/lear_backend/testing.md",
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/README.md",
+        "docs/lear_backend/domain_model.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.6665,
+      "warnings": [],
+      "correlationId": "q-5925d2d5f05e",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 22.48,
+        "totalMs": 24.8,
+        "streamEvents": 9,
+        "completionTokens": 51,
+        "tokensEstimated": true,
+        "tokensPerSec": 26969.86,
+        "decodeEventsPerSec": 13538.9,
+        "itlMs": {
+          "count": 8,
+          "mean": 0.074,
+          "p50": 0.073,
+          "p85": 0.074,
+          "p99": 0.08,
+          "min": 0.073,
+          "max": 0.08
+        },
+        "stages": {
+          "retrievalMs": 9.763,
+          "generationMs": 1.891,
+          "ttftMs": 1.213,
+          "contextTokens": 1717,
+          "promptTokens": 23,
+          "evidenceTokens": 1717
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          7
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 0.5,
+        "contextPrecision": 0.125,
+        "citationPrecision": 0.0,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 0.5,
+          "context_recall": 2.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-046",
+      "split": "holdout",
+      "category": "workflow",
+      "difficulty": "medium",
+      "question": "What does `prash fix --noninteractive` do when the diagnosis presents several ranked options?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/cli.py:L585-L608`. - [implemented] When the diagnosis returns a ranked options menu, non-interactive runs report the menu and take no action; interactive runs let the operator pick, and the pick still goes through risk tiers, the circuit breaker and the audit log. [1] Evidence: `prash/brain/schemas.py:L385-L403`. - [implemented] `options` is a ranked menu of `DiagnosisOption`s for ambiguous runtime cases; the validator requires at least two entries with exactly one default and derives `recommended_action` from the default when it is unset. [4]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash fix`: diagnose, then act",
+          "lines": "24-26",
+          "sourceRefs": [
+            "prash/cli.py:L563-L583",
+            "prash/fix.py:L72-L76",
+            "prash/fix.py:L87-L175",
+            "prash/cli.py:L585-L608",
+            "prash/cli.py:L610-L647",
+            "prash/fix.py:L59-L84"
+          ]
+        },
+        {
+          "id": 4,
+          "document": "docs/lear_backend/domain_model.md",
+          "heading": "Domain model > Diagnosis schema (`prash/brain/schemas.py`)",
+          "lines": "36-39",
+          "sourceRefs": [
+            "prash/brain/schemas.py:L353-L369",
+            "prash/brain/schemas.py:L370-L384",
+            "prash/brain/schemas.py:L385-L403",
+            "prash/brain/schemas.py:L318-L344",
+            "prash/brain/schemas.py:L404-L414",
+            "prash/brain/schemas.py:L445-L463"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/services_and_workflows.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/domain_model.md",
+        "docs/lear_backend/reference/modules.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.3798,
+      "warnings": [],
+      "correlationId": "q-ca427a46e72b",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 24.39,
+        "totalMs": 28.0,
+        "streamEvents": 24,
+        "completionTokens": 142,
+        "tokensEstimated": true,
+        "tokensPerSec": 43665.44,
+        "decodeEventsPerSec": 13650.69,
+        "itlMs": {
+          "count": 23,
+          "mean": 0.073,
+          "p50": 0.073,
+          "p85": 0.073,
+          "p99": 0.079,
+          "min": 0.073,
+          "max": 0.079
+        },
+        "stages": {
+          "retrievalMs": 10.014,
+          "generationMs": 3.252,
+          "ttftMs": 1.476,
+          "contextTokens": 1626,
+          "promptTokens": 24,
+          "evidenceTokens": 1626
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 2,
+        "citationsWithLines": 2,
+        "citationSpanLines": [
+          3,
+          4
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.375,
+        "citationPrecision": 0.5,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 2.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 1.5,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-052",
+      "split": "holdout",
+      "category": "configuration",
+      "difficulty": "easy",
+      "question": "How are Lear's live Kubernetes connector tests enabled?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Things these docs cannot confirm, and places where the code, tests and project prose disagree. - [inferred] No provider credentials were available, so no connector was exercised against a real Kubernetes cluster, cloud account, CI system or monitoring tool; connector behaviour is documented from code and unit tests only. - [inferred] No DeepSeek or Kimi key was available, so no diagnosis, intent fallback or widget generation call was made; the model flow is documented from code. - [inferred] The desktop server was not started and the `desktop/` frontend was not reviewed; API behaviour comes from the route code and the desktop API tests. - [inferred] No shared-memory source for Lear was found among the repositories visible to this account, so nothing here draws on shared team memory. [1]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/unknowns_and_gaps.md",
+          "heading": "Unknowns and gaps > Not verifiable from this environment",
+          "lines": "5-10",
+          "sourceRefs": []
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/testing.md",
+        "docs/lear_backend/reference/modules.md",
+        "docs/lear_backend/reference/connectors.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/reference/tests.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.4055,
+      "warnings": [],
+      "correlationId": "q-9d5b2dccca62",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 22.46,
+        "totalMs": 26.55,
+        "streamEvents": 34,
+        "completionTokens": 200,
+        "tokensEstimated": true,
+        "tokensPerSec": 58496.64,
+        "decodeEventsPerSec": 13838.11,
+        "itlMs": {
+          "count": 33,
+          "mean": 0.072,
+          "p50": 0.072,
+          "p85": 0.073,
+          "p99": 0.081,
+          "min": 0.066,
+          "max": 0.081
+        },
+        "stages": {
+          "retrievalMs": 10.013,
+          "generationMs": 3.419,
+          "ttftMs": 0.945,
+          "contextTokens": 1740,
+          "promptTokens": 14,
+          "evidenceTokens": 1740
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          6
+        ],
+        "hit": true,
+        "reciprocalRank": 0.5,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2,
+        "citationPrecision": 0.0,
+        "correct": false,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 0.0,
+          "context_precision": 0.8,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-058",
+      "split": "holdout",
+      "category": "multi_hop",
+      "difficulty": "hard",
+      "question": "Why can the Lear test suite fail to import the desktop server after installing only the declared dependencies?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `pyproject.toml:L37-L40`, `pyproject.toml:L31-L34`. - [tested] Neither the core list nor the extras declare `python-multipart`, which FastAPI needs for the upload and form routes; on a clean install from the declared dependencies, three test modules fail at collection (run of 2026-11-05). [4] Evidence: `.github/workflows/ci.yml:L47-L57`. - [implemented] `python-multipart` is required by the upload and form routes but is not declared, so a clean install from `pyproject.toml` cannot import the server. [5]",
+      "citations": [
+        {
+          "id": 4,
+          "document": "docs/lear_backend/configuration.md",
+          "heading": "Configuration > Packaging and runtime",
+          "lines": "48-49",
+          "sourceRefs": [
+            "pyproject.toml:L37-L40",
+            "pyproject.toml:L31-L34",
+            "pyproject.toml:L10-L54",
+            "prash/server.py:L3642",
+            "pyproject.toml:L62-L68"
+          ]
+        },
+        {
+          "id": 5,
+          "document": "docs/lear_backend/unknowns_and_gaps.md",
+          "heading": "Unknowns and gaps > Code, tests and prose disagree",
+          "lines": "13-18",
+          "sourceRefs": [
+            "README.md:L57-L61",
+            "prash/connectors/aws.py:L75",
+            ".github/workflows/ci.yml:L47-L57",
+            "prash/server.py:L3642",
+            "pyproject.toml:L10-L54",
+            "pyproject.toml:L31-L40"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/testing.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/integrations.md",
+        "docs/lear_backend/configuration.md",
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/errors_and_operations.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.4429,
+      "warnings": [],
+      "correlationId": "q-bec20a3dcecd",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 25.89,
+        "totalMs": 29.55,
+        "streamEvents": 22,
+        "completionTokens": 130,
+        "tokensEstimated": true,
+        "tokensPerSec": 29213.48,
+        "decodeEventsPerSec": 12142.11,
+        "itlMs": {
+          "count": 21,
+          "mean": 0.082,
+          "p50": 0.081,
+          "p85": 0.082,
+          "p99": 0.095,
+          "min": 0.081,
+          "max": 0.095
+        },
+        "stages": {
+          "retrievalMs": 10.063,
+          "generationMs": 4.45,
+          "ttftMs": 2.625,
+          "contextTokens": 1772,
+          "promptTokens": 28,
+          "evidenceTokens": 1772
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 2,
+        "citationsWithLines": 2,
+        "citationSpanLines": [
+          2,
+          6
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2222,
+        "citationPrecision": 0.0,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 0.89,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-060",
+      "split": "holdout",
+      "category": "multi_hop",
+      "difficulty": "medium",
+      "question": "How does the dispatcher stop a runaway loop from restarting the same pod over and over?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "Evidence: `prash/watcher.py:L55-L77`. - [implemented] A notification tries a desktop notification first, then pushes the same text to every configured team channel, and failures are logged without stopping the loop. [1]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash watch` and notifications",
+          "lines": "38-43",
+          "sourceRefs": [
+            "prash/brain/diagnosis_agent.py:L1811-L1906",
+            "prash/brain/diagnosis_agent.py:L2048-L2095",
+            "prash/watcher.py:L38-L48",
+            "prash/watcher.py:L160-L188",
+            "prash/watcher.py:L55-L77",
+            "prash/watcher.py:L80-L99"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/services_and_workflows.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/reference/actions.md",
+        "docs/lear_backend/reference/http_api.md",
+        "docs/lear_backend/configuration.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/reference/modules.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.3886,
+      "warnings": [],
+      "correlationId": "q-277358f0d69b",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 22.39,
+        "totalMs": 24.7,
+        "streamEvents": 10,
+        "completionTokens": 55,
+        "tokensEstimated": true,
+        "tokensPerSec": 32525.13,
+        "decodeEventsPerSec": 11896.72,
+        "itlMs": {
+          "count": 9,
+          "mean": 0.084,
+          "p50": 0.082,
+          "p85": 0.091,
+          "p99": 0.094,
+          "min": 0.081,
+          "max": 0.094
+        },
+        "stages": {
+          "retrievalMs": 10.084,
+          "generationMs": 1.691,
+          "ttftMs": 0.84,
+          "contextTokens": 1759,
+          "promptTokens": 22,
+          "evidenceTokens": 1759
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.3333,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 1,
+        "citationsWithLines": 1,
+        "citationSpanLines": [
+          6
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.3333,
+        "citationPrecision": 1.0,
+        "correct": false,
+        "proxy": {
+          "citation_quality": 4.0,
+          "groundedness": 4.0,
+          "answer_relevance": 1.33,
+          "context_precision": 1.33,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-066",
+      "split": "holdout",
+      "category": "follow_up",
+      "difficulty": "hard",
+      "question": "Is that request verified before an incident is approved?",
+      "history": [
+        "How does the desktop server handle Slack interactivity requests?"
+      ],
+      "historyStatuses": [
+        "GROUNDED"
+      ],
+      "answer": "Evidence: `prash/server.py:L2705-L2745`. - [implemented] The Slack interactivity endpoint approves incident remediations without checking a Slack signature. [1] Evidence: `prash/notifications.py:L80-L101`. - [implemented] The desktop server's Slack service posts Block Kit alerts and chat replies to `SLACK_WEBHOOK_URL`. [5]",
+      "citations": [
+        {
+          "id": 1,
+          "document": "docs/lear_backend/unknowns_and_gaps.md",
+          "heading": "Unknowns and gaps > Security-relevant observations",
+          "lines": "22-27",
+          "sourceRefs": [
+            "prash/server.py:L2702-L2710",
+            "prash/server.py:L399-L405",
+            "package.json:L9",
+            "prash/server.py:L2705-L2745",
+            "prash/server.py:L3713-L3735",
+            "prash/server.py:L3819-L3868"
+          ]
+        },
+        {
+          "id": 5,
+          "document": "docs/lear_backend/integrations.md",
+          "heading": "Integrations > Team notifications",
+          "lines": "37-44",
+          "sourceRefs": [
+            "prash/notifications.py:L104-L221",
+            "prash/notifications.py:L80-L101",
+            "prash/slack_service.py:L21-L285",
+            "prash/email_service.py:L324-L441",
+            "prash/email_service.py:L565-L648"
+          ]
+        }
+      ],
+      "retrievedDocs": [
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/integrations.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/reference/configuration_env.md"
+      ],
+      "retrievalQuery": "Is that request verified before an incident is approved? (follow-up to: How does the desktop server handle Slack interactivity requests?) SLACK_WEBHOOK_URL",
+      "bestSupport": 0.3786,
+      "warnings": [],
+      "correlationId": "q-6531f6f0dc8c",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 28.37,
+        "totalMs": 31.69,
+        "streamEvents": 14,
+        "completionTokens": 81,
+        "tokensEstimated": true,
+        "tokensPerSec": 17378.25,
+        "decodeEventsPerSec": 11088.48,
+        "itlMs": {
+          "count": 13,
+          "mean": 0.09,
+          "p50": 0.089,
+          "p85": 0.09,
+          "p99": 0.1,
+          "min": 0.089,
+          "max": 0.1
+        },
+        "stages": {
+          "retrievalMs": 10.034,
+          "generationMs": 4.661,
+          "ttftMs": 3.386,
+          "contextTokens": 1739,
+          "promptTokens": 35,
+          "evidenceTokens": 1739
+        }
+      },
+      "metrics": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "forbiddenHits": [],
+        "abstained": false,
+        "error": false,
+        "citations": 2,
+        "citationsWithLines": 2,
+        "citationSpanLines": [
+          6,
+          8
+        ],
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.3333,
+        "citationPrecision": 0.5,
+        "correct": true,
+        "proxy": {
+          "citation_quality": 2.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 1.33,
+          "context_recall": 4.0
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-072",
+      "split": "holdout",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "question": "What was the root cause of Lear's own outage on 12 March 2026?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "The indexed Lear documentation never mentions 'March', so this cannot be answered from it. Ask about the Lear backend code (CLI, actions, permissions, connectors, desktop server) instead.",
+      "citations": [],
+      "retrievedDocs": [],
+      "retrievalQuery": null,
+      "bestSupport": null,
+      "warnings": [
+        "unknown_term"
+      ],
+      "correlationId": null,
+      "qualifying": false,
+      "timings": {
+        "ttftMs": null,
+        "totalMs": 1.73,
+        "streamEvents": 0,
+        "completionTokens": null,
+        "tokensEstimated": false,
+        "tokensPerSec": null,
+        "decodeEventsPerSec": null,
+        "itlMs": {
+          "count": 0,
+          "mean": null,
+          "p50": null,
+          "p85": null,
+          "p99": null,
+          "min": null,
+          "max": null
+        },
+        "stages": {}
+      },
+      "metrics": {
+        "status": "ABSTAINED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": null,
+        "forbiddenHits": [],
+        "abstained": true,
+        "error": false,
+        "citations": 0,
+        "citationsWithLines": 0,
+        "citationSpanLines": [],
+        "correct": true,
+        "proxy": {
+          "citation_quality": null,
+          "groundedness": null,
+          "answer_relevance": 4.0,
+          "context_precision": null,
+          "context_recall": null
+        }
+      },
+      "error": null
+    },
+    {
+      "id": "lear-074",
+      "split": "holdout",
+      "category": "unanswerable",
+      "difficulty": "medium",
+      "question": "What did the Lear team decide in its Q3 2025 roadmap meeting?",
+      "history": [],
+      "historyStatuses": [],
+      "answer": "The retrieved evidence does not contain enough information to answer this question, so the system abstained instead of guessing.",
+      "citations": [],
+      "retrievedDocs": [
+        "docs/lear_backend/README.md",
+        "docs/lear_backend/api_reference.md",
+        "docs/lear_backend/authentication_authorization.md",
+        "docs/lear_backend/database.md",
+        "docs/lear_backend/architecture.md",
+        "docs/lear_backend/reference/modules.md",
+        "docs/lear_backend/reference/cli.md",
+        "docs/lear_backend/unknowns_and_gaps.md",
+        "docs/lear_backend/reference/actions.md",
+        "docs/lear_backend/reference/configuration_env.md"
+      ],
+      "retrievalQuery": null,
+      "bestSupport": 0.2358,
+      "warnings": [],
+      "correlationId": "q-14a5654965a4",
+      "qualifying": false,
+      "timings": {
+        "ttftMs": 21.46,
+        "totalMs": 21.73,
+        "streamEvents": 1,
+        "completionTokens": 0,
+        "tokensEstimated": false,
+        "tokensPerSec": null,
+        "decodeEventsPerSec": null,
+        "itlMs": {
+          "count": 0,
+          "mean": null,
+          "p50": null,
+          "p85": null,
+          "p99": null,
+          "min": null,
+          "max": null
+        },
+        "stages": {
+          "retrievalMs": 9.698,
+          "contextTokens": 1699
+        }
+      },
+      "metrics": {
+        "status": "ABSTAINED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": null,
+        "forbiddenHits": [],
+        "abstained": true,
+        "error": false,
+        "citations": 0,
+        "citationsWithLines": 0,
+        "citationSpanLines": [],
+        "correct": true,
+        "proxy": {
+          "citation_quality": null,
+          "groundedness": null,
+          "answer_relevance": 4.0,
+          "context_precision": null,
+          "context_recall": null
+        }
+      },
+      "error": null
+    }
+  ]
+}

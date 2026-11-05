@@ -1,0 +1,117 @@
+{
+  "runs": [
+    {
+      "run": "evals/lear/results/round-0/run.json",
+      "label": "round-0",
+      "commit": "6c438d158048",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 42,
+      "recordedCorrect": 0.4524,
+      "correct": 0.4524,
+      "correctStrict": 0.4048,
+      "answerableCorrectStrict": 0.3784,
+      "keyFactCoverageStrict": 0.4414,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": [
+        "lear-010",
+        "lear-026"
+      ]
+    },
+    {
+      "run": "evals/lear/results/round-1/run.json",
+      "label": "round-1",
+      "commit": "6c438d158048",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 42,
+      "recordedCorrect": 0.5,
+      "correct": 0.5,
+      "correctStrict": 0.4286,
+      "answerableCorrectStrict": 0.4054,
+      "keyFactCoverageStrict": 0.4595,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": [
+        "lear-005",
+        "lear-010",
+        "lear-026"
+      ]
+    },
+    {
+      "run": "evals/lear/results/round-2/run.json",
+      "label": "round-2",
+      "commit": "38bea8cbc6d9",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 42,
+      "recordedCorrect": 0.5238,
+      "correct": 0.5238,
+      "correctStrict": 0.4524,
+      "answerableCorrectStrict": 0.4054,
+      "keyFactCoverageStrict": 0.4595,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": [
+        "lear-005",
+        "lear-010",
+        "lear-026"
+      ]
+    },
+    {
+      "run": "evals/lear/results/round-3/run.json",
+      "label": "round-3",
+      "commit": "fed7dbf38163",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 42,
+      "recordedCorrect": 0.5476,
+      "correct": 0.5476,
+      "correctStrict": 0.4762,
+      "answerableCorrectStrict": 0.4324,
+      "keyFactCoverageStrict": 0.473,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": [
+        "lear-005",
+        "lear-010",
+        "lear-026"
+      ]
+    },
+    {
+      "run": "evals/lear/results/round-0-test/run.json",
+      "label": "round-0-test",
+      "commit": "6c438d158048",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 24,
+      "recordedCorrect": 0.4167,
+      "correct": 0.4167,
+      "correctStrict": 0.4167,
+      "answerableCorrectStrict": 0.4286,
+      "keyFactCoverageStrict": 0.5357,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": []
+    },
+    {
+      "run": "evals/lear/results/round-3-test/run.json",
+      "label": "round-3-test",
+      "commit": "fed7dbf38163",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 24,
+      "recordedCorrect": 0.5,
+      "correct": 0.5,
+      "correctStrict": 0.5,
+      "answerableCorrectStrict": 0.4762,
+      "keyFactCoverageStrict": 0.5833,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": []
+    },
+    {
+      "run": "evals/lear/results/final-holdout/run.json",
+      "label": "final-holdout",
+      "commit": "fed7dbf38163",
+      "datasetSha256Recorded": "56050cf2689383ca9dd91a29fd2a3f54e081ccd9a2cb06f4a57f5ef4b1ee9a4e",
+      "cases": 14,
+      "recordedCorrect": 0.6429,
+      "correct": 0.6429,
+      "correctStrict": 0.6429,
+      "answerableCorrectStrict": 0.5833,
+      "keyFactCoverageStrict": 0.625,
+      "strictScorer": "lear-keyfacts-strict-v1",
+      "changedByStrict": []
+    }
+  ]
+}

@@ -12,7 +12,7 @@ from ragformation.errors import ConfigError, NotFound, RateLimited, ValidationEr
 from ragformation.lear import evalset
 from ragformation.lear.compaction import COMPACTION_VERSION, compact, extract_identifiers
 from ragformation.lear.agent import salient_terms, unknown_terms
-from ragformation.lear.evaluate import score_case
+from ragformation.lear.evaluate import score_case, strict_answer_text, strict_fact_hit
 from ragformation.lear.indexer import locate_lines, prepare_for_index
 from ragformation.lear.judge import DIMENSIONS, validate_judgement
 from ragformation.lear.memory import MemoryStore
@@ -354,6 +354,24 @@ class ScoreCaseTests(unittest.TestCase):
         case = {"id": "lear-901", "category": "unanswerable", "expected": {"statuses": ["ABSTAINED"], "must_include": []}}
         self.assertTrue(score_case(case, {"status": "ABSTAINED", "answer": ""}, {})["correct"])
         self.assertFalse(score_case(case, {"status": "GROUNDED", "answer": "Kafka topic x [1]"}, {})["correct"])
+
+    def test_strict_key_facts_ignore_code_refs_markers_and_list_ordinals(self) -> None:
+        # Found in the round-3 manual audit (lear-005, lear-010, lear-026): the
+        # lenient check counted "5"/"60" inside `prash/cli.py:L585-L608`, "3" in
+        # a list ordinal and "kimi" inside a file path as stated facts.
+        case = {"id": "lear-902", "category": "configuration", "expected": {
+            "statuses": ["GROUNDED"], "must_include": [["5"], ["60"]], "relevant_docs": []}}
+        quoted = "Evidence: `prash/cli.py:L585-L608`. - 3. [implemented] The dispatcher checks the breaker. [2]"
+        lenient_only = score_case(case, self._answer(quoted), {})
+        self.assertTrue(lenient_only["correct"])
+        self.assertFalse(lenient_only["correctStrict"])
+        self.assertEqual(lenient_only["keyFactCoverageStrict"], 0.0)
+        stated = score_case(case, self._answer("It allows 5 actions per resource in 60 seconds. [1]"), {})
+        self.assertTrue(stated["correct"] and stated["correctStrict"])
+        exit_code = {"id": "lear-903", "category": "workflow", "expected": {"statuses": ["GROUNDED"], "must_include": [["2"]]}}
+        self.assertTrue(score_case(exit_code, self._answer("An unknown action id ends with exit code 2. [1]"), {})["correctStrict"])
+        self.assertFalse(strict_fact_hit("can", strict_answer_text("It cannot run without a grant.")))
+        self.assertFalse(strict_fact_hit("kimi", strict_answer_text("See `prash/brain/kimi_client.py:L99-L139`.")))
 
 
 if __name__ == "__main__":  # pragma: no cover
