@@ -10,6 +10,7 @@ information at once.
 from __future__ import annotations
 
 import contextlib
+import dataclasses
 import os
 import shutil
 import sys
@@ -141,6 +142,13 @@ class Renderer:
             for line in lines:
                 self.out.write(line + "\n")
         self.out.flush()
+
+    def refresh_width(self) -> None:
+        """Re-measure the terminal after a resize (called at every scene boundary)."""
+
+        if self.caps.tty:
+            cols = shutil.get_terminal_size((self.caps.width, 24)).columns
+            self.caps = dataclasses.replace(self.caps, width=max(40, min(int(cols), 120)))
 
     def pause(self, seconds: float) -> None:
         if self.caps.animate and self.speed > 0:

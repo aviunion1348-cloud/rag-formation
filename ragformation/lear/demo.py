@@ -46,12 +46,22 @@ FINAL_REPORT = REPO_ROOT / "docs" / "lear_agent" / "final_report.md"
 
 # Questions come from the frozen golden set (calibration/dev splits only), so
 # no Lear fact is invented here and no test/holdout question is touched.
-PRIMARY_CASE = "lear-001"
+PRIMARY_CASE = "lear-012"
 FOLLOWUP_CASE = "lear-061"
 UNKNOWN_TERM_CASE = "lear-068"
 UNANSWERABLE_CASE = "lear-069"
 CONFLICT_CASE = "lear-059"
 SECOND_FOLLOWUP_CASE = "lear-062"
+# Verbatim copies of the golden cases the scenes use, for installed packages
+# (the golden set is not shipped in the wheel). A test keeps them identical.
+GOLDEN_FALLBACK: Dict[str, Dict[str, Any]] = {
+    "lear-012": {"question": "Does `prash run --dry-run` execute the action?", "history": []},
+    "lear-059": {"question": "How many tests does the README say should pass, and does that match what the pinned commit actually does?", "history": []},
+    "lear-061": {"question": "What is its default window, and where is its state kept?", "history": ["What does the circuit breaker do in Lear?"]},
+    "lear-062": {"question": "Could two processes write the same sequence number to it?", "history": ["What is Lear's audit log?"]},
+    "lear-068": {"question": "Which Kafka topics does Lear publish incident events to?", "history": []},
+    "lear-069": {"question": "How much does a Lear enterprise licence cost per seat?", "history": []},
+}
 MEMORY_PROBE = "How many executions does the circuit breaker allow per resource per window?"
 OUTDATED_MEMORY = "Project note: the circuit breaker allows 50 executions per resource per window."
 INJECTED_PAGE = (
@@ -129,7 +139,7 @@ def _golden() -> Dict[str, Dict[str, Any]]:
     try:
         return {c["id"]: c for c in json.loads(Path(DEFAULT_DATASET).read_text(encoding="utf-8"))["cases"]}
     except (OSError, ValueError, KeyError):
-        return {}
+        return {k: {"id": k, **v} for k, v in GOLDEN_FALLBACK.items()}
 
 
 # ------------------------------------------------------------------ context
@@ -476,11 +486,14 @@ def s06_answer(ctx: DemoContext) -> Dict[str, Any]:
     real_stream = bool(answer.get("qualifying")) and str(gen.get("used") or "").startswith("ollama")
     steps.append(code_step("status → exit code", 0, code))
     t = answer.get("timings") or {}
+    recorded = _recorded_case(PRIMARY_CASE)
     return _scene("S06", "Grounded answer and citations", "LIVE",
                   facts=[fact("generator", f"{gen.get('used')}" + ("" if real_stream else "  — BASELINE / NOT QUALIFYING (no model was called)"), "LIVE"),
                          fact("status", answer["status"], "LIVE"),
                          fact("model TTFT / ITL / tok/s", f"{t.get('ttftMs')} ms / {(t.get('itlMs') or {}).get('p50')} ms / {t.get('tokensPerSec')}" if real_stream else "not measured: no model stream", "LIVE" if real_stream else "UNAVAILABLE"),
-                         fact("prompt version", answer.get("promptVersion"), "LIVE")],
+                         fact("prompt version", answer.get("promptVersion"), "LIVE"),
+                         fact(f"recorded round-3 verdict for {PRIMARY_CASE}", recorded or "not available", "RECORDED" if recorded else "UNAVAILABLE",
+                              "evals/lear/results/round-3/run.json (offline lenient scorer; judge BLOCKED)")],
                   steps=steps,
                   data={"question": answer["retrieval"]["query"], "answer": answer.get("answer"), "realStream": real_stream, "citations": cites},
                   limitations=[] if real_stream else ["Extractive baseline answers are sentence selections, often padded with neighbouring sentences."])
@@ -645,6 +658,19 @@ def s08_guardrails(ctx: DemoContext) -> Dict[str, Any]:
                   limitations=["Resistance of a real LLM to injected instructions is untested (no model)."])
 
 
+def _recorded_case(case_id: str, label: str = "round-3") -> Optional[str]:
+    try:
+        data = json.loads((REPO_ROOT / "evals" / "lear" / "results" / label / "run.json").read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    for c in data.get("cases", []):
+        if c.get("id") == case_id:
+            m = c.get("metrics") or {}
+            return (f"{'correct' if m.get('correct') else 'incorrect'} (lenient), key-fact coverage {m.get('keyFactCoverage')}, "
+                    f"citation precision {m.get('citationPrecision')}, status {m.get('status')}")
+    return None
+
+
 def _recorded_status_count(status: str) -> Dict[str, int]:
     count = runs = 0
     for path in sorted((REPO_ROOT / "evals" / "lear" / "results").glob("*/run.json")):
@@ -665,9 +691,18 @@ def _flips(older: Path, newer: Path) -> Dict[str, List[str]]:
             "regressed": sorted(k for k in a if k in b and a[k] and not b[k])}
 
 
+def _not_shipped(sid: str, title: str, what: str) -> Dict[str, Any]:
+    return _scene(sid, title, "UNAVAILABLE", blocked={
+        "exitCode": None, "message": f"{what} is not available here (installed package without the repository)",
+        "hint": "run from a repository checkout, or use `python3 -m ragformation lear demo replay`"})
+
+
 def s09_eval(ctx: DemoContext) -> Dict[str, Any]:
     from . import evalset
     from .report import evaluation_runs
+
+    if not Path(evalset.DEFAULT_DATASET).exists():
+        return _not_shipped("S09", "Evaluation and three improvement rounds", "the golden set (evals/lear)")
 
     report = evalset.validate(evalset.DEFAULT_DATASET, source=ctx.source)
     runs = evaluation_runs(ctx.scratch_settings)  # committed results only: the scratch dir has no local runs
@@ -904,6 +939,7 @@ class SceneRenderer:
         return "RECORDED" if self.replay_meta and p == "LIVE" else p
 
     def header(self, rec: Dict[str, Any], *, replay_reason: str = "") -> None:
+        self.r.refresh_width()
         p = self.prov(rec.get("provenance", "UNAVAILABLE"))
         self.m.registration_marks(rec["id"], rec["title"], p)
         if self.replay_meta:
@@ -1038,8 +1074,13 @@ CONTROLS = "[Enter] next  [Space] pause/resume auto  [p] previous  [r] replay sc
 
 
 def demo_exit_code(records: Sequence[Dict[str, Any]], settings: LearSettings) -> int:
-    if settings.qualifying and any(r.get("blocked") and r["blocked"].get("exitCode") == 6 for r in records):
+    """6 the model gate blocked a qualifying run; 5 a behaviour failed or a scene errored; else 0."""
+
+    codes = [r["blocked"].get("exitCode") for r in records if r.get("blocked")]
+    if settings.qualifying and 6 in codes:
         return 6
+    if any(c not in (None, 6) for c in codes):
+        return 5
     if any(s.get("verdict") == "MISMATCH" for r in records for s in r.get("steps", [])):
         return 5
     return 0
