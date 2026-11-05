@@ -66,7 +66,7 @@ The full transcript of every command, with exit codes, is in [evidence/cli_walkt
 | `eval validate\|run\|rescore` | Golden set checks; evaluation runs (`--suite all\|calibration\|dev\|test\|holdout`, `--judge auto\|on\|off`); re-score saved runs |
 | `bench --users 1,2,5 [--requests N]` | Dummy-user load through the service layer |
 | `report [--source P]` | Doctor, docs, index, every evaluation run and the latest bench |
-| `demo [director\|live\|replay\|examiner\|capture\|effects] [--plain] [--json] [--source P]` | Terminal walkthrough of the real pipeline in a scratch directory; every value labelled LIVE, RECORDED, ILLUSTRATIVE or UNAVAILABLE ([demo_guide.md](demo_guide.md)) |
+| `demo [director\|live\|replay\|examiner\|capture\|effects] [--plain] [--json] [--source P]` | Terminal walkthrough of the real pipeline in a scratch directory; every value labelled LIVE, RECORDED, ILLUSTRATIVE, UNAVAILABLE, BLOCKED or NOT QUALIFYING ([demo_guide.md](demo_guide.md), [video](demo_video/README.md)) |
 
 **Answer statuses:** `GROUNDED`, `PARTIAL`, `ABSTAINED`, `CONFLICTED`, `ERROR`.
 
@@ -99,7 +99,9 @@ The full transcript of every command, with exit codes, is in [evidence/cli_walkt
 | [evaluation_dataset.md](evaluation_dataset.md) · [judge_rubric.md](judge_rubric.md) | Golden set, judge rubric, manual audit |
 | [round_1_report.md](round_1_report.md) · [round_2_report.md](round_2_report.md) · [round_3_report.md](round_3_report.md) | The improvement rounds |
 | [benchmark_report.md](benchmark_report.md) | Hardware, latency, load and rate limits |
-| [demo_guide.md](demo_guide.md) · [demo_scenes.md](demo_scenes.md) · [demo_evidence.md](demo_evidence.md) | `lear demo`: modes, keys, terminal behaviour, the scene map with data sources, and the replay bundle and transcripts |
+| [demo_guide.md](demo_guide.md) · [demo_scenes.md](demo_scenes.md) · [demo_evidence.md](demo_evidence.md) | `lear demo`: modes, keys, terminal behaviour, the scene map with data sources, and the replay bundles and transcripts |
+| [demo_runbook.md](demo_runbook.md) · [demo_replay_format.md](demo_replay_format.md) · [demo_effects.md](demo_effects.md) | Operating the demo, the replay bundle format, and the effect registry (generated) |
+| [demo_production_audit.md](demo_production_audit.md) · [demo_production_report.md](demo_production_report.md) · [demo_video/](demo_video/README.md) | Audit of the v1 demo, the productionisation rounds with the acceptance matrix and handoff, and the terminal video |
 | `evidence/` | Machine-readable outputs, transcripts, red/green regression logs |
 
 The Lear documentation itself is in [`../lear_backend/`](../lear_backend/README.md).

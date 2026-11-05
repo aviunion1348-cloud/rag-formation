@@ -460,6 +460,16 @@ class SafetyTests(unittest.TestCase):
                 self.assertIn(key, bundle["meta"])
         self.assertEqual(sorted(p.name for p in tmp.iterdir() if p.name.startswith(".")), [])  # no temp files left
 
+    def test_no_test_or_holdout_question_ships_in_the_package(self):
+        golden = json.loads((REPO_ROOT / "evals" / "lear" / "golden_lear_v1.json").read_text(encoding="utf-8"))["cases"]
+        package = REPO_ROOT / "ragformation"
+        blob = "".join(f.read_text(encoding="utf-8", errors="replace") for f in sorted(package.rglob("*"))
+                       if f.is_file() and f.suffix in (".py", ".json", ".md", ".txt", ".html", ".js", ".css"))
+        shipped = {c["id"]: c["split"] for c in golden if c["question"] in blob}
+        self.assertEqual([cid for cid, split in shipped.items() if split in ("test", "holdout")], [])
+        # the demo's live inputs: calibration/dev only; adding one must be a deliberate, reviewed change
+        self.assertEqual(sorted(shipped), ["lear-001", "lear-012", "lear-059", "lear-061", "lear-062", "lear-068", "lear-069"])
+
     def test_atomic_write_keeps_the_old_bundle_when_the_replace_fails(self):
         target = Path(tempfile.mkdtemp()) / "b.json"
         target.write_text("old", encoding="utf-8")
