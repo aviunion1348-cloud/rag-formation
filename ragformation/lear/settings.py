@@ -114,6 +114,9 @@ class LearSettings:
     max_input_chars: int = 2000
     # decline questions naming things the indexed docs never mention
     scope_guard: bool = True
+    # ollama backend: return the engine's extractive answer (labelled) when the
+    # LLM fails, instead of an ERROR. Off by default.
+    allow_extractive_fallback: bool = False
     # Optional override so evaluation/benchmark runs keep their sessions out of
     # the user's agent.db while reading the same index.
     agent_db_path: Optional[Path] = None
@@ -153,6 +156,7 @@ class LearSettings:
             queue_timeout_s=_env_float("RAG_LEAR_QUEUE_TIMEOUT_S", 30.0),
             max_input_chars=_env_int("RAG_LEAR_MAX_INPUT_CHARS", 2000),
             scope_guard=(_env("RAG_LEAR_SCOPE_GUARD", "1") or "1").lower() not in {"0", "false", "no", "off"},
+            allow_extractive_fallback=(_env("RAG_LEAR_ALLOW_EXTRACTIVE_FALLBACK", "0") or "0").lower() in {"1", "true", "yes", "on"},
         )
         if values["abstain_threshold"] < 0:  # unset: use the per-backend default
             values["abstain_threshold"] = None

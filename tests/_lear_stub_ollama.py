@@ -39,6 +39,7 @@ class StubOllama:
         }
         self.dimension = 64
         self.answer_mode = "cite"  # cite | abstain | uncited
+        self.chat_fails = False  # answer /api/chat with HTTP 500
         self.judge_replies: List[str] = []  # consumed in order; then a valid reply
         self.requests: List[Dict[str, Any]] = []
         self._server: Optional[ThreadingHTTPServer] = None
@@ -86,6 +87,9 @@ class StubOllama:
                     texts = [texts] if isinstance(texts, str) else texts
                     self._send({"embeddings": [_vector(t, stub.dimension) for t in texts]})
                 elif self.path == "/api/chat":
+                    if stub.chat_fails:
+                        self._send({"error": "stub: model runner crashed"}, 500)
+                        return
                     if payload.get("format") is not None:
                         content = stub.judge_replies.pop(0) if stub.judge_replies else json.dumps({
                             "citation_quality": 3, "groundedness": 4, "answer_relevance": 3,

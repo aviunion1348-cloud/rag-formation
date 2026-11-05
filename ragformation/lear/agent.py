@@ -44,6 +44,9 @@ _ANAPHORA = re.compile(
     r"\b(it|its|it's|that|this|those|these|they|them|their|there|same|above|previous|former|latter)\b",
     re.IGNORECASE,
 )
+_EVIDENCE_TAIL = re.compile(r"Evidence:\s*(?:`[^`]*`[\s,;]*)+\.?", re.IGNORECASE)
+_SOURCE_REF = re.compile(r"`?[A-Za-z0-9_./-]+\.[A-Za-z0-9]+:L\d+(?:-L?\d+)?`?")
+_CITATION_MARKER = re.compile(r"\[\d+\]")
 _FOLLOWUP_OPENERS = ("and ", "what about", "how about", "also", "then ", "so ", "why", "where is it", "which one")
 _PARTIAL_MARKERS = re.compile(
     r"(does not (cover|say|specify|mention|state|describe)|doesn't (cover|say|specify|mention)|"
@@ -92,7 +95,7 @@ def unknown_terms(question: str, vocabulary: "set[str]") -> List[str]:
     return missing
 
 
-def rewrite_followup(question: str, history: List[Dict[str, Any]]) -> Optional[str]:
+def rewrite_followup(question: str, history: List[Dict[str, Any]], *, with_identifiers: bool = True) -> Optional[str]:
     """Deterministic follow-up expansion for retrieval; ``None`` if not needed."""
 
     previous_user = next((m for m in reversed(history) if m.get("role") == "user"), None)
@@ -104,10 +107,17 @@ def rewrite_followup(question: str, history: List[Dict[str, Any]]) -> Optional[s
     if not anaphoric and len(terms) > 4:
         return None
     previous_answer = next((m for m in reversed(history) if m.get("role") == "assistant"), None)
-    identifiers = extract_identifiers(previous_answer.get("content", ""))[:6] if previous_answer else []
+    identifiers: List[str] = []
+    if previous_answer and str(previous_answer.get("status") or "").upper() not in {"ABSTAINED", "ERROR"}:
+        # Identifiers the previous answer talked about, not the evidence
+        # references it quoted: `path:Lx-Ly` refs and "Evidence:" tails name
+        # files, not the thing a pronoun like "it" points back to.
+        prose = _EVIDENCE_TAIL.sub(" ", previous_answer.get("content", ""))
+        prose = _SOURCE_REF.sub(" ", _CITATION_MARKER.sub(" ", prose))
+        identifiers = [i for i in extract_identifiers(prose) if ":L" not in i][:6]
     context = " ".join(previous_user.get("content", "").split())[:300]
     rewritten = f"{question.strip()} (follow-up to: {context})"
-    if identifiers:
+    if identifiers and with_identifiers:
         rewritten += " " + " ".join(identifiers)
     return rewritten[:2000]
 
@@ -265,8 +275,16 @@ class LearAgent:
                     self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
                     self.sessions.add_message(session_id, user_id, "assistant", answer["answer"], status="ABSTAINED")
                 return answer
+            # The extractive baseline has no conversation model: let it pick
+            # sentences with the expanded follow-up query. An LLM gets the
+            # user's own words plus the history instead.
+            engine_question = question
+            if retrieval_query and not self.settings.qualifying:
+                # Without the identifiers: they help retrieval find the right
+                # chunks but pull unrelated sentences into an extractive answer.
+                engine_question = rewrite_followup(question, history, with_identifiers=False) or question
             result = engine.ask(
-                question,
+                engine_question,
                 top_k=top_k or self.settings.top_k,
                 history=[{"role": m["role"], "content": m["content"]} for m in history],
                 on_token=token_hook,
@@ -284,6 +302,36 @@ class LearAgent:
             return answer
 
         answer = self._build_answer(result, question, retrieval_query, stamps, started, session_info, memories, system_prompt)
+        if (
+            answer["models"]["generation"].get("fallbackUsed")
+            and self.settings.backend == "ollama"
+            and not self.settings.allow_extractive_fallback
+        ):
+            # The engine answers with its extractive generator when the LLM
+            # fails. On the Ollama backend that would pass a quote-stitcher off
+            # as the configured model, so the result becomes an ERROR unless
+            # the operator explicitly accepts a labelled fallback.
+            failure = (getattr(result, "provider", None) or {}).get("failedProvider") or {}
+            answer.update(
+                {
+                    "status": "ERROR",
+                    "answer": "",
+                    "citations": [],
+                    "qualifying": False,
+                    "fallbackDiscarded": True,
+                    "error": {
+                        "code": "generation_unavailable",
+                        "message": (
+                            f"local LLM ollama:{self.settings.llm_model} failed "
+                            f"({failure.get('code', 'provider_error')}: {failure.get('message', 'no detail')}); "
+                            "the extractive fallback answer was discarded. Set RAG_LEAR_ALLOW_EXTRACTIVE_FALLBACK=1 "
+                            "to receive it, labelled as a fallback."
+                        ),
+                        "dependencyUnavailable": True,
+                    },
+                }
+            )
+            answer["warnings"] = list(answer["warnings"]) + ["extractive_fallback_discarded"]
         if session_id and save:
             self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
             self.sessions.add_message(

@@ -24,7 +24,7 @@ from _lear_stub_ollama import StubOllama
 from ragformation.cli import main as cli_main
 from ragformation.errors import RagError, RateLimited
 from ragformation.lear import indexer
-from ragformation.lear.agent import LearAgent, exit_code_for
+from ragformation.lear.agent import LearAgent, exit_code_for, rewrite_followup
 from ragformation.lear.bench import run_bench
 from ragformation.lear.doctor import doctor_exit_code, run_doctor
 from ragformation.lear.evalset import DEFAULT_DATASET, REPO_ROOT
@@ -235,6 +235,22 @@ class BaselineAgentTests(PipelineCase):
         self.assertEqual(follow["session"]["turn"], 2)
         self.assertEqual(len(self.agent.sessions.messages("s-1", "local")), 4)
 
+    def test_follow_up_expansion_skips_evidence_refs_and_abstained_answers(self) -> None:
+        question = "What is its default window, and where is its state kept?"
+        history = [
+            {"role": "user", "content": "What does the circuit breaker do in Lear?"},
+            {"role": "assistant", "status": "GROUNDED", "content": (
+                "Evidence: `prash/permissions.py:L37-L64`. - [implemented] The breaker opens after `max_actions` "
+                "inside `window_seconds`. [1] Evidence: `tests/test_actions.py:L187-L217`, `prash/server.py:L397`.")},
+        ]
+        rewritten = rewrite_followup(question, history)
+        self.assertIn("(follow-up to: What does the circuit breaker do in Lear?)", rewritten)
+        self.assertIn("max_actions", rewritten)
+        self.assertNotIn(":L", rewritten)
+        history[1]["status"] = "ABSTAINED"
+        self.assertNotIn("max_actions", rewrite_followup(question, history))
+        self.assertTrue(rewrite_followup(question, history, with_identifiers=False).endswith("in Lear?)"))
+
     def test_rate_limit_is_enforced_in_the_service_layer(self) -> None:
         agent = LearAgent(self.s, limiter=LearRateLimiter(per_user_per_min=1, per_session_per_min=5, max_concurrent=1))
         try:
@@ -298,6 +314,34 @@ class StubOllamaTests(PipelineCase):
                 self.assertTrue(all(r["payload"]["model"] == "qwen2.5:1.5b" for r in chats))
             finally:
                 agent.close()
+
+    def test_llm_failure_is_an_error_not_a_silent_extractive_answer(self) -> None:
+        with StubOllama() as stub:
+            settings = self.strict(stub)
+            agent = LearAgent(settings)
+            try:
+                indexer.rebuild(agent.engine, settings)
+                stub.chat_fails = True
+                answer = agent.ask("Which permission modes does the permission engine have?", session_id="s-f")
+                self.assertEqual(answer["status"], "ERROR")
+                self.assertEqual(answer["answer"], "")
+                self.assertEqual(answer["citations"], [])
+                self.assertFalse(answer["qualifying"])
+                self.assertEqual(answer["error"]["code"], "generation_unavailable")
+                self.assertIn("HTTP 500", answer["error"]["message"])
+                self.assertEqual(exit_code_for(answer), 6)
+                self.assertIn("extractive_fallback_discarded", answer["warnings"])
+            finally:
+                agent.close()
+            allowed = LearAgent(self.strict(stub, allow_extractive_fallback=True))
+            try:
+                labelled = allowed.ask("Which permission modes does the permission engine have?")
+                self.assertEqual(labelled["status"], "GROUNDED")
+                self.assertTrue(labelled["models"]["generation"]["fallbackUsed"])
+                self.assertTrue(labelled["models"]["generation"]["used"].startswith("extractive:"))
+                self.assertFalse(labelled["qualifying"])
+            finally:
+                allowed.close()
 
     def test_stub_embedding_dimension_change_is_refused_until_full_rebuild(self) -> None:
         # Regression: the core dot() returns 0.0 for mismatched lengths, so a

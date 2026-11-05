@@ -166,6 +166,8 @@ def _render_answer(answer: Dict[str, Any], streamed: bool) -> str:
     lines = []
     if not streamed or not answer.get("answer"):
         lines.append(answer.get("answer") or "(no answer)")
+    if streamed and answer.get("fallbackDiscarded"):
+        lines.append("[discarded: any text streamed above came from the extractive fallback after the LLM failed; it is not an answer]")
     lines.append("")
     lines.append(f"Status: {answer['status']}" + ("" if answer.get("qualifying") else "   [NOT QUALIFYING: no live local LLM/embedder in this answer]"))
     for c in answer.get("citations", []):
