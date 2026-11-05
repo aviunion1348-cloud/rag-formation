@@ -1,0 +1,41 @@
+{
+  "catalog": "Helios Grid service catalog (synthetic demonstration data)",
+  "services": [
+    {
+      "name": "ingest-api",
+      "tier": 1,
+      "owner": "platform-team",
+      "oncall": "platform-primary",
+      "slo": {"availability": "99.95%", "p95LatencyMs": 250},
+      "runbook": "runbooks/ingest-api.md",
+      "dependsOn": ["queue-broker", "customer-store"]
+    },
+    {
+      "name": "customer-store",
+      "tier": 1,
+      "owner": "data-platform",
+      "oncall": "data-primary",
+      "slo": {"availability": "99.99%", "p95LatencyMs": 40},
+      "runbook": "runbooks/customer-store.md",
+      "dependsOn": ["postgres-primary"]
+    },
+    {
+      "name": "insights-worker",
+      "tier": 2,
+      "owner": "analytics",
+      "oncall": "analytics-primary",
+      "slo": {"availability": "99.5%", "p95LatencyMs": 900},
+      "runbook": "runbooks/insights-worker.md",
+      "dependsOn": ["warehouse", "queue-broker"]
+    },
+    {
+      "name": "console-web",
+      "tier": 2,
+      "owner": "frontend",
+      "oncall": "frontend-primary",
+      "slo": {"availability": "99.9%", "p95LatencyMs": 400},
+      "runbook": "runbooks/console-web.md",
+      "dependsOn": ["ingest-api", "customer-store"]
+    }
+  ]
+}

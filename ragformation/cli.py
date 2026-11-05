@@ -286,8 +286,69 @@ def cmd_serve(args: argparse.Namespace, settings: Settings) -> int:
     return 0
 
 
+def _print_v2(report: dict) -> None:
+    retrieval = report["retrieval"]
+    generation = report["generation"]
+    abstention = report["abstention"]
+    print(
+        f"dataset: {report['dataset']} ({report['datasetRevision']})  cases: {report['questions']}  "
+        f"chunks: {report['corpusChunks']}  embedding: {report['provider']['embedding']}"
+    )
+    print(
+        f"  retrieval  recall@{report['topK']}={retrieval.get('recallAtK')} "
+        f"precision={retrieval.get('precisionAtK')} mrr={retrieval.get('mrrAtK')} "
+        f"ndcg={retrieval.get('ndcgAtK')} dupRate={retrieval.get('duplicateRate')}"
+    )
+    print(
+        f"  generation answered={generation['answered']} needsReview={generation['needsReview']} "
+        f"abstained={generation['abstained']} factRecall={generation['factRecall']} "
+        f"forbiddenFree={generation['forbiddenFreeRate']} citationPrecision={generation['citationPrecision']}"
+    )
+    print(
+        f"  abstention recall={abstention['abstentionRecall']} falseAnswer={abstention['falseAnswerRate']} "
+        f"falseAbstain={abstention['falseAbstentionRate']} threshold={abstention['threshold']}"
+    )
+    print(f"  conflicts: {json.dumps(report['conflicts'])}")
+    print(f"  calibration: {json.dumps(report['calibration'])}")
+    if report.get("ablations") and "error" not in report["ablations"]:
+        print("  ablations:")
+        for name, values in report["ablations"].items():
+            print(f"    {name:20} recall={values['recall']} mrr={values['mrr']} ndcg={values['ndcg']}")
+    for split, values in report.get("bySplit", {}).items():
+        print(f"  split {split:12} cases={values['cases']} passed={values['passed']}")
+    failed = [row for row in report["rows"] if not row["passed"]]
+    if failed:
+        print("\nfailed cases:")
+        for row in failed:
+            print(f"  - [{row['id']}] {row['question']}")
+            for reason in row["failures"]:
+                print(f"      {reason}")
+    print(f"\npassed {report['casesPassed']}/{report['casesTotal']}")
+
+
 def cmd_eval(args: argparse.Namespace, settings: Settings) -> int:
     from .evaluation import run_evaluation
+
+    if not args.v1 and not args.golden:
+        from .evaluation_v2 import run_evaluation as run_v2
+        from .evaluation_v2 import write_report
+
+        splits = [s.strip() for s in (getattr(args, "splits", "") or "").split(",") if s.strip()]
+        with RAGEngine(settings) as engine:
+            report = run_v2(
+                engine,
+                dataset_path=args.dataset,
+                top_k=args.top_k,
+                splits=splits or None,
+                ablations=not getattr(args, "no_ablations", False),
+            )
+        if getattr(args, "out", None):
+            write_report(report, args.out)
+        if args.json:
+            _print_json(report)
+        else:
+            _print_v2(report)
+        return 0 if not report["failedIds"] else 5
 
     with RAGEngine(settings) as engine:
         report = run_evaluation(
@@ -385,9 +446,14 @@ def build_parser() -> argparse.ArgumentParser:
     p_stats.add_argument("--json", action="store_true")
 
     p_eval = sub.add_parser("eval", help="run the golden evaluation set")
-    p_eval.add_argument("--golden", default=None)
+    p_eval.add_argument("--golden", default=None, help="golden v1 dataset path")
+    p_eval.add_argument("--dataset", default=None, help="evaluation v2 dataset path (default evals/golden_v2.json)")
+    p_eval.add_argument("--v1", action="store_true", help="run the original 14-case runner instead of v2")
     p_eval.add_argument("--top-k", type=int, default=None)
     p_eval.add_argument("--mode", choices=["hybrid", "semantic", "lexical"], default=None)
+    p_eval.add_argument("--splits", default="", help="comma separated split names to run (v2)")
+    p_eval.add_argument("--no-ablations", action="store_true", help="skip the retrieval ablation matrix (v2)")
+    p_eval.add_argument("--out", default=None, help="write the full JSON report to this path")
     p_eval.add_argument("--json", action="store_true")
 
     p_doctor = sub.add_parser("doctor", help="diagnose configuration, providers and index")

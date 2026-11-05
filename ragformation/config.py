@@ -103,7 +103,7 @@ class Settings:
     rerank: bool = True
     mmr_lambda: float = 0.72
     max_context_tokens: int = 1400
-    abstain_threshold: float = 0.22
+    abstain_threshold: float = 0.24
 
     # --------------------------------------------------------------- chunking
     chunk_target_tokens: int = 180
@@ -176,7 +176,7 @@ class Settings:
             rerank=(_env("RAG_RERANK", "1") or "1") not in {"0", "false", "False"},
             mmr_lambda=_env_float("RAG_MMR_LAMBDA", 0.72),
             max_context_tokens=_env_int("RAG_MAX_CONTEXT_TOKENS", 1400),
-            abstain_threshold=_env_float("RAG_ABSTAIN_THRESHOLD", 0.22),
+            abstain_threshold=_env_float("RAG_ABSTAIN_THRESHOLD", 0.24),
             chunk_target_tokens=_env_int("RAG_CHUNK_TARGET_TOKENS", 180),
             chunk_max_tokens=_env_int("RAG_CHUNK_MAX_TOKENS", 300),
             chunk_overlap_tokens=_env_int("RAG_CHUNK_OVERLAP_TOKENS", 40),

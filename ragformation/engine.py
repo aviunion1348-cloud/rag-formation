@@ -307,10 +307,32 @@ class RAGEngine:
         files = iter_input_files(paths)
         if not files:
             raise ValidationError("no input files found", hint="pass a file or a directory")
-        results = [
-            self._ingest_file(path, tenant_id=tenant_id, tags=tags, force=force) for path in files
-        ]
-        return self._ingest_report(results)
+
+        # Corpus-trained embedders must fit once over the whole batch, not once per
+        # file: a per-file fit would give each document a different vector space.
+        loaded: List[Tuple[Path, Any]] = []
+        failures: List[Dict[str, Any]] = []
+        for path in files:
+            try:
+                loaded.append((path, load_file(path, max_bytes=self.settings.max_source_bytes)))
+            except RagError as exc:
+                failures.append(
+                    {"filename": path.name, "status": "failed", "error": exc.to_dict(), "chunks": 0}
+                )
+        if loaded:
+            self._prepare_embeddings([source.text for _, source in loaded])
+        results: List[Dict[str, Any]] = []
+        for path, source in loaded:
+            results.append(
+                self._ingest_loaded(
+                    source,
+                    origin=str(path),
+                    tenant_id=tenant_id,
+                    tags=tags,
+                    force=force,
+                )
+            )
+        return self._ingest_report(results + failures)
 
     def ingest_bytes(
         self,
@@ -338,6 +360,7 @@ class RAGEngine:
                     }
                 ]
             )
+        self._prepare_embeddings([source.text])
         result = self._ingest_loaded(
             source,
             origin=origin or f"upload:{source.filename}",
@@ -953,11 +976,16 @@ class RAGEngine:
             },
         )
 
-        conflict = self._detect_conflict(citations, evidence_payload)
+        # Conflict detection runs over the *assembled evidence*, not only over the
+        # sentences the generator happened to cite: a contradiction that exists in
+        # the authorised context must surface even if the answer quoted one side.
+        conflict = self._detect_conflict(citations, []) or self._conflict_from_evidence(selected)
         status = AnswerStatus.ANSWERED.value
         if conflict:
             status = AnswerStatus.NEEDS_REVIEW.value
             warnings.append("conflicting_evidence")
+            citations = self._merge_conflict_citations(citations, conflict, selected, question)
+            text = text.rstrip() + "\n\n" + self._conflict_note(conflict)
         elif uncited:
             status = AnswerStatus.NEEDS_REVIEW.value
 
@@ -1094,33 +1122,174 @@ class RAGEngine:
             return 0.0
         return round(sum(1 for claim in claims if claim.citations) / len(claims), 3)
 
+    def _conflict_from_evidence(self, selected: Sequence[Candidate]) -> Optional[Dict[str, Any]]:
+        """Numeric contradiction across two selected chunks (authorised context only)."""
+
+        pseudo: List[Citation] = []
+        for index, candidate in enumerate(selected[:8]):
+            pseudo.append(
+                Citation(
+                    evidence_id=index + 1,
+                    chunk_id=candidate.chunk.chunk_id,
+                    source_id=candidate.chunk.source_id,
+                    source_title=candidate.chunk.source_title,
+                    section=candidate.chunk.section,
+                    page=candidate.chunk.page_start,
+                    excerpt=candidate.chunk.text,
+                    support=float(candidate.support or 0.0),
+                )
+            )
+        return self._detect_conflict(pseudo, [])
+
+    def _conflict_note(self, conflict: Dict[str, Any]) -> str:
+        parts = []
+        for statement in conflict.get("statements", []):
+            unit = conflict["unit"]
+            if unit != "percent" and not unit.endswith("s"):
+                unit = unit + "s"
+            value = statement["value"] + ("%" if conflict["unit"] == "percent" else " " + unit)
+            source = statement.get("sourceTitle") or statement.get("sourceId") or "an indexed source"
+            parts.append(f"**{value}** according to {source}")
+        return (
+            "Sources disagree: " + "; ".join(parts) + ". Both statements are cited with provenance; "
+            "this answer is marked for review instead of choosing one."
+        )
+
+    def _merge_conflict_citations(
+        self,
+        citations: Sequence[Citation],
+        conflict: Dict[str, Any],
+        selected: Sequence[Candidate],
+        question: str,
+    ) -> List[Citation]:
+        """Ensure both sides of a contradiction are cited, with provenance."""
+
+        existing = {citation.source_id for citation in citations}
+        merged = list(citations)
+        by_source = {candidate.chunk.source_id: candidate for candidate in selected}
+        for statement in conflict.get("statements", []):
+            source_id = statement.get("sourceId")
+            candidate_for_title = by_source.get(source_id)
+            if candidate_for_title is not None:
+                statement.setdefault("sourceTitle", candidate_for_title.chunk.source_title)
+            if source_id in existing:
+                continue
+            candidate = by_source.get(source_id)
+            if candidate is None:
+                continue
+            citation = self._citation_for(
+                {
+                    "chunkId": candidate.chunk.chunk_id,
+                    "sourceId": candidate.chunk.source_id,
+                    "sourceTitle": candidate.chunk.source_title,
+                    "section": candidate.chunk.section,
+                    "page": candidate.chunk.page_start,
+                    "id": len(merged) + 1,
+                },
+                candidate,
+                question,
+            )
+            citation.note = f"conflicting value: {statement['value']} {conflict['unit']}"
+            citation.excerpt = statement.get("sentence") or citation.excerpt
+            merged.append(citation)
+            existing.add(source_id)
+        return merged
+
     def _detect_conflict(
         self, citations: Sequence[Citation], evidence: Sequence[Dict[str, Any]]
     ) -> Optional[Dict[str, Any]]:
-        """Flag numeric disagreement about the same unit across *cited* passages.
+        """Flag contradictory statements about the *same subject and unit*.
 
-        Narrow on purpose: it only fires when two different sources both
-        contributed a cited sentence and those sentences state different numbers
-        for the same unit. It never invents a conflict and never silently picks
-        a winner.
+        Scope is deliberately narrow and stated in the docs:
+
+        * only numbers with a unit (days, hours, weeks, months, years, %) or
+          explicit version-like strings are compared;
+        * two statements only compete when their subject terms overlap, so
+          "backups rotate every 14 days" never conflicts with "the review is due
+          in five business days";
+        * two different *sources* must be involved (a single document disagreeing
+          with itself is a document bug, reported separately);
+        * the system never averages or picks a winner: it returns both values
+          with provenance and a ``needs_review`` status.
         """
+
         pattern = re.compile(
-            r"(\d+(?:\.\d+)?)\s*(days?|hours?|minutes?|weeks?|months?|years?|%)\b", re.I
+            r"(\d+(?:\.\d+)?)\s*(days?|hours?|minutes?|weeks?|months?|years?)s?\b", re.I
         )
-        by_unit: Dict[str, Dict[str, str]] = {}
+        percent = re.compile(r"(\d+(?:\.\d+)?)\s*%")
+        stop = {
+            "the", "a", "an", "is", "are", "be", "of", "for", "in", "on", "to", "and", "or",
+            "with", "by", "at", "after", "before", "this", "that", "it", "must", "should",
+            "may", "can", "will", "has", "have", "every", "within", "than", "more", "less",
+        }
+
+        def subject_terms(sentence: str) -> set:
+            words = {w for w in re.findall(r"[a-z0-9]+", sentence.lower()) if w not in stop}
+            return {w for w in words if not w.isdigit()}
+
+        def facts(citation: Citation) -> List[Dict[str, Any]]:
+            out: List[Dict[str, Any]] = []
+            for sentence in re.split(r"(?<=[.!?])\s+", citation.excerpt or ""):
+                terms = subject_terms(sentence)
+                if not terms:
+                    continue
+                for value, unit in pattern.findall(sentence):
+                    out.append(
+                        {
+                            "unit": unit.lower().rstrip("s"),
+                            "value": value,
+                            "terms": terms,
+                            "sentence": " ".join(sentence.split())[:200],
+                            "sourceId": citation.source_id,
+                        }
+                    )
+                for value in percent.findall(sentence):
+                    out.append(
+                        {
+                            "unit": "percent",
+                            "value": value,
+                            "terms": terms,
+                            "sentence": " ".join(sentence.split())[:200],
+                            "sourceId": citation.source_id,
+                        }
+                    )
+            return out
+
+        all_facts: List[Dict[str, Any]] = []
         for citation in citations:
-            for value, unit in pattern.findall(citation.excerpt):
-                key = unit.lower().rstrip("s")
-                by_unit.setdefault(key, {}).setdefault(citation.source_id, value)
-        for unit, per_source in by_unit.items():
-            if len(per_source) > 1 and len(set(per_source.values())) > 1:
+            all_facts.extend(facts(citation))
+
+        for index, left in enumerate(all_facts):
+            for right in all_facts[index + 1 :]:
+                if left["sourceId"] == right["sourceId"]:
+                    continue
+                if left["unit"] != right["unit"]:
+                    continue
+                if left["value"] == right["value"]:
+                    continue
+                overlap = left["terms"] & right["terms"]
+                smaller = max(1, min(len(left["terms"]), len(right["terms"])))
+                if len(overlap) / smaller < 0.6:
+                    continue  # different subjects: not a contradiction
                 return {
-                    "unit": unit,
+                    "unit": left["unit"],
                     "statements": [
-                        {"sourceId": source_id, "value": value}
-                        for source_id, value in sorted(per_source.items())
+                        {
+                            "sourceId": left["sourceId"],
+                            "value": left["value"],
+                            "sentence": left["sentence"],
+                        },
+                        {
+                            "sourceId": right["sourceId"],
+                            "value": right["value"],
+                            "sentence": right["sentence"],
+                        },
                     ],
-                    "policy": "both values are surfaced with provenance; the system does not pick one",
+                    "sharedTerms": sorted(overlap)[:8],
+                    "policy": (
+                        "both values are surfaced with provenance; the system does not pick one. "
+                        "Scope: same-unit numeric disagreement across two sources."
+                    ),
                 }
         return None
 

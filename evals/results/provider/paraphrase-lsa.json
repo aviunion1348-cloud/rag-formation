@@ -1,0 +1,350 @@
+{
+ "label": "lsa-tfidf",
+ "embedding": {
+  "provider": "distributional",
+  "model": "lsa-tfidf-v1",
+  "dimension": 128,
+  "semantic": true,
+  "fingerprint": "distributional:lsa-tfidf-v1:d128:norm=l2:metric=cosine:pre=tfidf-lsa-v1:fpv=2:fit=unfitted",
+  "preprocessing": "tfidf-lsa-v1",
+  "normalisation": "l2",
+  "metric": "cosine",
+  "note": "Corpus-trained PPMI+SVD vectors. Semantic inside this corpus only.",
+  "setup": null,
+  "health": {
+   "ok": false,
+   "provider": "distributional",
+   "model": "lsa-tfidf-v1",
+   "dimension": 128,
+   "vocab": 0,
+   "docs": 0,
+   "semantic": true,
+   "note": "corpus-trained PPMI+SVD; knows only words present in the corpus",
+   "hint": "run: ragformation rebuild --force"
+  }
+ },
+ "modes": {
+  "hybrid": {
+   "cases": 12,
+   "hits": 4,
+   "hitRate": 0.333,
+   "abstained": 5,
+   "latencyMs": {
+    "mean": 22.29,
+    "p95": 22.94
+   },
+   "detail": [
+    {
+     "id": "p01-audit-trails",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-9959aed74c"
+     ],
+     "support": 0.476
+    },
+    {
+     "id": "p02-supplier-breach",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-9959aed74c"
+     ],
+     "support": 0.5755
+    },
+    {
+     "id": "p03-severe-outage-page",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4285
+    },
+    {
+     "id": "p04-restore-rehearsal",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-7faeb038bf"
+     ],
+     "support": 0.5487
+    },
+    {
+     "id": "p05-leaver-access",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-9c5b6cbccc"
+     ],
+     "support": 0.4685
+    },
+    {
+     "id": "p06-canary-share",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.3806
+    },
+    {
+     "id": "p07-open-actions",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-40320738c8"
+     ],
+     "support": 0.6606
+    },
+    {
+     "id": "p08-unanswered-page",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-fd22fd5998"
+     ],
+     "support": 0.5091
+    },
+    {
+     "id": "p09-payment-data-class",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.5487
+    },
+    {
+     "id": "p10-ingest-owner",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4142
+    },
+    {
+     "id": "p11-freeze-deploy",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-749e2a9621"
+     ],
+     "support": 0.6602
+    },
+    {
+     "id": "p12-recovery-point",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4431
+    }
+   ]
+  },
+  "lexical": {
+   "cases": 12,
+   "hits": 1,
+   "hitRate": 0.083,
+   "abstained": 9,
+   "latencyMs": {
+    "mean": 20.56,
+    "p95": 21.83
+   },
+   "detail": [
+    {
+     "id": "p01-audit-trails",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-9959aed74c"
+     ],
+     "support": 0.2437
+    },
+    {
+     "id": "p02-supplier-breach",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.0
+    },
+    {
+     "id": "p03-severe-outage-page",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.0975
+    },
+    {
+     "id": "p04-restore-rehearsal",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-7faeb038bf"
+     ],
+     "support": 0.2437
+    },
+    {
+     "id": "p05-leaver-access",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.195
+    },
+    {
+     "id": "p06-canary-share",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.0
+    },
+    {
+     "id": "p07-open-actions",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-40320738c8"
+     ],
+     "support": 0.3331
+    },
+    {
+     "id": "p08-unanswered-page",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.0
+    },
+    {
+     "id": "p09-payment-data-class",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.2437
+    },
+    {
+     "id": "p10-ingest-owner",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.1219
+    },
+    {
+     "id": "p11-freeze-deploy",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.325
+    },
+    {
+     "id": "p12-recovery-point",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.1219
+    }
+   ]
+  },
+  "semantic": {
+   "cases": 12,
+   "hits": 4,
+   "hitRate": 0.333,
+   "abstained": 5,
+   "latencyMs": {
+    "mean": 22.27,
+    "p95": 23.08
+   },
+   "detail": [
+    {
+     "id": "p01-audit-trails",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-9959aed74c"
+     ],
+     "support": 0.476
+    },
+    {
+     "id": "p02-supplier-breach",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-9959aed74c"
+     ],
+     "support": 0.5755
+    },
+    {
+     "id": "p03-severe-outage-page",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4285
+    },
+    {
+     "id": "p04-restore-rehearsal",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-7faeb038bf"
+     ],
+     "support": 0.5487
+    },
+    {
+     "id": "p05-leaver-access",
+     "status": "answered",
+     "hit": false,
+     "citations": [
+      "src-9c5b6cbccc"
+     ],
+     "support": 0.4685
+    },
+    {
+     "id": "p06-canary-share",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.3806
+    },
+    {
+     "id": "p07-open-actions",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-40320738c8"
+     ],
+     "support": 0.6606
+    },
+    {
+     "id": "p08-unanswered-page",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-fd22fd5998"
+     ],
+     "support": 0.5091
+    },
+    {
+     "id": "p09-payment-data-class",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.5487
+    },
+    {
+     "id": "p10-ingest-owner",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4142
+    },
+    {
+     "id": "p11-freeze-deploy",
+     "status": "answered",
+     "hit": true,
+     "citations": [
+      "src-749e2a9621"
+     ],
+     "support": 0.6602
+    },
+    {
+     "id": "p12-recovery-point",
+     "status": "abstained",
+     "hit": false,
+     "citations": [],
+     "support": 0.4431
+    }
+   ]
+  }
+ }
+}

@@ -322,9 +322,18 @@ class CachedEmbedder:
         store refuses to mix with existing vectors.
         """
 
+        component = ""
+        hook = getattr(self.provider, "fingerprint_component", None)
+        if hook is not None:
+            try:
+                piece = hook()
+            except Exception:  # pragma: no cover - a provider must not break hashing
+                piece = ""
+            if piece:
+                component = f":{piece}"
         return (
             f"{self.name}:{self.model}:d{self.dimension}"
-            f":norm=l2:metric=cosine:pre={self.preprocessing}:fpv=2"
+            f":norm=l2:metric=cosine:pre={self.preprocessing}:fpv=2{component}"
         )
 
     # ------------------------------------------------------------ stateful providers
@@ -512,7 +521,7 @@ class SpacyEmbedder:
 # ------------------------------------------------------------------ distributional
 @dataclass
 class DistributionalEmbedder:
-    """Corpus-trained semantic embeddings: PPMI co-occurrence + truncated SVD.
+    """Corpus-trained semantic embeddings: TF-IDF + truncated SVD (LSA).
 
     Why this exists: a hash projection is lexical by construction, and no
     pretrained model could be downloaded in the build environment. This provider
@@ -534,14 +543,16 @@ class DistributionalEmbedder:
     window: int = 6
     min_count: int = 1
     max_vocab: int = 4000
-    model: str = "ppmi-svd-v1"
+    model: str = "lsa-tfidf-v1"
     name: str = "distributional"
     semantic: bool = True
-    preprocessing: str = "ppmi-w6-svd-v1"
+    preprocessing: str = "tfidf-lsa-v1"
     _terms: Dict[str, List[float]] = field(default_factory=dict)
     _fitted_on: str = ""
     _docs: int = 0
     _rank: Optional[int] = None
+    _fit_id: str = ""
+    _idf: Dict[str, float] = field(default_factory=dict)
 
     # -------------------------------------------------------------- identity
     def state_key(self) -> str:
@@ -561,14 +572,19 @@ class DistributionalEmbedder:
 
     @property
     def dimension(self) -> int:
-        """Actual vector length: the realised rank, which can be < projection_dim."""
+        """Vector length. Always ``projection_dim``: unused SVD directions are zero-padded.
 
-        if self._rank:
-            return int(self._rank)
-        if self._terms:
-            self._rank = len(next(iter(self._terms.values())))
-            return int(self._rank)
+        A stable dimension keeps the index fingerprint stable across incremental
+        ingests; the *fit* (basis) identity is carried separately by
+        :meth:`fingerprint_component`.
+        """
+
         return int(self.projection_dim)
+
+    def fingerprint_component(self) -> str:
+        return f"fit={self._fit_id or 'unfitted'}"
+
+
 
     # --------------------------------------------------------------- fitting
     def fit_from_corpus(self, texts: Sequence[str], store: Any = None) -> Dict[str, Any]:
@@ -600,45 +616,65 @@ class DistributionalEmbedder:
             self._terms = {}
             return {"terms": {}, "docs": self._docs, "window": self.window, "dimension": self.projection_dim}
 
-        matrix = np.zeros((size, size), dtype=np.float64)
-        for tokens in tokenised:
-            ids = [index[t] for t in tokens if t in index]
-            for position, left in enumerate(ids):
-                for offset in range(1, self.window + 1):
-                    if position + offset >= len(ids):
-                        break
-                    right = ids[position + offset]
-                    weight = 1.0 / offset
-                    matrix[left, right] += weight
-                    matrix[right, left] += weight
-        total = float(matrix.sum())
-        if total <= 0:
-            self._terms = {}
-            return {"terms": {}, "docs": self._docs, "window": self.window, "dimension": self.projection_dim}
+        # Latent Semantic Analysis over a term x document matrix of sublinear
+        # TF-IDF weights. Documents are the corpus chunks themselves, which is
+        # what retrieval compares against, so a query's averaged term vector lands
+        # close to documents that use those terms in the same contexts.
+        import math as _math
 
-        row = matrix.sum(axis=1, keepdims=True)
-        col = matrix.sum(axis=0, keepdims=True)
-        with np.errstate(divide="ignore", invalid="ignore"):
-            pmi = np.log((matrix * total) / (row @ col))
-        ppmi = np.nan_to_num(np.maximum(pmi, 0.0), nan=0.0, posinf=0.0, neginf=0.0)
+        docs = len(tokenised)
+        term_doc = np.zeros((size, docs), dtype=np.float64)
+        for column, tokens in enumerate(tokenised):
+            seen: Dict[int, int] = {}
+            for token in tokens:
+                row = index.get(token)
+                if row is not None:
+                    seen[row] = seen.get(row, 0) + 1
+            for row, tf in seen.items():
+                term_doc[row, column] = 1.0 + _math.log(float(tf))
+        df = np.count_nonzero(term_doc, axis=1)
+        idf = np.log((1.0 + docs) / (1.0 + df)) + 1.0
+        weighted = term_doc * idf[:, None]
+        norms = np.linalg.norm(weighted, axis=1, keepdims=True)
+        weighted = np.divide(weighted, norms, out=np.zeros_like(weighted), where=norms > 0)
 
-        rank = int(min(self.projection_dim, max(1, size - 1)))
+        rank = int(min(self.projection_dim, max(1, min(size, docs) - 1)))
         try:
-            u, s, _vt = np.linalg.svd(ppmi, full_matrices=False)
+            u, s, _vt = np.linalg.svd(weighted, full_matrices=False)
             dense = u[:, :rank] * np.sqrt(np.maximum(s[:rank], 0.0))
         except np.linalg.LinAlgError:  # pragma: no cover - pathological matrices
             dense = np.random.default_rng(0).normal(size=(size, rank))
+
+        if rank < self.projection_dim:
+            padded = np.zeros((size, self.projection_dim), dtype=np.float64)
+            padded[:, :rank] = dense
+            dense = padded
+
+        # Unit-normalise each term vector so averaging over a query is not
+        # dominated by high-energy directions.
+        row_norms = np.linalg.norm(dense, axis=1, keepdims=True)
+        dense = np.divide(dense, row_norms, out=np.zeros_like(dense), where=row_norms > 0)
 
         self._terms = {
             term: [round(float(value), 6) for value in dense[i]]
             for term, i in index.items()
         }
+        self._idf = {term: float(idf[i]) for term, i in index.items()}
         self._rank = rank
+        from .text import text_hash
+
+        digest = hashlib.sha256()
+        for text in sorted(text_hash(t) for t in (texts or ())):
+            digest.update(text.encode("utf-8"))
+        self._fit_id = digest.hexdigest()[:12]
         return {
             "terms": self._terms,
             "docs": self._docs,
             "window": self.window,
-            "dimension": rank,
+            "dimension": self.dimension,
+            "rank": rank,
+            "idf": {term: round(value, 4) for term, value in self._idf.items()},
+            "fitId": self._fit_id,
             "vocab": size,
             "fittedAt": __import__("datetime").datetime.utcnow().isoformat() + "Z",
         }
@@ -647,10 +683,9 @@ class DistributionalEmbedder:
     def load_state(self, payload: Dict[str, Any]) -> None:
         terms = payload.get("terms") or {}
         self._terms = {str(k): [float(x) for x in v] for k, v in terms.items() if v}
-        if payload.get("dimension"):
-            self._rank = int(payload["dimension"])
-        elif self._terms:
-            self._rank = len(next(iter(self._terms.values())))
+        self._idf = {str(k): float(v) for k, v in (payload.get("idf") or {}).items()}
+        self._rank = int(payload.get("rank") or 0) or None
+        self._fit_id = str(payload.get("fitId") or "")
         self._docs = int(payload.get("docs") or 0)
 
     def state(self) -> Dict[str, Any]:
@@ -659,6 +694,9 @@ class DistributionalEmbedder:
             "docs": self._docs,
             "window": self.window,
             "dimension": self.dimension,
+            "rank": self._rank,
+            "idf": self._idf,
+            "fitId": self._fit_id,
         }
 
     # --------------------------------------------------------------- embed
@@ -675,12 +713,15 @@ class DistributionalEmbedder:
         for text in texts:
             total = [0.0] * dim
             used = 0
+            # IDF weighting: rare query terms (the ones that carry meaning) must
+            # not be drowned out by "how long do we keep"-style filler.
             for token in tokenize(text or ""):
                 vector = self._terms.get(token)
                 if vector is None:
                     continue
+                weight = self._idf.get(token, 1.0)
                 for i, value in enumerate(vector):
-                    total[i] += value
+                    total[i] += value * weight
                 used += 1
             out.append(_normalize([value / used for value in total]) if used else [0.0] * dim)
         return out
