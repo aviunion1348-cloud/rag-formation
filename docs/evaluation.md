@@ -132,7 +132,10 @@ Ingestion: 6 documents → 21 chunks in **11 ms**; re-ingest of unchanged files
 * Corpora larger than 21 chunks. No claim is made about scale.
 * Multi-hop and table-heavy questions beyond the two that exist here.
 * Adversarial prompt injection beyond the fixture in `corpus/` and the unit tests
-  in `tests/test_guardrails.py`.
+  in `tests/test_guardrails.py`. Note the fixture's own *description* of an attack
+  trips the quarantine pattern, so unrelated questions can carry a
+  `quarantined_instruction_like_content` warning; the answer and citation are
+  unaffected, and `SECURITY.md` §3 records this as an accepted precision cost.
 * Human judgement of answer helpfulness. No LLM-as-judge is used, so no
   "quality score" is claimed.
 

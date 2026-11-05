@@ -46,7 +46,10 @@ certification.
    the model. The prompt-level instruction and citation validation reduce the
    blast radius; they do not eliminate it. If you need stronger guarantees, keep
    the extractive generator (no instruction following at all) or add an
-   allow-listed corpus.
+   allow-listed corpus. It also over-triggers: text that merely *describes* an
+   injection (as `corpus/safety-injection-fixture.md` does) is quarantined too,
+   producing a `quarantined_instruction_like_content` warning on otherwise normal
+   answers. That is a precision cost we accept for recall.
 2. **No authentication by default.** With `RAG_API_KEY` unset, anyone who can
    reach the port can read and write the corpus. Run it on localhost or behind
    an authenticating proxy.
