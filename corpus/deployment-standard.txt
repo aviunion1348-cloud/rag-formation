@@ -1,0 +1,24 @@
+# Deployment Standard (deploy.txt)
+
+Synthetic corpus. Invented for this demonstration.
+
+Production deploys use the blue/green model. A deploy is promoted only after
+health checks pass for 10 minutes and the error budget for the service is
+positive.
+
+Every deploy must be reproducible from a tagged commit. The build pipeline
+records the commit SHA, the container digest, and the migration set applied.
+
+Database migrations run before traffic shifts. A migration that is not
+backwards compatible requires a two-step deploy: expand, then contract. Never
+drop a column in the same deploy that stops writing it.
+
+Rollback must be possible within 15 minutes. If a rollback is not possible, the
+deploy requires director approval before it starts.
+
+Secrets are injected at runtime from the platform secret store. Secrets must
+never be committed to the repository, printed in logs, or baked into a container
+image.
+
+Feature flags guard customer-visible behaviour changes. A flag that has been at
+100 percent for 30 days and has no open incidents should be removed.

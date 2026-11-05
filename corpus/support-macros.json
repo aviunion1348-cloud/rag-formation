@@ -1,0 +1,26 @@
+{
+  "notice": "Synthetic corpus. Support macros invented for this demonstration.",
+  "macros": [
+    {
+      "id": "MACRO-BILLING-01",
+      "title": "Duplicate charge investigation",
+      "steps": "Confirm the duplicate authorisation in the payments ledger, refund the second charge, and send the customer a reference number. Refunds settle within 5 business days.",
+      "owner": "billing-support",
+      "severity": "medium"
+    },
+    {
+      "id": "MACRO-AUTH-02",
+      "title": "Locked account recovery",
+      "steps": "Verify the customer through the registered email domain, then unlock the account. If the account was locked by the fraud engine, escalate to the trust and safety queue instead of unlocking.",
+      "owner": "identity-support",
+      "severity": "high"
+    },
+    {
+      "id": "MACRO-DATA-03",
+      "title": "Data export request",
+      "steps": "Data export requests are fulfilled within 30 days. Use the export tooling, never assemble exports by hand, and log the request id against the account.",
+      "owner": "privacy-office",
+      "severity": "low"
+    }
+  ]
+}

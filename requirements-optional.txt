@@ -1,0 +1,13 @@
+# Optional extras for ragformation.
+#
+# The core package is standard-library only and runs with no installation.
+# These unlock capabilities that gracefully degrade when absent:
+#
+#   pypdf      — PDF text extraction (loaders.PDF). Without it, .pdf raises an
+#                actionable RagError instead of guessing at the bytes.
+#   python-docx— reserved for .docx; not required today, because loaders.DOCX
+#                already parses word/document.xml from the zip container directly.
+#
+# Install into a virtualenv, not the system interpreter (PEP 668):
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r requirements-optional.txt
+pypdf>=4.0,<6.0
