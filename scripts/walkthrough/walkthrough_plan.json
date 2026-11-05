@@ -1,0 +1,482 @@
+{
+ "fps": 24,
+ "duration": 216.92,
+ "frames": 5206,
+ "intro": 3.0,
+ "scenes": [
+  {
+   "index": 0,
+   "name": "open",
+   "t0": 3.0,
+   "t1": 15.258,
+   "voice": "/tmp/vo/n1_open.wav",
+   "voiceT0": 3.7,
+   "voiceDur": 10.658,
+   "speech": [
+    3.86,
+    14.09
+   ],
+   "cues": {
+    "Lear Local": 4.25,
+    "backend-only": 5.332,
+    "take-home": 9.761,
+    "every claim": 10.97,
+    "every number": 12.879
+   },
+   "gaps": 4
+  },
+  {
+   "index": 1,
+   "name": "brief",
+   "t0": 15.258,
+   "t1": 33.623,
+   "voice": "/tmp/vo/n2_brief.wav",
+   "voiceT0": 15.958,
+   "voiceDur": 16.765,
+   "speech": [
+    16.118,
+    32.298
+   ],
+   "cues": {
+    "three parts": 16.904,
+    "accurate knowledge base": 18.266,
+    "A local agent": 20.242,
+    "And measurement": 24.661,
+    "Here is how": 30.433
+   },
+   "gaps": 10
+  },
+  {
+   "index": 2,
+   "name": "kb",
+   "t0": 33.623,
+   "t1": 68.543,
+   "voice": "/tmp/vo/n3_kb.wav",
+   "voiceT0": 34.323,
+   "voiceDur": 33.321,
+   "speech": [
+    34.473,
+    67.373
+   ],
+   "cues": {
+    "Part one": 34.473,
+    "generated straight": 38.197,
+    "four hundred fifty-four": 42.122,
+    "eighty-seven": 44.744,
+    "thirty-eight": 46.538,
+    "seventy-nine": 48.726,
+    "A verifier": 50.544,
+    "three hundred forty": 53.962,
+    "eleven of eleven": 56.978,
+    "split by heading": 60.59,
+    "embedded": 63.874,
+    "SQLite": 65.774
+   },
+   "gaps": 14
+  },
+  {
+   "index": 3,
+   "name": "agent",
+   "t0": 68.543,
+   "t1": 112.457,
+   "voice": "/tmp/vo/n4_agent.wav",
+   "voiceT0": 69.243,
+   "voiceDur": 42.314,
+   "speech": [
+    69.413,
+    111.283
+   ],
+   "cues": {
+    "Part two": 69.413,
+    "Ask a question": 71.42,
+    "dense vectors": 75.379,
+    "BM25": 76.73,
+    "reciprocal rank fusion": 79.545,
+    "reranks": 81.99,
+    "eighteen-hundred": 86.352,
+    "cites its evidence": 89.801,
+    "exact lines": 92.039,
+    "Sessions persist": 94.168,
+    "compacted": 97.667,
+    "memory is scoped": 98.783,
+    "guardrails": 101.703,
+    "strip invented": 104.779,
+    "quarantine": 107.078,
+    "rate-limit": 109.838
+   },
+   "gaps": 23
+  },
+  {
+   "index": 4,
+   "name": "measure",
+   "t0": 112.457,
+   "t1": 168.346,
+   "voice": "/tmp/vo/n5_measure.wav",
+   "voiceT0": 113.157,
+   "voiceDur": 54.288,
+   "speech": [
+    113.307,
+    167.217
+   ],
+   "cues": {
+    "Part three": 113.307,
+    "thirteen lifecycle": 119.573,
+    "A load test": 122.013,
+    "time to first token": 125.876,
+    "mean, p50": 130.923,
+    "At ten users": 133.12,
+    "admits ten": 139.724,
+    "eighty questions": 144.317,
+    "scored on citations": 146.765,
+    "Three evaluate": 153.165,
+    "forty-five": 157.676,
+    "zero regressions": 160.908,
+    "the holdout": 162.736
+   },
+   "gaps": 30
+  },
+  {
+   "index": 5,
+   "name": "honest",
+   "t0": 168.346,
+   "t1": 193.874,
+   "voice": "/tmp/vo/n6_honest.wav",
+   "voiceT0": 169.046,
+   "voiceDur": 23.928,
+   "speech": [
+    169.216,
+    192.706
+   ],
+   "cues": {
+    "refuse to fake": 170.195,
+    "Ollama could not": 171.378,
+    "offline baseline": 177.17,
+    "not qualifying": 179.039,
+    "deterministic proxies": 181.446,
+    "models are configured": 183.53,
+    "doctor enforces": 185.776,
+    "eight documented": 190.956
+   },
+   "gaps": 11
+  },
+  {
+   "index": 6,
+   "name": "outro",
+   "t0": 193.874,
+   "t1": 216.92,
+   "voice": "/tmp/vo/n7_outro.wav",
+   "voiceT0": 194.574,
+   "voiceDur": 16.846,
+   "speech": [
+    194.704,
+    210.964
+   ],
+   "cues": {
+    "Everything is runnable": 194.704,
+    "One command": 196.58,
+    "one click away": 203.908,
+    "Lear Local:": 205.371,
+    "every claim traced": 206.67,
+    "nothing faked": 210.055
+   },
+   "gaps": 9
+  }
+ ],
+ "subtitles": [
+  {
+   "t0": 3.86,
+   "t1": 5.227,
+   "text": "This is Lear Local."
+  },
+  {
+   "t0": 5.227,
+   "t1": 9.111,
+   "text": "A backend-only RAG agent that answers questions about the Lear backend,"
+  },
+  {
+   "t0": 9.111,
+   "t1": 10.67,
+   "text": "built for the take-home brief,"
+  },
+  {
+   "t0": 10.67,
+   "t1": 12.732,
+   "text": "where every claim is traced to source,"
+  },
+  {
+   "t0": 12.732,
+   "t1": 14.09,
+   "text": "and every number is measured."
+  },
+  {
+   "t0": 16.118,
+   "t1": 18.087,
+   "text": "The brief has three parts."
+  },
+  {
+   "t0": 18.087,
+   "t1": 20.242,
+   "text": "An accurate knowledge base."
+  },
+  {
+   "t0": 20.242,
+   "t1": 24.661,
+   "text": "A local agent with sessions, memory and guardrails."
+  },
+  {
+   "t0": 24.661,
+   "t1": 30.433,
+   "text": "And measurement, with an evaluation set and three rounds of improvement."
+  },
+  {
+   "t0": 30.433,
+   "t1": 32.298,
+   "text": "Here is how each part is met."
+  },
+  {
+   "t0": 34.473,
+   "t1": 35.415,
+   "text": "Part one:"
+  },
+  {
+   "t0": 35.415,
+   "t1": 37.005,
+   "text": "the knowledge base."
+  },
+  {
+   "t0": 37.005,
+   "t1": 42.122,
+   "text": "The documentation is generated straight from the Lear backend at one pinned commit:"
+  },
+  {
+   "t0": 42.122,
+   "t1": 44.744,
+   "text": "four hundred fifty-four source files,"
+  },
+  {
+   "t0": 44.744,
+   "t1": 48.484,
+   "text": "eighty-seven API routes, thirty-eight environment variables,"
+  },
+  {
+   "t0": 48.484,
+   "t1": 50.544,
+   "text": "and seventy-nine modules."
+  },
+  {
+   "t0": 50.544,
+   "t1": 53.962,
+   "text": "A verifier checks every claim against the source code:"
+  },
+  {
+   "t0": 53.962,
+   "t1": 56.682,
+   "text": "three hundred forty out of three hundred forty,"
+  },
+  {
+   "t0": 56.682,
+   "t1": 59.399,
+   "text": "with eleven of eleven checks passing."
+  },
+  {
+   "t0": 59.399,
+   "t1": 63.874,
+   "text": "The markdown is then split by heading into three hundred fifty-five chunks,"
+  },
+  {
+   "t0": 63.874,
+   "t1": 67.373,
+   "text": "embedded, and stored in a SQLite vector index."
+  },
+  {
+   "t0": 69.413,
+   "t1": 70.216,
+   "text": "Part two:"
+  },
+  {
+   "t0": 70.216,
+   "t1": 71.42,
+   "text": "the agent."
+  },
+  {
+   "t0": 71.42,
+   "t1": 78.344,
+   "text": "Ask a question in the CLI, and retrieval runs dense vectors and BM25 side by side,"
+  },
+  {
+   "t0": 78.344,
+   "t1": 81.547,
+   "text": "fuses them with reciprocal rank fusion,"
+  },
+  {
+   "t0": 81.547,
+   "t1": 84.885,
+   "text": "then reranks and diversifies."
+  },
+  {
+   "t0": 84.885,
+   "t1": 88.889,
+   "text": "The best chunks fill an eighteen-hundred-token context budget,"
+  },
+  {
+   "t0": 88.889,
+   "t1": 91.167,
+   "text": "and the answer cites its evidence,"
+  },
+  {
+   "t0": 91.167,
+   "t1": 94.168,
+   "text": "traced back to exact lines of Lear source."
+  },
+  {
+   "t0": 94.168,
+   "t1": 98.783,
+   "text": "Sessions persist, long histories are compacted,"
+  },
+  {
+   "t0": 98.783,
+   "t1": 101.427,
+   "text": "memory is scoped to each user,"
+  },
+  {
+   "t0": 101.427,
+   "t1": 104.779,
+   "text": "and guardrails refuse out-of-scope questions,"
+  },
+  {
+   "t0": 104.779,
+   "t1": 109.606,
+   "text": "strip invented citations, quarantine injected instructions,"
+  },
+  {
+   "t0": 109.606,
+   "t1": 111.283,
+   "text": "and rate-limit abuse."
+  },
+  {
+   "t0": 113.307,
+   "t1": 114.337,
+   "text": "Part three:"
+  },
+  {
+   "t0": 114.337,
+   "t1": 117.492,
+   "text": "measurement, where most of the work went."
+  },
+  {
+   "t0": 117.492,
+   "t1": 122.013,
+   "text": "Every request is timed across thirteen lifecycle stages."
+  },
+  {
+   "t0": 122.013,
+   "t1": 127.76,
+   "text": "A load test with one to ten dummy users reports time to first token,"
+  },
+  {
+   "t0": 127.76,
+   "t1": 133.12,
+   "text": "inter-token latency, tokens per second, mean, p50, p85 and p99."
+  },
+  {
+   "t0": 133.12,
+   "t1": 138.192,
+   "text": "At ten users the pipeline sustains thirty-two requests per second,"
+  },
+  {
+   "t0": 138.192,
+   "t1": 142.923,
+   "text": "and the rate limiter admits ten requests and blocks ten."
+  },
+  {
+   "t0": 142.923,
+   "t1": 146.765,
+   "text": "The evaluation set has eighty questions with golden answers,"
+  },
+  {
+   "t0": 146.765,
+   "t1": 149.763,
+   "text": "scored on citations, groundedness,"
+  },
+  {
+   "t0": 149.763,
+   "t1": 153.165,
+   "text": "answer relevance, context precision and context recall."
+  },
+  {
+   "t0": 153.165,
+   "t1": 160.516,
+   "text": "Three evaluate-and-improve rounds lifted correctness from forty-five to fifty-five percent,"
+  },
+  {
+   "t0": 160.516,
+   "t1": 163.687,
+   "text": "with zero regressions, and the holdout,"
+  },
+  {
+   "t0": 163.687,
+   "t1": 167.217,
+   "text": "used exactly once, scored sixty-four percent."
+  },
+  {
+   "t0": 169.216,
+   "t1": 171.378,
+   "text": "And here is what we refuse to fake."
+  },
+  {
+   "t0": 171.378,
+   "t1": 174.721,
+   "text": "Ollama could not be installed in the recording sandbox,"
+  },
+  {
+   "t0": 174.721,
+   "t1": 178.334,
+   "text": "so every number you just saw comes from the offline baseline,"
+  },
+  {
+   "t0": 178.334,
+   "t1": 182.721,
+   "text": "labelled not qualifying, and the judge scores are deterministic proxies."
+  },
+  {
+   "t0": 182.721,
+   "t1": 185.564,
+   "text": "The local models are configured,"
+  },
+  {
+   "t0": 185.564,
+   "t1": 189.304,
+   "text": "the doctor enforces the brief's size limits the moment Ollama runs,"
+  },
+  {
+   "t0": 189.304,
+   "t1": 192.706,
+   "text": "and the full qualification run is eight documented steps away."
+  },
+  {
+   "t0": 194.704,
+   "t1": 196.58,
+   "text": "Everything is runnable."
+  },
+  {
+   "t0": 196.58,
+   "t1": 200.819,
+   "text": "One command replays the recorded run on any machine,"
+  },
+  {
+   "t0": 200.819,
+   "t1": 205.371,
+   "text": "and the code, the evidence and this video are one click away."
+  },
+  {
+   "t0": 205.371,
+   "t1": 206.67,
+   "text": "Lear Local:"
+  },
+  {
+   "t0": 206.67,
+   "t1": 210.964,
+   "text": "every claim traced, every number measured, nothing faked."
+  }
+ ]
+}

@@ -11,8 +11,10 @@ make serve                                          # console on :8787, film at 
 make test                                           # 256 tests, no network
 ```
 
+**Take-home submission:** [SUBMISSION.md](SUBMISSION.md) has the links, run commands, a paste-ready eval summary and the 25-row requirements status.
+
 **Downloads (one click):**
-[▶ demo video, MP4, 2 min 14 s](docs/lear_agent/demo_video/lear_demo_terminal.mp4?raw=true) · [terminal recording, .cast](docs/lear_agent/demo_video/lear_demo_terminal.cast?raw=true) · [whole project, ZIP (this branch)](https://github.com/aviunion1348-cloud/rag-formation/archive/refs/heads/arena/227b3998-rag-formation.zip) · [ZIP of `main`](https://github.com/aviunion1348-cloud/rag-formation/archive/refs/heads/main.zip). The video is a real recording of `lear demo` in a terminal: what it shows, and what it is not, is in [docs/lear_agent/demo_video/README.md](docs/lear_agent/demo_video/README.md).
+[🎬 walkthrough film, 4K, 3 min 37 s](docs/lear_agent/demo_video/lear_walkthrough_4k.mp4?raw=true) · [same film, 1080p](docs/lear_agent/demo_video/lear_walkthrough_1080p.mp4?raw=true) · [▶ terminal demo video, MP4, 2 min 14 s](docs/lear_agent/demo_video/lear_demo_terminal.mp4?raw=true) · [terminal recording, .cast](docs/lear_agent/demo_video/lear_demo_terminal.cast?raw=true) · [whole project, ZIP (this branch)](https://github.com/aviunion1348-cloud/rag-formation/archive/refs/heads/arena/227b3998-rag-formation.zip) · [ZIP of `main`](https://github.com/aviunion1348-cloud/rag-formation/archive/refs/heads/main.zip). The walkthrough film is a narrated, animated explainer of how each part of the brief is met. Every number in it comes from the repo's evidence, labelled `offline baseline · NOT QUALIFYING`. The terminal video is a real recording of `lear demo`. What each shows, and what it is not, is in [docs/lear_agent/demo_video/README.md](docs/lear_agent/demo_video/README.md).
 
 ```
 Sources → extraction → normalisation → heading-aware chunking → embeddings
