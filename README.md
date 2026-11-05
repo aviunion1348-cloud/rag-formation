@@ -188,6 +188,7 @@ heuristic, and the default deployment is single-user local.
 * [docs/integration.md](docs/integration.md) — deployment shapes, auth modes, tenancy, error contract
 * [docs/experience.md](docs/experience.md) — the film, its modes, its fallbacks, and what was not verified
 * [docs/post_merge_audit.md](docs/post_merge_audit.md) — post-merge audit: gaps found, fixes, remaining work
+* [docs/handoff.md](docs/handoff.md) — the 12-part handoff, with the readiness label and the evidence ledger
 * [SECURITY.md](SECURITY.md) — threat model, controls with tests, stated limits
 * [evals/results/](evals/results/) — committed evaluation reports
 * [docs/operations.md](docs/operations.md) — run, configure, monitor, rebuild, back up
