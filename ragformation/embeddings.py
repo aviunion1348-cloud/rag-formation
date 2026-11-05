@@ -6,6 +6,16 @@ Three honest options, selected by ``RAG_EMBED_PROVIDER``:
              is the whiteboard path: nothing leaves the machine.
 ``openai``   Any OpenAI-compatible ``/embeddings`` endpoint (cloud or a local
              proxy such as vLLM / LM Studio / Ollama's OpenAI shim).
+``spacy``    A real, pretrained static embedding model (``en_core_web_md`` or
+             any spaCy model with vectors). Requires the optional ``semantic``
+             extra. Genuinely distributional, but static (no context): it is not
+             a transformer encoder and the docs say so.
+
+``distributional``
+             Corpus-trained count-based semantics (PPMI co-occurrence +
+             truncated SVD). Needs numpy. It learns meaning *from your corpus*,
+             so it says nothing about words your corpus never uses.
+
 ``hashing``  A deterministic signed feature-hash projection over words and
              bigrams. **It is not a neural encoder and it is not semantic
              search.** It exists so the whole pipeline runs with zero network,
@@ -25,7 +35,7 @@ import random
 import time
 import urllib.error
 import urllib.request
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Protocol, Sequence
 
 from .config import Settings
@@ -300,17 +310,63 @@ class CachedEmbedder:
         return self.provider.dimension
 
     @property
+    def preprocessing(self) -> str:
+        return getattr(self.provider, "preprocessing", "lower-token-v1")
+
+    @property
     def fingerprint(self) -> str:
-        return f"{self.name}:{self.model}:d{self.dimension}"
+        """Complete index identity.
+
+        Any change to provider, model, dimension, normalisation, similarity
+        metric or preprocessing produces a different fingerprint, which the
+        store refuses to mix with existing vectors.
+        """
+
+        return (
+            f"{self.name}:{self.model}:d{self.dimension}"
+            f":norm=l2:metric=cosine:pre={self.preprocessing}:fpv=2"
+        )
+
+    # ------------------------------------------------------------ stateful providers
+    def prepare(self, texts: Sequence[str] = ()) -> Dict[str, Any]:
+        """Let corpus-trained providers fit or load their model.
+
+        Called by the engine before embedding and before answering. A provider
+        without a corpus stage (ollama/openai/hashing/spacy) is a no-op, which
+        keeps the ingest path identical for every provider.
+        """
+
+        fitter = getattr(self.provider, "fit_from_corpus", None)
+        if fitter is None:
+            return {}
+        key = getattr(self.provider, "state_key", lambda: f"{self.name}:{self.model}")()
+        stored = self.store.get_semantic_model(key)
+        if stored is not None:
+            self.provider.load_state(stored)  # type: ignore[attr-defined]
+            return {"state": "loaded", "key": key, "terms": len(stored.get("terms") or {})}
+        payload = fitter(list(texts), self.store)
+        if payload:
+            self.store.put_semantic_model(key, payload)
+        return {"state": "fitted", "key": key, "terms": len(payload.get("terms") or {})}
+
+    def reset_state(self) -> None:
+        """Forget a fitted corpus model so the next ``prepare`` refits it."""
+
+        if hasattr(self.provider, "load_state"):
+            self.store.delete_semantic_model(
+                getattr(self.provider, "state_key", lambda: f"{self.name}:{self.model}")()
+            )
+            self.provider.load_state({})  # type: ignore[attr-defined]
 
     def embed(self, texts: Sequence[str]) -> List[List[float]]:
         keyed: List[tuple[str, str]] = [
             (text_hash(text), text if text.strip() else " ") for text in texts
         ]
+        cache_model = self.fingerprint
         results: List[Optional[List[float]]] = [None] * len(keyed)
         pending: List[int] = []
         for index, (key, _) in enumerate(keyed):
-            cached = self.store.cache_get(key, self.model)
+            cached = self.store.cache_get(key, cache_model)
             if cached is not None:
                 results[index] = cached
                 self.cache_hits += 1
@@ -320,7 +376,7 @@ class CachedEmbedder:
             fresh = self.provider.embed([keyed[i][1] for i in pending])
             for slot, vector in zip(pending, fresh):
                 results[slot] = vector
-                self.store.cache_put(keyed[slot][0], self.model, len(vector), vector)
+                self.store.cache_put(keyed[slot][0], cache_model, len(vector), vector)
                 self.cache_misses += 1
         return [vector or [] for vector in results]
 
@@ -332,6 +388,328 @@ class CachedEmbedder:
 
     def cache_stats(self) -> Dict[str, int]:
         return {"hits": self.cache_hits, "misses": self.cache_misses}
+
+
+
+
+# --------------------------------------------------------------------------- spacy
+@dataclass
+class SpacyEmbedder:
+    """Pretrained static word vectors from a spaCy model (e.g. ``en_core_web_md``).
+
+    This is a *real* semantic embedding: the vectors come from a trained model
+    (GloVe-style static vectors), so cosine similarity tracks relatedness rather
+    than shared spelling. It is **static**, not contextual — "bank" has one
+    vector — and the docs say so. Requires the optional ``semantic`` extra and a
+    model with vectors (``python -m spacy download en_core_web_md``).
+    """
+
+    model: str = "en_core_web_md"
+    name: str = "spacy"
+    semantic: bool = True
+    preprocessing: str = "spacy-token-mean-v1"
+    _nlp: Any = None
+    _dimension: Optional[int] = None
+    _missing_terms: int = 0
+    _vectors_seen: int = 0
+
+    # ------------------------------------------------------------- lifecycle
+    def _load(self) -> Any:
+        if self._nlp is not None:
+            return self._nlp
+        try:
+            import spacy  # noqa: F401  (optional dependency)
+        except ImportError as exc:  # pragma: no cover - depends on environment
+            raise ProviderUnavailable(
+                "the spaCy embedding provider is not installed",
+                hint='install the extra: pip install "ragformation[semantic]"',
+            ) from exc
+        try:
+            nlp = spacy.load(self.model)
+        except Exception as exc:  # OSError/ImportError from spaCy
+            raise ProviderUnavailable(
+                f"spaCy model {self.model!r} is not installed",
+                hint=f"python -m spacy download {self.model}",
+            ) from exc
+        shape = getattr(getattr(nlp.vocab, "vectors", None), "shape", None)
+        if not shape or len(shape) < 2 or int(shape[1]) == 0:
+            raise ProviderError(
+                f"spaCy model {self.model!r} has no word vectors",
+                hint="use a model with vectors, e.g. en_core_web_md or en_core_web_lg",
+            )
+        self._nlp = nlp
+        self._dimension = int(shape[1])
+        return nlp
+
+    @property
+    def dimension(self) -> int:
+        if self._dimension is None:
+            self._load()
+        if self._dimension is None:
+            raise ProviderError("spaCy model exposes no vector dimension")
+        return self._dimension
+
+    # --------------------------------------------------------------- embed
+    def embed(self, texts: Sequence[str]) -> List[List[float]]:
+        nlp = self._load()
+        out: List[List[float]] = []
+        for text in texts:
+            doc = nlp.make_doc(text or " ")
+            token_vectors = [t.vector for t in doc if t.has_vector]
+            self._vectors_seen += len(token_vectors)
+            if not token_vectors:
+                self._missing_terms += 1
+                out.append([0.0] * self.dimension)
+                continue
+            total = [0.0] * len(token_vectors[0])
+            for vector in token_vectors:
+                for index, value in enumerate(vector):
+                    total[index] += float(value)
+            count = float(len(token_vectors))
+            out.append(_normalize([value / count for value in total]))
+        return out
+
+    def health(self) -> Dict[str, Any]:
+        try:
+            import spacy  # noqa: F401
+        except ImportError:
+            return {
+                "ok": False,
+                "provider": self.name,
+                "model": self.model,
+                "detail": "spaCy is not installed",
+                "hint": 'pip install "ragformation[semantic]"',
+            }
+        try:
+            self._load()
+        except (ProviderError, ProviderUnavailable) as exc:
+            return {
+                "ok": False,
+                "provider": self.name,
+                "model": self.model,
+                "detail": exc.message,
+                "hint": exc.hint,
+            }
+        return {
+            "ok": True,
+            "provider": self.name,
+            "model": self.model,
+            "dimension": self.dimension,
+            "semantic": True,
+            "vectorsSeen": self._vectors_seen,
+            "zeroVectorTexts": self._missing_terms,
+            "note": "static pretrained word vectors, mean-pooled; not contextual",
+        }
+
+    def stats(self) -> Dict[str, Any]:
+        return {
+            "vectorsSeen": self._vectors_seen,
+            "zeroVectorTexts": self._missing_terms,
+            "normalisation": "l2",
+        }
+
+
+# ------------------------------------------------------------------ distributional
+@dataclass
+class DistributionalEmbedder:
+    """Corpus-trained semantic embeddings: PPMI co-occurrence + truncated SVD.
+
+    Why this exists: a hash projection is lexical by construction, and no
+    pretrained model could be downloaded in the build environment. This provider
+    learns a genuine distributional space *from the indexed corpus* — verbs that
+    share contexts collapse together, which lexical matching cannot do.
+
+    Honest limits (also in ``docs/semantic_embeddings.md``):
+
+    * It only knows words that appear in the corpus; unseen vocabulary becomes a
+      zero vector (lexical BM25 still covers those queries).
+    * The space is fitted once per index and persisted, so incremental ingests
+      reuse it. Re-fitting (``rebuild``) creates a new fingerprint — vectors and
+      model are always replaced together, never mixed.
+    * Quality depends on corpus size. On a 20-chunk corpus it is a demonstration,
+      not a competitive retriever.
+    """
+
+    projection_dim: int = 192
+    window: int = 6
+    min_count: int = 1
+    max_vocab: int = 4000
+    model: str = "ppmi-svd-v1"
+    name: str = "distributional"
+    semantic: bool = True
+    preprocessing: str = "ppmi-w6-svd-v1"
+    _terms: Dict[str, List[float]] = field(default_factory=dict)
+    _fitted_on: str = ""
+    _docs: int = 0
+    _rank: Optional[int] = None
+
+    # -------------------------------------------------------------- identity
+    def state_key(self) -> str:
+        return f"{self.name}:{self.model}:d{self.projection_dim}:w{self.window}"
+
+    def _require_numpy(self) -> Any:
+        try:
+            import numpy  # noqa: F401
+        except ImportError as exc:  # pragma: no cover - environment dependent
+            raise ProviderUnavailable(
+                "the distributional embedding provider needs numpy",
+                hint='install the extra: pip install "ragformation[semantic]"',
+            ) from exc
+        import numpy as np
+
+        return np
+
+    @property
+    def dimension(self) -> int:
+        """Actual vector length: the realised rank, which can be < projection_dim."""
+
+        if self._rank:
+            return int(self._rank)
+        if self._terms:
+            self._rank = len(next(iter(self._terms.values())))
+            return int(self._rank)
+        return int(self.projection_dim)
+
+    # --------------------------------------------------------------- fitting
+    def fit_from_corpus(self, texts: Sequence[str], store: Any = None) -> Dict[str, Any]:
+        """Fit term vectors from the corpus texts and return a serialisable state."""
+
+        np = self._require_numpy()
+        from .text import tokenize
+
+        tokenised = [tokenize(text) for text in texts or ()]
+        tokenised = [tokens for tokens in tokenised if tokens]
+        self._docs = len(tokenised)
+        if not tokenised:
+            self._terms = {}
+            self._rank = None
+            return {"terms": {}, "docs": 0, "window": self.window, "dimension": self.projection_dim}
+
+        counts: Dict[str, int] = {}
+        for tokens in tokenised:
+            for token in tokens:
+                counts[token] = counts.get(token, 0) + 1
+        vocab = [
+            term
+            for term, count in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
+            if count >= self.min_count and len(term) > 1
+        ][: self.max_vocab]
+        index = {term: i for i, term in enumerate(vocab)}
+        size = len(vocab)
+        if size == 0:
+            self._terms = {}
+            return {"terms": {}, "docs": self._docs, "window": self.window, "dimension": self.projection_dim}
+
+        matrix = np.zeros((size, size), dtype=np.float64)
+        for tokens in tokenised:
+            ids = [index[t] for t in tokens if t in index]
+            for position, left in enumerate(ids):
+                for offset in range(1, self.window + 1):
+                    if position + offset >= len(ids):
+                        break
+                    right = ids[position + offset]
+                    weight = 1.0 / offset
+                    matrix[left, right] += weight
+                    matrix[right, left] += weight
+        total = float(matrix.sum())
+        if total <= 0:
+            self._terms = {}
+            return {"terms": {}, "docs": self._docs, "window": self.window, "dimension": self.projection_dim}
+
+        row = matrix.sum(axis=1, keepdims=True)
+        col = matrix.sum(axis=0, keepdims=True)
+        with np.errstate(divide="ignore", invalid="ignore"):
+            pmi = np.log((matrix * total) / (row @ col))
+        ppmi = np.nan_to_num(np.maximum(pmi, 0.0), nan=0.0, posinf=0.0, neginf=0.0)
+
+        rank = int(min(self.projection_dim, max(1, size - 1)))
+        try:
+            u, s, _vt = np.linalg.svd(ppmi, full_matrices=False)
+            dense = u[:, :rank] * np.sqrt(np.maximum(s[:rank], 0.0))
+        except np.linalg.LinAlgError:  # pragma: no cover - pathological matrices
+            dense = np.random.default_rng(0).normal(size=(size, rank))
+
+        self._terms = {
+            term: [round(float(value), 6) for value in dense[i]]
+            for term, i in index.items()
+        }
+        self._rank = rank
+        return {
+            "terms": self._terms,
+            "docs": self._docs,
+            "window": self.window,
+            "dimension": rank,
+            "vocab": size,
+            "fittedAt": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+        }
+
+    # ----------------------------------------------------------- state i/o
+    def load_state(self, payload: Dict[str, Any]) -> None:
+        terms = payload.get("terms") or {}
+        self._terms = {str(k): [float(x) for x in v] for k, v in terms.items() if v}
+        if payload.get("dimension"):
+            self._rank = int(payload["dimension"])
+        elif self._terms:
+            self._rank = len(next(iter(self._terms.values())))
+        self._docs = int(payload.get("docs") or 0)
+
+    def state(self) -> Dict[str, Any]:
+        return {
+            "terms": self._terms,
+            "docs": self._docs,
+            "window": self.window,
+            "dimension": self.dimension,
+        }
+
+    # --------------------------------------------------------------- embed
+    def embed(self, texts: Sequence[str]) -> List[List[float]]:
+        from .text import tokenize
+
+        if not self._terms:
+            raise ProviderUnavailable(
+                "the distributional model is not fitted yet",
+                hint="run: ragformation rebuild --force",
+            )
+        dim = len(next(iter(self._terms.values())))
+        out: List[List[float]] = []
+        for text in texts:
+            total = [0.0] * dim
+            used = 0
+            for token in tokenize(text or ""):
+                vector = self._terms.get(token)
+                if vector is None:
+                    continue
+                for i, value in enumerate(vector):
+                    total[i] += value
+                used += 1
+            out.append(_normalize([value / used for value in total]) if used else [0.0] * dim)
+        return out
+
+    def health(self) -> Dict[str, Any]:
+        try:
+            import numpy  # noqa: F401
+        except ImportError:
+            return {
+                "ok": False,
+                "provider": self.name,
+                "model": self.model,
+                "detail": "numpy is not installed",
+                "hint": 'pip install "ragformation[semantic]"',
+            }
+        return {
+            "ok": bool(self._terms),
+            "provider": self.name,
+            "model": self.model,
+            "dimension": self.dimension,
+            "vocab": len(self._terms),
+            "docs": self._docs,
+            "semantic": True,
+            "note": "corpus-trained PPMI+SVD; knows only words present in the corpus",
+            "hint": None if self._terms else "run: ragformation rebuild --force",
+        }
+
+    def stats(self) -> Dict[str, Any]:
+        return {"vocab": len(self._terms), "docs": self._docs}
 
 
 # ------------------------------------------------------------------- factories
@@ -376,23 +754,69 @@ def build_embedder(settings: Settings, store: Store) -> CachedEmbedder:
                     hint=str(health.get("detail")),
                 )
 
+    if provider is None and provider_name in {"auto", "spacy"}:
+        candidate = SpacyEmbedder(model=settings.spacy_model)
+        health = candidate.health()
+        if health.get("ok"):
+            provider = candidate
+        elif provider_name == "spacy":
+            raise ProviderUnavailable(
+                f"the spaCy embedding provider is unavailable ({health.get('detail')})",
+                hint=str(health.get("hint")),
+            )
+
+    if provider is None and provider_name == "distributional":
+        provider = DistributionalEmbedder(
+            projection_dim=settings.distributional_dimension,
+            window=settings.distributional_window,
+            min_count=settings.distributional_min_count,
+        )
+        # A distributional model is fitted from the corpus during ingest/rebuild;
+        # `prepare()` reports whether it was fitted or loaded.
+        if getattr(provider, "_terms", None) in (None, {}) and not hasattr(provider, "fit_from_corpus"):
+            raise ProviderUnavailable("distributional provider could not be initialised")
+
     if provider is None:
         provider = HashingEmbedder(dimension=settings.embed_dimension)
 
-    return CachedEmbedder(provider, store)
+    embedder = CachedEmbedder(provider, store)
+    if getattr(settings, "require_semantic", False) and not embedder.semantic:
+        raise ConfigError(
+            "RAG_REQUIRE_SEMANTIC is set but the selected embedder is lexical",
+            hint=(
+                "configure a semantic provider (RAG_EMBED_PROVIDER=ollama|openai|spacy|distributional) "
+                "or unset RAG_REQUIRE_SEMANTIC"
+            ),
+        )
+    return embedder
 
 
 def describe(embedder: CachedEmbedder) -> Dict[str, Any]:
+    notes = {
+        "ollama": "Local neural embeddings served by Ollama; cosine reflects semantic relatedness.",
+        "openai": "Hosted neural embeddings; cosine reflects semantic relatedness.",
+        "spacy": "Static pretrained word vectors (mean-pooled). Semantic but not contextual.",
+        "distributional": "Corpus-trained PPMI+SVD vectors. Semantic inside this corpus only.",
+        "hashing": "Deterministic feature hashing (NOT a neural model): similarity reflects shared "
+        "words and bigrams, not meaning.",
+    }
     return {
         "provider": embedder.name,
         "model": embedder.model,
         "dimension": embedder.dimension,
         "semantic": embedder.semantic,
         "fingerprint": embedder.fingerprint,
-        "note": (
-            "Neural embeddings: cosine similarity reflects semantic relatedness."
+        "preprocessing": embedder.preprocessing,
+        "normalisation": "l2",
+        "metric": "cosine",
+        "note": notes.get(
+            embedder.name,
+            "Neural embeddings" if embedder.semantic else "Lexical fallback embeddings",
+        ),
+        "setup": (
+            None
             if embedder.semantic
-            else "Deterministic lexical hashing (NOT a neural model): similarity reflects shared "
-            "words and bigrams. Set up Ollama or an OpenAI-compatible endpoint for semantic retrieval."
+            else 'install a semantic provider: pip install "ragformation[semantic]" '
+            "then RAG_EMBED_PROVIDER=spacy (or run Ollama with an embedding model)"
         ),
     }

@@ -1,32 +1,102 @@
-"""ragformation — a small, complete, operable Retrieval-Augmented Generation system.
+"""ragformation — a portable, evidence-grounded RAG engine.
 
-The public surface is deliberately narrow:
+Two integration surfaces, one engine:
 
-    from ragformation import RAGEngine, Settings
+* **Embedded library** — import and call it directly, with your own data
+  directory, providers and auth::
 
-    settings = Settings.from_env()
-    engine = RAGEngine(settings)
-    engine.ingest_path("corpus/")
-    result = engine.ask("How long are audit logs retained?")
-    print(result.answer, [c.citation_id for c in result.citations])
+      from ragformation import RAGConfig, RAGEngine
 
-Everything below that is composable and independently testable: loaders,
-chunking, embedding providers, a SQLite-backed index, hybrid retrieval,
-guardrails, grounded generation with citation validation, and telemetry.
+      config = RAGConfig.from_env_or_mapping({"data_dir": "./.rag-data"})
+      with RAGEngine(config=config) as rag:
+          report = rag.ingest_path("./knowledge")
+          answer = rag.ask("How long are audit logs retained?")
+          print(answer.answer, [c.chunk_id for c in answer.citations])
+
+* **HTTP service** — ``python -m ragformation serve`` exposes the same engine at
+  ``/api/v1/...`` (with the original ``/api/...`` routes kept as aliases) for any
+  other language.
+
+Importing this package has no filesystem, database or network side effects.
+Nothing below is a singleton: construct as many engines as you need, each with
+its own ``data_dir``.
 """
 
-from .config import Settings
-from .engine import RAGEngine, QueryResult, AnswerStatus
+from __future__ import annotations
+
+from .auth import Principal
+from .config import API_VERSION, Settings
+from .contracts import (
+    Citation,
+    HealthReport,
+    IngestReport,
+    IngestResult,
+    QueryTrace,
+    RAGConfig,
+    SourceInfo,
+)
+from .engine import AnswerStatus, QueryResult, RAGEngine
+from .errors import (
+    AuthError,
+    ConfigError,
+    EmbeddingMismatch,
+    ExtractionError,
+    Forbidden,
+    IndexBusy,
+    NotFound,
+    ProviderError,
+    ProviderTimeout,
+    ProviderUnavailable,
+    RagError,
+    RateLimited,
+    SourceTooLarge,
+    UnsupportedFormat,
+    ValidationError,
+)
+from .events import EVENT_SCHEMA_VERSION, EventBus, RAGEvent
 from .store import Store
-from .errors import RagError
+
+__version__ = "0.2.0"
+__api_version__ = API_VERSION
 
 __all__ = [
-    "Settings",
+    # engine + config
     "RAGEngine",
+    "RAGConfig",
+    "Settings",
+    "Store",
+    # results
     "QueryResult",
     "AnswerStatus",
-    "Store",
+    "Citation",
+    "SourceInfo",
+    "IngestResult",
+    "IngestReport",
+    "HealthReport",
+    "QueryTrace",
+    # events / auth
+    "RAGEvent",
+    "EventBus",
+    "EVENT_SCHEMA_VERSION",
+    "Principal",
+    # errors
     "RagError",
+    "ConfigError",
+    "ValidationError",
+    "UnsupportedFormat",
+    "ExtractionError",
+    "SourceTooLarge",
+    "NotFound",
+    "ProviderError",
+    "ProviderUnavailable",
+    "ProviderTimeout",
+    "EmbeddingMismatch",
+    "AuthError",
+    "Forbidden",
+    "RateLimited",
+    "IndexBusy",
+    # versions
+    "__version__",
+    "__api_version__",
+    "API_VERSION",
 ]
-
-__version__ = "0.1.0"

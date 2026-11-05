@@ -85,3 +85,31 @@ class EmbeddingMismatch(RagError):
 class AuthError(RagError):
     code = "unauthorized"
     http_status = 401
+
+
+class Forbidden(RagError):
+    """Authenticated, but not allowed to perform this action."""
+
+    code = "forbidden"
+    http_status = 403
+
+
+class RateLimited(RagError):
+    """Caller exceeded a bounded concurrency/rate limit."""
+
+    code = "rate_limited"
+    http_status = 429
+
+
+class ProviderTimeout(ProviderError):
+    """A provider did not answer inside the configured timeout."""
+
+    code = "provider_timeout"
+    http_status = 504
+
+
+class IndexBusy(RagError):
+    """An index rebuild or migration is already running."""
+
+    code = "index_busy"
+    http_status = 409

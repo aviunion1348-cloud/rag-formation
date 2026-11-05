@@ -25,7 +25,9 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Set
 
 from .chunking import Chunker
-from .config import Settings
+from .auth import Principal, check_deployment
+from .config import API_VERSION, Settings
+from .contracts import HealthReport, IngestReport, IngestResult, QueryTrace, SourceInfo
 from .embeddings import CachedEmbedder, build_embedder, describe as describe_embedder
 from .errors import (
     EmbeddingMismatch,
@@ -53,8 +55,12 @@ from .guardrails import (
 from .loaders import LoadedSource, load_bytes, load_file
 from .metrics import summarize
 from .retrieval import Candidate, Retriever, assemble_context, dedupe_overlaps
-from .store import Store, StoredChunk, now_iso
+from .store import Store, StoredChunk, now_iso, pack_vector
+from .events import EVENT_SCHEMA_VERSION, EventBus, make_event
 from .text import content_terms, sha256_hex, split_sentences
+
+
+from .contracts import Citation  # noqa: E402  (public type, single definition)
 
 
 class AnswerStatus(str, Enum):
@@ -64,32 +70,6 @@ class AnswerStatus(str, Enum):
     FAILED = "failed"
 
 
-@dataclass
-class Citation:
-    evidence_id: int
-    chunk_id: str
-    source_id: str
-    source_title: str
-    section: str
-    page: int
-    excerpt: str
-    support: float
-    valid: bool = True
-    note: str = ""
-
-    def to_dict(self) -> Dict[str, Any]:
-        return {
-            "evidenceId": self.evidence_id,
-            "chunkId": self.chunk_id,
-            "sourceId": self.source_id,
-            "sourceTitle": self.source_title,
-            "section": self.section,
-            "page": self.page,
-            "excerpt": self.excerpt,
-            "support": round(self.support, 4),
-            "valid": self.valid,
-            "note": self.note,
-        }
 
 
 @dataclass
@@ -122,6 +102,17 @@ class QueryResult:
     error: Optional[Dict[str, Any]] = None
     created_at: str = field(default_factory=now_iso)
 
+    @property
+    def mode(self) -> str:
+        """``llm`` when a real model generated the prose, else ``extractive``."""
+
+        name = str((self.provider or {}).get("provider") or (self.provider or {}).get("name") or "")
+        return "llm" if name.lower() in {"ollama", "openai"} else "extractive"
+
+    @property
+    def trace_summary(self) -> QueryTrace:
+        return QueryTrace.from_result(self)
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "queryId": self.query_id,
@@ -136,6 +127,7 @@ class QueryResult:
             "trace": self.trace,
             "metrics": self.metrics,
             "provider": self.provider,
+            "generationMode": self.mode,
             "warnings": self.warnings,
             "abstainReason": self.abstain_reason,
             "conflict": self.conflict,
@@ -145,9 +137,27 @@ class QueryResult:
 
 
 class _Trace:
-    def __init__(self) -> None:
+    """Stage timer that also publishes sanitised :class:`RAGEvent` objects.
+
+    The dict trace and the event stream describe the same run: the trace is
+    persisted with the query row, the events feed the console and the S3
+    Experience. Publishing is optional so a headless ingest stays cheap.
+    """
+
+    def __init__(
+        self,
+        bus: Optional[EventBus] = None,
+        *,
+        trace_id: str = "",
+        mode: str = "live",
+        operation_id: Optional[str] = None,
+    ) -> None:
         self.events: List[Dict[str, Any]] = []
         self._starts: Dict[str, float] = {}
+        self.bus = bus
+        self.trace_id = trace_id
+        self.mode = mode
+        self.operation_id = operation_id
 
     def start(self, stage: str, detail: Optional[Dict[str, Any]] = None) -> None:
         self._starts[stage] = time.perf_counter()
@@ -161,6 +171,11 @@ class _Trace:
 
     def skip(self, stage: str, detail: Optional[Dict[str, Any]] = None) -> None:
         self._emit(stage, "skipped", detail)
+
+    def note(self, stage: str, status: str, detail: Optional[Dict[str, Any]] = None) -> None:
+        """Record a stage that is reported but not timed (e.g. a sub-channel)."""
+
+        self._emit(stage, status, detail)
 
     def fail(self, stage: str, detail: Optional[Dict[str, Any]] = None) -> None:
         self._emit(stage, "failed", detail)
@@ -182,6 +197,21 @@ class _Trace:
         if detail:
             event["detail"] = _safe_detail(detail)
         self.events.append(event)
+        if self.bus is not None:
+            try:
+                self.bus.publish(
+                    make_event(
+                        stage,
+                        status,
+                        trace_id=self.trace_id,
+                        mode=self.mode,
+                        detail=detail,
+                        duration_ms=duration,
+                        operation_id=self.operation_id,
+                    )
+                )
+            except Exception:  # a broken visual client must never break a query
+                pass
 
 
 def _safe_detail(detail: Dict[str, Any]) -> Dict[str, Any]:
@@ -214,18 +244,32 @@ class RAGEngine:
         self,
         settings: Optional[Settings] = None,
         *,
+        config: Optional[Settings] = None,
         store: Optional[Store] = None,
         embedder: Optional[CachedEmbedder] = None,
         generator: Optional[GenerationProvider] = None,
+        event_bus: Optional[EventBus] = None,
+        principal: Optional[Principal] = None,
     ) -> None:
-        self.settings = settings or Settings.from_env()
+        self.settings = settings or config or Settings.from_env()
         self._owns_store = store is None
         self.store = store or Store(self.settings.db_path)
         self.embedder = embedder or build_embedder(self.settings, self.store)
         self.generator = generator or build_generator(self.settings)
         self.retriever = Retriever(self.store, self.settings)
         self.chunker = Chunker(self.settings)
+        self.events = event_bus if event_bus is not None else EventBus()
+        self.default_principal = principal or Principal()
         self._recover_interrupted_jobs()
+
+    # ------------------------------------------------------- public identity
+    @property
+    def config(self) -> Settings:
+        return self.settings
+
+    def _event_mode(self) -> str:
+        name = str(getattr(self.generator, "name", "") or "").lower()
+        return "live" if name in {"ollama", "openai"} else "extractive"
 
     # ------------------------------------------------------------------ lifecycle
     def close(self) -> None:
@@ -326,6 +370,16 @@ class RAGEngine:
         started = time.perf_counter()
         source_id = self._source_id_for(origin)
         job_id = self.store.start_job("ingest", source_id)
+        trace = _Trace(self.events, trace_id=job_id, mode="live", operation_id=job_id)
+        trace.start(
+            "ingestion.source_accepted",
+            {
+                "sourceId": source_id,
+                "mediaType": getattr(source, "media_type", ""),
+                "bytes": int(getattr(source, "byte_size", 0) or 0),
+                "tenantId": tenant_id,
+            },
+        )
         try:
             existing = self.store.get_source(source_id)
             fingerprint = self.embedder.fingerprint
@@ -336,6 +390,8 @@ class RAGEngine:
                 same_embedding = self.store.get_meta("embedding_fingerprint") == fingerprint
                 same_chunking = self.store.get_meta("chunking_fingerprint") == chunk_fingerprint
                 if same_content and same_embedding and same_chunking:
+                    trace.end("ingestion.source_accepted", {"sourceId": source_id})
+                    trace.end("ingestion.duplicate", {"sourceId": source_id, "status": "unchanged"})
                     self.store.finish_job(job_id, "succeeded", detail={"status": "unchanged"})
                     return {
                         "filename": source.filename,
@@ -362,11 +418,23 @@ class RAGEngine:
                     ),
                 )
 
+            trace.end("ingestion.source_accepted", {"sourceId": source_id, "mediaType": source.media_type})
+            trace.start("ingestion.chunking", {"sourceId": source_id})
             self.store.update_job(job_id, "chunking")
             chunks = self.chunker.chunk(source, source_id)
             if not chunks:
                 raise ExtractionError("no chunks produced", hint="document may be empty")
+            trace.end(
+                "ingestion.chunking",
+                {
+                    "sourceId": source_id,
+                    "chunks": len(chunks),
+                    "tokens": sum(c.token_count for c in chunks),
+                },
+            )
             self.store.update_job(job_id, "embedding", {"chunks": len(chunks)})
+            self._prepare_embeddings([c.text for c in chunks])
+            trace.start("ingestion.embedding", {"sourceId": source_id, "chunks": len(chunks)})
 
             vectors: List[List[float]] = []
             batch = max(1, self.settings.embed_batch_size)
@@ -377,6 +445,16 @@ class RAGEngine:
             dimension = len(vectors[0])
             if any(len(v) != dimension for v in vectors):
                 raise ProviderError("embedding provider returned inconsistent dimensions")
+            trace.end(
+                "ingestion.embedding",
+                {
+                    "sourceId": source_id,
+                    "chunks": len(vectors),
+                    "dimension": dimension,
+                    "provider": self.embedder.name,
+                    "semantic": self.embedder.semantic,
+                },
+            )
 
             self.store.update_job(job_id, "indexing", {"chunks": len(chunks), "dimension": dimension})
             stored_chunks = [
@@ -421,6 +499,16 @@ class RAGEngine:
             self.store.set_meta("embedding_fingerprint", fingerprint)
             self.store.set_meta("chunking_fingerprint", chunk_fingerprint)
             self.store.set_meta("last_ingest_at", now_iso())
+            trace.end(
+                "ingestion.index_committed",
+                {
+                    "sourceId": source_id,
+                    "chunks": len(chunks),
+                    "revision": installed["revision"],
+                    "vectors": len(vectors),
+                    "dimension": dimension,
+                },
+            )
             self.store.finish_job(
                 job_id,
                 "succeeded",
@@ -442,6 +530,7 @@ class RAGEngine:
                 "ms": round((time.perf_counter() - started) * 1000.0, 3),
             }
         except RagError as exc:
+            trace.fail("ingestion.source_accepted", {"sourceId": source_id, "error": exc.code})
             self.store.finish_job(job_id, "failed", error_code=exc.code, error=exc.message)
             existing_now = self.store.get_source(source_id)
             if existing_now is None:
@@ -464,18 +553,54 @@ class RAGEngine:
     def _source_id_for(origin: str) -> str:
         return "src-" + sha256_hex(origin.encode("utf-8"))[:10]
 
-    def _ingest_report(self, results: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    # ------------------------------------------------------------- embeddings
+    def _prepare_embeddings(self, texts: Sequence[str] = ()) -> Dict[str, Any]:
+        """Fit or load corpus-trained embedding state (no-op for other providers).
+
+        The fitted model is persisted per index fingerprint, so restarting the
+        process, restarting a query or ingesting one more file never silently
+        replaces the vector space underneath existing vectors.
+        """
+
+        try:
+            if texts:
+                existing = [c.text for c in self.store.all_chunks()]
+                combined = list(existing) + [t for t in texts if t]
+            else:
+                combined = [c.text for c in self.store.all_chunks()]
+            return self.embedder.prepare(combined)
+        except (ProviderUnavailable, ProviderError):
+            raise
+        except Exception as exc:  # pragma: no cover - defensive
+            raise ProviderError("embedding preparation failed", hint=str(exc)[:200])
+
+    def _ingest_report(self, results: Sequence[Dict[str, Any]]) -> IngestReport:
         counts = self.store.counts()
-        return {
-            "results": list(results),
-            "indexed": sum(1 for r in results if r["status"] == "indexed"),
-            "unchanged": sum(1 for r in results if r["status"] == "unchanged"),
-            "failed": sum(1 for r in results if r["status"] == "failed"),
-            "chunks": counts["chunks"],
-            "sources": counts["sources"],
-            "embedding": describe_embedder(self.embedder),
-            "totalMs": round(sum(r.get("ms", 0.0) for r in results), 3),
-        }
+        typed = [
+            IngestResult(
+                filename=str(r.get("filename", "")),
+                status=str(r.get("status", "failed")),
+                chunks=int(r.get("chunks") or 0),
+                source_id=r.get("sourceId"),
+                duration_ms=float(r.get("ms") or 0.0),
+                warnings=list(r.get("warnings") or []),
+                error=r.get("error"),
+            )
+            for r in results
+        ]
+        return IngestReport(
+            {
+                "results": list(results),
+                "indexed": sum(1 for r in results if r["status"] == "indexed"),
+                "unchanged": sum(1 for r in results if r["status"] == "unchanged"),
+                "failed": sum(1 for r in results if r["status"] == "failed"),
+                "chunks": counts["chunks"],
+                "sources": counts["sources"],
+                "embedding": describe_embedder(self.embedder),
+                "totalMs": round(sum(r.get("ms", 0.0) for r in results), 3),
+            },
+            typed,
+        )
 
     # -------------------------------------------------------------------- query
     def ask(
@@ -490,6 +615,7 @@ class RAGEngine:
         history: Sequence[Dict[str, str]] = (),
         on_token: Optional[Any] = None,
         save: bool = True,
+        principal: Optional[Principal] = None,
     ) -> QueryResult:
         question = (question or "").strip()
         if not question:
@@ -505,8 +631,14 @@ class RAGEngine:
         temperature = self.settings.temperature if temperature is None else temperature
         top_p = self.settings.top_p if top_p is None else top_p
 
+        # Authorisation happens before retrieval: the caller's scope can only
+        # narrow what is searched, never widen it.
+        principal = principal or self.default_principal
+        principal.require("query")
+        allowed_sources = principal.scope(allowed_sources)
+
         query_id = f"q-{uuid.uuid4().hex[:12]}"
-        trace = _Trace()
+        trace = _Trace(self.events, trace_id=query_id, mode=self._event_mode())
         started = time.perf_counter()
         warnings: List[str] = []
         timings: Dict[str, float] = {}
@@ -517,6 +649,7 @@ class RAGEngine:
         trace.start("query_received", {"topK": top_k, "mode": mode, "questionChars": len(question)})
 
         # ------------------------------------------------------------ embedding
+        self._prepare_embeddings()
         query_vector: List[float] = []
         trace.start("query_embedding", {"provider": self.embedder.name, "model": self.embedder.model})
         try:
@@ -550,7 +683,7 @@ class RAGEngine:
             result.metrics = {"totalMs": round((time.perf_counter() - started) * 1000.0, 3)}
             result.warnings = warnings + ["retrieval_failed"]
             if save and self.settings.persist_traces:
-                self._persist_query(result)
+                self._persist_query(result, principal)
             return result
         trace.end(
             "retrieval",
@@ -563,6 +696,41 @@ class RAGEngine:
             },
         )
         timings["retrievalMs"] = round(sum(retrieval.timings_ms.values()), 3)
+
+        # Report the sub-stages that actually ran. A channel that was not used is
+        # marked "skipped" with a reason rather than invented as completed.
+        channel_detail = {
+            "retrieval.semantic": (
+                "semanticMs",
+                {"candidates": retrieval.semantic_candidates, "provider": self.embedder.name},
+                "mode excludes the semantic channel" if mode == "lexical" else "no vector candidates",
+            ),
+            "retrieval.lexical": (
+                "lexicalMs",
+                {"candidates": retrieval.lexical_candidates},
+                "mode excludes the lexical channel" if mode == "semantic" else "no lexical matches",
+            ),
+            "retrieval.fusion": (
+                "fusionMs",
+                {"fused": retrieval.fused_candidates, "rrfK": self.settings.rrf_k},
+                "fusion not run",
+            ),
+            "retrieval.rerank": (
+                "rerankMs",
+                {"reranked": retrieval.reranked, "strategy": "heuristic"},
+                "reranking disabled (RAG_RERANK=0)",
+            ),
+            "retrieval.mmr": (
+                "mmrMs",
+                {"candidates": len(retrieval.candidates), "lambda": self.settings.mmr_lambda},
+                "diversification not run",
+            ),
+        }
+        for stage, (timing_key, detail, reason) in channel_detail.items():
+            if timing_key in retrieval.timings_ms:
+                trace.note(stage, "completed", {**detail, "ms": retrieval.timings_ms[timing_key]})
+            else:
+                trace.note(stage, "skipped", {"reason": reason})
 
         candidates = dedupe_overlaps(retrieval.candidates)
         result.evidence = [c.to_dict(include_text=False) for c in candidates[: max(top_k * 2, 8)]]
@@ -601,10 +769,10 @@ class RAGEngine:
             result.answer = self._abstention_text(result.abstain_reason, 0.0)
             result.metrics = self._final_metrics(started, timings, retrieval, 0, 0)
             result.warnings = warnings
-            trace.end("completed", {"status": result.status})
+            trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
             if save and self.settings.persist_traces:
-                self._persist_query(result)
+                self._persist_query(result, principal)
             return result
 
         # ----------------------------------------------------- context assembly
@@ -649,10 +817,10 @@ class RAGEngine:
             result.metrics = self._final_metrics(started, timings, retrieval, used_tokens, 0)
             result.metrics["bestSupport"] = round(best_support, 4)
             result.warnings = warnings
-            trace.end("completed", {"status": result.status})
+            trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
             if save and self.settings.persist_traces:
-                self._persist_query(result)
+                self._persist_query(result, principal)
             return result
 
         # ------------------------------------------------------------ generation
@@ -746,10 +914,10 @@ class RAGEngine:
             result.metrics = {**self._final_metrics(started, timings, retrieval, used_tokens, 0), "bestSupport": round(best_support, 4)}
             result.warnings = sorted(set(warnings))
             trace.end("abstention", {"reason": result.abstain_reason})
-            trace.end("completed", {"status": result.status})
+            trace.end("response_ready", {"status": result.status})
             result.trace = trace.events
             if save and self.settings.persist_traces:
-                self._persist_query(result)
+                self._persist_query(result, principal)
             return result
 
         # ------------------------------------------------- citation validation
@@ -813,10 +981,10 @@ class RAGEngine:
             "evidenceTokens": used_tokens,
         }
         result.warnings = sorted(set(warnings + output_warnings(text)))
-        trace.end("completed", {"status": status})
+        trace.end("response_ready", {"status": status})
         result.trace = trace.events
         if save and self.settings.persist_traces:
-            self._persist_query(result)
+            self._persist_query(result, principal)
         return result
 
     # -------------------------------------------------------------- internals
@@ -956,8 +1124,9 @@ class RAGEngine:
                 }
         return None
 
-    def _persist_query(self, result: QueryResult) -> None:
+    def _persist_query(self, result: QueryResult, principal: Optional[Principal] = None) -> None:
         metrics = result.metrics or {}
+        principal = principal or self.default_principal
         metrics.setdefault("mode", self.settings.retrieval_mode)
         self.store.record_query(
             {
@@ -982,44 +1151,95 @@ class RAGEngine:
                 "abstain_reason": result.abstain_reason,
                 "trace_json": _json_dumps(result.trace),
                 "created_at": result.created_at,
+                "tenant_id": principal.tenant_id,
+                "principal": principal.subject_id,
             }
         )
 
     # --------------------------------------------------------------- lifecycle
-    def list_sources(self) -> List[Dict[str, Any]]:
-        chunks = self.store.all_chunks()
+    def list_sources(
+        self, *, principal: Optional[Principal] = None, include_deleted: bool = False
+    ) -> List[Dict[str, Any]]:
+        principal = principal or self.default_principal
+        principal.require("read")
+        chunks = self.store.all_chunks(allowed_sources=principal.scope())
         per_source: Dict[str, Dict[str, int]] = {}
         for chunk in chunks:
             bucket = per_source.setdefault(chunk.source_id, {"chunks": 0, "tokens": 0})
             bucket["chunks"] += 1
             bucket["tokens"] += chunk.token_count
         output = []
-        for source in self.store.list_sources():
+        for source in self.store.list_sources(include_deleted=include_deleted):
+            if not principal.is_local and source.tenant_id != principal.tenant_id:
+                continue
+            scope = principal.allowed_sources
+            if scope is not None and source.source_id not in scope:
+                continue
             data = source.to_dict()
             data.update(per_source.get(source.source_id, {"chunks": 0, "tokens": 0}))
             output.append(data)
         return output
 
-    def source_chunks(self, source_id: str) -> List[Dict[str, Any]]:
-        if not self.store.get_source(source_id):
+    def get_source(self, source_id: str, *, principal: Optional[Principal] = None) -> Dict[str, Any]:
+        principal = principal or self.default_principal
+        principal.require("read")
+        record = self.store.get_source(source_id)
+        if record is None:
+            raise NotFound("source not found", sourceId=source_id)
+        if not self._may_read_source(record, principal):
+            # Same error as a missing source: never confirm another tenant's id.
+            raise NotFound("source not found", sourceId=source_id)
+        data = record.to_dict()
+        data["chunks"] = len(self.store.chunks_for_source(source_id))
+        return data
+
+    def _may_read_source(self, record: Any, principal: Principal) -> bool:
+        if principal.allowed_sources is not None and record.source_id not in principal.allowed_sources:
+            return False
+        if principal.is_local:
+            return True
+        return record.tenant_id == principal.tenant_id
+
+    def source_chunks(self, source_id: str, *, principal: Optional[Principal] = None) -> List[Dict[str, Any]]:
+        principal = principal or self.default_principal
+        principal.require("read")
+        record = self.store.get_source(source_id)
+        if record is None or not self._may_read_source(record, principal):
             raise NotFound("source not found", sourceId=source_id)
         return [chunk.to_dict() for chunk in self.store.chunks_for_source(source_id)]
 
-    def delete_source(self, source_id: str) -> Dict[str, Any]:
-        if not self.store.get_source(source_id):
+    def delete_source(self, source_id: str, *, principal: Optional[Principal] = None) -> Dict[str, Any]:
+        principal = principal or self.default_principal
+        principal.require("delete")
+        record = self.store.get_source(source_id)
+        if record is None or not self._may_read_source(record, principal):
             raise NotFound("source not found", sourceId=source_id)
         job_id = self.store.start_job("delete", source_id)
+        trace = _Trace(self.events, trace_id=job_id, mode="live", operation_id=job_id)
+        trace.start("source.delete", {"sourceId": source_id})
         result = self.store.delete_source(source_id)
+        trace.end("source.delete", {"sourceId": source_id, **result})
         self.store.finish_job(job_id, "succeeded", detail=result)
         return {**result, "indexSize": self.store.counts()["chunks"]}
 
-    def rebuild(self, *, reembed: bool = True, force: bool = False) -> Dict[str, Any]:
-        """Re-embed every stored chunk with the current embedder.
+    def rebuild(
+        self,
+        *,
+        reembed: bool = True,
+        force: bool = False,
+        principal: Optional[Principal] = None,
+        refit: Optional[bool] = None,
+    ) -> Dict[str, Any]:
+        """Rebuild the vector index without ever leaving a half-written index live.
 
-        This is the recovery path for a corrupted vector table or a changed
-        embedding model. If chunking config changed, a full re-ingest from the
-        originals is required and this method says so rather than pretending.
+        Stages every vector in ``vectors_staged``, validates counts/dimensions,
+        then swaps in one transaction while the previous vectors are kept in
+        ``vectors_backup`` for :meth:`rollback_rebuild`. A crash before the swap
+        leaves the previous index exactly as it was.
         """
+
+        principal = principal or self.default_principal
+        principal.require("rebuild")
         stored_chunking = self.store.get_meta("chunking_fingerprint")
         current_chunking = self.settings.chunking_fingerprint()
         notes: List[str] = []
@@ -1028,78 +1248,153 @@ class RAGEngine:
                 "chunking configuration changed; re-ingest the original files to apply it "
                 "(rebuild only re-embeds existing chunks)"
             )
+        previous_fingerprint = self.store.get_meta("embedding_fingerprint")
         job_id = self.store.start_job("rebuild")
+        trace = _Trace(self.events, trace_id=job_id, mode="live", operation_id=job_id)
         chunks = self.store.all_chunks()
         started = time.perf_counter()
-        embedded = 0
+        trace.start("index.rebuild", {"chunks": len(chunks)})
         try:
-            for source_id in {chunk.source_id for chunk in chunks}:
-                source_chunks = self.store.chunks_for_source(source_id)
-                vectors = self.embedder.embed([c.text for c in source_chunks])
-                self.store.replace_source(
-                    source_id=source_id,
-                    title=source_chunks[0].source_title or source_id,
-                    origin=self.store.get_source(source_id).origin if self.store.get_source(source_id) else source_id,
-                    media_type="text/plain",
-                    byte_size=len("".join(c.text for c in source_chunks).encode("utf-8")),
-                    content_hash=self.store.get_source(source_id).content_hash if self.store.get_source(source_id) else "",
-                    tenant_id=self.store.get_source(source_id).tenant_id if self.store.get_source(source_id) else "local",
-                    visibility="private",
-                    tags=[],
-                    warnings=["rebuild: metadata restored from stored chunks"],
-                    meta={"rebuild": True},
-                    chunks=source_chunks,
-                    vectors=vectors,
-                    embedding_fingerprint=self.embedder.fingerprint,
-                    dimension=len(vectors[0]) if vectors else self.embedder.dimension,
+            if refit is None:
+                refit = force
+            if refit and hasattr(self.embedder.provider, "fit_from_corpus"):
+                self.embedder.reset_state()
+            self._prepare_embeddings([c.text for c in chunks])
+
+            staged: List[tuple] = []
+            fingerprint = self.embedder.fingerprint
+            for chunk in chunks:
+                vector = self.embedder.embed_one(chunk.text)
+                staged.append((chunk.chunk_id, len(vector), pack_vector(vector)))
+            if staged and len({row[1] for row in staged}) > 1:
+                raise ProviderError("rebuild produced inconsistent vector dimensions")
+            self.store.stage_vectors(staged, fingerprint)
+            staged_count = self.store.staged_counts()
+            if staged_count != len(chunks):
+                raise ProviderError(
+                    "staged vector count does not match chunk count",
+                    hint=f"staged={staged_count} chunks={len(chunks)}",
                 )
-                embedded += len(source_chunks)
-            self.store.set_meta("embedding_fingerprint", self.embedder.fingerprint)
+            installed = self.store.commit_staged_vectors(
+                fingerprint, previous_fingerprint=previous_fingerprint
+            )
+            self.store.set_meta("embedding_fingerprint", fingerprint)
             self.store.set_meta("chunking_fingerprint", current_chunking)
-            self.store.finish_job(job_id, "succeeded", detail={"chunks": embedded})
+            self.store.set_meta("last_rebuild_at", now_iso())
+            trace.end(
+                "index.rebuild",
+                {
+                    "chunks": len(staged),
+                    "installed": installed["installed"],
+                    "backedUp": installed["backedUp"],
+                    "fingerprint": fingerprint,
+                },
+            )
+            self.store.finish_job(job_id, "succeeded", detail={"chunks": len(staged)})
         except Exception as exc:
+            self.store.clear_staged()
+            trace.fail("index.rebuild", {"error": str(exc)[:120]})
             self.store.finish_job(job_id, "failed", error_code="rebuild_failed", error=str(exc)[:300])
             raise
         return {
-            "chunks": embedded,
+            "chunks": len(staged),
             "sources": len({chunk.source_id for chunk in chunks}),
             "ms": round((time.perf_counter() - started) * 1000.0, 3),
             "embedding": describe_embedder(self.embedder),
+            "fingerprint": fingerprint,
+            "previousFingerprint": previous_fingerprint,
+            "rollbackAvailable": bool(installed["backedUp"]),
             "notes": notes,
         }
 
+    def rollback_rebuild(self, *, principal: Optional[Principal] = None) -> Dict[str, Any]:
+        """Restore the vectors that were live before the last rebuild."""
+
+        principal = principal or self.default_principal
+        principal.require("rebuild")
+        restored = self.store.restore_backup()
+        if restored.get("fingerprint"):
+            self.store.set_meta("embedding_fingerprint", restored["fingerprint"])
+        return restored
+
+    def backup_info(self) -> Dict[str, Any]:
+        return self.store.backup_info()
+
+    # ------------------------------------------------------------------- traces
+    def get_trace(self, query_id: str, *, principal: Optional[Principal] = None) -> Dict[str, Any]:
+        principal = principal or self.default_principal
+        principal.require("traces")
+        row = self.store.query_row(query_id)
+        if row is None or (not principal.is_local and row.get("tenant_id") not in (None, principal.tenant_id)):
+            raise NotFound("trace not found", queryId=query_id)
+        return {
+            "queryId": row["query_id"],
+            "question": row["question"][:500],
+            "status": row["status"],
+            "mode": row["mode"],
+            "provider": row["provider"],
+            "model": row["model"],
+            "stages": json.loads(row["trace_json"] or "[]"),
+            "latencyMs": row["latency_ms"],
+            "retrievalMs": row["retrieval_ms"],
+            "generationMs": row["generation_ms"],
+            "createdAt": row["created_at"],
+        }
+
+    def recent_events(self, *, trace_id: Optional[str] = None, since: int = 0, limit: int = 128) -> List[Dict[str, Any]]:
+        return self.events.history(trace_id=trace_id, since=since, limit=limit)
+
     # ---------------------------------------------------------------- diagnostics
-    def health(self) -> Dict[str, Any]:
+    def health(self) -> HealthReport:
         counts = self.store.counts()
         integrity = self.store.integrity_report(self.embedder.dimension)
         embedder_health = self.embedder.health()
         generator_health = self.generator.availability()
-        return {
-            "ok": not integrity["problems"],
-            "service": "ragformation",
-            "version": __import__("ragformation").__version__,
-            "sources": counts["sources"],
-            "chunks": counts["chunks"],
-            "vectors": counts["vectors"],
-            "lexicalRows": counts["lexicalRows"],
-            "queries": self.store.count_queries(),
-            "embedding": {**describe_embedder(self.embedder), "health": embedder_health},
-            "generation": {**describe_generator(self.generator), "health": generator_health},
-            "indexFingerprint": self.store.get_meta("embedding_fingerprint"),
-            "lastIngestAt": self.store.get_meta("last_ingest_at"),
-            "integrity": integrity,
-            "config": {
-                "topK": self.settings.top_k,
-                "mode": self.settings.retrieval_mode,
-                "temperature": self.settings.temperature,
-                "topP": self.settings.top_p,
-                "abstainThreshold": self.settings.abstain_threshold,
-                "contextTokenBudget": self.settings.max_context_tokens,
-            },
-        }
+        deployment = check_deployment(self.settings)
+        return HealthReport(
+            {
+                "ok": not integrity["problems"],
+                "service": "ragformation",
+                "version": __import__("ragformation").__version__,
+                "apiVersion": API_VERSION,
+                "eventSchemaVersion": EVENT_SCHEMA_VERSION,
+                "sources": counts["sources"],
+                "chunks": counts["chunks"],
+                "vectors": counts["vectors"],
+                "lexicalRows": counts["lexicalRows"],
+                "queries": self.store.count_queries(),
+                "embedding": {**describe_embedder(self.embedder), "health": embedder_health},
+                "generation": {
+                    **describe_generator(self.generator),
+                    "health": generator_health,
+                    "mode": self._event_mode(),
+                },
+                "indexFingerprint": self.store.get_meta("embedding_fingerprint"),
+                "lastIngestAt": self.store.get_meta("last_ingest_at"),
+                "lastRebuildAt": self.store.get_meta("last_rebuild_at"),
+                "rollback": self.store.backup_info(),
+                "integrity": integrity,
+                "schemaVersion": self.store.get_meta("schema_version"),
+                "security": deployment,
+                "events": {"schemaVersion": EVENT_SCHEMA_VERSION, "published": self.events.published},
+                "config": {
+                    "topK": self.settings.top_k,
+                    "mode": self.settings.retrieval_mode,
+                    "temperature": self.settings.temperature,
+                    "topP": self.settings.top_p,
+                    "abstainThreshold": self.settings.abstain_threshold,
+                    "contextTokenBudget": self.settings.max_context_tokens,
+                    "requireSemantic": self.settings.require_semantic,
+                },
+            }
+        )
 
-    def stats(self, limit: int = 500) -> Dict[str, Any]:
-        rows = self.store.query_rows(limit=limit)
+    def stats(self, limit: int = 500, *, principal: Optional[Principal] = None) -> Dict[str, Any]:
+        principal = principal or self.default_principal
+        principal.require("stats")
+        rows = self.store.query_rows(
+            limit=limit, tenant_id=None if principal.is_local else principal.tenant_id
+        )
         latencies = [row["latency_ms"] for row in rows]
         ttft = [row["ttft_ms"] for row in rows]
         itl = [row["itl_ms"] for row in rows]
@@ -1131,6 +1426,8 @@ class RAGEngine:
             "citationPrecision": citation_precision,
             "abstentionRate": round(statuses.get("abstained", 0) / len(rows), 3) if rows else 0.0,
             "window": min(limit, len(rows)),
+            "embedding": {"provider": self.embedder.name, "semantic": self.embedder.semantic, "fingerprint": self.embedder.fingerprint},
+            "generationMode": self._event_mode(),
             "recent": [
                 {
                     "queryId": row["query_id"],
@@ -1150,26 +1447,24 @@ class RAGEngine:
     def doctor(self) -> Dict[str, Any]:
         health = self.health()
         checks: List[Dict[str, Any]] = []
-        embedder_health = health["embedding"]["health"]
+        embedding = health["embedding"]
+        embedder_health = embedding["health"]
         checks.append(
             {
                 "name": "embedding_provider",
-                "ok": bool(embedder_health.get("ok")) and health["embedding"]["semantic"],
-                "detail": health["embedding"]["note"],
-                "fix": None
-                if health["embedding"]["semantic"]
-                else "install Ollama (ollama pull nomic-embed-text) or set OPENAI_API_KEY",
+                "ok": bool(embedder_health.get("ok")) and bool(embedding["semantic"]),
+                "detail": f"{embedding['provider']} / {embedding['model']} (d={embedding['dimension']}): {embedding['note']}",
+                "fix": None if embedding["semantic"] else embedding.get("setup") or "configure a semantic provider",
             }
         )
-        generation_health = health["generation"]["health"]
+        generation = health["generation"]
+        generation_health = generation["health"]
         checks.append(
             {
                 "name": "generation_provider",
-                "ok": bool(generation_health.get("ok")) and health["generation"]["neural"],
-                "detail": health["generation"]["note"],
-                "fix": None
-                if health["generation"]["neural"]
-                else "install Ollama and pull a chat model, e.g. ollama pull llama3.2:3b",
+                "ok": bool(generation_health.get("ok")) and bool(generation["neural"]),
+                "detail": generation["note"],
+                "fix": None if generation["neural"] else "install Ollama and pull a chat model, e.g. ollama pull llama3.2:3b",
             }
         )
         checks.append(
@@ -1178,6 +1473,17 @@ class RAGEngine:
                 "ok": not health["integrity"]["problems"],
                 "detail": health["integrity"]["problems"] or "no problems found",
                 "fix": "run: ragformation rebuild" if health["integrity"]["problems"] else None,
+            }
+        )
+        deployment = health["security"]
+        checks.append(
+            {
+                "name": "deployment_security",
+                "ok": bool(deployment["ok"]),
+                "detail": f"{deployment['securityMode']}: {deployment['detail']}",
+                "fix": None
+                if deployment["ok"]
+                else "set RAG_API_KEY, or RAG_TRUST_PROXY=1 behind an authenticating host",
             }
         )
         checks.append(
@@ -1200,7 +1506,25 @@ class RAGEngine:
             "ok": all(check["ok"] for check in checks),
             "checks": checks,
             "health": health,
+            "readiness": self.readiness(),
         }
+
+    def readiness(self) -> str:
+        """A precise readiness label; never "production-ready" without evidence."""
+
+        health = self.health()
+        if health["integrity"]["problems"]:
+            return "index-degraded"
+        semantic = bool(health["embedding"]["semantic"])
+        neural = bool(health["generation"]["neural"])
+        secured = bool(health["security"]["ok"])
+        if semantic and neural and secured:
+            return "provider-verified"
+        if semantic and secured:
+            return "integration-ready"
+        if secured:
+            return "local-ready"
+        return "insecure-configuration"
 
     # ------------------------------------------------------------------ export
     def export_bundle(self, questions: Sequence[str] = ()) -> Dict[str, Any]:
