@@ -8,7 +8,7 @@ only — no framework, no build step, no cloud account required.
 make ingest                                         # index the fixture corpus (14 documents)
 make ask Q="How long are audit logs retained?"      # cited answer in the terminal
 make serve                                          # console on :8787, film at /experience
-make test                                           # 143 tests, no network
+make test                                           # 219 tests, no network
 ```
 
 ```
@@ -22,7 +22,8 @@ Sources → extraction → normalisation → heading-aware chunking → embeddin
 
 | Path | What it is | Status |
 |---|---|---|
-| `ragformation/` | The RAG system: ingestion, retrieval, generation, guardrails, API, console, CLI | Verified (143 tests, two evaluation sets) |
+| `ragformation/` | The RAG system: ingestion, retrieval, generation, guardrails, API, console, CLI | Verified (152 tests, two evaluation sets) |
+| `ragformation/lear/`, `docs/lear_backend/` | The Lear backend agent: a backend-only CLI (`python3 -m ragformation lear …`) that answers questions about the pinned Lear backend from evidence-backed docs | 67 tests; live Ollama path **BLOCKED** in this environment — see `docs/lear_agent/README.md` |
 | `ragformation/web/experience/` | The S3 Experience: a 16-scene walkthrough with Director / Live / Explorer modes | Verified headlessly; WebGL unchecked on a GPU (see `docs/experience.md`) |
 | `corpus/` | Fourteen synthetic documents, clearly labelled as invented (one pair deliberately contradicts) | Fixtures |
 | `evals/golden.json` | 14 golden questions, frozen: the regression gate | `make eval` |
@@ -157,7 +158,7 @@ environment):
 
 | Signal | Result |
 |---|---|
-| Test suite | **143/143 pass** (`python3 -m unittest discover -s tests`, ~20 s) — no network, no paid API |
+| Test suite | **219/219 pass** (`python3 -m unittest discover -s tests`, ~30 s): 143 core, 9 audit regressions, 67 Lear agent — no network, no paid API |
 | Legacy `engine/` suite | 29/29 pass |
 | Golden v1 (frozen gate) | 14/14 cases, recall@6 **1.00**, MRR **1.00**, nDCG@6 **0.952**, abstain accuracy **1.00**, fact recall **1.00**, forbidden-fact rate **1.00** |
 | Evaluation v2 (measurement) | **39/46** cases on 59 chunks: recall@6 1.00, precision@6 0.365, MRR 0.921, nDCG 0.918; answered 33 / needs_review 3 / abstained 10; citation precision 1.00; abstention recall 0.889. Seven failures are listed, not hidden |

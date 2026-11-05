@@ -1,0 +1,35 @@
+# Existing and new project gates, run on 6acf3c5d8ff8 (+ uncommitted docs/README counts) at 2026-11-05T19:31:06Z
+
+## 1. Full unittest suite: python3 -m unittest discover -s tests
+Ran 219 tests in 29.131s
+
+OK
+exit 0
+
+## 2. Legacy engine suite: (cd engine && python3 -m unittest discover -s tests)
+Ran 29 tests in 0.654s
+
+OK
+exit 0
+
+## 3. Node experience contract: node tests/experience_contract.mjs
+
+experience contract: all checks passed
+exit 0
+
+## 4. jsdom experience smoke: node scripts/experience_smoke.mjs --jsdom /tmp/jsdomenv/node_modules (jsdom installed outside the repo)
+
+experience smoke: all checks passed
+exit 0
+
+## 5. Package: pip wheel . --no-deps; install into a clean venv; run from site-packages
+Successfully built ragformation
+wheel: ragformation-0.2.0-py3-none-any.whl, 22 files under ragformation/lear/
+clean venv: index rebuild (355 chunks) OK; ask -> GROUNDED with line-cited evidence; lear doctor -> exit 6 (no Ollama)
+
+## 6. Core frozen gate (RAG_DATA_DIR=/tmp/core-gate, hashing + extractive): ragformation ingest corpus; ragformation eval --v1
+golden v1: passed True 14 / 14 recall 1.0 MRR 1.0 nDCG 0.9524
+golden v2 (measurement): calibration 12/12, dev 9/10, test 18/24 = 39/46 (unchanged from main)
+
+## 7. Lear CLI walkthrough: evidence/cli_walkthrough_2026-11-05.txt (all exit codes as expected)
+## 8. scripts/run_local_gates.sh: not present on this branch (it exists only on the unmerged remote branch arena/5f16d127 @ 9e0918b58b48)

@@ -142,7 +142,7 @@ Ingestion: 6 documents → 21 chunks in **11 ms**; re-ingest of unchanged files
 ## 7. Reproducing
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_*.py'   # 143 tests
+python3 -m unittest discover -s tests -p 'test_*.py'   # 219 tests (143 core + 9 audit regressions + 67 Lear agent)
 python3 -m ragformation ingest corpus
 python3 -m ragformation eval --v1 --json > /tmp/eval.json      # frozen gate
 python3 -m ragformation eval --out /tmp/v2.json                # v2 measurement
