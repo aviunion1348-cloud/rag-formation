@@ -23,7 +23,7 @@ import re
 import threading
 import time
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 from ..engine import RAGEngine
 from ..errors import ProviderError, ProviderUnavailable, RagError, RateLimited, ValidationError
@@ -122,6 +122,38 @@ def rewrite_followup(question: str, history: List[Dict[str, Any]], *, with_ident
     return rewritten[:2000]
 
 
+LIFECYCLE_SCHEMA = "lear-lifecycle-v1"
+
+
+class _Spans:
+    """Contiguous, monotonic per-stage spans for one ``ask`` (read-only telemetry).
+
+    ``mark(stage)`` closes the open stage and opens the next, so the spans tile
+    the request without gaps or overlaps. Times come from ``time.perf_counter``
+    and are milliseconds since the ask started. Nothing here changes retrieval,
+    generation or the answer.
+    """
+
+    def __init__(self, started: float) -> None:
+        self.started = started
+        self.stages: List[Dict[str, Any]] = []
+        self._open: Optional[Tuple[str, float]] = None
+
+    def mark(self, stage: Optional[str]) -> None:
+        now = time.perf_counter()
+        if self._open is not None:
+            name, t0 = self._open
+            self.stages.append({"stage": name, "startMs": round((t0 - self.started) * 1000.0, 3),
+                                "ms": round((now - t0) * 1000.0, 3)})
+        self._open = (stage, now) if stage else None
+
+    def finish(self) -> Dict[str, Any]:
+        self.mark(None)
+        total = round((time.perf_counter() - self.started) * 1000.0, 3)
+        return {"schema": LIFECYCLE_SCHEMA, "clock": "time.perf_counter (monotonic), ms since ask start",
+                "totalMs": total, "stages": list(self.stages)}
+
+
 class LearAgent:
     def __init__(
         self,
@@ -196,6 +228,8 @@ class LearAgent:
         save: bool = True,
     ) -> Dict[str, Any]:
         started = time.perf_counter()
+        spans = _Spans(started)
+        spans.mark("validate")
         question = (question or "").strip()
         if not question:
             raise ValidationError("question must not be empty")
@@ -203,10 +237,15 @@ class LearAgent:
             raise ValidationError(
                 "question is too long", hint=f"limit is {self.settings.max_input_chars} characters"
             )
+        spans.mark("admission")
         with self.limiter.acquire(user_id, session_id):
-            return self._ask_admitted(question, user_id, session_id, on_token, top_k, save, started)
+            answer = self._ask_admitted(question, user_id, session_id, on_token, top_k, save, started, spans)
+        answer.setdefault("timings", {})["lifecycle"] = spans.finish()
+        return answer
 
-    def _ask_admitted(self, question, user_id, session_id, on_token, top_k, save, started) -> Dict[str, Any]:
+    def _ask_admitted(self, question, user_id, session_id, on_token, top_k, save, started, spans: Optional[_Spans] = None) -> Dict[str, Any]:
+        spans = spans or _Spans(started)
+        spans.mark("session")
         session_info: Optional[Dict[str, Any]] = None
         history: List[Dict[str, Any]] = []
         summary = ""
@@ -215,6 +254,7 @@ class LearAgent:
         if session_id:
             session = self.sessions.open_or_create(session_id, user_id)
             messages = self.sessions.messages(session_id, user_id)
+            spans.mark("compaction")
             result = compact(
                 messages,
                 previous_summary=session.get("summary") or "",
@@ -246,8 +286,11 @@ class LearAgent:
                 "historyMessages": len(history),
             }
 
+        spans.mark("rewrite")
         retrieval_query = rewrite_followup(question, history) if history else None
+        spans.mark("memory")
         memories = self.memory.relevant(user_id, question, session_id=session_id, limit=self.settings.memory_items)
+        spans.mark("prompt")
         system_prompt = render_system_prompt(
             commit=str(self.pin.get("commit_short") or str(self.pin.get("commit", ""))[:12] or "unknown"),
             summary=summary,
@@ -263,14 +306,18 @@ class LearAgent:
                 on_token(text)
 
         try:
+            spans.mark("engine.open")
             engine = self.engine
+            spans.mark("fingerprint")
             check_index_fingerprint(engine)
+            spans.mark("scopeGuard")
             missing = unknown_terms(question, self.vocabulary()) if self.settings.scope_guard else []
             if missing:
                 # Named things the documentation never mentions (a product, a
                 # metric, a vendor): answering would mean guessing, so decline
                 # before retrieval/generation and say which term is unknown.
                 answer = self._scope_answer(question, missing, started, session_info, retrieval_query)
+                spans.mark("persist")
                 if session_id and save:
                     self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
                     self.sessions.add_message(session_id, user_id, "assistant", answer["answer"], status="ABSTAINED")
@@ -283,6 +330,7 @@ class LearAgent:
                 # Without the identifiers: they help retrieval find the right
                 # chunks but pull unrelated sentences into an extractive answer.
                 engine_question = rewrite_followup(question, history, with_identifiers=False) or question
+            spans.mark("engine")
             result = engine.ask(
                 engine_question,
                 top_k=top_k or self.settings.top_k,
@@ -296,11 +344,13 @@ class LearAgent:
             raise
         except (ProviderUnavailable, ProviderError, RagError) as exc:
             answer = self._error_answer(question, exc, started, session_info, retrieval_query)
+            spans.mark("persist")
             if session_id and save:
                 self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
                 self.sessions.add_message(session_id, user_id, "assistant", answer["answer"], status="ERROR")
             return answer
 
+        spans.mark("mapping")
         answer = self._build_answer(result, question, retrieval_query, stamps, started, session_info, memories, system_prompt)
         if (
             answer["models"]["generation"].get("fallbackUsed")
@@ -332,6 +382,7 @@ class LearAgent:
                 }
             )
             answer["warnings"] = list(answer["warnings"]) + ["extractive_fallback_discarded"]
+        spans.mark("persist")
         if session_id and save:
             self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
             self.sessions.add_message(

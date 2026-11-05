@@ -139,24 +139,28 @@ def add_lear_parser(sub: Any) -> None:
         help="guided terminal walkthrough of the real pipeline (director, live, replay, examiner)",
         description=(
             "Terminal-only demonstration of the real Lear agent. Live scenes run in a disposable scratch "
-            "directory (your data/ is never touched); every value is labelled LIVE, RECORDED, ILLUSTRATIVE "
-            "or UNAVAILABLE. Exit: 0 all demonstrated behaviours matched, 5 a behaviour or the replay "
+            "directory (your data/ is never touched); every value is labelled LIVE, RECORDED, ILLUSTRATIVE, "
+            "UNAVAILABLE, BLOCKED or NOT QUALIFYING. Keys (director on a TTY): Enter/Space continue, p pause/resume "
+            "auto, b/Left previous, n/Right next, digits jump, r replay, d/e detail, m models, ? help, q quit. "
+            "Exit: 0 all demonstrated behaviours matched, 5 a behaviour or the replay "
             "integrity check failed, 6 the Ollama/model gate blocked the live run, 130 interrupted."
         ),
     )
     p.add_argument("mode", nargs="?", default="director",
                    choices=["director", "live", "replay", "examiner", "capture", "effects"],
                    help="director (narrated, default), live (stops at the model gate), replay (recorded bundle), "
-                        "examiner (compact, commands + evidence), capture (record a replay bundle), effects (motion library)")
+                        "examiner (compact, commands + evidence), capture (record a replay bundle), effects (effect registry)")
     p.add_argument("--plain", action="store_true", help="no colour, no motion, ASCII only (screen readers, logs, CI)")
     p.add_argument("--no-animate", action="store_true", help="keep colour, disable motion")
     p.add_argument("--json", action="store_true", help="machine-readable scene records only")
     p.add_argument("--scene", default=None, help="run only these scenes, e.g. 0,5,S08")
     p.add_argument("--source", default=None, help="Lear checkout: full docs verification, citation line checks, docs rebuild check")
-    p.add_argument("--bundle", default=None, help="replay bundle (default: the packaged recorded bundle)")
-    p.add_argument("--out", default=None, help="capture: where to write the replay bundle")
+    p.add_argument("--bundle", default=None, help="replay bundle (default: the full capture in a repository checkout, else the packaged redacted bundle)")
+    p.add_argument("--out", default=None, help="capture: where to write the replay bundle (written atomically)")
+    p.add_argument("--full", action="store_true", help="capture: keep question and answer text (default: redacted for distribution)")
+    p.add_argument("--preview", default=None, help="effects: render one recipe (or a comma list, or 'all') with labelled example data")
     p.add_argument("--speed", type=float, default=1.0, help="motion speed multiplier (0 = instant)")
-    p.add_argument("--auto", action="store_true", help="director: advance without waiting for keys")
+    p.add_argument("--auto", action="store_true", help="director: advance automatically (on a TTY, p pauses/resumes)")
     p.add_argument("--keep-scratch", action="store_true", help="keep the scratch directory for inspection")
 
     p = lsub.add_parser("report", help="summarise doctor, docs, index, every evaluation run and the latest bench")
