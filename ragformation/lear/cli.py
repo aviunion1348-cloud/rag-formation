@@ -134,6 +134,31 @@ def add_lear_parser(sub: Any) -> None:
     p.add_argument("--out", default=None)
     p.add_argument("--json", action="store_true")
 
+    p = lsub.add_parser(
+        "demo",
+        help="guided terminal walkthrough of the real pipeline (director, live, replay, examiner)",
+        description=(
+            "Terminal-only demonstration of the real Lear agent. Live scenes run in a disposable scratch "
+            "directory (your data/ is never touched); every value is labelled LIVE, RECORDED, ILLUSTRATIVE "
+            "or UNAVAILABLE. Exit: 0 all demonstrated behaviours matched, 5 a behaviour or the replay "
+            "integrity check failed, 6 the Ollama/model gate blocked the live run, 130 interrupted."
+        ),
+    )
+    p.add_argument("mode", nargs="?", default="director",
+                   choices=["director", "live", "replay", "examiner", "capture", "effects"],
+                   help="director (narrated, default), live (stops at the model gate), replay (recorded bundle), "
+                        "examiner (compact, commands + evidence), capture (record a replay bundle), effects (motion library)")
+    p.add_argument("--plain", action="store_true", help="no colour, no motion, ASCII only (screen readers, logs, CI)")
+    p.add_argument("--no-animate", action="store_true", help="keep colour, disable motion")
+    p.add_argument("--json", action="store_true", help="machine-readable scene records only")
+    p.add_argument("--scene", default=None, help="run only these scenes, e.g. 0,5,S08")
+    p.add_argument("--source", default=None, help="Lear checkout: full docs verification, citation line checks, docs rebuild check")
+    p.add_argument("--bundle", default=None, help="replay bundle (default: the packaged recorded bundle)")
+    p.add_argument("--out", default=None, help="capture: where to write the replay bundle")
+    p.add_argument("--speed", type=float, default=1.0, help="motion speed multiplier (0 = instant)")
+    p.add_argument("--auto", action="store_true", help="director: advance without waiting for keys")
+    p.add_argument("--keep-scratch", action="store_true", help="keep the scratch directory for inspection")
+
     p = lsub.add_parser("report", help="summarise doctor, docs, index, every evaluation run and the latest bench")
     p.add_argument("--source", default=None, help="Lear checkout for docs path checks and coverage")
     p.add_argument("--out", default=None)
@@ -466,7 +491,14 @@ def _cmd_report(args, settings) -> int:
     return 0
 
 
+def _cmd_demo(args, settings) -> int:
+    from .demo import run_demo
+
+    return run_demo(args, settings)
+
+
 HANDLERS = {
+    "demo": _cmd_demo,
     "doctor": _cmd_doctor,
     "docs": _cmd_docs,
     "index": _cmd_index,
