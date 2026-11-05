@@ -110,14 +110,33 @@ def locate_lines(doc_lines: List[str], chunk_text: str, heading_path: List[str])
     """1-based inclusive line span of a chunk inside its document.
 
     A document line is *covered* when its normalised text (12+ characters)
-    occurs in the normalised chunk text. Falls back to the span of the chunk's
-    deepest heading section, then to the whole document, and says which.
+    occurs in the normalised chunk text. Covered lines are grouped into runs
+    that are not interrupted by a substantive line the chunk does not contain;
+    the run with the most distinctive coverage wins (a line that repeats all
+    over the page, such as "- Registered in the CLI dispatcher: yes.", counts
+    1/n). Without that, one repeated line made a chunk "span" the whole page.
+    Falls back to the span of the chunk's deepest heading section, then to the
+    whole document, and says which.
     """
 
     haystack = _norm(chunk_text.replace("\n", " "))
-    covered = [i for i, line in enumerate(doc_lines) if len(_norm(line)) >= 12 and _norm(line) in haystack]
+    norms = [_norm(line) for line in doc_lines]
+    substantive = [len(n) >= 12 for n in norms]
+    covered = [i for i, n in enumerate(norms) if substantive[i] and n in haystack]
     if covered:
-        return covered[0] + 1, covered[-1] + 1, "lines"
+        repeats: Dict[str, int] = {}
+        for i, n in enumerate(norms):
+            if substantive[i]:
+                repeats[n] = repeats.get(n, 0) + 1
+        runs: List[List[int]] = [[covered[0]]]
+        for i in covered[1:]:
+            gap = sum(1 for j in range(runs[-1][-1] + 1, i) if substantive[j])
+            if gap <= 1:
+                runs[-1].append(i)
+            else:
+                runs.append([i])
+        best = max(runs, key=lambda run: (sum(1.0 / repeats[norms[i]] for i in run), len(run), -run[0]))
+        return best[0] + 1, best[-1] + 1, "lines"
     if heading_path:
         target = _norm(heading_path[-1])
         for i, line in enumerate(doc_lines):

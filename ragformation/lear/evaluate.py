@@ -61,6 +61,15 @@ def _unique(seq: Sequence[Optional[str]]) -> List[str]:
     return out
 
 
+def _span(lines: Optional[str]) -> Optional[int]:
+    """Lines covered by a citation range such as "12-18" (or "7")."""
+    match = re.fullmatch(r"\s*(\d+)\s*(?:-\s*(\d+))?\s*", str(lines or ""))
+    if not match:
+        return None
+    start, end = int(match.group(1)), int(match.group(2) or match.group(1))
+    return max(1, end - start + 1)
+
+
 def _mean(values: Sequence[Optional[float]]) -> Optional[float]:
     data = [float(v) for v in values if v is not None]
     return round(sum(data) / len(data), 4) if data else None
@@ -118,6 +127,7 @@ def score_case(case: Dict[str, Any], answer: Dict[str, Any], context_texts: Dict
         "error": status == "ERROR",
         "citations": len(citations),
         "citationsWithLines": sum(1 for c in citations if c.get("lines")),
+        "citationSpanLines": [_span(c.get("lines")) for c in citations if _span(c.get("lines")) is not None],
     }
     if answerable and relevant:
         metrics.update({
@@ -201,6 +211,8 @@ def _summarise(rows: List[Dict[str, Any]]) -> Dict[str, Any]:
             "withLineRanges": round(
                 sum(r["metrics"]["citationsWithLines"] for r in rows) / max(1, sum(r["metrics"]["citations"] for r in rows)), 4
             ),
+            "spanLines": describe([float(v) for r in rows for v in r["metrics"].get("citationSpanLines", [])]),
+            "within40Lines": _rate([v <= 40 for r in rows for v in r["metrics"].get("citationSpanLines", [])]),
         },
         "proxyScores": {d: _mean([r["metrics"]["proxy"].get(d) for r in rows]) for d in DIMENSIONS},
         "latencyMs": {
@@ -332,6 +344,8 @@ def run_evaluation(
                 ],
                 "retrievedDocs": _unique([c.get("document") for c in (answer.get("retrieval") or {}).get("candidates", [])]),
                 "retrievalQuery": (answer.get("retrieval") or {}).get("retrievalQuery"),
+                "bestSupport": (answer.get("retrieval") or {}).get("bestSupport"),
+                "warnings": answer.get("warnings") or [],
                 "correlationId": answer.get("correlationId"),
                 "qualifying": answer.get("qualifying", False),
                 "timings": {k: v for k, v in (answer.get("timings") or {}).items() if not str(k).startswith("_")},
@@ -407,6 +421,8 @@ def render_run(report: Dict[str, Any], *, markdown: bool = False) -> str:
         ("citation precision", c["citationPrecision"]),
         ("answers with citations", c["answersWithCitations"]),
         ("citations with line ranges", c["withLineRanges"]),
+        ("citation span <= 40 lines", c.get("within40Lines")),
+        ("citation span p50 (lines)", (c.get("spanLines") or {}).get("p50")),
     ]
     if markdown:
         lines += ["| metric | value |", "|---|---|"] + [f"| {k} | {_fmt(v)} |" for k, v in table]

@@ -28,6 +28,12 @@ DEFAULT_LLM_MODEL = "qwen2.5:1.5b"  # ~1.5B parameters
 DEFAULT_JUDGE_MODEL = "llama3.2:1b"  # ~1.2B parameters, a different model family
 EMBED_MAX_PARAMS = 200_000_000
 MODEL_MAX_PARAMS = 4_000_000_000
+# Abstention threshold on the engine's retrieval-support score. The baseline
+# value was calibrated in round 2 on the calibration split only (see
+# docs/lear_agent/round_2_report.md). Support blends lexical coverage with the
+# embedding cosine, so the Ollama distribution differs and stays at the engine
+# default until `lear eval run --suite calibration` can run against Ollama.
+ABSTAIN_DEFAULTS = {"baseline": 0.215, "ollama": 0.24}
 
 LOOPBACK_HOSTS = {"127.0.0.1", "localhost", "::1"}
 BACKENDS = {"ollama", "baseline"}
@@ -88,7 +94,8 @@ class LearSettings:
     max_output_tokens: int = 512
     temperature: float = 0.2
     top_p: float = 0.9
-    abstain_threshold: float = 0.24
+    # None = per-backend default (see ABSTAIN_DEFAULTS); set to override.
+    abstain_threshold: Optional[float] = None
     request_timeout_s: float = 180.0
     # chunking (heading-aware, token windows); part of the chunking fingerprint
     chunk_target_tokens: int = 180
@@ -105,6 +112,8 @@ class LearSettings:
     max_concurrent: int = 2
     queue_timeout_s: float = 30.0
     max_input_chars: int = 2000
+    # decline questions naming things the indexed docs never mention
+    scope_guard: bool = True
     # Optional override so evaluation/benchmark runs keep their sessions out of
     # the user's agent.db while reading the same index.
     agent_db_path: Optional[Path] = None
@@ -129,7 +138,7 @@ class LearSettings:
             max_output_tokens=_env_int("RAG_LEAR_MAX_OUTPUT_TOKENS", 512),
             temperature=_env_float("RAG_LEAR_TEMPERATURE", 0.2),
             top_p=_env_float("RAG_LEAR_TOP_P", 0.9),
-            abstain_threshold=_env_float("RAG_LEAR_ABSTAIN_THRESHOLD", 0.24),
+            abstain_threshold=_env_float("RAG_LEAR_ABSTAIN_THRESHOLD", -1.0),
             request_timeout_s=_env_float("RAG_LEAR_REQUEST_TIMEOUT_S", 180.0),
             chunk_target_tokens=_env_int("RAG_LEAR_CHUNK_TARGET_TOKENS", 180),
             chunk_max_tokens=_env_int("RAG_LEAR_CHUNK_MAX_TOKENS", 300),
@@ -143,7 +152,10 @@ class LearSettings:
             max_concurrent=_env_int("RAG_LEAR_MAX_CONCURRENT", 2),
             queue_timeout_s=_env_float("RAG_LEAR_QUEUE_TIMEOUT_S", 30.0),
             max_input_chars=_env_int("RAG_LEAR_MAX_INPUT_CHARS", 2000),
+            scope_guard=(_env("RAG_LEAR_SCOPE_GUARD", "1") or "1").lower() not in {"0", "false", "no", "off"},
         )
+        if values["abstain_threshold"] < 0:  # unset: use the per-backend default
+            values["abstain_threshold"] = None
         values.update({k: v for k, v in overrides.items() if v is not None})
         settings = cls(**values)
         settings.validate()
@@ -177,6 +189,8 @@ class LearSettings:
             raise ConfigError("RAG_LEAR_MAX_INPUT_CHARS must be between 64 and 2000")
         if self.max_context_tokens < 200:
             raise ConfigError("RAG_LEAR_MAX_CONTEXT_TOKENS must be at least 200")
+        if self.abstain_threshold is not None and not 0.0 <= float(self.abstain_threshold) <= 1.0:
+            raise ConfigError("RAG_LEAR_ABSTAIN_THRESHOLD must be between 0 and 1")
 
     # ------------------------------------------------------------- derived
     @property
@@ -184,6 +198,18 @@ class LearSettings:
         """Only the Ollama backend can satisfy the local-model requirements."""
 
         return self.backend == "ollama"
+
+    @property
+    def effective_abstain_threshold(self) -> float:
+        if self.abstain_threshold is not None:
+            return float(self.abstain_threshold)
+        return ABSTAIN_DEFAULTS[self.backend]
+
+    @property
+    def abstain_threshold_source(self) -> str:
+        if self.abstain_threshold is not None:
+            return "configured"
+        return "calibrated (baseline, calibration split)" if self.backend == "baseline" else "uncalibrated engine default"
 
     @property
     def index_dir(self) -> Path:
@@ -210,7 +236,7 @@ class LearSettings:
             max_output_tokens=self.max_output_tokens,
             top_k=self.top_k,
             max_context_tokens=self.max_context_tokens,
-            abstain_threshold=self.abstain_threshold,
+            abstain_threshold=self.effective_abstain_threshold,
             request_timeout_s=self.request_timeout_s,
             chunk_target_tokens=self.chunk_target_tokens,
             chunk_max_tokens=self.chunk_max_tokens,
@@ -229,5 +255,7 @@ class LearSettings:
             if isinstance(value, Path):
                 data[key] = str(value)
         data["qualifying"] = self.qualifying
+        data["effective_abstain_threshold"] = self.effective_abstain_threshold
+        data["abstain_threshold_source"] = self.abstain_threshold_source
         data.pop("extra", None)
         return data

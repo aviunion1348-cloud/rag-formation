@@ -214,6 +214,19 @@ class BaselineAgentTests(PipelineCase):
         self.assertEqual(exit_code_for(answer), 3)
         self.assertEqual(answer["citations"], [])
 
+    def test_question_about_an_unknown_named_thing_abstains_before_retrieval(self) -> None:
+        answer = self.agent.ask("Which Kafka topics does the permission engine publish to?")
+        self.assertEqual(answer["status"], "ABSTAINED")
+        self.assertEqual(answer["abstainReason"], "unknown_term")
+        self.assertEqual(answer["retrieval"]["unknownTerms"], ["Kafka"])
+        self.assertIn("'Kafka'", answer["answer"])
+        self.assertEqual(exit_code_for(answer), 3)
+        relaxed = LearAgent(self.settings(scope_guard=False))
+        try:
+            self.assertNotEqual(relaxed.ask("Which Kafka topics does the permission engine publish to?")["abstainReason"], "unknown_term")
+        finally:
+            relaxed.close()
+
     def test_follow_up_uses_session_history(self) -> None:
         self.agent.ask("What does the circuit breaker allow?", session_id="s-1")
         follow = self.agent.ask("What is its window?", session_id="s-1")

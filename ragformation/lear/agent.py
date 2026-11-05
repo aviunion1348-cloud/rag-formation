@@ -27,7 +27,7 @@ from typing import Any, Callable, Dict, List, Optional
 
 from ..engine import RAGEngine
 from ..errors import ProviderError, ProviderUnavailable, RagError, RateLimited, ValidationError
-from ..text import approx_tokens, content_terms
+from ..text import approx_tokens, content_terms, term_matches, tokenize
 from .compaction import COMPACTION_VERSION, compact, extract_identifiers
 from .indexer import check_index_fingerprint, load_manifest, load_pin
 from .memory import MemoryStore
@@ -51,6 +51,45 @@ _PARTIAL_MARKERS = re.compile(
     r"no information (about|on)|evidence (does not|doesn't) (include|cover|say))",
     re.IGNORECASE,
 )
+
+
+_BACKTICKS = re.compile(r"`[^`]*`")
+_WORD = re.compile(r"[A-Za-z][A-Za-z0-9_'\u2019-]*[A-Za-z0-9]")
+
+
+def salient_terms(question: str) -> List[str]:
+    """Name-like tokens of a question: capitalised (not sentence-initial),
+    ALL-CAPS, or letters mixed with digits. Text inside backticks is the
+    user's own literal (a command, a pod name) and is ignored."""
+
+    text = _BACKTICKS.sub(" ", question or "")
+    out: List[str] = []
+    for match in _WORD.finditer(text):
+        token = re.sub(r"['\u2019]s$", "", match.group(0))
+        if len(token) < 3:
+            continue
+        before = text[: match.start()].rstrip()
+        initial = not before or before[-1] in ".?!:;\"("
+        named = (token[0].isupper() and not initial) or (token.isupper() and len(token) >= 3)
+        if named or (any(ch.isdigit() for ch in token) and any(ch.isalpha() for ch in token)):
+            if token not in out:
+                out.append(token)
+    return out
+
+
+def unknown_terms(question: str, vocabulary: "set[str]") -> List[str]:
+    """Salient question terms that never occur in the indexed documentation."""
+
+    missing = []
+    for term in salient_terms(question):
+        low = term.lower()
+        parts = [p for p in re.split(r"[-_./']", low) if p]
+        if low in vocabulary or (parts and all(p in vocabulary for p in parts)):
+            continue
+        if len(low) >= 4 and any(term_matches(low, v) for v in vocabulary if v[:2] == low[:2]):
+            continue
+        missing.append(term)
+    return missing
 
 
 def rewrite_followup(question: str, history: List[Dict[str, Any]]) -> Optional[str]:
@@ -120,6 +159,20 @@ class LearAgent:
         if self._manifest is None:
             self._manifest = {e["chunk_id"]: e for e in load_manifest(self.settings).get("chunks", [])}
         return self._manifest
+
+    def vocabulary(self) -> "set[str]":
+        """Every token of the indexed Lear docs (and its -/_ parts); cached per index state."""
+
+        engine = self.engine
+        key = (engine.store.counts()["chunks"], engine.store.get_meta("last_ingest_at"))
+        if getattr(self, "_vocab_key", None) != key:
+            vocab: set = set()
+            for chunk in engine.store.all_chunks():
+                for token in tokenize(chunk.text):
+                    vocab.add(token)
+                    vocab.update(p for p in re.split(r"[-_./']", token) if p)
+            self._vocab, self._vocab_key = vocab, key
+        return self._vocab
 
     # ----------------------------------------------------------------- ask
     def ask(
@@ -202,6 +255,16 @@ class LearAgent:
         try:
             engine = self.engine
             check_index_fingerprint(engine)
+            missing = unknown_terms(question, self.vocabulary()) if self.settings.scope_guard else []
+            if missing:
+                # Named things the documentation never mentions (a product, a
+                # metric, a vendor): answering would mean guessing, so decline
+                # before retrieval/generation and say which term is unknown.
+                answer = self._scope_answer(question, missing, started, session_info, retrieval_query)
+                if session_id and save:
+                    self.sessions.add_message(session_id, user_id, "user", question, tokens=approx_tokens(question))
+                    self.sessions.add_message(session_id, user_id, "assistant", answer["answer"], status="ABSTAINED")
+                return answer
             result = engine.ask(
                 question,
                 top_k=top_k or self.settings.top_k,
@@ -383,6 +446,36 @@ class LearAgent:
             "bestSupport": (result.metrics or {}).get("bestSupport"),
             "stages": stages,
             "mode": (result.metrics or {}).get("mode"),
+        }
+
+    def _scope_answer(self, question, missing, started, session_info, retrieval_query) -> Dict[str, Any]:
+        names = ", ".join(f"'{t}'" for t in missing)
+        return {
+            "status": "ABSTAINED",
+            "answer": (
+                f"The indexed Lear documentation never mentions {names}, so this cannot be answered from it. "
+                "Ask about the Lear backend code (CLI, actions, permissions, connectors, desktop server) instead."
+            ),
+            "citations": [],
+            "qualifying": self.settings.qualifying,
+            "backend": self.settings.backend,
+            "models": {"generation": {"configured": f"ollama:{self.settings.llm_model}", "used": None, "fallbackUsed": False},
+                       "embedding": {"model": self.settings.embed_model}},
+            "promptVersion": LEAR_PROMPT_VERSION,
+            "session": session_info,
+            "memoryUsed": [],
+            "retrieval": {"query": question, "retrievalQuery": retrieval_query, "candidates": [], "selected": [],
+                          "excluded": [], "quarantined": [], "bestSupport": None, "stages": {}, "unknownTerms": list(missing)},
+            "timings": {"ttftMs": None, "totalMs": round((time.perf_counter() - started) * 1000.0, 2), "streamEvents": 0,
+                        "completionTokens": None, "tokensEstimated": False, "tokensPerSec": None, "decodeEventsPerSec": None,
+                        "itlMs": describe([]), "stages": {}, "_itlRaw": []},
+            "correlationId": None,
+            "engineStatus": "not_called",
+            "abstainReason": "unknown_term",
+            "conflict": None,
+            "warnings": ["unknown_term"],
+            "sourceCommit": self.pin.get("commit"),
+            "error": None,
         }
 
     def _error_answer(self, question, exc: RagError, started, session_info, retrieval_query) -> Dict[str, Any]:

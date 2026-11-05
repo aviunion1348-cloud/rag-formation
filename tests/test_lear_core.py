@@ -11,7 +11,9 @@ from pathlib import Path
 from ragformation.errors import ConfigError, NotFound, RateLimited, ValidationError
 from ragformation.lear import evalset
 from ragformation.lear.compaction import COMPACTION_VERSION, compact, extract_identifiers
+from ragformation.lear.agent import salient_terms, unknown_terms
 from ragformation.lear.evaluate import score_case
+from ragformation.lear.indexer import locate_lines, prepare_for_index
 from ragformation.lear.judge import DIMENSIONS, validate_judgement
 from ragformation.lear.memory import MemoryStore
 from ragformation.lear.prompts import LEAR_PROMPT_VERSION, render_system_prompt
@@ -63,6 +65,13 @@ class SettingsTests(unittest.TestCase):
         baseline = LearSettings(backend="baseline").engine_settings()
         self.assertEqual((baseline.embed_provider, baseline.llm_provider), ("hashing", "extractive"))
         self.assertFalse(LearSettings(backend="baseline").qualifying)
+
+    def test_abstain_threshold_defaults_are_per_backend(self) -> None:
+        self.assertEqual(LearSettings(backend="baseline").effective_abstain_threshold, 0.215)
+        self.assertEqual(LearSettings(backend="ollama").effective_abstain_threshold, 0.24)
+        self.assertEqual(LearSettings(backend="ollama", abstain_threshold=0.3).engine_settings().abstain_threshold, 0.3)
+        with self.assertRaises(ConfigError):
+            LearSettings(abstain_threshold=1.5).validate()
 
     def test_agent_db_override_keeps_index_location(self) -> None:
         settings = LearSettings(data_dir=Path("/tmp/x"), agent_db_path=Path("/tmp/eval.db"))
@@ -236,6 +245,42 @@ class MemoryTests(TempDirCase):
         shared = [m for m in self.memory.list("alice") if m["scope"] == "global"]
         self.assertEqual(len(shared), 1)
         self.assertEqual(shared[0]["verification"], "unverified")
+
+
+# ------------------------------------------------------- index helpers
+class IndexHelperTests(unittest.TestCase):
+    def test_line_span_ignores_lines_repeated_across_the_page(self) -> None:
+        doc = []
+        for name in ("alpha", "beta", "gamma", "delta"):
+            doc += [f"## prash/{name}.py", "", f"- Docstring summary: the {name} module does {name} things.",
+                    "- Registered in the CLI dispatcher: yes.", ""]
+        chunk = "prash/gamma.py\n- Docstring summary: the gamma module does gamma things.\n- Registered in the CLI dispatcher: yes."
+        start, end, precision = locate_lines(doc, chunk, ["prash/gamma.py"])
+        self.assertEqual(precision, "lines")
+        # Tight span around the gamma entry (the previous entry's identical last
+        # line may attach at the edge); first..last coverage would give 4..19.
+        self.assertIn(start, (9, 11))
+        self.assertEqual(end, 14)
+
+    def test_prepare_for_index_markers_and_labels(self) -> None:
+        text = "# T\n\n- **[tested]** A claim.\n<!-- lear-index: skip -->\n- [nav](x.md)\n<!-- lear-index: end -->\nTail\n"
+        self.assertEqual(prepare_for_index(text), "# T\n\n- [tested] A claim.\nTail\n")
+        self.assertIsNone(prepare_for_index("# Nav\n<!-- lear-index: skip-page -->\n"))
+
+
+class ScopeGuardTests(unittest.TestCase):
+    VOCAB = {"lear", "safe", "tier", "connectorevent", "kimi", "api", "key", "providers", "cli", "get", "prash"}
+
+    def test_salient_terms(self) -> None:
+        self.assertEqual(salient_terms("Which Kafka topics does Lear publish?"), ["Kafka", "Lear"])
+        self.assertEqual(salient_terms("What is Lear's p99 latency?"), ["Lear", "p99"])
+        self.assertEqual(salient_terms("If I run `prash fix team-a/web-1` what happens?"), [])
+
+    def test_unknown_terms_only_flags_names_missing_from_the_docs(self) -> None:
+        self.assertEqual(unknown_terms("Which Kafka topics does Lear publish?", self.VOCAB), ["Kafka"])
+        self.assertEqual(unknown_terms("What does a SAFE-tier action get?", self.VOCAB), [])
+        self.assertEqual(unknown_terms("Print the KIMI_API_KEY value", self.VOCAB), [])
+        self.assertEqual(unknown_terms("Which PROVIDERS does the CLI's map hold?", self.VOCAB), [])
 
 
 # ------------------------------------------------------------- judge schema
