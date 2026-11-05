@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ragformation — grounded answers with citations</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<a class="skip" href="#ask">Skip to the question box</a>
+
+<header class="topbar">
+  <div class="brand">
+    <span class="mark" aria-hidden="true"></span>
+    <div>
+      <h1>ragformation</h1>
+      <p class="sub">Retrieval-grounded answers · every claim carries a source</p>
+    </div>
+  </div>
+  <div class="status" id="providers" aria-live="polite">
+    <span class="chip loading">connecting…</span>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- ------------------------------------------------------------ sources -->
+  <section class="panel sources" aria-labelledby="sources-heading">
+    <div class="panel-head">
+      <h2 id="sources-heading">Knowledge sources</h2>
+      <span class="count" id="source-count">—</span>
+    </div>
+
+    <div class="ingest">
+      <button class="btn" id="ingest-sample" type="button">Index <code>corpus/</code></button>
+      <label class="btn ghost" for="file-input">Upload file</label>
+      <input id="file-input" type="file" hidden accept=".md,.markdown,.txt,.rst,.html,.htm,.json,.csv,.docx,.pdf">
+      <button class="btn ghost" id="toggle-paste" type="button" aria-expanded="false" aria-controls="paste-form">Paste text</button>
+    </div>
+
+    <form class="paste" id="paste-form" hidden>
+      <label for="paste-title">Title</label>
+      <input id="paste-title" name="title" placeholder="e.g. On-call handover note" autocomplete="off">
+      <label for="paste-text">Text</label>
+      <textarea id="paste-text" name="text" rows="4" placeholder="Paste a note, runbook excerpt or policy paragraph…"></textarea>
+      <div class="row">
+        <button class="btn" type="submit">Index note</button>
+        <button class="btn ghost" type="button" id="cancel-paste">Cancel</button>
+      </div>
+    </form>
+
+    <ul class="source-list" id="source-list" aria-live="polite"></ul>
+
+    <div class="panel-foot">
+      <button class="link" id="rebuild" type="button">Rebuild index</button>
+      <button class="link" id="refresh" type="button">Refresh</button>
+    </div>
+  </section>
+
+  <!-- -------------------------------------------------------------- asking -->
+  <section class="panel ask" aria-labelledby="ask-heading" id="ask">
+    <div class="panel-head">
+      <h2 id="ask-heading">Ask the corpus</h2>
+      <span class="count" id="mode-note">hybrid · rerank on</span>
+    </div>
+
+    <form id="ask-form" class="ask-form">
+      <label class="sr-only" for="question">Your question</label>
+      <div class="ask-row">
+        <textarea id="question" rows="2" placeholder="How long are audit logs retained?" required></textarea>
+        <button class="btn primary" type="submit" id="ask-button">Ask</button>
+      </div>
+      <div class="controls">
+        <label>top_k <output id="topk-out">6</output>
+          <input type="range" id="topk" min="1" max="12" value="6">
+        </label>
+        <label>mode
+          <select id="mode">
+            <option value="hybrid" selected>hybrid (semantic + BM25, RRF)</option>
+            <option value="semantic">semantic only</option>
+            <option value="lexical">lexical only</option>
+          </select>
+        </label>
+        <label>temperature <output id="temp-out">0.3</output>
+          <input type="range" id="temperature" min="0" max="1" step="0.1" value="0.3">
+        </label>
+      </div>
+      <div class="suggestions">
+        <span>Try:</span>
+        <button type="button" class="pill" data-q="How long are audit logs retained?">audit log retention</button>
+        <button type="button" class="pill" data-q="When must the incident commander be paged for a SEV-1 incident?">SEV-1 paging</button>
+        <button type="button" class="pill" data-q="What is the maximum duration of vendor access to production systems, and who approves it?">vendor access</button>
+        <button type="button" class="pill warn" data-q="What is the policy on lunar payload insurance?">unanswerable → abstain</button>
+      </div>
+    </form>
+
+    <div id="answer-region" class="answer-region" aria-live="polite"></div>
+
+    <nav class="tabs" id="tabs" hidden>
+      <button class="tab active" data-tab="evidence" type="button">Evidence</button>
+      <button class="tab" data-tab="trace" type="button">Trace</button>
+      <button class="tab" data-tab="metrics" type="button">Metrics</button>
+      <button class="tab" data-tab="safety" type="button">Safety</button>
+    </nav>
+    <div class="tab-panels" id="tab-panels" hidden>
+      <div class="tab-panel active" data-panel="evidence"></div>
+      <div class="tab-panel" data-panel="trace"></div>
+      <div class="tab-panel" data-panel="metrics"></div>
+      <div class="tab-panel" data-panel="safety"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <p>
+    <strong>What you are looking at.</strong> Ingestion, chunking, embeddings, a SQLite vector
+    index with an FTS5 lexical index, Reciprocal Rank Fusion, guardrails, citation validation and
+    telemetry are all real and running locally. Language models are used only if Ollama or an
+    OpenAI-compatible endpoint is configured; otherwise answers are quoted directly from evidence
+    and labelled as extractive. Provider status is shown at the top right — no hidden substitution.
+  </p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script src="/app.js"></script>
+</body>
+</html>

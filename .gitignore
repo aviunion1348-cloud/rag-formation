@@ -1,0 +1,26 @@
+# Local data: the SQLite index, telemetry and anything derived from documents.
+# The index is *derived* data — re-create it with `make ingest`.
+data/
+*.db
+*.db-wal
+*.db-shm
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+
+# Local configuration and secrets
+.env
+.env.local
+
+# Editor / OS noise
+.DS_Store
+*.swp
