@@ -38,6 +38,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from ..chunking import Chunker
 from ..guardrails import _CREDENTIAL_PATTERNS, scan_text
 from ..loaders import load_bytes
+from .indexer import prepare_for_index
 from .settings import LearSettings
 
 REQUIRED_PAGES = (
@@ -235,7 +236,10 @@ def verify_docs(docs_dir: Path, source: Optional[Path] = None) -> Dict[str, Any]
     quarantined = []
     chunk_total = 0
     for page, text in texts.items():
-        loaded = load_bytes(page.name, text.encode("utf-8"), max_bytes=settings.max_source_bytes)
+        indexed = prepare_for_index(text)  # same markers the indexer applies
+        if indexed is None:
+            continue
+        loaded = load_bytes(page.name, indexed.encode("utf-8"), max_bytes=settings.max_source_bytes)
         for chunk in chunker.chunk(loaded, "verify-" + page.stem):
             chunk_total += 1
             chunk_hashes[chunk.content_hash].append(f"{page.relative_to(docs_dir)}#{chunk.ordinal}")

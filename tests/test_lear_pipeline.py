@@ -131,6 +131,48 @@ class IndexerTests(PipelineCase):
         finally:
             restarted.close()
 
+    def test_chunking_change_rechunks_every_document(self) -> None:
+        # Regression: the engine keeps one global chunking fingerprint and sets
+        # it on the first re-ingested file, so unchanged files used to keep
+        # chunks made with the old settings after an incremental rebuild.
+        old = self.settings(chunk_overlap_tokens=20, chunk_target_tokens=40, chunk_max_tokens=80)
+        agent = LearAgent(old)
+        try:
+            indexer.rebuild(agent.engine, old)
+        finally:
+            agent.close()
+        (self.docs / "ops.md").write_text(OPS + "\nOne more line about `prash run` exit codes.\n", encoding="utf-8")
+        new = self.settings(chunk_overlap_tokens=0, chunk_target_tokens=40, chunk_max_tokens=80)
+        agent = LearAgent(new)
+        try:
+            report = indexer.rebuild(agent.engine, new)
+            self.assertTrue(report["rechunked"])
+            self.assertEqual(report["counts"]["updated"], 3)
+            mixed = sorted(c.text for c in agent.engine.store.all_chunks())
+        finally:
+            agent.close()
+        fresh_settings = self.settings(data_dir=self.tmp / "fresh", chunk_overlap_tokens=0, chunk_target_tokens=40, chunk_max_tokens=80)
+        fresh = LearAgent(fresh_settings)
+        try:
+            indexer.rebuild(fresh.engine, fresh_settings)
+            self.assertEqual(mixed, sorted(c.text for c in fresh.engine.store.all_chunks()))
+        finally:
+            fresh.close()
+
+    def test_index_markers_exclude_navigation(self) -> None:
+        (self.docs / "nav.md").write_text("# Nav\n\n<!-- lear-index: skip-page -->\n\n- [Guide](guide.md)\n", encoding="utf-8")
+        (self.docs / "guide.md").write_text(GUIDE + "\n<!-- lear-index: skip -->\n## Pages\n\n- [Ops](ops.md) zebra-navigation-only\n<!-- lear-index: end -->\n", encoding="utf-8")
+        settings = self.settings()
+        agent = LearAgent(settings)
+        try:
+            report = indexer.rebuild(agent.engine, settings)
+            self.assertEqual(report["excludedPages"], ["nav.md"])
+            texts = " ".join(c.text for c in agent.engine.store.all_chunks())
+            self.assertNotIn("zebra-navigation-only", texts)
+            self.assertNotIn("**", texts.replace("**[", ""))  # labels are normalised
+        finally:
+            agent.close()
+
     def test_table_rows_stay_together(self) -> None:
         settings = self.settings()
         agent = LearAgent(settings)

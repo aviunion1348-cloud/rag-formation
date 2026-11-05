@@ -963,6 +963,9 @@ SOURCE_MAP: Sequence[Tuple[str, str, Sequence[str]]] = (
 def render_source_map(source: Path, pin: Dict[str, Any], files: Sequence[str]) -> str:
     tracked = set(files)
     out = _header("Lear backend — source map", pin, "Topic-to-file index used to navigate the code; each file entry is checked to exist at the pinned commit.", label="implemented (file existence)")
+    # Navigation only: the topic headings match many questions while the
+    # entries carry no facts, so the page stays out of the assistant's index.
+    out += ["<!-- lear-index: skip-page -->", ""]
     for topic, desc, paths in SOURCE_MAP:
         out += [f"## {topic}", "", f"{desc}.", ""]
         for rel in paths:

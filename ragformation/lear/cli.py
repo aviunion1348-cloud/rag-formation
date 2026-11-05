@@ -56,6 +56,7 @@ def add_lear_parser(sub: Any) -> None:
     isub = idx.add_subparsers(dest="index_command", required=True)
     p = isub.add_parser("rebuild", help="incremental ingest of docs/lear_backend (+ --full re-embed)")
     p.add_argument("--full", action="store_true", help="re-embed every chunk via the staged rebuild")
+    p.add_argument("--rechunk", action="store_true", help="re-chunk every document even if unchanged (after a chunker or loader change)")
     p.add_argument("--json", action="store_true")
     p = isub.add_parser("stats", help="index and manifest statistics")
     p.add_argument("--json", action="store_true")
@@ -244,7 +245,7 @@ def _cmd_index(args, settings) -> int:
     try:
         engine = agent.engine
         if args.index_command == "rebuild":
-            report = indexer.rebuild(engine, settings, full=args.full)
+            report = indexer.rebuild(engine, settings, full=args.full, rechunk=args.rechunk)
             text = (
                 f"namespace={report['namespace']} files={report['files']} chunks={report['chunks']} counts={report['counts']}\n"
                 f"embedding={report['embedding']['provider']}:{report['embedding']['model']} dim={report['embedding']['dimension']}"

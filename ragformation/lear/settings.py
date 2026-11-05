@@ -90,6 +90,10 @@ class LearSettings:
     top_p: float = 0.9
     abstain_threshold: float = 0.24
     request_timeout_s: float = 180.0
+    # chunking (heading-aware, token windows); part of the chunking fingerprint
+    chunk_target_tokens: int = 180
+    chunk_max_tokens: int = 300
+    chunk_overlap_tokens: int = 20
     # sessions / context
     session_ttl_s: int = 7 * 24 * 3600
     history_token_budget: int = 900
@@ -127,6 +131,9 @@ class LearSettings:
             top_p=_env_float("RAG_LEAR_TOP_P", 0.9),
             abstain_threshold=_env_float("RAG_LEAR_ABSTAIN_THRESHOLD", 0.24),
             request_timeout_s=_env_float("RAG_LEAR_REQUEST_TIMEOUT_S", 180.0),
+            chunk_target_tokens=_env_int("RAG_LEAR_CHUNK_TARGET_TOKENS", 180),
+            chunk_max_tokens=_env_int("RAG_LEAR_CHUNK_MAX_TOKENS", 300),
+            chunk_overlap_tokens=_env_int("RAG_LEAR_CHUNK_OVERLAP_TOKENS", 20),
             session_ttl_s=_env_int("RAG_LEAR_SESSION_TTL_S", 7 * 24 * 3600),
             history_token_budget=_env_int("RAG_LEAR_HISTORY_TOKENS", 900),
             keep_recent_turns=_env_int("RAG_LEAR_KEEP_RECENT_TURNS", 4),
@@ -205,6 +212,9 @@ class LearSettings:
             max_context_tokens=self.max_context_tokens,
             abstain_threshold=self.abstain_threshold,
             request_timeout_s=self.request_timeout_s,
+            chunk_target_tokens=self.chunk_target_tokens,
+            chunk_max_tokens=self.chunk_max_tokens,
+            chunk_overlap_tokens=self.chunk_overlap_tokens,
             allow_path_ingest=True,
             persist_traces=True,
             host="127.0.0.1",

@@ -12,8 +12,8 @@ Produced by `python -m ragformation lear docs verify --source <lear checkout> --
 | source_refs | PASS | 1237 references, 0 invalid |
 | stale_commits | PASS | 0 foreign commit ids; 0 narrative pages without the pinned id |
 | claim_labels | PASS | 340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite none) |
-| duplicates | PASS | 0 repeated paragraphs; 0 identical chunks of 378 |
-| guardrails | PASS | 0 of 378 chunks would be quarantined by the injection guard |
+| duplicates | PASS | 0 repeated paragraphs; 0 identical chunks of 355 |
+| guardrails | PASS | 0 of 355 chunks would be quarantined by the injection guard |
 | secrets | PASS | 0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold the full commit id) |
 | api_auth_claim | PASS | 87 method/path routes from 85 route decorators in prash/server.py; 0 declare Depends/Security/dependencies; middleware: CORSMiddleware; custom @app.middleware: 0; documented 'no authentication dependency' claim holds |
 | route_count | PASS | reference/http_api.md documents 87 routes; the AST of prash/server.py has 87 |

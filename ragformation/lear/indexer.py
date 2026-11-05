@@ -17,6 +17,12 @@ the embedding fingerprint. The manifest written next to the index adds what the
 engine does not track: the pinned Lear commit, the document path, the chunk's
 line span in its document, the ``path:Lx-Ly`` source references it contains,
 the namespace and the embedding model/dimension.
+
+Navigation-only content can be kept out of the index without deleting it from
+the docs: a line ``<!-- lear-index: skip-page -->`` excludes a whole page, and
+the lines from ``<!-- lear-index: skip -->`` to ``<!-- lear-index: end -->``
+are dropped before chunking. Line spans in the manifest still refer to the
+unmodified document.
 """
 
 from __future__ import annotations
@@ -37,6 +43,33 @@ ORIGIN_PREFIX = f"{NAMESPACE}:"
 MANIFEST_NAME = "chunk_manifest.json"
 MANIFEST_VERSION = "lear-chunk-manifest-v1"
 SOURCE_REF = re.compile(r"([A-Za-z0-9_./-]+\.[A-Za-z0-9]+):L(\d+)(?:-L?(\d+))?")
+SKIP_PAGE = "<!-- lear-index: skip-page -->"
+# `- **[implemented]** claim` loses its opening `**` to the core list-marker
+# strip and left a stray `**` in chunk text; index the label as `[implemented]`.
+CLAIM_LABEL = re.compile(r"\*\*\[(implemented|configured|tested|inferred)\]\*\*")
+SKIP_START = "<!-- lear-index: skip -->"
+SKIP_END = "<!-- lear-index: end -->"
+
+
+def prepare_for_index(text: str) -> Optional[str]:
+    """Apply the index markers; ``None`` means the page is not indexed."""
+
+    lines = text.splitlines()
+    if any(line.strip() == SKIP_PAGE for line in lines):
+        return None
+    kept: List[str] = []
+    skipping = False
+    for line in lines:
+        marker = line.strip()
+        if marker == SKIP_START:
+            skipping = True
+            continue
+        if marker == SKIP_END:
+            skipping = False
+            continue
+        if not skipping:
+            kept.append(line)
+    return CLAIM_LABEL.sub(r"[\1]", "\n".join(kept)) + ("\n" if text.endswith("\n") else "")
 
 
 def load_pin(docs_dir: Path) -> Dict[str, Any]:
@@ -129,16 +162,32 @@ def check_index_fingerprint(engine: RAGEngine) -> Optional[str]:
     return stored
 
 
-def rebuild(engine: RAGEngine, settings: LearSettings, *, full: bool = False) -> Dict[str, Any]:
+def rebuild(engine: RAGEngine, settings: LearSettings, *, full: bool = False, rechunk: bool = False) -> Dict[str, Any]:
     started = time.perf_counter()
     docs_dir = Path(settings.docs_dir)
     files = doc_files(docs_dir)
     pin = load_pin(docs_dir)
     commit_tag = f"commit:{str(pin.get('commit', 'unknown'))[:12]}"
-    on_disk: Dict[str, Path] = {ORIGIN_PREFIX + _rel(p, docs_dir): p for p in files}
+    prepared: Dict[str, str] = {}
+    excluded: List[str] = []
+    for p in files:
+        text = prepare_for_index(p.read_text(encoding="utf-8"))
+        if text is None:
+            excluded.append(_rel(p, docs_dir))
+        else:
+            prepared[ORIGIN_PREFIX + _rel(p, docs_dir)] = text
+    on_disk: Dict[str, Path] = {ORIGIN_PREFIX + _rel(p, docs_dir): p for p in files if ORIGIN_PREFIX + _rel(p, docs_dir) in prepared}
     counts = {"new": 0, "updated": 0, "unchanged": 0, "failed": 0, "deleted": 0}
     failures: List[Dict[str, Any]] = []
     rebuild_report = None
+    # The engine keeps ONE chunking fingerprint for the whole index and sets it
+    # when the first file is re-ingested, so after a chunking change the
+    # remaining unchanged files would keep chunks made with the old settings.
+    # Detect the change up front and force every file through the chunker.
+    stored_chunking = engine.store.get_meta("chunking_fingerprint")
+    rechunk = rechunk or (
+        bool(stored_chunking) and stored_chunking != engine.settings.chunking_fingerprint() and engine.store.counts()["chunks"] > 0
+    )
     if full:
         # Re-embed what is stored first, so the ingest below runs against an
         # index whose fingerprint already matches the configured embedder.
@@ -146,13 +195,14 @@ def rebuild(engine: RAGEngine, settings: LearSettings, *, full: bool = False) ->
     else:
         check_index_fingerprint(engine)
     for origin, path in sorted(on_disk.items()):
-        data = path.read_bytes()
+        data = prepared[origin].encode("utf-8")
         report = engine.ingest_bytes(
             path.name,
             data,
-            title=_title(data.decode("utf-8", "replace"), path.stem),
+            title=_title(prepared[origin], path.stem),
             tags=[f"namespace:{NAMESPACE}", commit_tag],
             origin=origin,
+            force=rechunk,
         )
         for result in report.get("results", []):
             status = result.get("status")
@@ -179,6 +229,8 @@ def rebuild(engine: RAGEngine, settings: LearSettings, *, full: bool = False) ->
         "docsDir": str(docs_dir),
         "indexDir": str(settings.index_dir),
         "files": len(files),
+        "excludedPages": excluded,
+        "rechunked": rechunk,
         "counts": counts,
         "failures": failures,
         "chunks": len(manifest["chunks"]),

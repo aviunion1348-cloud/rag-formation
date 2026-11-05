@@ -26,6 +26,8 @@ Each claim carries one evidence label:
 Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`.
 `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit.
 
+<!-- lear-index: skip -->
+<!-- The page list below is navigation only; it is kept out of the assistant's index. -->
 ## Pages
 
 Narrative pages (written from reading the code):
@@ -47,6 +49,8 @@ Reference pages (generated from the code with `ast`, one entry per item):
 - [CLI reference](reference/cli.md) · [HTTP API reference](reference/http_api.md) · [Environment variables](reference/configuration_env.md)
 - [Action catalogue](reference/actions.md) · [Connector reference](reference/connectors.md) · [Module index](reference/modules.md) · [Test suite reference](reference/tests.md)
 - [Source map](source_map.md) — topic to file index
+
+<!-- lear-index: end -->
 
 ## Scope
 
