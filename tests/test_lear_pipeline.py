@@ -368,6 +368,36 @@ class StubOllamaTests(PipelineCase):
             finally:
                 agent.close()
 
+    def test_full_rebuild_can_be_rolled_back_to_the_previous_vectors(self) -> None:
+        with StubOllama() as stub:
+            settings = self.strict(stub)
+            agent = LearAgent(settings)
+            try:
+                indexer.rebuild(agent.engine, settings)
+                with self.assertRaises(RagError):
+                    indexer.rollback(agent.engine, settings)  # no staged rebuild yet
+            finally:
+                agent.close()
+            stub.dimension = 32  # a new embedder is configured and the index re-embedded
+            agent = LearAgent(settings)
+            try:
+                self.assertEqual(indexer.rebuild(agent.engine, settings, full=True)["embedding"]["dimension"], 32)
+            finally:
+                agent.close()
+            stub.dimension = 64  # ...and the change is reverted
+            agent = LearAgent(settings)
+            try:
+                self.assertEqual(agent.ask("Which permission modes does the permission engine have?")["status"], "ERROR")
+                rolled = indexer.rollback(agent.engine, settings)
+                self.assertGreater(rolled["restored"], 0)
+                self.assertIn(":d64:", rolled["fingerprint"])
+                self.assertTrue(rolled["queryable"])
+                self.assertEqual(rolled["integrityProblems"], [])
+                self.assertIn(":d64:", indexer.load_manifest(settings)["embedding"]["fingerprint"])
+                self.assertEqual(agent.ask("Which permission modes does the permission engine have?")["status"], "GROUNDED")
+            finally:
+                agent.close()
+
     def test_stub_judge_retries_invalid_json_and_saves_raw_output(self) -> None:
         with StubOllama() as stub:
             stub.judge_replies = ["this is not json"]

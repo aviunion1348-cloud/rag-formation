@@ -58,6 +58,8 @@ def add_lear_parser(sub: Any) -> None:
     p.add_argument("--full", action="store_true", help="re-embed every chunk via the staged rebuild")
     p.add_argument("--rechunk", action="store_true", help="re-chunk every document even if unchanged (after a chunker or loader change)")
     p.add_argument("--json", action="store_true")
+    p = isub.add_parser("rollback", help="restore the vectors that were live before the last --full rebuild")
+    p.add_argument("--json", action="store_true")
     p = isub.add_parser("stats", help="index and manifest statistics")
     p.add_argument("--json", action="store_true")
 
@@ -259,6 +261,16 @@ def _cmd_index(args, settings) -> int:
             )
             _emit(report, args.json, text)
             return 0 if not report["failures"] else 1
+        if args.index_command == "rollback":
+            report = indexer.rollback(engine, settings)
+            text = (
+                f"restored {report['restored']} vectors, fingerprint {report['fingerprint']}\n"
+                f"queryable with the configured embedder: {report['queryable']}"
+                + (f"\nintegrity problems: {report['integrityProblems']}" if report["integrityProblems"] else "")
+                + (f"\nhint: {report['hint']}" if report.get("hint") else "")
+            )
+            _emit(report, args.json, text)
+            return 0 if report["queryable"] and not report["integrityProblems"] else 1
         report = indexer.stats(engine, settings)
         _emit(report, args.json)
         return 0

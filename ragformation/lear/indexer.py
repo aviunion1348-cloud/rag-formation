@@ -321,6 +321,43 @@ def build_manifest(engine: RAGEngine, settings: LearSettings, pin: Optional[Dict
     }
 
 
+def rollback(engine: RAGEngine, settings: LearSettings) -> Dict[str, Any]:
+    """Restore the vectors that were live before the last ``--full`` rebuild.
+
+    Uses the engine's staged-rebuild backup (``RAGEngine.rollback_rebuild``);
+    raises ``RagError`` when there is nothing to roll back to. The manifest is
+    rewritten only when the restored vectors match the configured embedder;
+    otherwise the index stays refused at query time (embedding_mismatch) and
+    the report says why.
+    """
+
+    restored = engine.rollback_rebuild()
+    fingerprint = restored.get("fingerprint")
+    match = re.search(r":d(\d+):", str(fingerprint or ""))
+    integrity = engine.store.integrity_report(int(match.group(1)) if match else None)
+    configured = engine.embedder.fingerprint
+    report: Dict[str, Any] = {
+        "namespace": NAMESPACE,
+        "restored": int(restored.get("restored") or 0),
+        "fingerprint": fingerprint,
+        "configuredFingerprint": configured,
+        "queryable": fingerprint == configured,
+        "integrityProblems": integrity.get("problems", []),
+        "manifest": None,
+        "qualifying": settings.qualifying,
+    }
+    if report["queryable"]:
+        report["manifest"] = str(write_manifest(settings, build_manifest(engine, settings)))
+    else:
+        report["hint"] = (
+            "the restored vectors come from a different embedder than the configured one; configure that "
+            "embedder again (see the fingerprint) or run `python -m ragformation lear index rebuild --full`"
+        )
+    if report["integrityProblems"]:
+        report["hint"] = (report.get("hint", "") + " Documents changed since the backup; run `index rebuild --full`.").strip()
+    return report
+
+
 def write_manifest(settings: LearSettings, manifest: Dict[str, Any]) -> Path:
     path = Path(settings.index_dir) / MANIFEST_NAME
     path.parent.mkdir(parents=True, exist_ok=True)
