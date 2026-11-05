@@ -1,0 +1,179 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # The suite must never reach a paid API or a network model: hashing embeddings
+  # and the extractive answer path are deterministic and offline.
+  RAG_EMBED_PROVIDER: hashing
+  RAG_LLM_PROVIDER: extractive
+  PYTHONDONTWRITEBYTECODE: "1"
+
+jobs:
+  tests:
+    name: tests (python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install the package
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+
+      - name: Unit and integration tests
+        run: python -m unittest discover -s tests -p 'test_*.py' -v
+
+      - name: Frozen golden set (the regression gate)
+        run: |
+          ragformation ingest corpus
+          ragformation eval --v1 --json > /tmp/golden-v1.json
+          python - <<'PY'
+          import json, pathlib
+          report = json.loads(pathlib.Path("/tmp/golden-v1.json").read_text())
+          assert report["passed"], [row["failures"] for row in report["cases"] if not row["passed"]]
+          print("golden v1:", {k: report["retrieval"][k] for k in ("recallAtK", "mrrAtK", "ndcgAtK")})
+          PY
+
+      - name: Calibration split gate (measured, not aspirational)
+        run: ragformation eval --no-ablations --gate calibration --min-pass-rate 1.0 --out /tmp/v2.json
+
+      - name: Evaluation v2 report (diagnostic, always uploaded)
+        if: always()
+        run: |
+          ragformation eval --out evals/results/ci/golden-v2.json || true
+
+      - name: Upload evaluation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-${{ matrix.python-version }}
+          path: |
+            /tmp/golden-v1.json
+            /tmp/v2.json
+            evals/results/ci/golden-v2.json
+          if-no-files-found: warn
+
+      - name: CLI smoke
+        run: |
+          ragformation doctor
+          ragformation stats --json
+          ragformation ask "How long are audit logs retained?" --json > /tmp/ask.json
+          python - <<'PY'
+          import json, pathlib
+          payload = json.loads(pathlib.Path("/tmp/ask.json").read_text())
+          assert payload["status"] in {"answered", "needs_review"}, payload["status"]
+          assert payload["citations"], "an answer without citations is not acceptable here"
+          PY
+
+  packaging:
+    name: wheel installs and serves the experience
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build the wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build --wheel --outdir /tmp/dist
+      - name: Assert the wheel ships the web assets and no tests
+        run: |
+          python - <<'PY'
+          import glob, zipfile
+          wheel = glob.glob("/tmp/dist/*.whl")[0]
+          names = zipfile.ZipFile(wheel).namelist()
+          required = [
+              "ragformation/web/index.html",
+              "ragformation/web/app.js",
+              "ragformation/web/experience/index.html",
+              "ragformation/web/experience/styles.css",
+              "ragformation/web/experience/demo_trace.json",
+              "ragformation/web/experience/js/main.js",
+              "ragformation/web/experience/js/renderer.js",
+              "ragformation/web/experience/js/scenes.js",
+              "ragformation/web/experience/js/timeline.js",
+              "ragformation/web/experience/js/events.js",
+              "ragformation/web/experience/js/explorer.js",
+          ]
+          missing = [name for name in required if name not in names]
+          assert not missing, f"missing from wheel: {missing}"
+          assert not any(name.startswith("tests/") for name in names), "tests must not be packaged"
+          print(f"wheel ok: {len(names)} entries")
+          PY
+      - name: Install into a clean venv and exercise the public API and HTTP surface
+        run: |
+          python -m venv /tmp/venv
+          /tmp/venv/bin/pip install /tmp/dist/*.whl
+          /tmp/venv/bin/python - <<'PY'
+          import json, pathlib, tempfile, threading, urllib.request
+          from http.server import ThreadingHTTPServer
+          import ragformation
+          from ragformation import RAGEngine, Settings
+          from ragformation.api import Api, make_handler
+
+          data = pathlib.Path(tempfile.mkdtemp())
+          settings = Settings(data_dir=data, embed_provider="hashing", llm_provider="extractive", host="127.0.0.1", port=0)
+          engine = RAGEngine(settings)
+          engine.ingest_bytes("policy.md", b"# Retention\n\nAudit logs are retained for 400 days.\n")
+          result = engine.ask("How long are audit logs retained?")
+          assert result.status == "answered", result.status
+          assert result.citations, "no citations"
+          assert ragformation.__version__
+
+          httpd = ThreadingHTTPServer(("127.0.0.1", 0), make_handler(Api(engine, settings), settings))
+          threading.Thread(target=httpd.serve_forever, daemon=True).start()
+          base = f"http://127.0.0.1:{httpd.server_address[1]}"
+          for path in ("/", "/experience", "/experience/js/renderer.js", "/experience/demo_trace.json"):
+              with urllib.request.urlopen(base + path) as response:
+                  assert response.status == 200, (path, response.status)
+          engine.close()
+          httpd.shutdown()
+          print("installed wheel serves the console, the experience and the API")
+          PY
+
+  experience:
+    name: experience contracts (node)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: DOM-free contract checks
+        run: node tests/experience_contract.mjs
+
+      - name: Headless smoke test under jsdom
+        run: |
+          npm install --no-save --no-audit --no-fund jsdom
+          node scripts/experience_smoke.mjs
+
+      - name: Refuse remote assets
+        run: |
+          if grep -RInE "(src|href)[[:space:]]*=[[:space:]]*[\"']https?://" ragformation/web/experience; then
+            echo "the experience must run offline: remove the remote asset above"
+            exit 1
+          fi

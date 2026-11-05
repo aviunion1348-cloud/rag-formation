@@ -1,0 +1,18 @@
+{
+  "revision": "paraphrase-1",
+  "note": "Paraphrase probes written to avoid the corpus wording on purpose. Used to compare the dense channel's contribution, not to tune the golden set.",
+  "cases": [
+    {"id": "p01-audit-trails", "question": "How long do we keep audit trails?", "expectedSource": "data-retention-policy"},
+    {"id": "p02-supplier-breach", "question": "When must a supplier tell us about a breach?", "expectedSource": "Vendor Onboarding Requirements"},
+    {"id": "p03-severe-outage-page", "question": "What is the paging deadline for the most severe outage?", "expectedSource": "incident-response-runbook"},
+    {"id": "p04-restore-rehearsal", "question": "How often do we rehearse restoring data?", "expectedSource": "backup-restore-runbook"},
+    {"id": "p05-leaver-access", "question": "How fast must we remove access for someone leaving?", "expectedSource": "access-control-policy"},
+    {"id": "p06-canary-share", "question": "What fraction of users sees a new build first?", "expectedSource": "release-process"},
+    {"id": "p07-open-actions", "question": "How long can a corrective action stay open?", "expectedSource": "incident-response-standard"},
+    {"id": "p08-unanswered-page", "question": "What happens if a page goes unanswered at night?", "expectedSource": "oncall-handbook"},
+    {"id": "p09-payment-data-class", "question": "Which classification covers payment details?", "expectedSource": "data-classification"},
+    {"id": "p10-ingest-owner", "question": "Which team owns the ingest api?", "expectedSource": "service-catalog"},
+    {"id": "p11-freeze-deploy", "question": "Can we deploy during the quarter-end freeze?", "expectedSource": "release-process"},
+    {"id": "p12-recovery-point", "question": "How much data could we lose in a disaster?", "expectedSource": "backup-restore-runbook"}
+  ]
+}

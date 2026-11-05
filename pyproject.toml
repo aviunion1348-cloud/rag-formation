@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ragformation"
+version = "0.2.0"
+description = "A portable, evidence-grounded RAG engine with hybrid retrieval, server-validated citations and a versioned HTTP API"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "ragformation contributors" }]
+keywords = ["rag", "retrieval", "bm25", "rrf", "citations", "sqlite", "stdlib"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Text Processing :: Indexing",
+]
+dependencies = []
+
+[project.optional-dependencies]
+# Real, pretrained semantic embeddings (spaCy models with vectors).
+# install: pip install "ragformation[semantic]" && python -m spacy download en_core_web_md
+semantic = ["numpy>=1.24", "spacy>=3.7,<4"]
+# Corpus-trained LSA vectors only need numpy.
+lsa = ["numpy>=1.24"]
+pdf = ["pypdf>=4.0,<6.0"]
+dev = ["coverage>=7.0"]
+
+[project.scripts]
+ragformation = "ragformation.cli:main"
+
+[project.urls]
+Documentation = "https://github.com/aviunion1348-cloud/rag-formation/blob/main/README.md"
+Source = "https://github.com/aviunion1348-cloud/rag-formation"
+
+[tool.setuptools]
+include-package-data = true
+zip-safe = false
+
+[tool.setuptools.packages.find]
+include = ["ragformation*"]
+exclude = ["tests*", "engine*", "integrations*", "scripts*", "evals*"]
+
+[tool.setuptools.package-data]
+ragformation = [
+  "web/*.html",
+  "web/*.css",
+  "web/*.js",
+  "web/experience/*.html",
+  "web/experience/*.css",
+  "web/experience/*.js",
+  "web/experience/*.json",
+  "web/experience/js/*.js",
+]
+
+[tool.coverage.run]
+source = ["ragformation"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError"]

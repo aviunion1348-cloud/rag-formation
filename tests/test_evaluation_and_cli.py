@@ -113,9 +113,65 @@ class CliTests(TempDirTestCase):
 
     def test_eval_command_exit_code(self):
         self.run_cli(["ingest", str(CORPUS_DIR)])
-        code, out, _ = self.run_cli(["eval", "--json"])
+        code, out, _ = self.run_cli(["eval", "--v1", "--json"])
         self.assertEqual(code, 0)
         self.assertTrue(json.loads(out)["passed"])
+
+    def test_eval_v2_is_report_only_until_a_gate_is_requested(self):
+        self.run_cli(["ingest", str(CORPUS_DIR)])
+        code, out, _ = self.run_cli(["eval", "--no-ablations", "--json"])
+        report = json.loads(out)
+        self.assertEqual(code, 0)  # a measurement, not a CI verdict
+        self.assertIn("failedIds", report)
+        self.assertEqual(report["casesTotal"], len(report["rows"]))
+
+        # A split that was not run cannot silently pass a gate.
+        code, _, err = self.run_cli(["eval", "--no-ablations", "--gate", "nope", "--json"])
+        self.assertEqual(code, 2)
+
+        code, out, _ = self.run_cli(
+            ["eval", "--no-ablations", "--gate", "all", "--min-pass-rate", "0.0", "--json"]
+        )
+        self.assertEqual(code, 0)
+        report = json.loads(out)  # stdout stays machine-parseable in --json mode
+        self.assertTrue(report["gate"]["held"])
+        self.assertEqual(report["gate"]["splits"]["all"]["total"], 46)
+
+    def test_eval_gate_fails_on_a_known_bad_dataset(self):
+        self.run_cli(["ingest", str(CORPUS_DIR)])
+        dataset = {
+            "dataset": "gate-fixture",
+            "revision": "gate-fixture-1",
+            "cases": [
+                {
+                    "id": "passes",
+                    "question": "How long are audit logs retained?",
+                    "split": "test",
+                    "category": "direct",
+                    "expectedStatus": "answered",
+                    "mustContain": ["400 days"],
+                    "mustNotContain": [],
+                    "expectedSources": [],
+                },
+                {
+                    "id": "fails",
+                    "question": "What is the capital of Australia?",
+                    "split": "test",
+                    "category": "no-answer",
+                    "expectedStatus": "abstained",
+                    "mustContain": [],
+                    "mustNotContain": [],
+                    "expectedSources": [],
+                },
+            ],
+        }
+        path = os.path.join(str(self.settings.data_dir), "gate.json")
+        with open(path, "w", encoding="utf-8") as handle:
+            json.dump(dataset, handle)
+        code, out, _ = self.run_cli(
+            ["eval", "--dataset", path, "--no-ablations", "--gate", "test", "--min-pass-rate", "1.0", "--json"]
+        )
+        self.assertEqual(code, 5, out)
 
     def test_invalid_question_is_reported_as_usage_error(self):
         self.run_cli(["ingest", str(CORPUS_DIR)])

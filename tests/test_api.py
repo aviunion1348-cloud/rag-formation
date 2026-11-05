@@ -174,6 +174,71 @@ class ApiTests(ApiTestCase):
         status, payload = self.request("/api/feedback", "POST", {"queryId": query_id, "rating": 99})
         self.assertEqual(status, 400)
 
+    def test_allowed_sources_can_only_narrow_the_principal_scope(self):
+        self.start()
+        status, sources = self.request("/api/v1/sources")
+        self.assertEqual(status, 200)
+        source_id = sources["sources"][0]["sourceId"]
+
+        status, answer = self.request(
+            "/api/v1/query", "POST", {"question": "How long are audit logs retained?"}
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(answer["status"], "answered")
+
+        # A filter that matches the indexed source still answers.
+        status, narrowed = self.request(
+            "/api/v1/query",
+            "POST",
+            {"question": "How long are audit logs retained?", "allowedSources": [source_id]},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(narrowed["status"], "answered")
+        self.assertTrue(all(c["sourceId"] == source_id for c in narrowed["citations"]))
+
+        # A filter that matches nothing must abstain, not ignore the filter.
+        status, blocked = self.request(
+            "/api/v1/query",
+            "POST",
+            {"question": "How long are audit logs retained?", "allowedSources": ["src-not-indexed"]},
+        )
+        self.assertEqual(status, 200)
+        self.assertEqual(blocked["status"], "abstained")
+        self.assertEqual(blocked["citations"], [])
+
+        # Malformed filters are rejected rather than silently dropped.
+        for payload in (
+            {"question": "x", "allowedSources": "src-1"},
+            {"question": "x", "allowedSources": [""]},
+            {"question": "x", "allowedSources": [1]},
+        ):
+            status, body = self.request("/api/v1/query", "POST", payload)
+            self.assertEqual(status, 400, body)
+
+    def test_query_trace_is_retrievable_and_carries_no_document_text(self):
+        self.start()
+        status, answer = self.request(
+            "/api/v1/query", "POST", {"question": "How long are audit logs retained?"}
+        )
+        self.assertEqual(status, 200)
+        query_id = answer["queryId"]
+
+        status, trace = self.request(f"/api/v1/traces/{query_id}")
+        self.assertEqual(status, 200, trace)
+        stages = trace["trace"]["stages"]
+        self.assertTrue(stages, "a stored trace must contain stages")
+        self.assertIn("retrieval", {stage.get("stage") for stage in stages})
+        # Trace payloads are for operators, not a second copy of the corpus.
+        serialised = json.dumps(trace)
+        self.assertNotIn("retained for 400 days", serialised)
+
+        status, listing = self.request("/api/v1/traces")
+        self.assertEqual(status, 200)
+        self.assertTrue(any(row["queryId"] == query_id for row in listing["traces"]))
+
+        status, _ = self.request("/api/v1/traces/q-does-not-exist")
+        self.assertEqual(status, 404)
+
     def test_static_assets_are_served_and_traversal_is_blocked(self):
         self.start()
         status, body = self.request("/")

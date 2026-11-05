@@ -30,7 +30,7 @@ from typing import Any, Dict, List, Optional, Sequence, Set, Tuple
 
 from .errors import RagError
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 
 def now_iso() -> str:
@@ -218,6 +218,28 @@ CREATE TABLE IF NOT EXISTS feedback (
     created_at  TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS vectors_staged (
+    chunk_id  TEXT PRIMARY KEY,
+    model     TEXT NOT NULL,
+    dimension INTEGER NOT NULL,
+    vector    BLOB NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS vectors_backup (
+    chunk_id  TEXT PRIMARY KEY,
+    model     TEXT NOT NULL,
+    dimension INTEGER NOT NULL,
+    vector    BLOB NOT NULL,
+    fingerprint TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS semantic_models (
+    key        TEXT PRIMARY KEY,
+    payload    TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS embedding_cache (
     text_hash TEXT NOT NULL,
     model     TEXT NOT NULL,
@@ -244,6 +266,36 @@ class Store:
         with self._lock:
             self._conn.executescript(_SCHEMA)
             self._conn.commit()
+        self._migrate()
+
+    # ------------------------------------------------------------ migrations
+    def _columns(self, table: str) -> set:
+        return {row["name"] for row in self._exec(f"PRAGMA table_info({table})").fetchall()}
+
+    def _migrate(self) -> None:
+        """Additive, idempotent migrations. Never drops or rewrites user data."""
+
+        applied = []
+        previous = self.get_meta("schema_version", "0")
+        if "tenant_id" not in self._columns("queries"):
+            with self._lock:
+                self._conn.execute("ALTER TABLE queries ADD COLUMN tenant_id TEXT NOT NULL DEFAULT 'local'")
+                self._conn.execute("CREATE INDEX IF NOT EXISTS queries_by_tenant ON queries(tenant_id)")
+                self._conn.commit()
+            applied.append("queries.tenant_id")
+        if "principal" not in self._columns("queries"):
+            with self._lock:
+                self._conn.execute("ALTER TABLE queries ADD COLUMN principal TEXT NOT NULL DEFAULT ''")
+                self._conn.commit()
+            applied.append("queries.principal")
+        if applied:
+            history = self.get_meta("migration_history", "[]")
+            try:
+                parsed = json.loads(history)
+            except ValueError:
+                parsed = []
+            parsed.append({"from": previous, "to": str(SCHEMA_VERSION), "applied": applied, "at": now_iso()})
+            self.set_meta("migration_history", json.dumps(parsed[-20:]))
         self.set_meta("schema_version", str(SCHEMA_VERSION))
 
     # ------------------------------------------------------------------ basics
@@ -288,7 +340,7 @@ class Store:
             ).fetchone()
         return self._source_from_row(row) if row else None
 
-    def list_sources(self, include_deleted: bool = False) -> List[SourceRecord]:
+    def list_sources(self, include_deleted: bool = False, tenant_id: Optional[str] = None) -> List[SourceRecord]:
         sql = "SELECT * FROM sources"
         if not include_deleted:
             sql += " WHERE status!='deleted'"
@@ -371,6 +423,10 @@ class Store:
                 ),
             )
             self._conn.commit()
+
+    def get_job(self, job_id: str) -> Optional[Dict[str, Any]]:
+        row = self._exec("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+        return dict(row) if row is not None else None
 
     def recent_jobs(self, limit: int = 20) -> List[Dict[str, Any]]:
         with self._lock:
@@ -709,6 +765,102 @@ class Store:
         return {"problems": problems, "dimensions": dims, "models": models}
 
     # ------------------------------------------------------- embedding cache
+    # ------------------------------------------------- staged index (rebuild)
+    def stage_vectors(self, rows: Sequence[tuple], fingerprint: str) -> int:
+        """Write re-embedded vectors to a staging table (never the live index)."""
+
+        with self._lock:
+            self._exec("DELETE FROM vectors_staged")
+            self._conn.executemany(
+                "INSERT OR REPLACE INTO vectors_staged(chunk_id, model, dimension, vector) VALUES(?,?,?,?)",
+                [(row[0], fingerprint, int(row[1]), row[2]) for row in rows],
+            )
+            self._conn.commit()
+        return len(rows)
+
+    def staged_counts(self) -> int:
+        return int(self._exec("SELECT COUNT(*) c FROM vectors_staged").fetchone()["c"])
+
+    def clear_staged(self) -> None:
+        with self._lock:
+            self._exec("DELETE FROM vectors_staged")
+            self._conn.commit()
+
+    def commit_staged_vectors(self, fingerprint: str, *, previous_fingerprint: Optional[str]) -> Dict[str, int]:
+        """Atomically swap staged vectors in, keeping the old ones for rollback."""
+
+        with self._lock:
+            backed_up = 0
+            if previous_fingerprint:
+                self._exec("DELETE FROM vectors_backup")
+                self._exec(
+                    "INSERT INTO vectors_backup(chunk_id, model, dimension, vector, fingerprint, created_at) "
+                    "SELECT chunk_id, model, dimension, vector, ?, ? FROM vectors",
+                    (previous_fingerprint, now_iso()),
+                )
+                backed_up = int(self._exec("SELECT COUNT(*) c FROM vectors_backup").fetchone()["c"])
+            self._exec("DELETE FROM vectors")
+            installed = self._exec(
+                "INSERT INTO vectors(chunk_id, model, dimension, vector) "
+                "SELECT chunk_id, model, dimension, vector FROM vectors_staged"
+            ).rowcount
+            self._exec("DELETE FROM vectors_staged")
+            self._conn.commit()
+            return {"installed": installed, "backedUp": backed_up}
+
+    def restore_backup(self) -> Dict[str, Any]:
+        """Roll the live vectors back to the previous fingerprint."""
+
+        with self._lock:
+            rows = self._exec("SELECT COUNT(*) c FROM vectors_backup").fetchone()["c"]
+            if not rows:
+                raise RagError("no vector backup is available to roll back to")
+            fingerprint_row = self._exec(
+                "SELECT fingerprint FROM vectors_backup LIMIT 1"
+            ).fetchone()
+            previous = fingerprint_row["fingerprint"] if fingerprint_row else None
+            self._exec("DELETE FROM vectors")
+            self._exec(
+                "INSERT INTO vectors(chunk_id, model, dimension, vector) "
+                "SELECT chunk_id, model, dimension, vector FROM vectors_backup"
+            )
+            self._conn.commit()
+        return {"restored": int(rows), "fingerprint": previous}
+
+    def backup_info(self) -> Dict[str, Any]:
+        row = self._exec(
+            "SELECT COUNT(*) c, MIN(fingerprint) f, MAX(created_at) t FROM vectors_backup"
+        ).fetchone()
+        return {"vectors": int(row["c"] or 0), "fingerprint": row["f"], "createdAt": row["t"]}
+
+    # ------------------------------------------------------- semantic models
+    def get_semantic_model(self, key: str) -> Optional[Dict[str, Any]]:
+        row = self._exec("SELECT payload FROM semantic_models WHERE key=?", (key,)).fetchone()
+        if row is None:
+            return None
+        try:
+            return json.loads(row["payload"])
+        except ValueError:
+            return None
+
+    def put_semantic_model(self, key: str, payload: Dict[str, Any]) -> None:
+        with self._lock:
+            self._exec(
+                "INSERT INTO semantic_models(key, payload, created_at) VALUES(?,?,?) "
+                "ON CONFLICT(key) DO UPDATE SET payload=excluded.payload, created_at=excluded.created_at",
+                (key, json.dumps(payload), now_iso()),
+            )
+            self._conn.commit()
+
+    def delete_semantic_model(self, key: Optional[str] = None) -> int:
+        with self._lock:
+            if key is None:
+                cursor = self._exec("DELETE FROM semantic_models")
+            else:
+                cursor = self._exec("DELETE FROM semantic_models WHERE key=?", (key,))
+            self._conn.commit()
+            return cursor.rowcount
+
     def cache_get(self, text_hash: str, model: str) -> Optional[List[float]]:
         with self._lock:
             row = self._exec(
@@ -737,22 +889,33 @@ class Store:
             "query_id, question, status, mode, provider, model, top_k, temperature, "
             "latency_ms, retrieval_ms, generation_ms, ttft_ms, itl_ms, prompt_tokens, "
             "completion_tokens, tokens_estimated, citations_total, citations_valid, "
-            "abstain_reason, trace_json, created_at"
+            "abstain_reason, trace_json, created_at, tenant_id, principal"
         )
-        values = tuple(row.get(key) for key in columns.split(", "))
+        keys = columns.split(", ")
+        values = tuple(row.get(key) if row.get(key) is not None else ("local" if key == "tenant_id" else "") if key in {"tenant_id", "principal"} else row.get(key) for key in keys)
         with self._lock:
             self._exec(
-                f"INSERT OR REPLACE INTO queries({columns}) VALUES({','.join('?' * 21)})",
+                f"INSERT OR REPLACE INTO queries({columns}) VALUES({','.join('?' * len(keys))})",
                 values,
             )
             self._conn.commit()
 
-    def query_rows(self, limit: int = 500) -> List[Dict[str, Any]]:
+    def query_rows(self, limit: int = 500, tenant_id: Optional[str] = None) -> List[Dict[str, Any]]:
         with self._lock:
-            rows = self._exec(
-                "SELECT * FROM queries ORDER BY created_at DESC LIMIT ?", (limit,)
-            ).fetchall()
+            if tenant_id is None:
+                rows = self._exec(
+                    "SELECT * FROM queries ORDER BY created_at DESC LIMIT ?", (limit,)
+                ).fetchall()
+            else:
+                rows = self._exec(
+                    "SELECT * FROM queries WHERE tenant_id=? ORDER BY created_at DESC LIMIT ?",
+                    (tenant_id, limit),
+                ).fetchall()
         return [dict(r) for r in rows]
+
+    def query_row(self, query_id: str) -> Optional[Dict[str, Any]]:
+        row = self._exec("SELECT * FROM queries WHERE query_id=?", (query_id,)).fetchone()
+        return dict(row) if row is not None else None
 
     def count_queries(self) -> int:
         with self._lock:
