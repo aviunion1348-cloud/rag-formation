@@ -1,0 +1,339 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/cli.py:L348-L350`. - 2. [implemented] Resolve the permission mode from `--mode`, else `PRASH_PERMISSION_MODE`, else `ask`, and build a dispatcher for it. [1] Common options on the acting subcommands: - [implemented] `--mode` selects the permission mode (read-only, ask, auto-safe, environment-scoped, bypass); when omitted, `run` and `fix` read `PRASH_PERMISSION_MODE` from the credentials file and fall back to `ask`. [3]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-cceb028542#c001-74f530b3",
+      "document": "docs/lear_backend/services_and_workflows.md",
+      "heading": "Services and workflows > `prash run`: one action through the pipeline",
+      "lines": "5-11",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/cli.py:L348-L350",
+        "prash/cli.py:L351-L353",
+        "prash/cli.py:L354-L358",
+        "prash/cli.py:L360-L367",
+        "prash/cli.py:L369",
+        "prash/cli.py:L372-L409"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.5466,
+      "excerpt": "Step lists follow the code order; line ranges point at each step.\n`prash run`: one action through the pipeline\n\n- 1. [implemented] Load the credential store from the environment and read its values, then export cluster-related keys into the"
+    },
+    {
+      "id": 3,
+      "chunkId": "src-0aa7224dfb#c003-18877ad0",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The `prash` CLI",
+      "lines": "23-31",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/cli.py:L897-L1112",
+        "prash/cli.py:L1115-L1127",
+        "prash/cli.py:L1173-L1186",
+        "prash/cli.py:L1189-L1195",
+        "prash/cli.py:L1221-L1226",
+        "prash/cli.py:L1251"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4333,
+      "excerpt": "`prash watch`  |  poll a provider and notify on state changes  |  `cmd_watch` `prash/cli.py:L897-L1112`  |  [implemented]\n\n`prash notify <message>`  |  post a message to every configured team channel  |  `cmd_notify` `prash/cli.py:L1115-L11"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 812,
+  "session": {
+    "id": "rec-s07-20261106T1219Z",
+    "turn": 8,
+    "summaryVersion": "lear-compaction-v1",
+    "compaction": {
+      "version": "lear-compaction-v1",
+      "throughMessageId": 34,
+      "tokensBefore": 957,
+      "tokensAfter": 587,
+      "latencyMs": 1.176,
+      "folded": 4,
+      "changed": true,
+      "skipped": null,
+      "summarySha256": "6296151b1a7bb2cd38420789130d1642fbaaca061aef324561ea27c0a0cf31f0"
+    },
+    "historyMessages": 4
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Which permission mode does `prash run` use when --mode is not given?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-cceb028542#c001-74f530b3",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash run`: one action through the pipeline",
+        "score": 0.032002,
+        "support": 0.54664,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c002-95a9d20b",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash run",
+        "score": 0.030303,
+        "support": 0.460186,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c003-18877ad0",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.029877,
+        "support": 0.433349,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-718227fd24#c026-c6a13e60",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference > Routes under `/api/settings`",
+        "score": 0.028259,
+        "support": 0.351123,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c003-c7176a6e",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.032266,
+        "support": 0.376677,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c008-9fbd2027",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Behaviour that is well covered",
+        "score": 0.028783,
+        "support": 0.328316,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c007-c141955c",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash fix",
+        "score": 0.027052,
+        "support": 0.4239,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c008-f9566633",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Dry runs",
+        "score": 0.028783,
+        "support": 0.398292,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-cceb028542#c005-41a6252e",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash fix`: diagnose, then act",
+        "score": 0.032522,
+        "support": 0.33756,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c009-ed0e2da0",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+        "score": 0.026357,
+        "support": 0.342931,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-cceb028542#c001-74f530b3",
+      "src-3665f86d99#c002-95a9d20b",
+      "src-0aa7224dfb#c003-18877ad0",
+      "src-718227fd24#c026-c6a13e60",
+      "src-ed704ce6ff#c003-c7176a6e",
+      "src-1e7c9f8a18#c008-9fbd2027",
+      "src-3665f86d99#c007-c141955c",
+      "src-51cdac4a6f#c008-f9566633",
+      "src-cceb028542#c005-41a6252e",
+      "src-0aa7224dfb#c009-ed0e2da0"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-00287151c3#c001-e5b313f3",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Action contract (`prash/actions/contract.py`)",
+        "score": 0.014085,
+        "support": 0.325,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-0441e92281#c008-c6a2eca5",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Day-two operations",
+        "score": 0.026398,
+        "support": 0.322667,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1790,
+    "bestSupport": 0.5466,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.954
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.184
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.071
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.013
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.91
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 57.82,
+    "totalMs": 65.93,
+    "streamEvents": 19,
+    "completionTokens": 110,
+    "tokensEstimated": true,
+    "tokensPerSec": 46709.13,
+    "decodeEventsPerSec": 13975.35,
+    "itlMs": {
+      "count": 18,
+      "mean": 0.072,
+      "p50": 0.07,
+      "p85": 0.072,
+      "p99": 0.086,
+      "min": 0.07,
+      "max": 0.086
+    },
+    "stages": {
+      "retrievalMs": 15.132,
+      "generationMs": 2.355,
+      "ttftMs": 0.97,
+      "contextTokens": 1790,
+      "promptTokens": 17,
+      "evidenceTokens": 1790
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 69.228,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.028
+        },
+        {
+          "stage": "session",
+          "startMs": 0.031,
+          "ms": 0.232
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.264,
+          "ms": 3.001
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 3.264,
+          "ms": 0.034
+        },
+        {
+          "stage": "memory",
+          "startMs": 3.299,
+          "ms": 0.098
+        },
+        {
+          "stage": "prompt",
+          "startMs": 3.397,
+          "ms": 0.017
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 3.414,
+          "ms": 0.959
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 4.373,
+          "ms": 0.519
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 4.892,
+          "ms": 21.96
+        },
+        {
+          "stage": "engine",
+          "startMs": 26.853,
+          "ms": 35.335
+        },
+        {
+          "stage": "mapping",
+          "startMs": 62.188,
+          "ms": 3.785
+        },
+        {
+          "stage": "persist",
+          "startMs": 65.972,
+          "ms": 3.25
+        }
+      ]
+    }
+  },
+  "correlationId": "q-c6e759b1f1fd",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

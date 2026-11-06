@@ -1,0 +1,210 @@
+{
+  "query_id": "q-568a4c41af61",
+  "question": "Can an approval-tier action launched from the desktop chat run without anyone answering a terminal prompt?",
+  "status": "answered",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 42.618,
+  "retrieval_ms": 18.864,
+  "generation_ms": 3.444,
+  "ttft_ms": 1.701,
+  "itl_ms": 0.071,
+  "prompt_tokens": 27,
+  "completion_tokens": 142,
+  "tokens_estimated": 1,
+  "citations_total": 3,
+  "citations_valid": 3,
+  "abstain_reason": null,
+  "created_at": "2026-11-06T12:20:22Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 106
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 1.428,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 30.416,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.3404
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 13.973
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 1.794
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.102
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.019
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 2.976
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 1.002,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 0.05,
+      "detail": {
+        "selected": 11,
+        "tokens": 1595,
+        "excluded": 1
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.2,
+        "topP": 0.9,
+        "evidenceTokens": 1595
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 3.488,
+      "detail": {
+        "provider": "extractive",
+        "chars": 568,
+        "ttftMs": 1.701,
+        "itlMs": 0.071,
+        "finishReason": "stop"
+      }
+    },
+    {
+      "stage": "citation_validation",
+      "status": "started",
+      "at": "2026-11-06T12:20:22Z"
+    },
+    {
+      "stage": "citation_validation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "durationMs": 0.634,
+      "detail": {
+        "cited": 3,
+        "invalid": 0,
+        "uncited": false
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:22Z",
+      "detail": {
+        "status": "answered"
+      }
+    }
+  ]
+}

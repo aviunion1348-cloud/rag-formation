@@ -266,11 +266,12 @@ class Preflight:
         return data
 
 
-def report(data: Dict[str, Any]) -> str:
+def report(data: Dict[str, Any], rerendered_at: Optional[str] = None) -> str:
     counts: Dict[str, int] = {}
     for c in data["checks"]:
         counts[c["status"]] = counts.get(c["status"], 0) + 1
     s = data["ollamaStates"]
+    odd = [c["id"] for c in data["checks"] if c["status"] in ("NOT_IMPLEMENTED", "NOT_APPLICABLE")]
     yes = lambda v: "YES" if v else "NO"  # noqa: E731
     lines = [
         "# Preflight report: Lear agent session recordings", "",
@@ -279,7 +280,10 @@ def report(data: Dict[str, Any]) -> str:
         f"**Result:** {' · '.join(f'{k} {v}' for k, v in sorted(counts.items()))}. "
         "The pipeline, index, stores, tests and recording tools are healthy. **The configured local LLM (Ollama) is BLOCKED**: it is not installed "
         "and its download and model hosts are unreachable from this sandbox, so no real model inference can be recorded.", "",
-        "Status values: PASS, FAIL, PARTIAL, BLOCKED. Two checks use NOT_IMPLEMENTED or NOT_APPLICABLE because none of the four would be truthful.", "",
+        f"Status values: PASS, FAIL, PARTIAL, BLOCKED. {len(odd)} checks ({', '.join(odd)}) use NOT_IMPLEMENTED or NOT_APPLICABLE because none "
+        "of the four would be truthful.", "",
+        *([f"_Re-rendered {rerendered_at} from the unchanged `evidence/preflight.json` to correct a wording error in this summary (it said "
+           "\"Two checks\"); no check was re-run and no result changed._", ""] if rerendered_at else []),
         "## Ollama and model states", "",
         "| State | Observed |", "|---|---|",
         f"| Installed | {yes(s['installed'])} |", f"| Configured | {yes(s['configured'])} (qwen2.5:1.5b, nomic-embed-text, judge llama3.2:1b) |",
@@ -303,9 +307,18 @@ def report(data: Dict[str, Any]) -> str:
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--pkg", default=str(REPO / "artifacts" / "agent_session_recordings"))
-    ap.add_argument("--root", required=True)
-    ap.add_argument("--run-id", required=True)
+    ap.add_argument("--root")
+    ap.add_argument("--run-id")
+    ap.add_argument("--render-only", action="store_true", help="re-render PREFLIGHT_REPORT.md from the existing evidence/preflight.json")
     args = ap.parse_args()
+    if args.render_only:
+        data = json.loads((Path(args.pkg) / "evidence" / "preflight.json").read_text(encoding="utf-8"))
+        when = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        (Path(args.pkg) / "PREFLIGHT_REPORT.md").write_text(report(data, rerendered_at=when), encoding="utf-8")
+        print(json.dumps({"rerendered": when}))
+        return 0
+    if not (args.root and args.run_id):
+        ap.error("--root and --run-id are required unless --render-only is given")
     pf = Preflight(Path(args.pkg), Path(args.root), args.run_id)
     pf.environment()
     pf.ollama()

@@ -1,0 +1,38 @@
+$ python3 -m ragformation lear --help
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+usage: ragformation lear [-h] [--backend {ollama,baseline}]
+                         [--data-dir DATA_DIR] [--docs-dir DOCS_DIR]
+                         {doctor,docs,index,ask,chat,sessions,memory,eval,bench,demo,report}
+                         ...
+
+Answer questions about the Lear backend from evidence-backed docs, using local
+Ollama models only.
+
+positional arguments:
+  {doctor,docs,index,ask,chat,sessions,memory,eval,bench,demo,report}
+    doctor              probe Ollama, models, caps, streaming and judge JSON
+    docs                build or verify the Lear documentation
+    index               build or inspect the Lear docs index
+    ask                 ask one question
+    chat                interactive multi-turn session (reads questions from
+                        stdin)
+    sessions            list, inspect or delete sessions
+    memory              scoped long-term memory
+    eval                validate the golden set or run an evaluation
+    bench               dummy-user load benchmark through the agent service
+                        layer
+    demo                guided terminal walkthrough of the real pipeline
+                        (director, live, replay, examiner)
+    report              summarise doctor, docs, index, every evaluation run
+                        and the latest bench
+
+options:
+  -h, --help            show this help message and exit
+  --backend {ollama,baseline}
+                        ollama (default, qualifying) or baseline (hashing +
+                        extractive, offline, NOT qualifying)
+  --data-dir DATA_DIR   agent data directory (default data/lear)
+  --docs-dir DOCS_DIR   generated Lear docs (default docs/lear_backend)

@@ -1,0 +1,15 @@
+[
+  {
+    "session_id": "rec-s08-20261106T1219Z",
+    "user_id": "rec-u08",
+    "title": "",
+    "created_at": 1793967711.286206,
+    "updated_at": 1793967772.5910141,
+    "expires_at": 1794572572.5910141,
+    "summary": "# Conversation summary (lear-compaction-v1)\n## exchanges\n- Q: Does `prash run --dry-run` execute the action? → [GROUNDED] Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then r… (cited: docs/lear_backend/api_reference.md)\n- Q: Does `prash run --dry-run` execute the action? → [GROUNDED] Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then r… (cited: docs/lear_backend/api_reference.md)\n- Q: Does `prash run --dry-run` execute the action? → [GROUNDED] Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then r… (cited: docs/lear_backend/api_reference.md)\n## identifiers\n- prash run --dry-run\n- prash/cli.py:L1252\n- prash/cli.py:L273\n- --dry-run\n- --grant\n- --noninteractive\n- NEEDS_INPUT",
+    "summary_version": "lear-compaction-v1",
+    "summary_through": 78,
+    "messages": 42,
+    "expired": false
+  }
+]

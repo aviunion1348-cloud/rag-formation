@@ -1,0 +1,15 @@
+Lear doctor — backend=ollama qualifying=True ready=False
+models: embedder=nomic-embed-text llm=qwen2.5:1.5b judge=llama3.2:1b
+  [PASS      ] config.loopback_only: ollamaUrl=http://127.0.0.1:11434
+  [PASS      ] config.backend: backend=ollama, qualifying=True
+  [PASS      ] config.no_cloud_providers: embedProvider=ollama, llmProvider=ollama
+  [FAIL      ] ollama.version: error=ollama is not reachable at http://127.0.0.1:11434
+               hint: start it with `ollama serve` (and keep it bound to 127.0.0.1)
+  [SKIP      ] models.installed: reason=ollama unreachable
+  [SKIP      ] models.embedder: reason=ollama unreachable
+  [SKIP      ] models.llm: reason=ollama unreachable
+  [SKIP      ] models.judge: reason=ollama unreachable
+  [SKIP      ] probe.embedding: reason=ollama unreachable
+  [SKIP      ] probe.generation_stream: reason=ollama unreachable
+  [SKIP      ] probe.judge_json: reason=ollama unreachable
+NOT READY: ollama.version, models.installed, models.embedder, models.llm, models.judge, probe.embedding, probe.generation_stream, probe.judge_json

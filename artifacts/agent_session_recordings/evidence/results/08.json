@@ -1,0 +1,430 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "08",
+  "name": "error_recovery",
+  "title": "Error, failure and recovery",
+  "status": "PASS",
+  "cap": null,
+  "startedAt": "2026-11-06T12:21:49.838Z",
+  "endedAt": "2026-11-06T12:22:53.165Z",
+  "git": {
+    "commit": "3cade47f158f5a618c148e334a184aa7aa6e2c16",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/08_error_recovery_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "index",
+        "stats"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:21:49.846Z",
+      "endedAt": "2026-11-06T12:21:49.983Z",
+      "ms": 137.3,
+      "out": "traces/08/h1.out",
+      "outBytes": 792,
+      "outSha256": "ed57110b65aa6d6f9a75c0484c1aae33e897733183b3b9312ba4038464b719dc",
+      "stepId": "h1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "ollama",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "Does `prash run --dry-run` execute the action?"
+      ],
+      "exit": 6,
+      "startedAt": "2026-11-06T12:21:49.984Z",
+      "endedAt": "2026-11-06T12:21:50.114Z",
+      "ms": 130.7,
+      "out": "traces/08/e1.out",
+      "outBytes": 2017,
+      "outSha256": "c76106fe30ee457aaa224849d67e019ccfc21af5bec428a17ded3aa8fe0f84c8",
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "correlationId": null,
+      "sessionId": null,
+      "stepId": "e1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "ollama",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "Does `prash run --dry-run` execute the action?"
+      ],
+      "exit": 6,
+      "startedAt": "2026-11-06T12:21:50.116Z",
+      "endedAt": "2026-11-06T12:21:50.248Z",
+      "ms": 133.0,
+      "out": "traces/08/e2.out",
+      "outBytes": 2016,
+      "outSha256": "fce7120b518f9b60273faa98273c9e9353e38877be3ce13fa028e8a6b086abe0",
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "correlationId": null,
+      "sessionId": null,
+      "stepId": "e2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "ollama",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "Does `prash run --dry-run` execute the action?"
+      ],
+      "exit": 2,
+      "startedAt": "2026-11-06T12:21:50.250Z",
+      "endedAt": "2026-11-06T12:21:50.356Z",
+      "ms": 106.4,
+      "out": "traces/08/e3.out",
+      "outBytes": 197,
+      "outSha256": "1565be5c996043df37c6776f97675fb4e87491c17c87913f5c321c83105d026a",
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "correlationId": null,
+      "sessionId": null,
+      "stepId": "e3"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "chat",
+        "--session",
+        "rec-s08-20261106T1219Z",
+        "--user",
+        "rec-u08"
+      ],
+      "exit": 7,
+      "startedAt": "2026-11-06T12:21:50.357Z",
+      "endedAt": "2026-11-06T12:22:52.862Z",
+      "ms": 62505.4,
+      "out": "traces/08/r1.out",
+      "outBytes": 15103,
+      "outSha256": "e99ebdde9dc645db1660d50009cb59f08021102c429bc03978d434622e945796",
+      "burst": 21,
+      "burstAt": "2026-11-06T12:21:51.285Z",
+      "answeredInBurst": 20,
+      "rateLimitedInBurst": 1,
+      "retryAfterS": 59.264,
+      "after": [
+        {
+          "at": "2026-11-06T12:22:52.536Z",
+          "answered": 1,
+          "rateLimited": 0
+        }
+      ],
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "sessionId": "rec-s08-20261106T1219Z",
+      "correlationIds": [
+        "q-eb5d7a9e29fc",
+        "q-569b319611d4",
+        "q-7648bad557d2",
+        "q-13f367d7fc5b",
+        "q-a1157f15d292",
+        "q-7a765012d242",
+        "q-a348c2295097",
+        "q-c04c097c8730",
+        "q-5a020e9f8431",
+        "q-feff74acf93a",
+        "q-ba34c40423b5",
+        "q-f7351fc5cce8",
+        "q-ee5341598914",
+        "q-08ed33129b49",
+        "q-5393967c6cb5",
+        "q-eae7fe7dfe88",
+        "q-1a43864b8fc2",
+        "q-4332b9540596",
+        "q-3063affc5d82",
+        "q-a2c6a2df7893",
+        "q-c6aabaea3308"
+      ],
+      "stepId": "r1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "sessions",
+        "list",
+        "--user",
+        "rec-u08",
+        "--json"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:22:52.863Z",
+      "endedAt": "2026-11-06T12:22:52.984Z",
+      "ms": 121.2,
+      "out": "traces/08/h2.out",
+      "outBytes": 1562,
+      "outSha256": "6f64bbd9ce7c7a8a0bbb13cae388e1c3b74da0b0dbf15eab06a79b0fcb263436",
+      "stepId": "h2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "index",
+        "stats"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:22:52.985Z",
+      "endedAt": "2026-11-06T12:22:53.113Z",
+      "ms": 127.7,
+      "out": "traces/08/h3.out",
+      "outBytes": 792,
+      "outSha256": "ed57110b65aa6d6f9a75c0484c1aae33e897733183b3b9312ba4038464b719dc",
+      "stepId": "h3"
+    }
+  ],
+  "answers": {
+    "e1": {
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "status": "ERROR",
+      "backend": "ollama",
+      "qualifying": false,
+      "correlationId": null,
+      "sessionId": null,
+      "turn": null,
+      "citations": [],
+      "generation": {
+        "configured": "ollama:qwen2.5:1.5b",
+        "used": null,
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "ollama",
+        "model": "nomic-embed-text"
+      },
+      "metrics": {
+        "total_latency_ms": 2.47,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": null,
+        "output_tokens": null,
+        "output_tokens_estimated": null,
+        "tokens_per_second": null,
+        "stages": null
+      },
+      "error": {
+        "error": "provider_unavailable",
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "hint": "provider is not reachable",
+        "dependencyUnavailable": true
+      },
+      "abstainReason": null,
+      "warnings": [
+        "dependency_unavailable"
+      ]
+    },
+    "e2": {
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "status": "ERROR",
+      "backend": "ollama",
+      "qualifying": false,
+      "correlationId": null,
+      "sessionId": null,
+      "turn": null,
+      "citations": [],
+      "generation": {
+        "configured": "ollama:qwen2.5:1.5b",
+        "used": null,
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "ollama",
+        "model": "nomic-embed-text"
+      },
+      "metrics": {
+        "total_latency_ms": 2.44,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": null,
+        "output_tokens": null,
+        "output_tokens_estimated": null,
+        "tokens_per_second": null,
+        "stages": null
+      },
+      "error": {
+        "error": "provider_unavailable",
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "hint": "provider is not reachable",
+        "dependencyUnavailable": true
+      },
+      "abstainReason": null,
+      "warnings": [
+        "dependency_unavailable"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "dependency_error",
+      "description": "Natural failure classified as dependency unavailable (ERROR, exit 6), no answer text.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "exit": 6,
+        "status": "ERROR",
+        "errorCode": null,
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "dependencyUnavailable": true,
+        "answerChars": 0
+      }
+    },
+    {
+      "id": "c2",
+      "type": "dependency_error",
+      "description": "The retry gets the same classification (no silent switch to another provider).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "exit": 6,
+        "status": "ERROR",
+        "errorCode": null,
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "dependencyUnavailable": true,
+        "answerChars": 0
+      }
+    },
+    {
+      "id": "c3",
+      "type": "refused",
+      "description": "The non-loopback provider URL is refused (non-zero exit, message names the loopback rule).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "exit": 2,
+        "contains": "loopback",
+        "found": true
+      }
+    },
+    {
+      "id": "c4",
+      "type": "rate_limited",
+      "description": "The 21st request in the session is rejected with code rate_limited and a retryAfterS value.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "burst": 21,
+        "answeredInBurst": 20,
+        "rateLimitedInBurst": 1,
+        "retryAfterS": 59.264
+      }
+    },
+    {
+      "id": "c5",
+      "type": "recovered",
+      "description": "After waiting retryAfterS, the next request in the same session is answered.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "after": [
+          {
+            "at": "2026-11-06T12:22:52.536Z",
+            "answered": 1,
+            "rateLimited": 0
+          }
+        ]
+      }
+    },
+    {
+      "id": "c6",
+      "type": "exit",
+      "description": "The index is healthy at the end.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "exit": 0,
+        "expected": [
+          0
+        ]
+      }
+    }
+  ],
+  "events": "traces/08/events.jsonl",
+  "sessionIds": [
+    "rec-s08-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-eb5d7a9e29fc",
+    "q-569b319611d4",
+    "q-7648bad557d2",
+    "q-13f367d7fc5b",
+    "q-a1157f15d292",
+    "q-7a765012d242",
+    "q-a348c2295097",
+    "q-c04c097c8730",
+    "q-5a020e9f8431",
+    "q-feff74acf93a",
+    "q-ba34c40423b5",
+    "q-f7351fc5cce8",
+    "q-ee5341598914",
+    "q-08ed33129b49",
+    "q-5393967c6cb5",
+    "q-eae7fe7dfe88",
+    "q-1a43864b8fc2",
+    "q-4332b9540596",
+    "q-3063affc5d82",
+    "q-a2c6a2df7893",
+    "q-c6aabaea3308"
+  ]
+}

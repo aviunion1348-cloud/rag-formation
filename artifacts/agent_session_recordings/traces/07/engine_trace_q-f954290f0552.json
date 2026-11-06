@@ -1,0 +1,210 @@
+{
+  "query_id": "q-f954290f0552",
+  "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+  "status": "answered",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 35.084,
+  "retrieval_ms": 15.735,
+  "generation_ms": 3.211,
+  "ttft_ms": 1.863,
+  "itl_ms": 0.073,
+  "prompt_tokens": 28,
+  "completion_tokens": 106,
+  "tokens_estimated": 1,
+  "citations_total": 2,
+  "citations_valid": 2,
+  "abstain_reason": null,
+  "created_at": "2026-11-06T12:20:25Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 112
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 0.198,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 24.263,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.5175
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 11.364
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 1.315
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.064
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.011
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 2.981
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 1.289,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 0.055,
+      "detail": {
+        "selected": 9,
+        "tokens": 1640,
+        "excluded": 3
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.2,
+        "topP": 0.9,
+        "evidenceTokens": 1640
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 3.255,
+      "detail": {
+        "provider": "extractive",
+        "chars": 424,
+        "ttftMs": 1.863,
+        "itlMs": 0.073,
+        "finishReason": "stop"
+      }
+    },
+    {
+      "stage": "citation_validation",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z"
+    },
+    {
+      "stage": "citation_validation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 0.579,
+      "detail": {
+        "cited": 2,
+        "invalid": 0,
+        "uncited": false
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "status": "answered"
+      }
+    }
+  ]
+}

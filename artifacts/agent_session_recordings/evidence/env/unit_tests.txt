@@ -1,0 +1,83 @@
+$ python3 -m unittest discover -s tests -p test_*.py
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:20:00Z
+
+
+[stderr]
+[ragformation] "GET /api/v1/sources HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+.[ragformation] "GET /api/sources HTTP/1.1" 401 -
+[ragformation] "GET /api/sources HTTP/1.1" 200 -
+[ragformation] "GET /api/health HTTP/1.1" 200 -
+.[ragformation] "POST /api/ask HTTP/1.1" 200 -
+.[ragformation] "POST /api/ask HTTP/1.1" 400 -
+[ragformation] "POST /api/ask HTTP/1.1" 400 -
+[ragformation] "POST /api/ask HTTP/1.1" 400 -
+.[ragformation] "GET /api/health HTTP/1.1" 200 -
+[ragformation] "GET /api/config HTTP/1.1" 200 -
+.[ragformation] "POST /api/ingest HTTP/1.1" 400 -
+.[ragformation] "POST /api/ask HTTP/1.1" 400 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-f87b5825a432 HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-does-not-exist HTTP/1.1" 404 -
+.[ragformation] "POST /api/rebuild HTTP/1.1" 200 -
+[ragformation] "POST /api/ask HTTP/1.1" 200 -
+[ragformation] "GET /api/stats HTTP/1.1" 200 -
+[ragformation] "POST /api/feedback HTTP/1.1" 200 -
+[ragformation] "POST /api/feedback HTTP/1.1" 400 -
+.[ragformation] "GET /api/sources HTTP/1.1" 200 -
+[ragformation] "GET /api/sources/src-2c24870c40/chunks HTTP/1.1" 200 -
+[ragformation] "DELETE /api/sources/src-2c24870c40 HTTP/1.1" 200 -
+.[ragformation] "GET / HTTP/1.1" 200 -
+[ragformation] "GET /app.js HTTP/1.1" 200 -
+[ragformation] "GET /../../etc/passwd HTTP/1.1" 404 -
+[ragformation] "GET /api/does-not-exist HTTP/1.1" 404 -
+.[ragformation] "GET /api/sources/src-nope/chunks HTTP/1.1" 404 -
+.[ragformation] "POST /api/sources/upload HTTP/1.1" 200 -
+[ragformation] "POST /api/sources/text HTTP/1.1" 200 -
+.[ragformation] "POST /api/sources/upload HTTP/1.1" 400 -
+..............................................................................[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+...[ragformation] "GET /api/v1/health HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] code 400, message Bad request syntax ('{"question":"x"}')
+[ragformation] "{"question":"x"}" 400 -
+.[proxy] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[proxy] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[proxy] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 401 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 400 -
+[ragformation] "GET /api/v1/traces/q-does-not-exist HTTP/1.1" 404 -
+.[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/events/recent?since=0 HTTP/1.1" 200 -
+.[ragformation] "GET /api/v1/health HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/query HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources?limit=100 HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/sources/src-2c24870c40/chunks HTTP/1.1" 200 -
+[ragformation] "GET /api/v1/traces/q-fff2ac178559 HTTP/1.1" 200 -
+[ragformation] "POST /api/v1/sources HTTP/1.1" 200 -
+[ragformation] "DELETE /api/v1/sources/src-85a085419b HTTP/1.1" 200 -
+......................................{"error": "unknown effect id(s): no_such_effect"}
+.....
+interrupted
+............................ss.................................................................................
+----------------------------------------------------------------------
+Ran 256 tests in 32.693s
+
+OK (skipped=2)

@@ -1,0 +1,309 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [1]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-6b77f48dab#c003-409e673d",
+      "document": "docs/lear_backend/database.md",
+      "heading": "Persistence and storage > CLI state files",
+      "lines": "18-22",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/credentials.py:L28-L36",
+        "prash/credentials.py:L61-L66",
+        "prash/audit.py:L67-L80",
+        "prash/circuit_breaker.py:L68-L71"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3532,
+      "excerpt": "Evidence: `prash/audit.py:L67-L80`.\n\n- [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guarante"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s02-20261106T1219Z",
+    "turn": 2,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 2
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Could two processes write the same sequence number to it?",
+    "retrievalQuery": "Could two processes write the same sequence number to it? (follow-up to: What is Lear's audit log?) prash.audit AuditLog tests/test_audit.py tests/test_desktop_api.py ('get_secret_keys', 'update_secret') test_audit",
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-6b77f48dab#c003-409e673d",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > CLI state files",
+        "score": 0.032787,
+        "support": 0.353224,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-de4b0bbf6e#c033-f46ad0a9",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/audit.py",
+        "score": 0.031754,
+        "support": 0.265388,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c008-9fbd2027",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Behaviour that is well covered",
+        "score": 0.02967,
+        "support": 0.283769,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c019-65aa62d1",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Approval-tier actions > edit-secret",
+        "score": 0.02885,
+        "support": 0.227844,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-4ef2de3bec#c001-3bb806eb",
+        "document": "docs/lear_backend/reference/tests.md",
+        "heading": "Lear backend — test suite reference > Test files",
+        "score": 0.014493,
+        "support": 0.18475,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0a61e382fa#c006-e2594647",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+        "score": 0.029462,
+        "support": 0.178166,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c002-7b5d718c",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > What Lear is",
+        "score": 0.027273,
+        "support": 0.124483,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c008-92af5413",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Deliberately not covered",
+        "score": 0.014706,
+        "support": 0.104508,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-718227fd24#c022-1015dc3f",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference > Routes under `/api/metrics`",
+        "score": 0.013889,
+        "support": 0.074712,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c010-89e43766",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Audit trail",
+        "score": 0.015625,
+        "support": 0.135417,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c003-2f6b1720",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Code, tests and prose disagree",
+        "score": 0.015385,
+        "support": 0.1353,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-6b77f48dab#c003-409e673d",
+      "src-de4b0bbf6e#c033-f46ad0a9",
+      "src-1e7c9f8a18#c008-9fbd2027",
+      "src-8b2cf583b7#c019-65aa62d1",
+      "src-4ef2de3bec#c001-3bb806eb",
+      "src-0a61e382fa#c006-e2594647",
+      "src-9e094965d7#c002-7b5d718c",
+      "src-a641769236#c008-92af5413",
+      "src-718227fd24#c022-1015dc3f",
+      "src-51cdac4a6f#c010-89e43766",
+      "src-a641769236#c003-2f6b1720"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-a641769236#c007-96a8825c",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Robustness observations",
+        "score": 0.015873,
+        "support": 0.144975,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1654,
+    "bestSupport": 0.3532,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.932
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.732
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.073
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.014
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 3.001
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 78.97,
+    "totalMs": 86.59,
+    "streamEvents": 16,
+    "completionTokens": 96,
+    "tokensEstimated": true,
+    "tokensPerSec": 19777.5,
+    "decodeEventsPerSec": 13695.58,
+    "itlMs": {
+      "count": 15,
+      "mean": 0.073,
+      "p50": 0.071,
+      "p85": 0.076,
+      "p99": 0.099,
+      "min": 0.07,
+      "max": 0.099
+    },
+    "stages": {
+      "retrievalMs": 15.752,
+      "generationMs": 4.854,
+      "ttftMs": 3.657,
+      "contextTokens": 1654,
+      "promptTokens": 25,
+      "evidenceTokens": 1654
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 89.651,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.004,
+          "ms": 0.051
+        },
+        {
+          "stage": "session",
+          "startMs": 0.055,
+          "ms": 0.426
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.48,
+          "ms": 0.033
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 0.514,
+          "ms": 0.261
+        },
+        {
+          "stage": "memory",
+          "startMs": 0.775,
+          "ms": 0.25
+        },
+        {
+          "stage": "prompt",
+          "startMs": 1.025,
+          "ms": 0.012
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 1.037,
+          "ms": 1.001
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 2.038,
+          "ms": 0.324
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 2.363,
+          "ms": 31.876
+        },
+        {
+          "stage": "engine",
+          "startMs": 34.239,
+          "ms": 48.713
+        },
+        {
+          "stage": "mapping",
+          "startMs": 82.952,
+          "ms": 3.675
+        },
+        {
+          "stage": "persist",
+          "startMs": 86.627,
+          "ms": 3.018
+        }
+      ]
+    }
+  },
+  "correlationId": "q-87e8e39dad5d",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

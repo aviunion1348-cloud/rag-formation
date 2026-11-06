@@ -1,0 +1,212 @@
+{
+  "query_id": "q-87e8e39dad5d",
+  "question": "Could two processes write the same sequence number to it? (follow-up to: What is Lear's audit log?)",
+  "status": "answered",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 48.146,
+  "retrieval_ms": 15.752,
+  "generation_ms": 4.854,
+  "ttft_ms": 3.657,
+  "itl_ms": 0.073,
+  "prompt_tokens": 25,
+  "completion_tokens": 96,
+  "tokens_estimated": 1,
+  "citations_total": 1,
+  "citations_valid": 1,
+  "abstain_reason": null,
+  "created_at": "2026-11-06T12:20:21Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 99,
+        "retrievalQueryChars": 214,
+        "retrievalQueryRewritten": true
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 1.887,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 32.577,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.3532
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 10.932
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 1.732
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.073
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.014
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 3.001
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 1.021,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 0.047,
+      "detail": {
+        "selected": 11,
+        "tokens": 1654,
+        "excluded": 1
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.2,
+        "topP": 0.9,
+        "evidenceTokens": 1654
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 4.925,
+      "detail": {
+        "provider": "extractive",
+        "chars": 382,
+        "ttftMs": 3.657,
+        "itlMs": 0.073,
+        "finishReason": "stop"
+      }
+    },
+    {
+      "stage": "citation_validation",
+      "status": "started",
+      "at": "2026-11-06T12:20:21Z"
+    },
+    {
+      "stage": "citation_validation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "durationMs": 0.6,
+      "detail": {
+        "cited": 1,
+        "invalid": 0,
+        "uncited": false
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:21Z",
+      "detail": {
+        "status": "answered"
+      }
+    }
+  ]
+}

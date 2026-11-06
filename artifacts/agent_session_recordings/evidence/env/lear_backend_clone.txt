@@ -1,0 +1,5 @@
+$ git clone -q https://github.com/aviunion1348-cloud/Lear-backend-Avi.git /tmp/lear-rec-20261106T1219Z/lear-backend
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:20:03Z
+

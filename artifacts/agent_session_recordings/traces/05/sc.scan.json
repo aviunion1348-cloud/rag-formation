@@ -1,0 +1,21 @@
+{
+  "chunksScanned": 355,
+  "findingsByRule": {
+    "instruction_override": [],
+    "role_hijack": [],
+    "secret_exfiltration": [],
+    "tool_abuse": [],
+    "answer_forcing": [],
+    "markdown_exfiltration": []
+  },
+  "flaggedChunks": [],
+  "rules": [
+    "instruction_override",
+    "role_hijack",
+    "secret_exfiltration",
+    "tool_abuse",
+    "answer_forcing",
+    "markdown_exfiltration"
+  ],
+  "function": "ragformation.guardrails.scan_text"
+}

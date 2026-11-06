@@ -1,0 +1,6 @@
+$ obs --version
+# cwd /home/user/rag-formation
+# exit 127
+# at 2026-11-06T12:19:26Z
+
+FileNotFoundError: [Errno 2] No such file or directory: 'obs'

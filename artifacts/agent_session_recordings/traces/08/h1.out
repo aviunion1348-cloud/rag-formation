@@ -1,0 +1,27 @@
+{
+  "namespace": "lear-docs",
+  "indexDir": "/tmp/lear-rec-20261106T1219Z/data/index-baseline",
+  "documents": 19,
+  "chunks": 355,
+  "tokens": {
+    "total": 48676,
+    "max": 306,
+    "mean": 137.1
+  },
+  "linePrecision": {
+    "lines": 354,
+    "section": 1
+  },
+  "chunksWithSourceRefs": 307,
+  "embedding": {
+    "provider": "hashing",
+    "model": "hashing-lexical-v1",
+    "dimension": 512,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "semantic": false
+  },
+  "indexFingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "manifestGeneratedAt": "2026-11-06T12:20:20Z",
+  "qualifying": false
+}

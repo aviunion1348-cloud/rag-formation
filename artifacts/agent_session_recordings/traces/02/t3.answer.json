@@ -1,0 +1,306 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [1]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-6b77f48dab#c003-409e673d",
+      "document": "docs/lear_backend/database.md",
+      "heading": "Persistence and storage > CLI state files",
+      "lines": "18-22",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/credentials.py:L28-L36",
+        "prash/credentials.py:L61-L66",
+        "prash/audit.py:L67-L80",
+        "prash/circuit_breaker.py:L68-L71"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4479,
+      "excerpt": "Evidence: `prash/audit.py:L67-L80`.\n\n- [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guarante"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s02-20261106T1219Z",
+    "turn": 3,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 4
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Which file implements it, and where does it write by default?",
+    "retrievalQuery": "Which file implements it, and where does it write by default? (follow-up to: Could two processes write the same sequence number to it?) seq write_text",
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-6b77f48dab#c003-409e673d",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > CLI state files",
+        "score": 0.032787,
+        "support": 0.447866,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c007-96a8825c",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Robustness observations",
+        "score": 0.029643,
+        "support": 0.274139,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-6b77f48dab#c004-8d19cd1c",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > CLI state files",
+        "score": 0.030366,
+        "support": 0.189687,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-00287151c3#c007-c6383b13",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Diagnosis schema (`prash/brain/schemas.py`)",
+        "score": 0.0241,
+        "support": 0.184291,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c002-95a9d20b",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash run",
+        "score": 0.013699,
+        "support": 0.111901,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a8ce8fa5f1#c005-62cfed37",
+        "document": "docs/lear_backend/integrations.md",
+        "heading": "Integrations > Model providers",
+        "score": 0.016129,
+        "support": 0.156902,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-de4b0bbf6e#c059-109ecb0d",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/connectors/gitlab.py",
+        "score": 0.015625,
+        "support": 0.1125,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0441e92281#c008-c6a2eca5",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Day-two operations",
+        "score": 0.028083,
+        "support": 0.148982,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-6b77f48dab#c003-409e673d",
+      "src-a641769236#c007-96a8825c",
+      "src-6b77f48dab#c004-8d19cd1c",
+      "src-00287151c3#c007-c6383b13",
+      "src-3665f86d99#c002-95a9d20b",
+      "src-a8ce8fa5f1#c005-62cfed37",
+      "src-de4b0bbf6e#c059-109ecb0d",
+      "src-0441e92281#c008-c6a2eca5"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-00287151c3#c002-9929a80e",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Action contract (`prash/actions/contract.py`)",
+        "score": 0.015385,
+        "support": 0.117825,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-9e094965d7#c003-f65bcf66",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > How to read these pages",
+        "score": 0.030366,
+        "support": 0.118482,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-00287151c3#c006-0fd99a53",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Diagnosis schema (`prash/brain/schemas.py`)",
+        "score": 0.015152,
+        "support": 0.116951,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c002-b43a09f3",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Where configuration comes from",
+        "score": 0.025487,
+        "support": 0.147863,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1642,
+    "bestSupport": 0.4479,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.748
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.621
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.083
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.019
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 3.433
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 65.34,
+    "totalMs": 76.89,
+    "streamEvents": 16,
+    "completionTokens": 96,
+    "tokensEstimated": true,
+    "tokensPerSec": 25634.18,
+    "decodeEventsPerSec": 13521.55,
+    "itlMs": {
+      "count": 15,
+      "mean": 0.074,
+      "p50": 0.072,
+      "p85": 0.078,
+      "p99": 0.08,
+      "min": 0.07,
+      "max": 0.08
+    },
+    "stages": {
+      "retrievalMs": 15.904,
+      "generationMs": 3.745,
+      "ttftMs": 2.51,
+      "contextTokens": 1642,
+      "promptTokens": 34,
+      "evidenceTokens": 1642
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 80.087,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.001,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.036
+        },
+        {
+          "stage": "session",
+          "startMs": 0.039,
+          "ms": 0.174
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.213,
+          "ms": 0.021
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 0.234,
+          "ms": 0.113
+        },
+        {
+          "stage": "memory",
+          "startMs": 0.347,
+          "ms": 0.177
+        },
+        {
+          "stage": "prompt",
+          "startMs": 0.524,
+          "ms": 0.011
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 0.534,
+          "ms": 0.777
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 1.311,
+          "ms": 0.358
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 1.669,
+          "ms": 22.528
+        },
+        {
+          "stage": "engine",
+          "startMs": 24.197,
+          "ms": 47.149
+        },
+        {
+          "stage": "mapping",
+          "startMs": 71.346,
+          "ms": 5.594
+        },
+        {
+          "stage": "persist",
+          "startMs": 76.939,
+          "ms": 3.14
+        }
+      ]
+    }
+  },
+  "correlationId": "q-3111c301eeb2",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

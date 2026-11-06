@@ -1,0 +1,87 @@
+{
+  "status": "ERROR",
+  "answer": "",
+  "citations": [],
+  "qualifying": false,
+  "backend": "ollama",
+  "models": {
+    "generation": {
+      "configured": "ollama:qwen2.5:1.5b",
+      "used": null,
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "ollama",
+      "model": "nomic-embed-text"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "session": null,
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Does `prash run --dry-run` execute the action?",
+    "retrievalQuery": null
+  },
+  "timings": {
+    "totalMs": 2.27,
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 2.303,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.004,
+          "ms": 0.026
+        },
+        {
+          "stage": "session",
+          "startMs": 0.03,
+          "ms": 0.002
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 0.033,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 0.034,
+          "ms": 0.1
+        },
+        {
+          "stage": "prompt",
+          "startMs": 0.134,
+          "ms": 0.009
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 0.143,
+          "ms": 2.139
+        },
+        {
+          "stage": "persist",
+          "startMs": 2.282,
+          "ms": 0.02
+        }
+      ]
+    }
+  },
+  "correlationId": null,
+  "engineStatus": "failed",
+  "warnings": [
+    "dependency_unavailable"
+  ],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": {
+    "error": "provider_unavailable",
+    "message": "Ollama is configured as the embedding provider but is not usable",
+    "hint": "provider is not reachable",
+    "dependencyUnavailable": true
+  }
+}

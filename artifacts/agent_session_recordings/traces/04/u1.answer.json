@@ -1,0 +1,130 @@
+{
+  "status": "ABSTAINED",
+  "answer": "The indexed Lear documentation never mentions 'Kafka', so this cannot be answered from it. Ask about the Lear backend code (CLI, actions, permissions, connectors, desktop server) instead.",
+  "citations": [],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": null,
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "session": {
+    "id": "rec-s04a-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Which Kafka topics does Lear publish incident events to?",
+    "retrievalQuery": null,
+    "candidates": [],
+    "selected": [],
+    "excluded": [],
+    "quarantined": [],
+    "bestSupport": null,
+    "stages": {},
+    "unknownTerms": [
+      "Kafka"
+    ]
+  },
+  "timings": {
+    "ttftMs": null,
+    "totalMs": 28.61,
+    "streamEvents": 0,
+    "completionTokens": null,
+    "tokensEstimated": false,
+    "tokensPerSec": null,
+    "decodeEventsPerSec": null,
+    "itlMs": {
+      "count": 0,
+      "mean": null,
+      "p50": null,
+      "p85": null,
+      "p99": null,
+      "min": null,
+      "max": null
+    },
+    "stages": {},
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 31.275,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.023
+        },
+        {
+          "stage": "session",
+          "startMs": 0.026,
+          "ms": 1.684
+        },
+        {
+          "stage": "compaction",
+          "startMs": 1.71,
+          "ms": 0.02
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 1.73,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 1.732,
+          "ms": 0.075
+        },
+        {
+          "stage": "prompt",
+          "startMs": 1.807,
+          "ms": 0.01
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 1.816,
+          "ms": 0.89
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 2.707,
+          "ms": 0.338
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.045,
+          "ms": 25.579
+        },
+        {
+          "stage": "persist",
+          "startMs": 28.624,
+          "ms": 2.647
+        }
+      ]
+    }
+  },
+  "correlationId": null,
+  "engineStatus": "not_called",
+  "abstainReason": "unknown_term",
+  "conflict": null,
+  "warnings": [
+    "unknown_term"
+  ],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

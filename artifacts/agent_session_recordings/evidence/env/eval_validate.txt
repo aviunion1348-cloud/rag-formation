@@ -1,0 +1,13 @@
+$ python3 -m ragformation lear eval validate
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:20:01Z
+
+Golden set lear-golden v1.0.0 — 80 cases (/home/user/rag-formation/evals/lear/golden_lear_v1.json)
+  [PASS] schema: 80 cases, 0 schema problems
+  [PASS] size: 80 cases (required 50-100, target 70-80)
+  [PASS] splits: splits calibration=10, dev=32, test=24, holdout=14; categories configuration=15, conflict=1, factual=19, follow_up=6, injection=2, multi_hop=7, security=10, unanswerable=8, workflow=12
+  [PASS] answerability: 0 expected-answer term groups not found in the cited docs
+  [PASS] checksums: dataset sha256 56050cf2689383ca…; 0 changed, 0 removed, 0 moved, 0 added since checksums; legacy golden sets unchanged
+  [WARN] evidence: 92 evidence items; not verified (no Lear checkout supplied)
+RESULT: VALID

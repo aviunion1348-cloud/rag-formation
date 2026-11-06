@@ -1,0 +1,6 @@
+$ git log -1 --format=%H %cI %s
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+81c28c828be166fa51b66bd7cc8dadb0cd163c70 2026-11-06T12:19:19+00:00 recordings: pre-register the Lear agent session recording plan and harness

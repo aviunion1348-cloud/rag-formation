@@ -1,0 +1,322 @@
+{
+  "status": "GROUNDED",
+  "answer": "Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [2] Evidence: `prash/permissions.py:L37-L64`. - [implemented] The circuit breaker opens for a resource after `max_actions` executions inside `window_seconds` and keeps its state in a JSON file so the cap survives restarts. [1]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-0a61e382fa#c006-e2594647",
+      "document": "docs/lear_backend/architecture.md",
+      "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+      "lines": "49-53",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/dispatch.py:L177-L209",
+        "prash/permissions.py:L37-L64",
+        "prash/circuit_breaker.py:L40-L100",
+        "prash/audit.py:L27-L65"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4287,
+      "excerpt": "Evidence: `prash/permissions.py:L37-L64`.\n\n- [implemented] The circuit breaker opens for a resource after `max_actions` executions inside `window_seconds` and keeps its state in a JSON file so the cap survives restarts."
+    },
+    {
+      "id": 2,
+      "chunkId": "src-9e094965d7#c003-f65bcf66",
+      "document": "docs/lear_backend/README.md",
+      "heading": "Lear backend — engineering documentation > How to read these pages",
+      "lines": "15-27",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L1-L7",
+        "prash/server.py:L397"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3886,
+      "excerpt": "How to read these pages\n\nEach claim carries one evidence label:\n\nLabel  |  Meaning\n\n--- | ---\n\nimplemented  |  read directly from code at the pinned commit\n\nconfigured  |  a default, environment variable, packaging or launcher setting\n\ntest"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s07-20261106T1219Z",
+    "turn": 2,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 2
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-0a61e382fa#c006-e2594647",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+        "score": 0.031319,
+        "support": 0.428659,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c003-f65bcf66",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > How to read these pages",
+        "score": 0.025316,
+        "support": 0.388561,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c001-3f1b0eff",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Where configuration comes from",
+        "score": 0.027973,
+        "support": 0.317265,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-6b77f48dab#c005-eea88885",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > Desktop server state files",
+        "score": 0.027619,
+        "support": 0.337121,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-cceb028542#c004-2c9bf128",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash fix`: diagnose, then act",
+        "score": 0.015625,
+        "support": 0.297257,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c004-d30bed55",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.015625,
+        "support": 0.257292,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c007-96a8825c",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Robustness observations",
+        "score": 0.031025,
+        "support": 0.31944,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-cceb028542#c005-41a6252e",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash fix`: diagnose, then act",
+        "score": 0.014085,
+        "support": 0.264379,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-00287151c3#c010-a6b788d5",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Desktop connector registry (`prash/connector_registry.py`)",
+        "score": 0.014706,
+        "support": 0.267276,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-0a61e382fa#c006-e2594647",
+      "src-9e094965d7#c003-f65bcf66",
+      "src-ed704ce6ff#c001-3f1b0eff",
+      "src-6b77f48dab#c005-eea88885",
+      "src-cceb028542#c004-2c9bf128",
+      "src-ed704ce6ff#c004-d30bed55",
+      "src-a641769236#c007-96a8825c",
+      "src-cceb028542#c005-41a6252e",
+      "src-00287151c3#c010-a6b788d5"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-a641769236#c006-5ed592ba",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Security-relevant observations",
+        "score": 0.014493,
+        "support": 0.287354,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-b85eb60416#c000-3ceb6d4f",
+        "document": "docs/lear_backend/reference/configuration_env.md",
+        "heading": "Lear backend — environment variables and configuration keys",
+        "score": 0.013699,
+        "support": 0.236979,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c003-c7176a6e",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.015873,
+        "support": 0.216667,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1735,
+    "bestSupport": 0.4287,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.332
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.156
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.065
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.014
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.863
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 55.49,
+    "totalMs": 64.09,
+    "streamEvents": 33,
+    "completionTokens": 198,
+    "tokensEstimated": true,
+    "tokensPerSec": 40598.73,
+    "decodeEventsPerSec": 14552.59,
+    "itlMs": {
+      "count": 32,
+      "mean": 0.069,
+      "p50": 0.068,
+      "p85": 0.071,
+      "p99": 0.08,
+      "min": 0.066,
+      "max": 0.08
+    },
+    "stages": {
+      "retrievalMs": 14.43,
+      "generationMs": 4.877,
+      "ttftMs": 2.583,
+      "contextTokens": 1735,
+      "promptTokens": 24,
+      "evidenceTokens": 1735
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 67.351,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.033
+        },
+        {
+          "stage": "session",
+          "startMs": 0.036,
+          "ms": 0.159
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.195,
+          "ms": 0.018
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 0.213,
+          "ms": 0.026
+        },
+        {
+          "stage": "memory",
+          "startMs": 0.238,
+          "ms": 0.066
+        },
+        {
+          "stage": "prompt",
+          "startMs": 0.304,
+          "ms": 0.036
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 0.34,
+          "ms": 0.762
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 1.102,
+          "ms": 0.366
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 1.468,
+          "ms": 21.731
+        },
+        {
+          "stage": "engine",
+          "startMs": 23.2,
+          "ms": 37.439
+        },
+        {
+          "stage": "mapping",
+          "startMs": 60.638,
+          "ms": 3.498
+        },
+        {
+          "stage": "persist",
+          "startMs": 64.136,
+          "ms": 3.211
+        }
+      ]
+    }
+  },
+  "correlationId": "q-e71a7ff483e6",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

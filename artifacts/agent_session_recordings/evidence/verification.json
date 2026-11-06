@@ -1,0 +1,1834 @@
+{
+  "schema": "lear-session-recording-verification-v1",
+  "generatedAtUtc": "2026-11-06T12:43:27Z",
+  "ffmpeg": "ffmpeg version n9.0.2-17-g2a571b6068-20260930 Copyright (c) 2000-2026 the FFmpeg developers",
+  "videos": [
+    {
+      "path": "01_successful_rag_session.mp4",
+      "bytes": 4361013,
+      "modifiedUtc": "2026-11-06T12:29:18Z",
+      "sha256": "ec1569d3dc30159f214c26d1d716386f5c2195a16463966ac0b866342947ac0e",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 116.6,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 1749,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 3.333,
+          "file": "evidence/frames/01_successful_rag_session__t0003.33s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.75,
+          "stddevLuma": 40.45,
+          "nonBlank": true
+        },
+        {
+          "atS": 60.47,
+          "file": "evidence/frames/01_successful_rag_session__t0060.47s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 31.23,
+          "stddevLuma": 28.0,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 4.333,
+        "pacedSeconds": 112.267,
+        "holds": 16,
+        "holdSeconds": 7.0,
+        "castLastEventS": 1.322,
+        "frames": 1749
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "02_multiturn_memory_session.mp4",
+      "bytes": 9159033,
+      "modifiedUtc": "2026-11-06T12:30:22Z",
+      "sha256": "6a0209f86e043e6e44a9dbec7ed925e3bf56697d5c5190f71265871312c389c4",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 263.47,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 3952,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 3.2670000000000003,
+          "file": "evidence/frames/02_multiturn_memory_session__t0003.27s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.27,
+          "stddevLuma": 42.96,
+          "nonBlank": true
+        },
+        {
+          "atS": 133.87,
+          "file": "evidence/frames/02_multiturn_memory_session__t0133.87s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 28.79,
+          "stddevLuma": 20.12,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 4.267,
+        "pacedSeconds": 259.2,
+        "holds": 37,
+        "holdSeconds": 7.0,
+        "castLastEventS": 1.221,
+        "frames": 3952
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "03_multidocument_retrieval.mp4",
+      "bytes": 3041804,
+      "modifiedUtc": "2026-11-06T12:30:46Z",
+      "sha256": "8fa83ed347a16dccb0a6f034069daf13d5510e23af2691aedd538aef3c411823",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 93.73,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 1406,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 2.4,
+          "file": "evidence/frames/03_multidocument_retrieval__t0002.40s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.39,
+          "stddevLuma": 40.31,
+          "nonBlank": true
+        },
+        {
+          "atS": 48.57,
+          "file": "evidence/frames/03_multidocument_retrieval__t0048.57s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 29.04,
+          "stddevLuma": 21.09,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 3.4,
+        "pacedSeconds": 90.333,
+        "holds": 13,
+        "holdSeconds": 7.0,
+        "castLastEventS": 0.369,
+        "frames": 1406
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "04_abstention_session.mp4",
+      "bytes": 4279274,
+      "modifiedUtc": "2026-11-06T12:31:19Z",
+      "sha256": "9bf1df2621b7e56f478b91a474a7a68958dff5aa373f509a60dd4dc07211d09f",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 136.27,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 2044,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 2.667,
+          "file": "evidence/frames/04_abstention_session__t0002.67s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.32,
+          "stddevLuma": 41.31,
+          "nonBlank": true
+        },
+        {
+          "atS": 69.97,
+          "file": "evidence/frames/04_abstention_session__t0069.97s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 28.97,
+          "stddevLuma": 20.88,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 3.667,
+        "pacedSeconds": 132.6,
+        "holds": 19,
+        "holdSeconds": 7.0,
+        "castLastEventS": 0.62,
+        "frames": 2044
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "05_guardrail_security_session.mp4",
+      "bytes": 8033581,
+      "modifiedUtc": "2026-11-06T12:32:19Z",
+      "sha256": "bc1083f6049af65ec585e6c9743e82f578da67b9424b2f87ebaa181fcaabe43e",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 248.53,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 3728,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 2.8,
+          "file": "evidence/frames/05_guardrail_security_session__t0002.80s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.22,
+          "stddevLuma": 39.98,
+          "nonBlank": true
+        },
+        {
+          "atS": 126.17,
+          "file": "evidence/frames/05_guardrail_security_session__t0126.17s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 30.24,
+          "stddevLuma": 25.08,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 3.8,
+        "pacedSeconds": 244.733,
+        "holds": 35,
+        "holdSeconds": 7.0,
+        "castLastEventS": 0.764,
+        "frames": 3728
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "06_conflict_detection_session.mp4",
+      "bytes": 3059875,
+      "modifiedUtc": "2026-11-06T12:32:41Z",
+      "sha256": "c2795ba4dad5f5deee68d1ccd8c59c84739857867d31678b15fb9114927d755e",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 86.6,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 1299,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 2.333,
+          "file": "evidence/frames/06_conflict_detection_session__t0002.33s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 38.5,
+          "stddevLuma": 37.93,
+          "nonBlank": true
+        },
+        {
+          "atS": 44.97,
+          "file": "evidence/frames/06_conflict_detection_session__t0044.97s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 30.02,
+          "stddevLuma": 24.4,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 3.333,
+        "pacedSeconds": 83.267,
+        "holds": 12,
+        "holdSeconds": 7.0,
+        "castLastEventS": 0.33,
+        "frames": 1299
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "07_context_compaction_session.mp4",
+      "bytes": 17543049,
+      "modifiedUtc": "2026-11-06T12:35:25Z",
+      "sha256": "9b68a19a627eede809c7efc084c63e3a456d2df73729e2e82489cf3d95f580fe",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 692.2,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 10383,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 4.133,
+          "file": "evidence/frames/07_context_compaction_session__t0004.13s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 35.49,
+          "stddevLuma": 36.2,
+          "nonBlank": true
+        },
+        {
+          "atS": 348.67,
+          "file": "evidence/frames/07_context_compaction_session__t0348.67s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 36.03,
+          "stddevLuma": 35.9,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 5.133,
+        "pacedSeconds": 687.067,
+        "holds": 98,
+        "holdSeconds": 7.0,
+        "castLastEventS": 2.115,
+        "frames": 10383
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "08_error_recovery_session.mp4",
+      "bytes": 8905428,
+      "modifiedUtc": "2026-11-06T12:36:28Z",
+      "sha256": "4a485bd93db41f8a4e29a1d65bd85c0d8993be7d03ed56599c09cd10ac272880",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 219.73,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 3296,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 65.4,
+          "file": "evidence/frames/08_error_recovery_session__t0065.40s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 35.68,
+          "stddevLuma": 36.88,
+          "nonBlank": true
+        },
+        {
+          "atS": 143.07,
+          "file": "evidence/frames/08_error_recovery_session__t0143.07s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 39.94,
+          "stddevLuma": 45.14,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 66.4,
+        "pacedSeconds": 153.333,
+        "holds": 13,
+        "holdSeconds": 7.0,
+        "castLastEventS": 63.381,
+        "frames": 3296
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "09_evaluation_benchmark_session.mp4",
+      "bytes": 2292467,
+      "modifiedUtc": "2026-11-06T12:36:40Z",
+      "sha256": "7e5f2096e7dabe9f0ddd104b3b2b4067650234d0eeb63270e2c1bfc87a81f1b7",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 37.93,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 569,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 6.0,
+          "file": "evidence/frames/09_evaluation_benchmark_session__t0006.00s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 37.85,
+          "stddevLuma": 39.43,
+          "nonBlank": true
+        },
+        {
+          "atS": 22.47,
+          "file": "evidence/frames/09_evaluation_benchmark_session__t0022.47s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 36.12,
+          "stddevLuma": 38.82,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 7.0,
+        "pacedSeconds": 30.933,
+        "holds": 4,
+        "holdSeconds": 7.0,
+        "castLastEventS": 3.983,
+        "frames": 569
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "complete_agent_session.mp4",
+      "bytes": 64088758,
+      "modifiedUtc": "2026-11-06T12:37:51Z",
+      "sha256": "f1ebe55f65c7cebce93e430a4354b1bc2a573d8c27efbadc12685e9d33c12515",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 2056.2,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 30843,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 1028.1,
+          "file": "evidence/frames/complete_agent_session__t1028.10s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 37.59,
+          "stddevLuma": 37.72,
+          "nonBlank": true
+        }
+      ],
+      "render": null,
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    },
+    {
+      "path": "evidence/attempts/attempt1_08_error_recovery_session.mp4",
+      "bytes": 1830208,
+      "modifiedUtc": "2026-11-06T12:36:54Z",
+      "sha256": "b4035126b0b20ce99423efcf9fb9f85db150c603f4a2dcea17eee7fb3849e684",
+      "probeTool": "ffmpeg -i (ffprobe is not installed)",
+      "container": "mov,mp4,m4a,3gp,3g2,mj2",
+      "majorBrand": "isom",
+      "durationS": 52.13,
+      "codec": "h264",
+      "profile": "High",
+      "pixelFormat": "yuv420p",
+      "width": 1920,
+      "height": 1080,
+      "fps": 15.0,
+      "audioStreams": 0,
+      "videoStreams": 1,
+      "fullDecodeExit": 0,
+      "decodeErrors": [],
+      "decodedFrames": 782,
+      "blackdetect": "blackdetect d=0.5 s, pic_th=0.98, pix_th=0.05 (terminal background is RGB 24,26,33, above the threshold)",
+      "blackSpans": [],
+      "sampleFrames": [
+        {
+          "atS": 2.6,
+          "file": "evidence/frames/attempt1_08_error_recovery_session__t0002.60s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 34.96,
+          "stddevLuma": 34.97,
+          "nonBlank": true
+        },
+        {
+          "atS": 27.87,
+          "file": "evidence/frames/attempt1_08_error_recovery_session__t0027.87s.jpg",
+          "exit": 0,
+          "size": [
+            1920,
+            1080
+          ],
+          "meanLuma": 31.48,
+          "stddevLuma": 27.12,
+          "nonBlank": true
+        }
+      ],
+      "render": {
+        "realtimeSeconds": 3.6,
+        "pacedSeconds": 48.533,
+        "holds": 7,
+        "holdSeconds": 7.0,
+        "castLastEventS": 0.589,
+        "frames": 782
+      },
+      "framesMatchDuration": true,
+      "ok": true,
+      "reusedFromEarlierDecode": true
+    }
+  ],
+  "casts": [
+    {
+      "path": "terminal/01_successful_rag_session.cast",
+      "bytes": 36255,
+      "modifiedUtc": "2026-11-06T12:20:20Z",
+      "sha256": "4b5a1b67a92ae984a3f72e92fd7c4a4925a91c5eb84823ea53728d2ae494fecf",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:19Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 01",
+      "events": 37,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 1.322,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 31406,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/02_multiturn_memory_session.cast",
+      "bytes": 82910,
+      "modifiedUtc": "2026-11-06T12:20:22Z",
+      "sha256": "ab7ee766cb2cb62544b73a225ada226dd85990beb33f6ee3fd693488d3e0d3f9",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:20Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 02",
+      "events": 94,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 1.221,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 71501,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/03_multidocument_retrieval.cast",
+      "bytes": 30465,
+      "modifiedUtc": "2026-11-06T12:20:22Z",
+      "sha256": "5bb1add82f10c03b1cee82306eb7056835498d0833daae4a48d3ada7f47ffea3",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:22Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 03",
+      "events": 48,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 0.369,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 26107,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/04_abstention_session.cast",
+      "bytes": 39417,
+      "modifiedUtc": "2026-11-06T12:20:23Z",
+      "sha256": "c3f50565bfe1f73e65ebb402aa75e5abfbb22a5877c863471f360f7da72f6896",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:22Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 04",
+      "events": 86,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 0.62,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 32867,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/05_guardrail_security_session.cast",
+      "bytes": 79850,
+      "modifiedUtc": "2026-11-06T12:20:24Z",
+      "sha256": "e38ff56244f817390380a4dfe15787af252891d4e1681782e596eb8910a60fbe",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:23Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 05",
+      "events": 80,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 0.764,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 69242,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/06_conflict_detection_session.cast",
+      "bytes": 28565,
+      "modifiedUtc": "2026-11-06T12:20:24Z",
+      "sha256": "bd93fc2e9659f2a3c624ced474a5bbe802fdc404908f1018ff78adb7d08964e3",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:24Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 06",
+      "events": 32,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 0.33,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 24697,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/07_context_compaction_session.cast",
+      "bytes": 193667,
+      "modifiedUtc": "2026-11-06T12:20:27Z",
+      "sha256": "33869a8ed519362ccdd45ecf3f5060645ca9d27ae9c8083b013a9f8d1a4f5fc8",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:24Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 07",
+      "events": 147,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 2.115,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 168458,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/08_error_recovery_session.cast",
+      "bytes": 40266,
+      "modifiedUtc": "2026-11-06T12:22:53Z",
+      "sha256": "24bcd681dce78feef6444d549f504210e923c499b8cbc307be1352c43d314e06",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:21:49Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 08",
+      "events": 254,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 63.381,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 32291,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "terminal/09_evaluation_benchmark_session.cast",
+      "bytes": 12311,
+      "modifiedUtc": "2026-11-06T12:20:31Z",
+      "sha256": "44a52f0240268fa59043ce9517ddcbcecef4828a4292133e573b62f0d3d7bc30",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:27Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 09",
+      "events": 16,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 3.983,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 10984,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    },
+    {
+      "path": "evidence/attempts/attempt1_08_error_recovery_session.cast",
+      "bytes": 13746,
+      "modifiedUtc": "2026-11-06T12:20:27Z",
+      "sha256": "c12d74bb00371a642f49c8074929e5b0768fbc0c919103a84962ae8e08664e91",
+      "valid": true,
+      "version": 2,
+      "width": 158,
+      "height": 40,
+      "startedUtc": "2026-11-06T12:20:27Z",
+      "headerEnv": {
+        "SHELL": "/bin/bash",
+        "TERM": "xterm-256color"
+      },
+      "title": "lear-rec-20261106T1219Z scenario 08",
+      "events": 21,
+      "eventKinds": [
+        "o"
+      ],
+      "monotonic": true,
+      "durationS": 0.589,
+      "idleTimeLimit": null,
+      "asciinemaCat": {
+        "exit": 0,
+        "bytes": 11614,
+        "tool": "asciinema 2.4.0 `cat` (full replay to stdout)"
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario": "01",
+      "name": "successful_rag",
+      "status": "FAIL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "g1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/01/g1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "15/15"
+          },
+          {
+            "stepId": "a0",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/01/a0.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "87/87"
+          },
+          {
+            "stepId": "i1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/01/i1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "3/3"
+          },
+          {
+            "stepId": "i2",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/01/i2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "27/27"
+          },
+          {
+            "stepId": "a1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/01/a1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "324/324"
+          }
+        ],
+        "agentSteps": 5,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "5/5",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s01-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-4f56b050c0eb",
+            "engineTraceFile": "traces/01/engine_trace_q-4f56b050c0eb.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 1.258,
+        "castDurationS": 1.322,
+        "castStartVsHarnessStartS": 0.474,
+        "eventsJsonlRows": 40,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 5,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "02",
+      "name": "multiturn_memory",
+      "status": "FAIL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "m1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/02/m1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "20/20"
+          },
+          {
+            "stepId": "t1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/02/t1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "340/340"
+          },
+          {
+            "stepId": "t2",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/02/t2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "309/309"
+          },
+          {
+            "stepId": "t3",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/02/t3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "306/306"
+          },
+          {
+            "stepId": "s1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/02/s1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "112/112"
+          },
+          {
+            "stepId": "m2",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/02/m2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "22/22"
+          }
+        ],
+        "agentSteps": 6,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "6/6",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s02-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-2e7b3d1a9a23",
+            "engineTraceFile": "traces/02/engine_trace_q-2e7b3d1a9a23.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-87e8e39dad5d",
+            "engineTraceFile": "traces/02/engine_trace_q-87e8e39dad5d.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-3111c301eeb2",
+            "engineTraceFile": "traces/02/engine_trace_q-3111c301eeb2.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 1.17,
+        "castDurationS": 1.221,
+        "castStartVsHarnessStartS": 0.943,
+        "eventsJsonlRows": 96,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 6,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "03",
+      "name": "multidocument_retrieval",
+      "status": "FAIL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "q1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/03/q1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "343/343"
+          }
+        ],
+        "agentSteps": 1,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "1/1",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s03-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-568a4c41af61",
+            "engineTraceFile": "traces/03/engine_trace_q-568a4c41af61.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 0.314,
+        "castDurationS": 0.369,
+        "castStartVsHarnessStartS": 0.324,
+        "eventsJsonlRows": 32,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 1,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "04",
+      "name": "abstention",
+      "status": "PASS",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "u1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/04/u1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "130/130"
+          },
+          {
+            "stepId": "u2",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/04/u2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "287/287"
+          },
+          {
+            "stepId": "u3",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/04/u3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "130/130"
+          }
+        ],
+        "agentSteps": 3,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "3/3",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s04a-20261106T1219Z": true,
+          "rec-s04b-20261106T1219Z": true,
+          "rec-s04c-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-7925ae11a4fb",
+            "engineTraceFile": "traces/04/engine_trace_q-7925ae11a4fb.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 0.565,
+        "castDurationS": 0.62,
+        "castStartVsHarnessStartS": 0.837,
+        "eventsJsonlRows": 52,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 3,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "05",
+      "name": "guardrail_security",
+      "status": "PARTIAL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "sc",
+            "kind": "scan_corpus",
+            "helper": "harness helper: read-only corpus scan; summary on screen, full JSON in the .out file",
+            "outFile": "traces/05/sc.scan.json",
+            "outSha256Matches": true,
+            "outputInCast": false,
+            "allLinesInCast": false,
+            "linesFoundInCast": "4/21"
+          },
+          {
+            "stepId": "p1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/05/p1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "343/343"
+          },
+          {
+            "stepId": "p2",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/05/p2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "343/343"
+          },
+          {
+            "stepId": "p3",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/05/p3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "318/318"
+          }
+        ],
+        "agentSteps": 3,
+        "helperSteps": 1,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "3/3",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": false,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s05a-20261106T1219Z": true,
+          "rec-s05b-20261106T1219Z": true,
+          "rec-s05c-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-d473afdce8bf",
+            "engineTraceFile": "traces/05/engine_trace_q-d473afdce8bf.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-137c018e69c0",
+            "engineTraceFile": "traces/05/engine_trace_q-137c018e69c0.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-7b8170d957bc",
+            "engineTraceFile": "traces/05/engine_trace_q-7b8170d957bc.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 0.714,
+        "castDurationS": 0.764,
+        "castStartVsHarnessStartS": 0.587,
+        "eventsJsonlRows": 96,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 4,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "06",
+      "name": "conflict_detection",
+      "status": "PARTIAL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "k1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/06/k1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "326/326"
+          }
+        ],
+        "agentSteps": 1,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "1/1",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s06-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-126884f451c9",
+            "engineTraceFile": "traces/06/engine_trace_q-126884f451c9.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 0.279,
+        "castDurationS": 0.33,
+        "castStartVsHarnessStartS": 0.49,
+        "eventsJsonlRows": 32,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 1,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "07",
+      "name": "context_compaction",
+      "status": "PARTIAL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "w1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "324/324"
+          },
+          {
+            "stepId": "w2",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "322/322"
+          },
+          {
+            "stepId": "w3",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "339/339"
+          },
+          {
+            "stepId": "w4",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w4.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "339/339"
+          },
+          {
+            "stepId": "w5",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w5.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "320/320"
+          },
+          {
+            "stepId": "w6",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w6.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "335/335"
+          },
+          {
+            "stepId": "w7",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w7.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "321/321"
+          },
+          {
+            "stepId": "w8",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/w8.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "339/339"
+          },
+          {
+            "stepId": "f1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/07/f1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "328/328"
+          },
+          {
+            "stepId": "s7",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/07/s7.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "352/352"
+          }
+        ],
+        "agentSteps": 10,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "10/10",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": true,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s07-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-f954290f0552",
+            "engineTraceFile": "traces/07/engine_trace_q-f954290f0552.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-e71a7ff483e6",
+            "engineTraceFile": "traces/07/engine_trace_q-e71a7ff483e6.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-b3f56da8e145",
+            "engineTraceFile": "traces/07/engine_trace_q-b3f56da8e145.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-6ad52b07fded",
+            "engineTraceFile": "traces/07/engine_trace_q-6ad52b07fded.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-0a39f90321ee",
+            "engineTraceFile": "traces/07/engine_trace_q-0a39f90321ee.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-dea61f02dcba",
+            "engineTraceFile": "traces/07/engine_trace_q-dea61f02dcba.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-1ccecd66e3b7",
+            "engineTraceFile": "traces/07/engine_trace_q-1ccecd66e3b7.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-c6e759b1f1fd",
+            "engineTraceFile": "traces/07/engine_trace_q-c6e759b1f1fd.json",
+            "idMatches": true
+          },
+          {
+            "correlationId": "q-a1dc5c6aca7b",
+            "engineTraceFile": "traces/07/engine_trace_q-a1dc5c6aca7b.json",
+            "idMatches": true
+          }
+        ],
+        "harnessElapsedS": 2.064,
+        "castDurationS": 2.115,
+        "castStartVsHarnessStartS": 0.96,
+        "eventsJsonlRows": 288,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 10,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "08",
+      "name": "error_recovery",
+      "status": "PASS",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "h1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/08/h1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "27/27"
+          },
+          {
+            "stepId": "e1",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/08/e1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "87/87"
+          },
+          {
+            "stepId": "e2",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/08/e2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "87/87"
+          },
+          {
+            "stepId": "e3",
+            "kind": "ask",
+            "helper": null,
+            "outFile": "traces/08/e3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "1/1"
+          },
+          {
+            "stepId": "r1",
+            "kind": "chat",
+            "helper": null,
+            "outFile": "traces/08/r1.out",
+            "outSha256Matches": true,
+            "outputInCast": false,
+            "allLinesInCast": true,
+            "linesFoundInCast": "128/128"
+          },
+          {
+            "stepId": "h2",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/08/h2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "15/15"
+          },
+          {
+            "stepId": "h3",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/08/h3.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "27/27"
+          }
+        ],
+        "agentSteps": 7,
+        "helperSteps": 0,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "6/7",
+        "nonContiguousNote": "S08 r1 (chat): the harness prints a labelled USER line when it writes the burst into the chat's stdin, and that line lands between chunks of the chat's output; every output line is still present",
+        "allStepOutputsInCast": false,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {
+          "rec-s08-20261106T1219Z": true
+        },
+        "engineTraces": [
+          {
+            "correlationId": "q-eb5d7a9e29fc",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-569b319611d4",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-7648bad557d2",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-13f367d7fc5b",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-a1157f15d292",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-7a765012d242",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-a348c2295097",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-c04c097c8730",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-5a020e9f8431",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-feff74acf93a",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-ba34c40423b5",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-f7351fc5cce8",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-ee5341598914",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-08ed33129b49",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-5393967c6cb5",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-eae7fe7dfe88",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-1a43864b8fc2",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-4332b9540596",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-3063affc5d82",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-a2c6a2df7893",
+            "engineTraceFile": null,
+            "idMatches": false
+          },
+          {
+            "correlationId": "q-c6aabaea3308",
+            "engineTraceFile": null,
+            "idMatches": false
+          }
+        ],
+        "harnessElapsedS": 63.327,
+        "castDurationS": 63.381,
+        "castStartVsHarnessStartS": 0.838,
+        "eventsJsonlRows": 16,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 7,
+        "stepsJsonlMatchesResult": true
+      }
+    },
+    {
+      "scenario": "09",
+      "name": "evaluation_benchmark",
+      "status": "PARTIAL",
+      "consistency": {
+        "steps": [
+          {
+            "stepId": "v1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/09/v1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "8/8"
+          },
+          {
+            "stepId": "v2",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/09/v2.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "47/47"
+          },
+          {
+            "stepId": "x1",
+            "kind": "compare_eval",
+            "helper": "harness helper: comparison with committed round-3; summary on screen, full JSON in the .out file",
+            "outFile": "traces/09/x1.compare.json",
+            "outSha256Matches": true,
+            "outputInCast": false,
+            "allLinesInCast": false,
+            "linesFoundInCast": "3/61"
+          },
+          {
+            "stepId": "b1",
+            "kind": "cli",
+            "helper": null,
+            "outFile": "traces/09/b1.out",
+            "outSha256Matches": true,
+            "outputInCast": true,
+            "allLinesInCast": true,
+            "linesFoundInCast": "6/6"
+          }
+        ],
+        "agentSteps": 3,
+        "helperSteps": 1,
+        "allAgentOutputLinesInCast": true,
+        "agentOutputsContiguous": "3/3",
+        "nonContiguousNote": null,
+        "allStepOutputsInCast": false,
+        "allOutSha256Match": true,
+        "sessionIdsInCast": {},
+        "engineTraces": [],
+        "harnessElapsedS": 3.921,
+        "castDurationS": 3.983,
+        "castStartVsHarnessStartS": 0.982,
+        "eventsJsonlRows": 0,
+        "eventsJsonlValid": true,
+        "stepsJsonlRows": 4,
+        "stepsJsonlMatchesResult": true
+      }
+    }
+  ],
+  "security": {
+    "scope": "181 text files under artifacts/agent_session_recordings (casts, per-step outputs, traces, JSON, Markdown); MP4 frames are rendered from the scanned casts and add no text of their own",
+    "filesScanned": 181,
+    "patterns": [
+      "aws_access_key",
+      "bearer_token",
+      "email_address",
+      "env_dump_line",
+      "github_token",
+      "ipv4",
+      "jwt",
+      "openai_style_key",
+      "other_home_dir",
+      "private_key_block",
+      "secret_assignment",
+      "slack_token"
+    ],
+    "findings": [],
+    "ipv4Seen": {
+      "192.0.2.10": 14,
+      "127.0.0.1": 33,
+      "192.0.2.0": 7,
+      "127.0.0.0": 4,
+      "0.0.0.0": 4
+    },
+    "ipv4Allowed": "127.0.0.0/8, 0.0.0.0, 192.0.2.0/24 (TEST-NET-1, used as the injected unreachable host)",
+    "systemPromptLinesChecked": 16,
+    "systemPromptDisclosures": []
+  },
+  "summary": {
+    "videosChecked": 11,
+    "videosOk": 11,
+    "castsChecked": 10,
+    "castsValid": 10,
+    "scenarioOutputsConsistent": 9,
+    "securityFindings": 0,
+    "systemPromptDisclosures": 0
+  },
+  "securityScannedAtUtc": "2026-11-06T12:45:34Z"
+}

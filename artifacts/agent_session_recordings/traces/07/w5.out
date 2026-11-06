@@ -1,0 +1,320 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]",
+  "citations": [
+    {
+      "id": 4,
+      "chunkId": "src-0aa7224dfb#c004-10cc0499",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The `prash` CLI",
+      "lines": "32-34",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/cli.py:L1251",
+        "prash/cli.py:L351",
+        "prash/cli.py:L460",
+        "prash/cli.py:L1252",
+        "prash/cli.py:L273",
+        "prash/cli.py:L1253-L1255"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4868,
+      "excerpt": "Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`.\n\n- [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT)."
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 819,
+  "session": {
+    "id": "rec-s07-20261106T1219Z",
+    "turn": 5,
+    "summaryVersion": "lear-compaction-v1",
+    "compaction": {
+      "version": "lear-compaction-v1",
+      "throughMessageId": 28,
+      "tokensBefore": 942,
+      "tokensAfter": 869,
+      "latencyMs": 0.521,
+      "folded": 4,
+      "changed": true,
+      "skipped": null,
+      "summarySha256": "09b62a54cf3b125ff6f0f740a2a1799097361f7e66a11edeabc936816e641f44"
+    },
+    "historyMessages": 4
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Does `prash run --dry-run` execute the action?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-3665f86d99#c002-95a9d20b",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash run",
+        "score": 0.032018,
+        "support": 0.65152,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0441e92281#c001-356e1401",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Exit codes of the CLI",
+        "score": 0.029514,
+        "support": 0.534251,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c010-89e43766",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Audit trail",
+        "score": 0.014085,
+        "support": 0.47657,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c004-10cc0499",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.03009,
+        "support": 0.486829,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c001-72fa94fe",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.016129,
+        "support": 0.437488,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c012-67ed963d",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Safe-tier actions > terraform-init",
+        "score": 0.028405,
+        "support": 0.382467,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-00287151c3#c004-d07ace4a",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Dispatch results (`prash/dispatch.py`)",
+        "score": 0.014925,
+        "support": 0.384698,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0441e92281#c003-fb54fc53",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Failure handling in the pipeline",
+        "score": 0.026671,
+        "support": 0.377632,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c007-c141955c",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash fix",
+        "score": 0.028778,
+        "support": 0.380942,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c020-264862a8",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash setup",
+        "score": 0.015152,
+        "support": 0.289769,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-3665f86d99#c002-95a9d20b",
+      "src-0441e92281#c001-356e1401",
+      "src-51cdac4a6f#c010-89e43766",
+      "src-0aa7224dfb#c004-10cc0499",
+      "src-0aa7224dfb#c001-72fa94fe",
+      "src-8b2cf583b7#c012-67ed963d",
+      "src-00287151c3#c004-d07ace4a",
+      "src-0441e92281#c003-fb54fc53",
+      "src-3665f86d99#c007-c141955c",
+      "src-3665f86d99#c020-264862a8"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-0aa7224dfb#c002-9252158c",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.013514,
+        "support": 0.280858,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c008-f9566633",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Dry runs",
+        "score": 0.016393,
+        "support": 0.2925,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1684,
+    "bestSupport": 0.6515,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 12.754
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.154
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.08
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.019
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.845
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 62.85,
+    "totalMs": 72.84,
+    "streamEvents": 11,
+    "completionTokens": 61,
+    "tokensEstimated": true,
+    "tokensPerSec": 23300.23,
+    "decodeEventsPerSec": 12648.62,
+    "itlMs": {
+      "count": 10,
+      "mean": 0.079,
+      "p50": 0.078,
+      "p85": 0.082,
+      "p99": 0.087,
+      "min": 0.076,
+      "max": 0.087
+    },
+    "stages": {
+      "retrievalMs": 16.852,
+      "generationMs": 2.618,
+      "ttftMs": 1.694,
+      "contextTokens": 1684,
+      "promptTokens": 12,
+      "evidenceTokens": 1684
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 76.099,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.023
+        },
+        {
+          "stage": "session",
+          "startMs": 0.026,
+          "ms": 0.195
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.222,
+          "ms": 2.104
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 2.325,
+          "ms": 0.023
+        },
+        {
+          "stage": "memory",
+          "startMs": 2.349,
+          "ms": 0.082
+        },
+        {
+          "stage": "prompt",
+          "startMs": 2.43,
+          "ms": 0.015
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 2.445,
+          "ms": 0.783
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 3.228,
+          "ms": 0.313
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.541,
+          "ms": 23.187
+        },
+        {
+          "stage": "engine",
+          "startMs": 26.728,
+          "ms": 40.683
+        },
+        {
+          "stage": "mapping",
+          "startMs": 67.411,
+          "ms": 5.486
+        },
+        {
+          "stage": "persist",
+          "startMs": 72.897,
+          "ms": 3.196
+        }
+      ]
+    }
+  },
+  "correlationId": "q-0a39f90321ee",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

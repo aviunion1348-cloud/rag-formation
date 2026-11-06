@@ -1,0 +1,6 @@
+$ gh api repos/ollama/ollama/releases/latest --jq .tag_name + " " + ([.assets[] | select(.name | test("linux-amd64")) | .name + " " + (.size|tostring) + " " + .browser_download_url] | join(" | "))
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:27Z
+
+v0.40.15 ollama-linux-amd64-mlx.tar.zst 1214961197 https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-linux-amd64-mlx.tar.zst | ollama-linux-amd64-rocm.tar.zst 1053019798 https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-linux-amd64-rocm.tar.zst | ollama-linux-amd64.tar.zst 1543547172 https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-linux-amd64.tar.zst

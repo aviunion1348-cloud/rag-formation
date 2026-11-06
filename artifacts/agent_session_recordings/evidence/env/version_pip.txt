@@ -1,0 +1,6 @@
+$ python3 -m pip --version
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+pip 23.0.1 from /usr/lib/python3/dist-packages/pip (python 3.11)

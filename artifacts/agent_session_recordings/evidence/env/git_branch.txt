@@ -1,0 +1,6 @@
+$ git rev-parse --abbrev-ref HEAD
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+arena/c2d86cd7-rag-formation

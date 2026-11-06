@@ -1,0 +1,149 @@
+Lear chat — session rec-s08-20261106T1219Z (user rec-u08). Empty line or /exit to quit.
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=55.78 ms  total=64.68 ms  tok/s=23781.68  itl_p50=0.121 ms
+Correlation id: q-eb5d7a9e29fc  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=25.22 ms  total=28.58 ms  tok/s=26907.81  itl_p50=0.124 ms
+Correlation id: q-569b319611d4  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=26.75 ms  total=30.14 ms  tok/s=26247.85  itl_p50=0.112 ms
+Correlation id: q-7648bad557d2  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.58 ms  total=28.22 ms  tok/s=24120.21  itl_p50=0.149 ms
+Correlation id: q-13f367d7fc5b  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.58 ms  total=28.01 ms  tok/s=26293.1  itl_p50=0.134 ms
+Correlation id: q-a1157f15d292  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.95 ms  total=29.33 ms  tok/s=23689.32  itl_p50=0.152 ms
+Correlation id: q-7a765012d242  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=30.76 ms  total=34.27 ms  tok/s=25217.03  itl_p50=0.127 ms
+Correlation id: q-a348c2295097  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.37 ms  total=29.14 ms  tok/s=25749.26  itl_p50=0.132 ms
+Correlation id: q-c04c097c8730  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=42.45 ms  total=46.26 ms  tok/s=20039.42  itl_p50=0.145 ms
+Correlation id: q-5a020e9f8431  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.3 ms  total=27.72 ms  tok/s=24567.06  itl_p50=0.139 ms
+Correlation id: q-feff74acf93a  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.09 ms  total=27.5 ms  tok/s=26079.52  itl_p50=0.123 ms
+Correlation id: q-ba34c40423b5  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.06 ms  total=27.44 ms  tok/s=26967.29  itl_p50=0.14 ms
+Correlation id: q-f7351fc5cce8  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=23.72 ms  total=29.21 ms  tok/s=19303.8  itl_p50=0.175 ms
+Correlation id: q-ee5341598914  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=46.3 ms  total=49.99 ms  tok/s=19032.76  itl_p50=0.147 ms
+Correlation id: q-08ed33129b49  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.25 ms  total=29.34 ms  tok/s=22206.04  itl_p50=0.143 ms
+Correlation id: q-5393967c6cb5  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=43.24 ms  total=48.11 ms  tok/s=20326.56  itl_p50=0.146 ms
+Correlation id: q-eae7fe7dfe88  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=33.39 ms  total=37.19 ms  tok/s=24547.28  itl_p50=0.139 ms
+Correlation id: q-1a43864b8fc2  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=24.15 ms  total=27.58 ms  tok/s=25924.35  itl_p50=0.128 ms
+Correlation id: q-4332b9540596  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=23.27 ms  total=26.69 ms  tok/s=25565.8  itl_p50=0.146 ms
+Correlation id: q-3063affc5d82  prompt=lear-assistant-v1
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=23.7 ms  total=27.24 ms  tok/s=24646.46  itl_p50=0.143 ms
+Correlation id: q-a2c6a2df7893  prompt=lear-assistant-v1
+{"error": "rate_limited", "message": "per-session request limit reached", "hint": "limit 20/60s; retry in 59.264s", "details": {"scope": "session", "retryAfterS": 59.264}}
+Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]
+
+Status: GROUNDED   [NOT QUALIFYING: no live local LLM/embedder in this answer]
+  [4] docs/lear_backend/api_reference.md § API reference > The `prash` CLI (lines 32-34)  source: prash/cli.py:L1251, prash/cli.py:L351, prash/cli.py:L460
+Models: generation=extractive:extractive-synthesis-v1 embedding=hashing:hashing-lexical-v1
+Timing: ttft=46.17 ms  total=51.22 ms  tok/s=17872.84  itl_p50=0.154 ms
+Correlation id: q-c6aabaea3308  prompt=lear-assistant-v1

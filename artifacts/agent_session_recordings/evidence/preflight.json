@@ -1,0 +1,501 @@
+{
+  "schema": "lear-session-recording-preflight-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "generatedAt": "2026-11-06T12:20:03Z",
+  "repository": {
+    "name": "aviunion1348-cloud/rag-formation",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "head": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "headLine": "81c28c828be166fa51b66bd7cc8dadb0cd163c70 2026-11-06T12:19:19+00:00 recordings: pre-register the Lear agent session recording plan and harness",
+    "trackedChanges": [],
+    "untracked": [
+      "artifacts/agent_session_recordings/evidence/env/git_branch.txt",
+      "artifacts/agent_session_recordings/evidence/env/git_head.txt",
+      "artifacts/agent_session_recordings/evidence/env/git_toplevel.txt"
+    ]
+  },
+  "applicationVersion": "0.2.0",
+  "facts": {
+    "os": "Debian GNU/Linux 12 (bookworm)",
+    "kernel": "6.1.158+",
+    "arch": "x86_64",
+    "cpus": 2,
+    "memMiB": 3939,
+    "python": "3.11.2",
+    "display": "unset"
+  },
+  "versions": {
+    "python3": "Python 3.11.2",
+    "node": "v22.22.3",
+    "npm": "10.9.8",
+    "pip": "pip 23.0.1 from /usr/lib/python3/dist-packages/pip (python 3.11)",
+    "sqlite": "3.40.1"
+  },
+  "tools": {
+    "asciinema": "asciinema 2.4.0",
+    "script": "script from util-linux 2.38.1",
+    "ffmpeg": "ffmpeg version n9.0.2-17-g2a571b6068-20260930 Copyright (c) 2000-2026 the FFmpeg developers",
+    "pyte_pillow": "pyte 0.8.2 Pillow 13.0.0",
+    "obs": "missing"
+  },
+  "envVarNames": {
+    "readBySettings": [
+      "RAG_LEAR_ABSTAIN_THRESHOLD",
+      "RAG_LEAR_ALLOW_EXTRACTIVE_FALLBACK",
+      "RAG_LEAR_BACKEND",
+      "RAG_LEAR_CHUNK_MAX_TOKENS",
+      "RAG_LEAR_CHUNK_OVERLAP_TOKENS",
+      "RAG_LEAR_CHUNK_TARGET_TOKENS",
+      "RAG_LEAR_DATA_DIR",
+      "RAG_LEAR_DOCS_DIR",
+      "RAG_LEAR_EMBED_MAX_PARAMS",
+      "RAG_LEAR_EMBED_MODEL",
+      "RAG_LEAR_HISTORY_TOKENS",
+      "RAG_LEAR_JUDGE_MODEL",
+      "RAG_LEAR_KEEP_RECENT_TURNS",
+      "RAG_LEAR_LLM_MODEL",
+      "RAG_LEAR_MAX_CONCURRENT",
+      "RAG_LEAR_MAX_CONTEXT_TOKENS",
+      "RAG_LEAR_MAX_INPUT_CHARS",
+      "RAG_LEAR_MAX_OUTPUT_TOKENS",
+      "RAG_LEAR_MEMORY_ITEMS",
+      "RAG_LEAR_MODEL_MAX_PARAMS",
+      "RAG_LEAR_OLLAMA_URL",
+      "RAG_LEAR_QUEUE_TIMEOUT_S",
+      "RAG_LEAR_RATE_SESSION_PER_MIN",
+      "RAG_LEAR_RATE_USER_PER_MIN",
+      "RAG_LEAR_REQUEST_TIMEOUT_S",
+      "RAG_LEAR_SCOPE_GUARD",
+      "RAG_LEAR_SESSION_TTL_S",
+      "RAG_LEAR_SOURCE",
+      "RAG_LEAR_TEMPERATURE",
+      "RAG_LEAR_TOP_K",
+      "RAG_LEAR_TOP_P"
+    ],
+    "setInThisEnvironment": []
+  },
+  "index": {
+    "namespace": "lear-docs",
+    "indexDir": "/tmp/lear-rec-20261106T1219Z/preflight-data/index-baseline",
+    "documents": 19,
+    "chunks": 355,
+    "tokens": {
+      "total": 48676,
+      "max": 306,
+      "mean": 137.1
+    },
+    "linePrecision": {
+      "lines": 354,
+      "section": 1
+    },
+    "chunksWithSourceRefs": 307,
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+      "semantic": false
+    },
+    "indexFingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+    "manifestGeneratedAt": "2026-11-06T12:20:02Z",
+    "qualifying": false
+  },
+  "ollamaStates": {
+    "installed": false,
+    "configured": true,
+    "available": false,
+    "loaded": false,
+    "invoked": false,
+    "realResponse": false
+  },
+  "checks": [
+    {
+      "id": "E01",
+      "area": "environment",
+      "check": "Operating system and architecture",
+      "status": "PASS",
+      "detail": "Debian GNU/Linux 12 (bookworm) · kernel 6.1.158+ · x86_64 · 2 vCPU · 3939 MiB RAM · DISPLAY unset",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E02",
+      "area": "environment",
+      "check": "Working directory and repository root",
+      "status": "PASS",
+      "detail": "cwd /home/user/rag-formation · git root /home/user/rag-formation",
+      "evidence": "evidence/env/git_toplevel.txt",
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E03",
+      "area": "environment",
+      "check": "Git branch",
+      "status": "PASS",
+      "detail": "arena/c2d86cd7-rag-formation",
+      "evidence": "evidence/env/git_branch.txt",
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E04",
+      "area": "environment",
+      "check": "Commit SHA",
+      "status": "PASS",
+      "detail": "81c28c828be166fa51b66bd7cc8dadb0cd163c70 2026-11-06T12:19:19+00:00 recordings: pre-register the Lear agent session recording plan and harness",
+      "evidence": "evidence/env/git_head.txt",
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E05",
+      "area": "environment",
+      "check": "Uncommitted changes",
+      "status": "PASS",
+      "detail": "tracked changes: 0; untracked files: 3 (top-level: artifacts)",
+      "evidence": "evidence/env/git_status.txt",
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E06",
+      "area": "environment",
+      "check": "Runtime and language versions",
+      "status": "PASS",
+      "detail": "Python 3.11.2 · node v22.22.3 · SQLite 3.40.1",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E07",
+      "area": "environment",
+      "check": "Dependency and package-manager versions",
+      "status": "PASS",
+      "detail": "pip: pip 23.0.1 from /usr/lib/python3/dist-pa · npm 10.9.8 · RAG Formation is standard-library Python (pyproject declares no runtime dependencies)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E08",
+      "area": "environment",
+      "check": "Project scripts",
+      "status": "PASS",
+      "detail": "console script ragformation = ragformation.cli:main · Makefile targets: help, init, ingest, ask, serve, test, eval, doctor, stats, rebuild, clean, check",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E09",
+      "area": "environment",
+      "check": "Application and agent entry points",
+      "status": "PASS",
+      "detail": "python3 -m ragformation lear {doctor,docs,index,ask,chat,sessions,memory,eval,bench,demo,report}; agent class ragformation.lear.agent.LearAgent.ask",
+      "evidence": "evidence/env/lear_help.txt",
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E10",
+      "area": "environment",
+      "check": "Configuration files",
+      "status": "PASS",
+      "detail": "pyproject.toml, Makefile, ragformation/lear/settings.py, ragformation/config.py, evals/lear/golden_lear_v1.json · .env present: False (existence only; never read)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E11",
+      "area": "environment",
+      "check": "Environment variable names (values never read)",
+      "status": "PASS",
+      "detail": "31 RAG_LEAR_* names read by settings; RAG_*/OLLAMA_* names set here: none (all defaults apply)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E12",
+      "area": "environment",
+      "check": "Vector database implementation",
+      "status": "PASS",
+      "detail": "SQLite file ragformation.db: table vectors (L2-normalised; exact brute-force cosine scan in Python) + FTS5 virtual table chunks_fts (BM25)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E13",
+      "area": "environment",
+      "check": "Embedding provider",
+      "status": "PARTIAL",
+      "detail": "configured: ollama:nomic-embed-text (BLOCKED here, see O-checks) · available: hashing:hashing-lexical-v1 d512 (offline baseline, lexical, NOT semantic)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E14",
+      "area": "environment",
+      "check": "Reranking provider",
+      "status": "PASS",
+      "detail": "heuristic-coverage-v1: a transparent blend of the retrieval signals (support score); not a cross-encoder, no model",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E15",
+      "area": "environment",
+      "check": "LLM provider",
+      "status": "BLOCKED",
+      "detail": "configured: ollama:qwen2.5:1.5b at http://127.0.0.1:11434 (loopback only); judge llama3.2:1b · available here: extractive:extractive-synthesis-v1 (no LLM, labelled NOT QUALIFYING)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E16",
+      "area": "environment",
+      "check": "Memory implementation",
+      "status": "PASS",
+      "detail": "SQLite agent.db: sessions, messages, compactions (summaries), memories (scoped long-term memory); read-only shared-memory import from an approved directory",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E17",
+      "area": "environment",
+      "check": "Tool registry",
+      "status": "NOT_IMPLEMENTED",
+      "detail": "no tool registry, tool calling, subprocess or shell execution in the Lear agent path (static scan of agent, sessions, memory, compaction, ollama, shared_memory)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E18",
+      "area": "environment",
+      "check": "Logging and observability",
+      "status": "PASS",
+      "detail": "engine events (ragformation/events.py, schema 1.0, sanitised) · per-query trace persisted to SQLite queries.trace_json · agent lifecycle spans lear-lifecycle-v1 in the answer JSON · no OpenTelemetry exporter",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E19",
+      "area": "environment",
+      "check": "Testing and evaluation frameworks",
+      "status": "PASS",
+      "detail": "unittest suites (tests/, engine/tests/) · lear eval validate|run|rescore (golden set, score_case, judge) · lear bench (dummy users)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "E20",
+      "area": "environment",
+      "check": "Recording and media utilities",
+      "status": "PASS",
+      "detail": "asciinema asciinema 2.4.0 · script from util-linux 2.38.1 · ffmpeg version n9.0.2-17-g2a571b6068-202 · pyte 0.8.2 Pillow 13.0.0 · OBS missing · no display server (native screen capture unavailable; terminal recording used)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O01",
+      "area": "ollama",
+      "check": "Ollama installed",
+      "status": "BLOCKED",
+      "detail": "ollama binary on PATH: not found",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O02",
+      "area": "ollama",
+      "check": "Server reachable (TCP 127.0.0.1:11434)",
+      "status": "BLOCKED",
+      "detail": "ConnectionRefusedError: [Errno 111] Connection refused",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O03",
+      "area": "ollama",
+      "check": "HTTP /api/version",
+      "status": "BLOCKED",
+      "detail": "URLError: <urlopen error [Errno 111] Connection refused>",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O04",
+      "area": "ollama",
+      "check": "Configured models",
+      "status": "PASS",
+      "detail": "configured: embedder nomic-embed-text (~137M), llm qwen2.5:1.5b (~1.5B), judge llama3.2:1b (~1.2B) - names from ragformation/lear/settings.py defaults",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O05",
+      "area": "ollama",
+      "check": "Models installed / metadata / size / quantisation / context window",
+      "status": "BLOCKED",
+      "detail": "cannot be read: /api/tags and /api/show need a running Ollama server",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O06",
+      "area": "ollama",
+      "check": "Embedding model available",
+      "status": "BLOCKED",
+      "detail": "nomic-embed-text cannot be listed or probed without the server",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O07",
+      "area": "ollama",
+      "check": "Inference invoked / real response returned",
+      "status": "BLOCKED",
+      "detail": "no generation request can be sent; no model response exists in this package",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O08",
+      "area": "ollama",
+      "check": "GPU or CPU execution",
+      "status": "PASS",
+      "detail": "GPU devices: none · nvidia-smi: not found · CPU only (2 vCPU)",
+      "evidence": null,
+      "at": "2026-11-06T12:19:26Z"
+    },
+    {
+      "id": "O09",
+      "area": "ollama",
+      "check": "lear doctor --no-generation (qualifying backend)",
+      "status": "BLOCKED",
+      "detail": "exit 6 · [FAIL      ] ollama.version: error=ollama is not reachable at http://127.0.0.1:11434 | NOT READY: ollama.version, models.installed, models.embedder, models.llm, models.judge, probe.embedding, probe.generation_stream, probe.judge_json",
+      "evidence": "evidence/env/lear_doctor_ollama.txt",
+      "at": "2026-11-06T12:19:27Z"
+    },
+    {
+      "id": "O10",
+      "area": "ollama",
+      "check": "Install path for Ollama (release assets)",
+      "status": "BLOCKED",
+      "detail": "latest release via api.github.com: v0.40.15 ollama-linux-amd64-mlx.tar.zst 1214961197 https://github.com/ollama/ollama/releases/download/v0.40.15/ollama-linux-amd64-mlx.tar.zst | ollama-linux-amd64-rocm.tar.zst 1053019798 https://github.com/ollama/ollama/ · asset hosts: objects.githubusercontent.com → URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; release-assets.githubusercontent.com → URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; ollama.com → URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>",
+      "evidence": "evidence/env/ollama_release_api.txt",
+      "at": "2026-11-06T12:19:27Z"
+    },
+    {
+      "id": "O11",
+      "area": "ollama",
+      "check": "Model registries reachable",
+      "status": "BLOCKED",
+      "detail": "registry.ollama.ai → URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>; huggingface.co → URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)> (sandbox egress allows only github.com, api.github.com, codeload.github.com, registry.npmjs.org, pypi.org, files.pythonhosted.org)",
+      "evidence": "evidence/env/model_hosts_reachability.json",
+      "at": "2026-11-06T12:19:27Z"
+    },
+    {
+      "id": "H01",
+      "area": "health",
+      "check": "Unit and integration tests (tests/)",
+      "status": "PASS",
+      "detail": "ran 256 · OK skipped=2 · 33.0 s",
+      "evidence": "evidence/env/unit_tests.txt",
+      "at": "2026-11-06T12:20:00Z"
+    },
+    {
+      "id": "H02",
+      "area": "health",
+      "check": "Legacy engine tests (engine/tests)",
+      "status": "PASS",
+      "detail": "ran 29 · exit 0",
+      "evidence": "evidence/env/legacy_tests.txt",
+      "at": "2026-11-06T12:20:01Z"
+    },
+    {
+      "id": "H03",
+      "area": "health",
+      "check": "Golden set validation",
+      "status": "PASS",
+      "detail": "exit 0 · Golden set lear-golden v1.0.0 — 80 cases (/home/user/rag-formation/evals/lear/golden_lear_v1.json) [PASS] schema: 80 cases, 0 schema problems [PASS] size: 80 cases (required 50-100, target 70-80) [PAS",
+      "evidence": "evidence/env/eval_validate.txt",
+      "at": "2026-11-06T12:20:01Z"
+    },
+    {
+      "id": "H04",
+      "area": "health",
+      "check": "Application startup + document indexing (baseline, scratch dir)",
+      "status": "PASS",
+      "detail": "namespace=lear-docs files=20 chunks=355 counts={'new': 19, 'updated': 0, 'unchanged': 0, 'failed': 0, 'deleted': 0} embedding=hashing:hashing-lexical-v1 dim=512 [NOT QUALIFYING: baseline hashing embeddings]",
+      "evidence": "evidence/env/index_rebuild_scratch.txt",
+      "at": "2026-11-06T12:20:02Z"
+    },
+    {
+      "id": "H05",
+      "area": "health",
+      "check": "Document-index availability",
+      "status": "PASS",
+      "detail": "documents 19 · chunks 355 · tokens 48676 · fingerprint hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2 · source pin 60cf9abf8408",
+      "evidence": "evidence/env/index_stats_scratch.txt",
+      "at": "2026-11-06T12:20:02Z"
+    },
+    {
+      "id": "H06",
+      "area": "health",
+      "check": "Vector-store and database connectivity",
+      "status": "PASS",
+      "detail": "read-only open OK · chunks 355 · vectors 355 · sources 19 · FTS5 MATCH 'permission' → 40 rows",
+      "evidence": null,
+      "at": "2026-11-06T12:20:02Z"
+    },
+    {
+      "id": "H07",
+      "area": "health",
+      "check": "Memory and session store initialisation",
+      "status": "PASS",
+      "detail": "lear sessions list exit 0 · agent.db tables: compactions, memories, messages, meta, sessions, sqlite_sequence",
+      "evidence": "evidence/env/sessions_list_scratch.txt",
+      "at": "2026-11-06T12:20:02Z"
+    },
+    {
+      "id": "H08",
+      "area": "health",
+      "check": "Indexed corpus vs pinned Lear source (lear docs verify)",
+      "status": "PASS",
+      "detail": "Lear-backend-Avi HEAD 60cf9abf84088c3a5ec05e8700c52185444e215f 2026-10-01T19:21:30 · exit 0 · [PASS] pin: pinned aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408; checkout HEAD matches",
+      "evidence": "evidence/env/lear_docs_verify.txt",
+      "at": "2026-11-06T12:20:03Z"
+    },
+    {
+      "id": "H09",
+      "area": "health",
+      "check": "Model and embedding connectivity (qualifying)",
+      "status": "BLOCKED",
+      "detail": "see O02, O03, O06, O09: no Ollama server",
+      "evidence": null,
+      "at": "2026-11-06T12:20:03Z"
+    },
+    {
+      "id": "H10",
+      "area": "health",
+      "check": "Tool registration",
+      "status": "NOT_IMPLEMENTED",
+      "detail": "the Lear agent has no tools to register (see E17)",
+      "evidence": null,
+      "at": "2026-11-06T12:20:03Z"
+    },
+    {
+      "id": "H11",
+      "area": "health",
+      "check": "API availability",
+      "status": "NOT_APPLICABLE",
+      "detail": "the Lear agent's interface is the CLI (the take-home brief requires a CLI); the core HTTP API of RAG Formation is a different surface and is not part of the Lear agent",
+      "evidence": null,
+      "at": "2026-11-06T12:20:03Z"
+    },
+    {
+      "id": "H12",
+      "area": "health",
+      "check": "Relevant runtime processes",
+      "status": "PASS",
+      "detail": "relevant processes: none (nothing is started in the background for these recordings)",
+      "evidence": "evidence/env/processes.txt",
+      "at": "2026-11-06T12:20:03Z"
+    }
+  ]
+}

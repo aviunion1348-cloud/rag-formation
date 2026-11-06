@@ -1,0 +1,6 @@
+$ /tmp/recvenv/bin/python -c import pyte,PIL,importlib.metadata as m;print('pyte',m.version('pyte'),'Pillow',PIL.__version__)
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+pyte 0.8.2 Pillow 13.0.0

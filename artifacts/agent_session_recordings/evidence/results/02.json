@@ -1,0 +1,491 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "02",
+  "name": "multiturn_memory",
+  "title": "Multi-turn conversation and context retention",
+  "status": "FAIL",
+  "cap": {
+    "status": "PARTIAL",
+    "reason": "No LLM: history reaches the baseline only through follow-up query rewriting; the conversation summary and memory block are placed in the system prompt, which only an LLM reads."
+  },
+  "startedAt": "2026-11-06T12:20:20.943Z",
+  "endedAt": "2026-11-06T12:20:22.113Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/02_multiturn_memory_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "memory",
+        "add",
+        "--user",
+        "rec-u02",
+        "--type",
+        "project_fact",
+        "--scope",
+        "user",
+        "--json",
+        "I am working on the Lear audit log (prash/audit.py) this week."
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:20.950Z",
+      "endedAt": "2026-11-06T12:20:21.092Z",
+      "ms": 141.2,
+      "out": "traces/02/m1.out",
+      "outBytes": 574,
+      "outSha256": "412e997d88f53a42fffeb6403b5e3574baca7f9cad46ff49d117364ca51036a1",
+      "stepId": "m1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s02-20261106T1219Z",
+        "--user",
+        "rec-u02",
+        "What is Lear's audit log?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:21.092Z",
+      "endedAt": "2026-11-06T12:20:21.284Z",
+      "ms": 191.6,
+      "out": "traces/02/t1.out",
+      "outBytes": 10822,
+      "outSha256": "b9bbf0605edd3a4a9d3d78a885749a1091d8bbec438588bd400fe5729c0f4cee",
+      "question": "What is Lear's audit log?",
+      "questionSource": "golden history turn of lear-062",
+      "correlationId": "q-2e7b3d1a9a23",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "stepId": "t1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s02-20261106T1219Z",
+        "--user",
+        "rec-u02",
+        "Could two processes write the same sequence number to it?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:21.340Z",
+      "endedAt": "2026-11-06T12:20:21.570Z",
+      "ms": 230.6,
+      "out": "traces/02/t2.out",
+      "outBytes": 9723,
+      "outSha256": "8984e26d0da92316acdaf91c627f98e522d7a6f9e5e399890c691d7da158a8d9",
+      "question": "Could two processes write the same sequence number to it?",
+      "questionSource": "golden lear-062 (dev split)",
+      "correlationId": "q-87e8e39dad5d",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "stepId": "t2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s02-20261106T1219Z",
+        "--user",
+        "rec-u02",
+        "Which file implements it, and where does it write by default?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:21.577Z",
+      "endedAt": "2026-11-06T12:20:21.782Z",
+      "ms": 205.7,
+      "out": "traces/02/t3.out",
+      "outBytes": 9531,
+      "outSha256": "b70e1de368f1015e7c9b9df6077506546767fd8cec58ef5c56350fa57e8aded7",
+      "question": "Which file implements it, and where does it write by default?",
+      "questionSource": "CONTROLLED test input (written in the plan)",
+      "correlationId": "q-3111c301eeb2",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "stepId": "t3"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "sessions",
+        "inspect",
+        "rec-s02-20261106T1219Z",
+        "--user",
+        "rec-u02",
+        "--json"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:21.788Z",
+      "endedAt": "2026-11-06T12:20:21.962Z",
+      "ms": 174.3,
+      "out": "traces/02/s1.out",
+      "outBytes": 4442,
+      "outSha256": "5fa63befb11dcbecdd3d2a1f1bf307fb0938a86189b6588aa48feb028e43a167",
+      "stepId": "s1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "memory",
+        "list",
+        "--user",
+        "rec-u02",
+        "--json"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:21.963Z",
+      "endedAt": "2026-11-06T12:20:22.103Z",
+      "ms": 140.1,
+      "out": "traces/02/m2.out",
+      "outBytes": 620,
+      "outSha256": "44c49b9fa4f88f714b05cbf97dc5ae48b0de64d09e10856de904412f1a495773",
+      "stepId": "m2"
+    }
+  ],
+  "answers": {
+    "t1": {
+      "question": "What is Lear's audit log?",
+      "questionSource": "golden history turn of lear-062",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-2e7b3d1a9a23",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "turn": 1,
+      "citations": [
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "lines": "49-53",
+          "chunkId": "src-0a61e382fa#c006-e2594647"
+        },
+        {
+          "document": "docs/lear_backend/reference/modules.md",
+          "lines": "219-224",
+          "chunkId": "src-de4b0bbf6e#c033-f46ad0a9"
+        },
+        {
+          "document": "docs/lear_backend/reference/actions.md",
+          "lines": "163-169",
+          "chunkId": "src-8b2cf583b7#c019-65aa62d1"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 63.07,
+        "ttft_ms": 53.93,
+        "itl_median_ms": 0.072,
+        "itl_p95_ms": null,
+        "stream_events": 22,
+        "output_tokens": 128,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 34390.11,
+        "stages": {
+          "retrievalMs": 14.535,
+          "generationMs": 3.722,
+          "ttftMs": 1.022,
+          "contextTokens": 1765,
+          "promptTokens": 7,
+          "evidenceTokens": 1765
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "t2": {
+      "question": "Could two processes write the same sequence number to it?",
+      "questionSource": "golden lear-062 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-87e8e39dad5d",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "turn": 2,
+      "citations": [
+        {
+          "document": "docs/lear_backend/database.md",
+          "lines": "18-22",
+          "chunkId": "src-6b77f48dab#c003-409e673d"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 86.59,
+        "ttft_ms": 78.97,
+        "itl_median_ms": 0.071,
+        "itl_p95_ms": null,
+        "stream_events": 16,
+        "output_tokens": 96,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 19777.5,
+        "stages": {
+          "retrievalMs": 15.752,
+          "generationMs": 4.854,
+          "ttftMs": 3.657,
+          "contextTokens": 1654,
+          "promptTokens": 25,
+          "evidenceTokens": 1654
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "t3": {
+      "question": "Which file implements it, and where does it write by default?",
+      "questionSource": "CONTROLLED test input (written in the plan)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-3111c301eeb2",
+      "sessionId": "rec-s02-20261106T1219Z",
+      "turn": 3,
+      "citations": [
+        {
+          "document": "docs/lear_backend/database.md",
+          "lines": "18-22",
+          "chunkId": "src-6b77f48dab#c003-409e673d"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 76.89,
+        "ttft_ms": 65.34,
+        "itl_median_ms": 0.072,
+        "itl_p95_ms": null,
+        "stream_events": 16,
+        "output_tokens": 96,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 25634.18,
+        "stages": {
+          "retrievalMs": 15.904,
+          "generationMs": 3.745,
+          "ttftMs": 2.51,
+          "contextTokens": 1642,
+          "promptTokens": 34,
+          "evidenceTokens": 1642
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "session_turns",
+      "description": "The agent reports turns 1, 2, 3 of the same session id.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "turns": [
+          1,
+          2,
+          3
+        ],
+        "sessionIds": [
+          "rec-s02-20261106T1219Z"
+        ]
+      }
+    },
+    {
+      "id": "c2",
+      "type": "rewrite",
+      "description": "Turn 2 was retrieved with a rewritten, history-expanded query (retrieval.retrievalQuery is set).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "retrievalQuery": "Could two processes write the same sequence number to it? (follow-up to: What is Lear's audit log?) prash.audit AuditLog tests/test_audit.py tests/test_desktop_api.py ('get_secret_keys', 'update_secret') test_audit"
+      }
+    },
+    {
+      "id": "c3",
+      "type": "rewrite",
+      "description": "Turn 3 was retrieved with a rewritten, history-expanded query.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "retrievalQuery": "Which file implements it, and where does it write by default? (follow-up to: Could two processes write the same sequence number to it?) seq write_text"
+      }
+    },
+    {
+      "id": "c4",
+      "type": "golden",
+      "description": "Turn 2 meets the frozen golden expectations of lear-062.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 1.0,
+        "keyFactCoverageStrict": 1.0,
+        "forbiddenHits": [],
+        "correct": true,
+        "correctStrict": true,
+        "citations": 1,
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.2727,
+        "citationPrecision": 1.0,
+        "proxy": {
+          "citation_quality": 4.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 1.09,
+          "context_recall": 4.0
+        }
+      }
+    },
+    {
+      "id": "c5",
+      "type": "keyfacts",
+      "description": "Turn 3 names the default audit log file (key fact of lear-007: 'audit.log').",
+      "onFail": "FAIL",
+      "outcome": "FAIL",
+      "observed": {
+        "status": "GROUNDED",
+        "groups": [
+          [
+            "audit.log"
+          ]
+        ],
+        "hits": [
+          false
+        ]
+      }
+    },
+    {
+      "id": "c6",
+      "type": "memory_used",
+      "description": "The memory item written in m1 is read back into at least one turn (memoryUsed).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "memoryId": "m-c7104453b800",
+        "memoryUsed": {
+          "t1": [
+            "m-c7104453b800"
+          ],
+          "t2": [],
+          "t3": []
+        }
+      }
+    },
+    {
+      "id": "c7",
+      "type": "persisted",
+      "description": "The session store holds the 3 user and 3 assistant messages, with the same query ids the CLI printed.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "messages": 6,
+        "user": 3,
+        "assistant": 3,
+        "assistantQueryIds": [
+          "q-2e7b3d1a9a23",
+          "q-87e8e39dad5d",
+          "q-3111c301eeb2"
+        ],
+        "cliCorrelationIds": [
+          "q-2e7b3d1a9a23",
+          "q-87e8e39dad5d",
+          "q-3111c301eeb2"
+        ]
+      }
+    }
+  ],
+  "events": "traces/02/events.jsonl",
+  "sessionIds": [
+    "rec-s02-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-2e7b3d1a9a23",
+    "q-87e8e39dad5d",
+    "q-3111c301eeb2"
+  ]
+}

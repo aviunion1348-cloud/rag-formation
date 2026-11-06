@@ -1,0 +1,343 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/cli.py:L178-L190`, `prash/cli.py:L193-L196`. - [implemented] `--grant` sets `ActionContext.grant`, which lets an APPROVAL-tier action through without a prompt. [2] Evidence: `prash/server.py:L2696-L2704`. - [tested] A desktop API test asserts that an approval-tier action sent through this endpoint is not reported as declined or as needing approval. [1] Evidence: `prash/server.py:L3511-L3533`, `prash/server.py:L3536-L3549`. - [tested] The Lear suite covers chat-driven execution, including that an approval-tier action is not silently declined. [3]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-51cdac4a6f#c012-66d7eda8",
+      "document": "docs/lear_backend/authentication_authorization.md",
+      "heading": "Authentication and authorization > Desktop API exposure > Chat-initiated actions are pre-approved",
+      "lines": "67-72",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L188-L209",
+        "prash/server.py:L2705-L2726",
+        "prash/server.py:L2696-L2704",
+        "tests/test_desktop_api.py:L724-L749",
+        "prash/server.py:L2732-L2745"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3404,
+      "excerpt": "Evidence: `prash/server.py:L2696-L2704`.\n\n- [tested] A desktop API test asserts that an approval-tier action sent through this endpoint is not reported as declined or as needing approval."
+    },
+    {
+      "id": 2,
+      "chunkId": "src-51cdac4a6f#c007-f604fbda",
+      "document": "docs/lear_backend/authentication_authorization.md",
+      "heading": "Authentication and authorization > How a prompt becomes a grant",
+      "lines": "39-39",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/cli.py:L178-L190",
+        "prash/cli.py:L193-L196",
+        "prash/cli.py:L1254",
+        "prash/cli.py:L277"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3228,
+      "excerpt": "Evidence: `prash/cli.py:L178-L190`, `prash/cli.py:L193-L196`.\n- [implemented] `--grant` sets `ActionContext.grant`, which lets an APPROVAL-tier action through without a prompt."
+    },
+    {
+      "id": 3,
+      "chunkId": "src-0aa7224dfb#c010-a6315f1c",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+      "lines": "65-65",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L3511-L3533",
+        "prash/server.py:L3536-L3549",
+        "tests/test_desktop_api.py:L690-L724"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.2682,
+      "excerpt": "Evidence: `prash/server.py:L3511-L3533`, `prash/server.py:L3536-L3549`.\n- [tested] The Lear suite covers chat-driven execution, including that an approval-tier action is not silently declined."
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s03-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Can an approval-tier action launched from the desktop chat run without anyone answering a terminal prompt?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-51cdac4a6f#c012-66d7eda8",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Desktop API exposure > Chat-initiated actions are pre-approved",
+        "score": 0.027151,
+        "support": 0.340395,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c007-f604fbda",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > How a prompt becomes a grant",
+        "score": 0.032787,
+        "support": 0.322775,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c010-a6315f1c",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+        "score": 0.03125,
+        "support": 0.268185,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-718227fd24#c004-70972c4e",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference > Routes under `/api/chat`",
+        "score": 0.014706,
+        "support": 0.177273,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c014-12bde9bb",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Approval-tier actions",
+        "score": 0.013889,
+        "support": 0.209941,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0441e92281#c006-cfb9510d",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Desktop server errors",
+        "score": 0.014925,
+        "support": 0.221591,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c029-2364db09",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Approval-tier actions > rollback",
+        "score": 0.014925,
+        "support": 0.19951,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c008-9fbd2027",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Behaviour that is well covered",
+        "score": 0.014085,
+        "support": 0.237841,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c003-8ef4a176",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Permission engine",
+        "score": 0.013699,
+        "support": 0.193523,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0441e92281#c007-0593821b",
+        "document": "docs/lear_backend/errors_and_operations.md",
+        "heading": "Errors and operations > Launching and running",
+        "score": 0.016129,
+        "support": 0.177273,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c006-6a170019",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > How a prompt becomes a grant",
+        "score": 0.014286,
+        "support": 0.177273,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-51cdac4a6f#c012-66d7eda8",
+      "src-51cdac4a6f#c007-f604fbda",
+      "src-0aa7224dfb#c010-a6315f1c",
+      "src-718227fd24#c004-70972c4e",
+      "src-8b2cf583b7#c014-12bde9bb",
+      "src-0441e92281#c006-cfb9510d",
+      "src-8b2cf583b7#c029-2364db09",
+      "src-1e7c9f8a18#c008-9fbd2027",
+      "src-51cdac4a6f#c003-8ef4a176",
+      "src-0441e92281#c007-0593821b",
+      "src-51cdac4a6f#c006-6a170019"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-0aa7224dfb#c008-2447b1e4",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+        "score": 0.015873,
+        "support": 0.177273,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1595,
+    "bestSupport": 0.3404,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 13.973
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.794
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.102
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.019
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.976
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 64.96,
+    "totalMs": 73.37,
+    "streamEvents": 24,
+    "completionTokens": 142,
+    "tokensEstimated": true,
+    "tokensPerSec": 41231.13,
+    "decodeEventsPerSec": 14050.46,
+    "itlMs": {
+      "count": 23,
+      "mean": 0.071,
+      "p50": 0.07,
+      "p85": 0.073,
+      "p99": 0.081,
+      "min": 0.069,
+      "max": 0.081
+    },
+    "stages": {
+      "retrievalMs": 18.864,
+      "generationMs": 3.444,
+      "ttftMs": 1.701,
+      "contextTokens": 1595,
+      "promptTokens": 27,
+      "evidenceTokens": 1595
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 76.927,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.004,
+          "ms": 0.05
+        },
+        {
+          "stage": "session",
+          "startMs": 0.054,
+          "ms": 1.92
+        },
+        {
+          "stage": "compaction",
+          "startMs": 1.974,
+          "ms": 0.042
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 2.017,
+          "ms": 0.003
+        },
+        {
+          "stage": "memory",
+          "startMs": 2.019,
+          "ms": 0.105
+        },
+        {
+          "stage": "prompt",
+          "startMs": 2.124,
+          "ms": 0.013
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 2.137,
+          "ms": 1.093
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 3.23,
+          "ms": 0.404
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.634,
+          "ms": 22.71
+        },
+        {
+          "stage": "engine",
+          "startMs": 26.344,
+          "ms": 43.246
+        },
+        {
+          "stage": "mapping",
+          "startMs": 69.59,
+          "ms": 3.852
+        },
+        {
+          "stage": "persist",
+          "startMs": 73.441,
+          "ms": 3.479
+        }
+      ]
+    }
+  },
+  "correlationId": "q-568a4c41af61",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

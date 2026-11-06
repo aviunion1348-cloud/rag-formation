@@ -1,0 +1,6 @@
+$ python3 --version
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+Python 3.11.2

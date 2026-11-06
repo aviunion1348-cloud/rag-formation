@@ -1,0 +1,5 @@
+{
+  "error": "config_error",
+  "message": "the Lear agent only talks to a loopback Ollama endpoint",
+  "hint": "RAG_LEAR_OLLAMA_URL='http://192.0.2.10:11434' is not http(s)://127.0.0.1|localhost|[::1]"
+}

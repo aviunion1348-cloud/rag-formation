@@ -1,0 +1,187 @@
+{
+  "query_id": "q-7925ae11a4fb",
+  "question": "How much does a Lear enterprise licence cost per seat?",
+  "status": "abstained",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 28.244,
+  "retrieval_ms": 14.237,
+  "generation_ms": null,
+  "ttft_ms": null,
+  "itl_ms": null,
+  "prompt_tokens": null,
+  "completion_tokens": 0,
+  "tokens_estimated": 0,
+  "citations_total": 0,
+  "citations_valid": 0,
+  "abstain_reason": "insufficient_support",
+  "created_at": "2026-11-06T12:20:23Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 54
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "durationMs": 1.247,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "durationMs": 22.321,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.156
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 10.292
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 0.99
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.075
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.014
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 2.866
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "durationMs": 0.83,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "durationMs": 0.043,
+      "detail": {
+        "selected": 12,
+        "tokens": 1534,
+        "excluded": 0
+      }
+    },
+    {
+      "stage": "abstention",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "reason": "insufficient_support",
+        "bestSupport": 0.156,
+        "threshold": 0.215
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "skipped",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "reason": "abstained before generation"
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:23Z",
+      "detail": {
+        "status": "abstained"
+      }
+    }
+  ]
+}

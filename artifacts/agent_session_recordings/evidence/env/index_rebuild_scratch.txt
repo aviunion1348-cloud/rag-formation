@@ -1,0 +1,8 @@
+$ python3 -m ragformation lear --backend baseline --data-dir /tmp/lear-rec-20261106T1219Z/preflight-data index rebuild
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:20:02Z
+
+namespace=lear-docs files=20 chunks=355 counts={'new': 19, 'updated': 0, 'unchanged': 0, 'failed': 0, 'deleted': 0}
+embedding=hashing:hashing-lexical-v1 dim=512
+[NOT QUALIFYING: baseline hashing embeddings]

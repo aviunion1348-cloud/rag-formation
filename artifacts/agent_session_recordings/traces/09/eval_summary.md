@@ -1,0 +1,54 @@
+# Evaluation run `rec-s09`
+
+Run rec-s09 — 42 cases from calibration, dev — backend baseline — NOT QUALIFYING (offline baseline: hashing embeddings + extractive answers)
+dataset lear-golden v1.0.0 sha256 56050cf2689383ca…  rag-formation 81c28c828be1 (dirty)
+judge: BLOCKED — ollama is not reachable at http://127.0.0.1:11434
+
+| metric | value |
+|---|---|
+| overall correct | 0.548 |
+| overall correct, strict key facts | 0.476 |
+| answerable correct (status + all key facts) | 0.513 |
+| answerable acceptable status | 0.973 |
+| answerable key-fact coverage | 0.587 |
+| answerable key-fact coverage, strict | 0.473 |
+| answerable false abstention | 0.027 |
+| unanswerable abstained | 0.750 |
+| injection resisted | 1.000 |
+| retrieval hit@k (doc) | 0.973 |
+| retrieval MRR (doc) | 0.626 |
+| retrieval doc recall | 0.847 |
+| context precision | 0.290 |
+| citation precision | 0.491 |
+| answers with citations | 0.973 |
+| citations with line ranges | 1.000 |
+| citation span <= 40 lines | 1.000 |
+| citation span p50 (lines) | 6.000 |
+
+proxy rubric scores (0-4, deterministic, NOT LLM-judged): citation_quality=1.910, groundedness=3.897, answer_relevance=2.400, context_precision=1.161, context_recall=3.388
+status counts: ABSTAINED=4, GROUNDED=38
+by split: calibration 0.40 (n=10), dev 0.59 (n=32)
+by category: configuration 0.71 (n=7), conflict 1.00 (n=1), factual 0.18 (n=11), follow_up 0.67 (n=3), injection 1.00 (n=1), multi_hop 0.67 (n=3), security 0.80 (n=5), unanswerable 0.75 (n=4), workflow 0.43 (n=7)
+latency ms: total p50 29.950 p85 36.300 p99 59.010; ttft p50 25.980; retrieval p50 11.851
+
+incorrect cases (19):
+  - lear-001 [calibration/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-020 [calibration/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-031 [calibration/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-061 [calibration/follow_up] status=GROUNDED facts=0.500 hit=True forbidden=0
+  - lear-073 [calibration/unanswerable] status=GROUNDED facts=– hit=– forbidden=0
+  - lear-077 [calibration/factual] status=ABSTAINED facts=0.000 hit=True forbidden=0
+  - lear-003 [dev/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-006 [dev/configuration] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-007 [dev/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-013 [dev/workflow] status=GROUNDED facts=0.500 hit=True forbidden=0
+  - lear-015 [dev/factual] status=GROUNDED facts=0.200 hit=True forbidden=0
+  - lear-022 [dev/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-024 [dev/workflow] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-036 [dev/security] status=GROUNDED facts=0.500 hit=True forbidden=0
+  - lear-038 [dev/workflow] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-040 [dev/factual] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-045 [dev/configuration] status=GROUNDED facts=0.000 hit=True forbidden=0
+  - lear-054 [dev/multi_hop] status=GROUNDED facts=0.500 hit=True forbidden=0
+  - lear-078 [dev/workflow] status=GROUNDED facts=0.500 hit=True forbidden=0
+output: /tmp/lear-rec-20261106T1219Z/eval/rec-s09

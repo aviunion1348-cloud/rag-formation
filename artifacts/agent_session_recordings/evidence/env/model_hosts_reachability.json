@@ -1,0 +1,10 @@
+{
+  "at": "2026-11-06T12:19:27Z",
+  "probes": {
+    "github_release_asset_redirect": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>",
+    "release_assets_host": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>",
+    "ollama_com": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>",
+    "ollama_registry": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>",
+    "huggingface": "URLError: <urlopen error TLS/SSL connection has been closed (EOF) (_ssl.c:992)>"
+  }
+}

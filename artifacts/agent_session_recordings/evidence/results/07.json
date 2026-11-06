@@ -1,0 +1,895 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "07",
+  "name": "context_compaction",
+  "title": "Memory and context compaction",
+  "status": "PARTIAL",
+  "cap": {
+    "status": "PARTIAL",
+    "reason": "No LLM: the compacted summary is placed in the system prompt, which only an LLM reads; the baseline sees history only through query rewriting of the kept recent messages."
+  },
+  "startedAt": "2026-11-06T12:20:24.960Z",
+  "endedAt": "2026-11-06T12:20:27.024Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/07_context_compaction_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:24.966Z",
+      "endedAt": "2026-11-06T12:20:25.166Z",
+      "ms": 199.4,
+      "out": "traces/07/w1.out",
+      "outBytes": 10364,
+      "outSha256": "65b854983f532ede205e8de874377884d716da3eca0a9cca943c4aef77691d9f",
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "correlationId": "q-f954290f0552",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Which environment variable moves the circuit breaker state file, and what is the default path?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:25.170Z",
+      "endedAt": "2026-11-06T12:20:25.358Z",
+      "ms": 188.8,
+      "out": "traces/07/w2.out",
+      "outBytes": 10633,
+      "outSha256": "2d13637362b67f03f4e700df77ae8c46335d4e58e067195e4f20288c06d082ca",
+      "question": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+      "questionSource": "golden lear-006 (dev split)",
+      "correlationId": "q-e71a7ff483e6",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Where does Lear write its audit log by default?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:25.362Z",
+      "endedAt": "2026-11-06T12:20:25.569Z",
+      "ms": 206.9,
+      "out": "traces/07/w3.out",
+      "outBytes": 11908,
+      "outSha256": "94edc48ba220573b31ea109814291a1d33c72454fbcfb457479553b242ee70ef",
+      "question": "Where does Lear write its audit log by default?",
+      "questionSource": "golden lear-007 (dev split)",
+      "correlationId": "q-b3f56da8e145",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w3"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "What exit code does `prash run` return when the action needs a secret that was not supplied?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:25.573Z",
+      "endedAt": "2026-11-06T12:20:25.781Z",
+      "ms": 207.8,
+      "out": "traces/07/w4.out",
+      "outBytes": 11713,
+      "outSha256": "26b8b1bb3e8c9469a0e8ff582ede19e8516b05cd71b40288f4b56a92f209cdd2",
+      "question": "What exit code does `prash run` return when the action needs a secret that was not supplied?",
+      "questionSource": "golden lear-010 (dev split)",
+      "correlationId": "q-6ad52b07fded",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w4"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Does `prash run --dry-run` execute the action?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:25.785Z",
+      "endedAt": "2026-11-06T12:20:25.982Z",
+      "ms": 197.9,
+      "out": "traces/07/w5.out",
+      "outBytes": 9648,
+      "outSha256": "00f2e14937699e0d6bc5f1d17f6dad7e305673c63a0ad52bc1a78309758daf44",
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "correlationId": "q-0a39f90321ee",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w5"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:25.986Z",
+      "endedAt": "2026-11-06T12:20:26.183Z",
+      "ms": 196.5,
+      "out": "traces/07/w6.out",
+      "outBytes": 10781,
+      "outSha256": "73c8fc598f5a0dd4efb315a22af7b6cdca19887b0da6f42ac04e0fb7689d8007",
+      "question": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+      "questionSource": "golden lear-013 (dev split)",
+      "correlationId": "q-dea61f02dcba",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w6"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Which subcommands does the prash CLI provide?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:26.186Z",
+      "endedAt": "2026-11-06T12:20:26.397Z",
+      "ms": 211.1,
+      "out": "traces/07/w7.out",
+      "outBytes": 10735,
+      "outSha256": "c5a715090059513e2a30715448753e83ee8a4e5f868736fec59f8e6d8e9421ca",
+      "question": "Which subcommands does the prash CLI provide?",
+      "questionSource": "golden lear-015 (dev split)",
+      "correlationId": "q-1ccecd66e3b7",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w7"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Which permission mode does `prash run` use when --mode is not given?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:26.401Z",
+      "endedAt": "2026-11-06T12:20:26.599Z",
+      "ms": 197.9,
+      "out": "traces/07/w8.out",
+      "outBytes": 10798,
+      "outSha256": "dd93fadb386dd5b19258108744211f8a5d9b7fe84368d2c3414c6c9644644942",
+      "question": "Which permission mode does `prash run` use when --mode is not given?",
+      "questionSource": "golden lear-018 (dev split)",
+      "correlationId": "q-c6e759b1f1fd",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "w8"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "Going back to the state file from my second question: what happens if that file is corrupted?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:26.603Z",
+      "endedAt": "2026-11-06T12:20:26.805Z",
+      "ms": 202.5,
+      "out": "traces/07/f1.out",
+      "outBytes": 10672,
+      "outSha256": "32eeabd3d9f84569137e69d634b3017bbd403886758cd254721f5b03b19ea58d",
+      "question": "Going back to the state file from my second question: what happens if that file is corrupted?",
+      "questionSource": "CONTROLLED test input (written in the plan)",
+      "correlationId": "q-a1dc5c6aca7b",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "stepId": "f1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "sessions",
+        "inspect",
+        "rec-s07-20261106T1219Z",
+        "--user",
+        "rec-u07",
+        "--json"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:26.882Z",
+      "endedAt": "2026-11-06T12:20:27.019Z",
+      "ms": 136.9,
+      "out": "traces/07/s7.out",
+      "outBytes": 17717,
+      "outSha256": "b48c5ac77289e24dfe4290dd96a2ad5a27bd920f47c4464c5264be9afe451594",
+      "stepId": "s7"
+    }
+  ],
+  "answers": {
+    "w1": {
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-f954290f0552",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 1,
+      "citations": [
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "lines": "27-28",
+          "chunkId": "src-cceb028542#c005-41a6252e"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "lines": "55-57",
+          "chunkId": "src-51cdac4a6f#c010-89e43766"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 66.77,
+        "ttft_ms": 58.76,
+        "itl_median_ms": 0.071,
+        "itl_p95_ms": null,
+        "stream_events": 18,
+        "output_tokens": 106,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 33011.52,
+        "stages": {
+          "retrievalMs": 15.735,
+          "generationMs": 3.211,
+          "ttftMs": 1.863,
+          "contextTokens": 1640,
+          "promptTokens": 28,
+          "evidenceTokens": 1640
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w2": {
+      "question": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+      "questionSource": "golden lear-006 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-e71a7ff483e6",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 2,
+      "citations": [
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "lines": "49-53",
+          "chunkId": "src-0a61e382fa#c006-e2594647"
+        },
+        {
+          "document": "docs/lear_backend/README.md",
+          "lines": "15-27",
+          "chunkId": "src-9e094965d7#c003-f65bcf66"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 64.09,
+        "ttft_ms": 55.49,
+        "itl_median_ms": 0.068,
+        "itl_p95_ms": null,
+        "stream_events": 33,
+        "output_tokens": 198,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 40598.73,
+        "stages": {
+          "retrievalMs": 14.43,
+          "generationMs": 4.877,
+          "ttftMs": 2.583,
+          "contextTokens": 1735,
+          "promptTokens": 24,
+          "evidenceTokens": 1735
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w3": {
+      "question": "Where does Lear write its audit log by default?",
+      "questionSource": "golden lear-007 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-b3f56da8e145",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 3,
+      "citations": [
+        {
+          "document": "docs/lear_backend/README.md",
+          "lines": "15-27",
+          "chunkId": "src-9e094965d7#c003-f65bcf66"
+        },
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "lines": "49-53",
+          "chunkId": "src-0a61e382fa#c006-e2594647"
+        },
+        {
+          "document": "docs/lear_backend/database.md",
+          "lines": "18-22",
+          "chunkId": "src-6b77f48dab#c003-409e673d"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 80.95,
+        "ttft_ms": 71.0,
+        "itl_median_ms": 0.067,
+        "itl_p95_ms": null,
+        "stream_events": 49,
+        "output_tokens": 294,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 40867.39,
+        "stages": {
+          "retrievalMs": 15.392,
+          "generationMs": 7.194,
+          "ttftMs": 3.804,
+          "contextTokens": 1645,
+          "promptTokens": 40,
+          "evidenceTokens": 1645
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w4": {
+      "question": "What exit code does `prash run` return when the action needs a secret that was not supplied?",
+      "questionSource": "golden lear-010 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-6ad52b07fded",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 4,
+      "citations": [
+        {
+          "document": "docs/lear_backend/README.md",
+          "lines": "15-27",
+          "chunkId": "src-9e094965d7#c003-f65bcf66"
+        },
+        {
+          "document": "docs/lear_backend/README.md",
+          "lines": "6-12",
+          "chunkId": "src-9e094965d7#c001-5c378822"
+        },
+        {
+          "document": "docs/lear_backend/reference/cli.md",
+          "lines": "1-7",
+          "chunkId": "src-3665f86d99#c000-697e44a4"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 85.29,
+        "ttft_ms": 75.49,
+        "itl_median_ms": 0.068,
+        "itl_p95_ms": null,
+        "stream_events": 44,
+        "output_tokens": 263,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 36778.07,
+        "stages": {
+          "retrievalMs": 15.575,
+          "generationMs": 7.151,
+          "ttftMs": 4.04,
+          "contextTokens": 1617,
+          "promptTokens": 39,
+          "evidenceTokens": 1617
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w5": {
+      "question": "Does `prash run --dry-run` execute the action?",
+      "questionSource": "golden lear-012 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-0a39f90321ee",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 5,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "32-34",
+          "chunkId": "src-0aa7224dfb#c004-10cc0499"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 72.84,
+        "ttft_ms": 62.85,
+        "itl_median_ms": 0.078,
+        "itl_p95_ms": null,
+        "stream_events": 11,
+        "output_tokens": 61,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 23300.23,
+        "stages": {
+          "retrievalMs": 16.852,
+          "generationMs": 2.618,
+          "ttftMs": 1.694,
+          "contextTokens": 1684,
+          "promptTokens": 12,
+          "evidenceTokens": 1684
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w6": {
+      "question": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+      "questionSource": "golden lear-013 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-dea61f02dcba",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 6,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "56-60",
+          "chunkId": "src-0aa7224dfb#c008-2447b1e4"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "lines": "43-46",
+          "chunkId": "src-51cdac4a6f#c008-f9566633"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 66.59,
+        "ttft_ms": 58.97,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "stream_events": 19,
+        "output_tokens": 109,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 28775.08,
+        "stages": {
+          "retrievalMs": 15.315,
+          "generationMs": 3.788,
+          "ttftMs": 2.407,
+          "contextTokens": 1770,
+          "promptTokens": 27,
+          "evidenceTokens": 1770
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w7": {
+      "question": "Which subcommands does the prash CLI provide?",
+      "questionSource": "golden lear-015 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-1ccecd66e3b7",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 7,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "56-60",
+          "chunkId": "src-0aa7224dfb#c008-2447b1e4"
+        },
+        {
+          "document": "docs/lear_backend/reference/actions.md",
+          "lines": "103-117",
+          "chunkId": "src-8b2cf583b7#c012-67ed963d"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 71.12,
+        "ttft_ms": 62.6,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "stream_events": 28,
+        "output_tokens": 165,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 42372.88,
+        "stages": {
+          "retrievalMs": 15.15,
+          "generationMs": 3.894,
+          "ttftMs": 1.865,
+          "contextTokens": 1736,
+          "promptTokens": 42,
+          "evidenceTokens": 1736
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "w8": {
+      "question": "Which permission mode does `prash run` use when --mode is not given?",
+      "questionSource": "golden lear-018 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-c6e759b1f1fd",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 8,
+      "citations": [
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "lines": "5-11",
+          "chunkId": "src-cceb028542#c001-74f530b3"
+        },
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "23-31",
+          "chunkId": "src-0aa7224dfb#c003-18877ad0"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 65.93,
+        "ttft_ms": 57.82,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "stream_events": 19,
+        "output_tokens": 110,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 46709.13,
+        "stages": {
+          "retrievalMs": 15.132,
+          "generationMs": 2.355,
+          "ttftMs": 0.97,
+          "contextTokens": 1790,
+          "promptTokens": 17,
+          "evidenceTokens": 1790
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    },
+    "f1": {
+      "question": "Going back to the state file from my second question: what happens if that file is corrupted?",
+      "questionSource": "CONTROLLED test input (written in the plan)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-a1dc5c6aca7b",
+      "sessionId": "rec-s07-20261106T1219Z",
+      "turn": 9,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "23-31",
+          "chunkId": "src-0aa7224dfb#c003-18877ad0"
+        },
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "lines": "5-11",
+          "chunkId": "src-cceb028542#c001-74f530b3"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 76.27,
+        "ttft_ms": 67.25,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "stream_events": 19,
+        "output_tokens": 110,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 26334.69,
+        "stages": {
+          "retrievalMs": 16.294,
+          "generationMs": 4.177,
+          "ttftMs": 2.811,
+          "contextTokens": 1780,
+          "promptTokens": 45,
+          "evidenceTokens": 1780
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "compaction_occurred",
+      "description": "At least one compaction is persisted, with tokens_after < tokens_before and tokens_before above the 900-token budget.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "compactions": 3,
+        "first": {
+          "compaction_id": 1,
+          "session_id": "rec-s07-20261106T1219Z",
+          "version": "lear-compaction-v1",
+          "through_message_id": 28,
+          "tokens_before": 942,
+          "tokens_after": 869,
+          "latency_ms": 0.521,
+          "summary_sha256": "09b62a54cf3b125ff6f0f740a2a1799097361f7e66a11edeabc936816e641f44",
+          "created_at": 1793967625.88741
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "type": "summary_contains",
+      "description": "The persisted summary still carries turn 2's subject (PRASH_CIRCUIT_STATE_PATH, circuit.json or 'circuit').",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "summaryChars": 1095,
+        "termsFound": [
+          "circuit"
+        ]
+      }
+    },
+    {
+      "id": "c3",
+      "type": "keyfacts",
+      "description": "The post-compaction follow-up answer covers lear-056's key fact (open circuits are lost/reset when the state file is corrupted).",
+      "onFail": "PARTIAL",
+      "outcome": "FAIL",
+      "observed": {
+        "status": "GROUNDED",
+        "groups": [
+          [
+            "empty",
+            "reset",
+            "close",
+            "lost",
+            "forget",
+            "discard"
+          ]
+        ],
+        "hits": [
+          false
+        ]
+      }
+    }
+  ],
+  "events": "traces/07/events.jsonl",
+  "sessionIds": [
+    "rec-s07-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-f954290f0552",
+    "q-e71a7ff483e6",
+    "q-b3f56da8e145",
+    "q-6ad52b07fded",
+    "q-0a39f90321ee",
+    "q-dea61f02dcba",
+    "q-1ccecd66e3b7",
+    "q-c6e759b1f1fd",
+    "q-a1dc5c6aca7b"
+  ]
+}

@@ -1,0 +1,321 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "01",
+  "name": "successful_rag",
+  "title": "Normal successful RAG",
+  "status": "FAIL",
+  "cap": {
+    "status": "PARTIAL",
+    "reason": "The configured generator (local Ollama) is not available in this environment, so the final answer can only come from the agent's labelled extractive baseline."
+  },
+  "startedAt": "2026-11-06T12:20:19.474Z",
+  "endedAt": "2026-11-06T12:20:20.732Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/01_successful_rag_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "ollama",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "doctor",
+        "--no-generation"
+      ],
+      "exit": 6,
+      "startedAt": "2026-11-06T12:20:19.486Z",
+      "endedAt": "2026-11-06T12:20:19.602Z",
+      "ms": 116.3,
+      "out": "traces/01/g1.out",
+      "outBytes": 1084,
+      "outSha256": "1108fbc0cae7566afa4b1ac18305a2bfa2c712a29ca9ab09e4f640447a21df98",
+      "stepId": "g1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "ollama",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?"
+      ],
+      "exit": 6,
+      "startedAt": "2026-11-06T12:20:19.603Z",
+      "endedAt": "2026-11-06T12:20:19.765Z",
+      "ms": 162.3,
+      "out": "traces/01/a0.out",
+      "outBytes": 2084,
+      "outSha256": "5b95fe104e30652a28b0a28672abab003110833bbd052e95deb6babc5641b241",
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "correlationId": null,
+      "sessionId": null,
+      "stepId": "a0"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "index",
+        "rebuild"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:19.767Z",
+      "endedAt": "2026-11-06T12:20:20.325Z",
+      "ms": 558.0,
+      "out": "traces/01/i1.out",
+      "outBytes": 210,
+      "outSha256": "0f06891f1de604be1f83f372775f2fadc1a37a5468ed9324948b40b93ab6c2b4",
+      "stepId": "i1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "index",
+        "stats"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:20.325Z",
+      "endedAt": "2026-11-06T12:20:20.453Z",
+      "ms": 128.3,
+      "out": "traces/01/i2.out",
+      "outBytes": 792,
+      "outSha256": "ed57110b65aa6d6f9a75c0484c1aae33e897733183b3b9312ba4038464b719dc",
+      "stepId": "i2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s01-20261106T1219Z",
+        "--user",
+        "rec-u01",
+        "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:20.454Z",
+      "endedAt": "2026-11-06T12:20:20.650Z",
+      "ms": 196.5,
+      "out": "traces/01/a1.out",
+      "outBytes": 10363,
+      "outSha256": "f1f04f9dd8c7645c7f6ec87416a7b0bb0e2e80fc1aec70efe4b73616f394cbf4",
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "correlationId": "q-4f56b050c0eb",
+      "sessionId": "rec-s01-20261106T1219Z",
+      "stepId": "a1"
+    }
+  ],
+  "answers": {
+    "a0": {
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "status": "ERROR",
+      "backend": "ollama",
+      "qualifying": false,
+      "correlationId": null,
+      "sessionId": null,
+      "turn": null,
+      "citations": [],
+      "generation": {
+        "configured": "ollama:qwen2.5:1.5b",
+        "used": null,
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "ollama",
+        "model": "nomic-embed-text"
+      },
+      "metrics": {
+        "total_latency_ms": 9.51,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": null,
+        "output_tokens": null,
+        "output_tokens_estimated": null,
+        "tokens_per_second": null,
+        "stages": null
+      },
+      "error": {
+        "error": "provider_unavailable",
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "hint": "provider is not reachable",
+        "dependencyUnavailable": true
+      },
+      "abstainReason": null,
+      "warnings": [
+        "dependency_unavailable"
+      ]
+    },
+    "a1": {
+      "question": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "questionSource": "golden lear-003 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-4f56b050c0eb",
+      "sessionId": "rec-s01-20261106T1219Z",
+      "turn": 1,
+      "citations": [
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "lines": "27-28",
+          "chunkId": "src-cceb028542#c005-41a6252e"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "lines": "55-57",
+          "chunkId": "src-51cdac4a6f#c010-89e43766"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 67.42,
+        "ttft_ms": 59.43,
+        "itl_median_ms": 0.071,
+        "itl_p95_ms": null,
+        "stream_events": 18,
+        "output_tokens": 106,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 31975.87,
+        "stages": {
+          "retrievalMs": 15.487,
+          "generationMs": 3.315,
+          "ttftMs": 1.931,
+          "contextTokens": 1640,
+          "promptTokens": 28,
+          "evidenceTokens": 1640
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "dependency_error",
+      "description": "With Ollama absent the qualifying path returns ERROR, dependencyUnavailable=true, exit 6 and no answer text (no hidden fallback).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "exit": 6,
+        "status": "ERROR",
+        "errorCode": null,
+        "message": "Ollama is configured as the embedding provider but is not usable",
+        "dependencyUnavailable": true,
+        "answerChars": 0
+      }
+    },
+    {
+      "id": "c2",
+      "type": "golden",
+      "description": "Baseline answer meets the frozen golden expectations of lear-003 (repository scorer score_case: status allowed, key facts covered, nothing forbidden).",
+      "onFail": "FAIL",
+      "outcome": "FAIL",
+      "observed": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.0,
+        "keyFactCoverageStrict": 0.0,
+        "forbiddenHits": [],
+        "correct": false,
+        "correctStrict": false,
+        "citations": 2,
+        "hit": true,
+        "reciprocalRank": 0.5,
+        "docRecall": 1.0,
+        "contextPrecision": 0.5556,
+        "citationPrecision": 0.5,
+        "proxy": {
+          "citation_quality": 2.0,
+          "groundedness": 4.0,
+          "answer_relevance": 0.0,
+          "context_precision": 2.22,
+          "context_recall": 4.0
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "type": "citations_valid",
+      "description": "At least one citation, and every citation survived server-side validation (engine row citations_valid == citations_total).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "citations": 2,
+        "citations_valid": 2,
+        "citations_total": 2
+      }
+    },
+    {
+      "id": "c4",
+      "type": "honest_label",
+      "description": "The answer is labelled not qualifying and the generator is reported as extractive (baseline).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "qualifying": false,
+        "generationConfigured": "extractive (baseline)"
+      }
+    }
+  ],
+  "events": "traces/01/events.jsonl",
+  "sessionIds": [
+    "rec-s01-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-4f56b050c0eb"
+  ]
+}

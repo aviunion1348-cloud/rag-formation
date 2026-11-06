@@ -1,0 +1,176 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "03",
+  "name": "multidocument_retrieval",
+  "title": "Multi-document retrieval",
+  "status": "FAIL",
+  "cap": {
+    "status": "PARTIAL",
+    "reason": "No LLM: 'synthesis' is the extractive generator selecting cited sentences, not model synthesis."
+  },
+  "startedAt": "2026-11-06T12:20:22.324Z",
+  "endedAt": "2026-11-06T12:20:22.638Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/03_multidocument_retrieval.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s03-20261106T1219Z",
+        "--user",
+        "rec-u03",
+        "Can an approval-tier action launched from the desktop chat run without anyone answering a terminal prompt?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:22.331Z",
+      "endedAt": "2026-11-06T12:20:22.568Z",
+      "ms": 236.2,
+      "out": "traces/03/q1.out",
+      "outBytes": 11415,
+      "outSha256": "f653899a500d988225048e43bb1a2d68fa57c6700530747213bdd7116b352ed1",
+      "question": "Can an approval-tier action launched from the desktop chat run without anyone answering a terminal prompt?",
+      "questionSource": "golden lear-054 (dev split)",
+      "correlationId": "q-568a4c41af61",
+      "sessionId": "rec-s03-20261106T1219Z",
+      "stepId": "q1"
+    }
+  ],
+  "answers": {
+    "q1": {
+      "question": "Can an approval-tier action launched from the desktop chat run without anyone answering a terminal prompt?",
+      "questionSource": "golden lear-054 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-568a4c41af61",
+      "sessionId": "rec-s03-20261106T1219Z",
+      "turn": 1,
+      "citations": [
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "lines": "67-72",
+          "chunkId": "src-51cdac4a6f#c012-66d7eda8"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "lines": "39-39",
+          "chunkId": "src-51cdac4a6f#c007-f604fbda"
+        },
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "lines": "65-65",
+          "chunkId": "src-0aa7224dfb#c010-a6315f1c"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 73.37,
+        "ttft_ms": 64.96,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "stream_events": 24,
+        "output_tokens": 142,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 41231.13,
+        "stages": {
+          "retrievalMs": 18.864,
+          "generationMs": 3.444,
+          "ttftMs": 1.701,
+          "contextTokens": 1595,
+          "promptTokens": 27,
+          "evidenceTokens": 1595
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "golden",
+      "description": "Meets the frozen golden expectations of lear-054.",
+      "onFail": "FAIL",
+      "outcome": "FAIL",
+      "observed": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": 0.5,
+        "keyFactCoverageStrict": 0.5,
+        "forbiddenHits": [],
+        "correct": false,
+        "correctStrict": false,
+        "citations": 3,
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.4545,
+        "citationPrecision": 1.0,
+        "proxy": {
+          "citation_quality": 4.0,
+          "groundedness": 4.0,
+          "answer_relevance": 2.0,
+          "context_precision": 1.82,
+          "context_recall": 4.0
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "type": "distinct_docs",
+      "description": "Citations in the final answer come from at least 2 distinct indexed documents.",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "citedDocuments": [
+          "docs/lear_backend/api_reference.md",
+          "docs/lear_backend/authentication_authorization.md"
+        ],
+        "citations": 3,
+        "selectedContextDocuments": [
+          "docs/lear_backend/api_reference.md",
+          "docs/lear_backend/authentication_authorization.md",
+          "docs/lear_backend/errors_and_operations.md",
+          "docs/lear_backend/reference/actions.md",
+          "docs/lear_backend/reference/http_api.md",
+          "docs/lear_backend/testing.md"
+        ]
+      }
+    }
+  ],
+  "events": "traces/03/events.jsonl",
+  "sessionIds": [
+    "rec-s03-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-568a4c41af61"
+  ]
+}

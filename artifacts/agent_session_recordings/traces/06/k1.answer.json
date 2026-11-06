@@ -1,0 +1,326 @@
+{
+  "status": "GROUNDED",
+  "answer": "That upstream commit is not covered. - [implemented] The README promises 457 passed and 7 skipped tests, but the pinned commit collects 864 items, and the run of 2026-11-05 ended with 28 failures (12 with mock services disabled). [2] Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [3]",
+  "citations": [
+    {
+      "id": 2,
+      "chunkId": "src-a641769236#c003-2f6b1720",
+      "document": "docs/lear_backend/unknowns_and_gaps.md",
+      "heading": "Unknowns and gaps > Code, tests and prose disagree",
+      "lines": "13-18",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "README.md:L57-L61",
+        "prash/connectors/aws.py:L75",
+        ".github/workflows/ci.yml:L47-L57",
+        "prash/server.py:L3642",
+        "pyproject.toml:L10-L54",
+        "pyproject.toml:L31-L40"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4131,
+      "excerpt": "Code, tests and prose disagree\n\n- [implemented] The README promises 457 passed and 7 skipped tests, but the pinned commit collects 864 items, and the run of 2026-11-05 ended with 28 failures (12 with mock services disabled)."
+    },
+    {
+      "id": 3,
+      "chunkId": "src-9e094965d7#c003-f65bcf66",
+      "document": "docs/lear_backend/README.md",
+      "heading": "Lear backend — engineering documentation > How to read these pages",
+      "lines": "15-27",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L1-L7",
+        "prash/server.py:L397"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3314,
+      "excerpt": "How to read these pages\n\nEach claim carries one evidence label:\n\nLabel  |  Meaning\n\n--- | ---\n\nimplemented  |  read directly from code at the pinned commit\n\nconfigured  |  a default, environment variable, packaging or launcher setting\n\ntest"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s06-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "How many tests does the README say should pass, and does that match what the pinned commit actually does?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-1e7c9f8a18#c007-a82ddbb7",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Suite run against the pinned commit (2026-11-05)",
+        "score": 0.032787,
+        "support": 0.421556,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c003-2f6b1720",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Code, tests and prose disagree",
+        "score": 0.031514,
+        "support": 0.413075,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c003-f65bcf66",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > How to read these pages",
+        "score": 0.02901,
+        "support": 0.331431,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c004-b9e38951",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Suite run against the pinned commit (2026-11-05)",
+        "score": 0.027826,
+        "support": 0.330052,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c009-1aa336da",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Evaluation harness",
+        "score": 0.027778,
+        "support": 0.34483,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c005-e4443f07",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Permission engine",
+        "score": 0.025333,
+        "support": 0.271702,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c008-9fbd2027",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Behaviour that is well covered",
+        "score": 0.026901,
+        "support": 0.325109,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c000-294e81ae",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation",
+        "score": 0.032002,
+        "support": 0.245518,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c003-d72b2b0c",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Continuous integration",
+        "score": 0.028543,
+        "support": 0.22986,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c002-e31c16bd",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Not verifiable from this environment",
+        "score": 0.029911,
+        "support": 0.22204,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-de4b0bbf6e#c038-d6037b6c",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/brain/edit_repair.py",
+        "score": 0.013514,
+        "support": 0.108333,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c002-b43a09f3",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Where configuration comes from",
+        "score": 0.014925,
+        "support": 0.153955,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-1e7c9f8a18#c007-a82ddbb7",
+      "src-a641769236#c003-2f6b1720",
+      "src-9e094965d7#c003-f65bcf66",
+      "src-1e7c9f8a18#c004-b9e38951",
+      "src-1e7c9f8a18#c009-1aa336da",
+      "src-51cdac4a6f#c005-e4443f07",
+      "src-1e7c9f8a18#c008-9fbd2027",
+      "src-9e094965d7#c000-294e81ae",
+      "src-1e7c9f8a18#c003-d72b2b0c",
+      "src-a641769236#c002-e31c16bd",
+      "src-de4b0bbf6e#c038-d6037b6c",
+      "src-ed704ce6ff#c002-b43a09f3"
+    ],
+    "excluded": [],
+    "quarantined": [],
+    "contextTokens": 1572,
+    "bestSupport": 0.4216,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.708
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.363
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.07
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.015
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.893
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 63.08,
+    "totalMs": 72.09,
+    "streamEvents": 34,
+    "completionTokens": 201,
+    "tokensEstimated": true,
+    "tokensPerSec": 44030.67,
+    "decodeEventsPerSec": 14774.01,
+    "itlMs": {
+      "count": 33,
+      "mean": 0.068,
+      "p50": 0.067,
+      "p85": 0.07,
+      "p99": 0.076,
+      "min": 0.066,
+      "max": 0.076
+    },
+    "stages": {
+      "retrievalMs": 15.049,
+      "generationMs": 4.565,
+      "ttftMs": 2.228,
+      "contextTokens": 1572,
+      "promptTokens": 27,
+      "evidenceTokens": 1572
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 75.027,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.004,
+          "ms": 0.03
+        },
+        {
+          "stage": "session",
+          "startMs": 0.035,
+          "ms": 5.378
+        },
+        {
+          "stage": "compaction",
+          "startMs": 5.413,
+          "ms": 0.038
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 5.451,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 5.453,
+          "ms": 0.093
+        },
+        {
+          "stage": "prompt",
+          "startMs": 5.546,
+          "ms": 0.013
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 5.558,
+          "ms": 1.063
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 6.622,
+          "ms": 0.357
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 6.979,
+          "ms": 22.485
+        },
+        {
+          "stage": "engine",
+          "startMs": 29.464,
+          "ms": 38.88
+        },
+        {
+          "stage": "mapping",
+          "startMs": 68.344,
+          "ms": 3.803
+        },
+        {
+          "stage": "persist",
+          "startMs": 72.148,
+          "ms": 2.874
+        }
+      ]
+    }
+  },
+  "correlationId": "q-126884f451c9",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

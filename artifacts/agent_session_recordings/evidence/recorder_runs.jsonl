@@ -1,0 +1,10 @@
+{"scenario": "01", "cast": "artifacts/agent_session_recordings/terminal/01_successful_rag_session.cast", "recorderStartedAt": "2026-11-06T12:20:19Z", "recorderEndedAt": "2026-11-06T12:20:20Z", "recorderExit": 0}
+{"scenario": "02", "cast": "artifacts/agent_session_recordings/terminal/02_multiturn_memory_session.cast", "recorderStartedAt": "2026-11-06T12:20:20Z", "recorderEndedAt": "2026-11-06T12:20:22Z", "recorderExit": 0}
+{"scenario": "03", "cast": "artifacts/agent_session_recordings/terminal/03_multidocument_retrieval.cast", "recorderStartedAt": "2026-11-06T12:20:22Z", "recorderEndedAt": "2026-11-06T12:20:22Z", "recorderExit": 0}
+{"scenario": "04", "cast": "artifacts/agent_session_recordings/terminal/04_abstention_session.cast", "recorderStartedAt": "2026-11-06T12:20:22Z", "recorderEndedAt": "2026-11-06T12:20:23Z", "recorderExit": 0}
+{"scenario": "05", "cast": "artifacts/agent_session_recordings/terminal/05_guardrail_security_session.cast", "recorderStartedAt": "2026-11-06T12:20:23Z", "recorderEndedAt": "2026-11-06T12:20:24Z", "recorderExit": 0}
+{"scenario": "06", "cast": "artifacts/agent_session_recordings/terminal/06_conflict_detection_session.cast", "recorderStartedAt": "2026-11-06T12:20:24Z", "recorderEndedAt": "2026-11-06T12:20:24Z", "recorderExit": 0}
+{"scenario": "07", "cast": "artifacts/agent_session_recordings/terminal/07_context_compaction_session.cast", "recorderStartedAt": "2026-11-06T12:20:24Z", "recorderEndedAt": "2026-11-06T12:20:27Z", "recorderExit": 0}
+{"scenario": "08", "cast": "artifacts/agent_session_recordings/terminal/08_error_recovery_session.cast", "recorderStartedAt": "2026-11-06T12:20:27Z", "recorderEndedAt": "2026-11-06T12:20:27Z", "recorderExit": 0}
+{"scenario": "09", "cast": "artifacts/agent_session_recordings/terminal/09_evaluation_benchmark_session.cast", "recorderStartedAt": "2026-11-06T12:20:27Z", "recorderEndedAt": "2026-11-06T12:20:31Z", "recorderExit": 0}
+{"scenario": "08", "cast": "artifacts/agent_session_recordings/terminal/08_error_recovery_session.cast", "recorderStartedAt": "2026-11-06T12:21:49Z", "recorderEndedAt": "2026-11-06T12:22:53Z", "recorderExit": 0}

@@ -1,0 +1,161 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "06",
+  "name": "conflict_detection",
+  "title": "Conflicting document evidence",
+  "status": "PARTIAL",
+  "cap": {
+    "status": "PARTIAL",
+    "reason": "No LLM: prompt rule 7 ('state both and cite both') is a model instruction; only the engine's numeric conflict detector can act here."
+  },
+  "startedAt": "2026-11-06T12:20:24.490Z",
+  "endedAt": "2026-11-06T12:20:24.769Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/06_conflict_detection_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s06-20261106T1219Z",
+        "--user",
+        "rec-u06",
+        "How many tests does the README say should pass, and does that match what the pinned commit actually does?"
+      ],
+      "exit": 0,
+      "startedAt": "2026-11-06T12:20:24.497Z",
+      "endedAt": "2026-11-06T12:20:24.698Z",
+      "ms": 201.5,
+      "out": "traces/06/k1.out",
+      "outBytes": 10667,
+      "outSha256": "56a2b9be8e0f10af919484608167deebef40b6e6a4612b5aad053e761a1703a0",
+      "question": "How many tests does the README say should pass, and does that match what the pinned commit actually does?",
+      "questionSource": "golden lear-059 (dev split)",
+      "correlationId": "q-126884f451c9",
+      "sessionId": "rec-s06-20261106T1219Z",
+      "stepId": "k1"
+    }
+  ],
+  "answers": {
+    "k1": {
+      "question": "How many tests does the README say should pass, and does that match what the pinned commit actually does?",
+      "questionSource": "golden lear-059 (dev split)",
+      "status": "GROUNDED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-126884f451c9",
+      "sessionId": "rec-s06-20261106T1219Z",
+      "turn": 1,
+      "citations": [
+        {
+          "document": "docs/lear_backend/unknowns_and_gaps.md",
+          "lines": "13-18",
+          "chunkId": "src-a641769236#c003-2f6b1720"
+        },
+        {
+          "document": "docs/lear_backend/README.md",
+          "lines": "15-27",
+          "chunkId": "src-9e094965d7#c003-f65bcf66"
+        }
+      ],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 72.09,
+        "ttft_ms": 63.08,
+        "itl_median_ms": 0.067,
+        "itl_p95_ms": null,
+        "stream_events": 34,
+        "output_tokens": 201,
+        "output_tokens_estimated": true,
+        "tokens_per_second": 44030.67,
+        "stages": {
+          "retrievalMs": 15.049,
+          "generationMs": 4.565,
+          "ttftMs": 2.228,
+          "contextTokens": 1572,
+          "promptTokens": 27,
+          "evidenceTokens": 1572
+        }
+      },
+      "error": null,
+      "abstainReason": null,
+      "warnings": []
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "golden",
+      "description": "Meets lear-059: allowed status and both values surfaced (457, and the failure counts).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "status": "GROUNDED",
+        "statusOk": true,
+        "preferredStatus": false,
+        "keyFactCoverage": 1.0,
+        "keyFactCoverageStrict": 1.0,
+        "forbiddenHits": [],
+        "correct": true,
+        "correctStrict": true,
+        "citations": 2,
+        "hit": true,
+        "reciprocalRank": 1.0,
+        "docRecall": 1.0,
+        "contextPrecision": 0.4167,
+        "citationPrecision": 0.0,
+        "proxy": {
+          "citation_quality": 0.0,
+          "groundedness": 4.0,
+          "answer_relevance": 4.0,
+          "context_precision": 1.67,
+          "context_recall": 4.0
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "type": "conflict_flagged",
+      "description": "The engine flags the conflict (status CONFLICTED, conflict object present).",
+      "onFail": "PARTIAL",
+      "outcome": "FAIL",
+      "observed": {
+        "status": "GROUNDED",
+        "conflict": null,
+        "warnings": []
+      }
+    }
+  ],
+  "events": "traces/06/events.jsonl",
+  "sessionIds": [
+    "rec-s06-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-126884f451c9"
+  ]
+}

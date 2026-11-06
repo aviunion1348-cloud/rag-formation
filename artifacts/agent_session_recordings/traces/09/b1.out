@@ -1,0 +1,6 @@
+Lear bench — backend baseline — PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)
+limits: {'perUserPerMin': 30, 'perSessionPerMin': 20, 'maxConcurrent': 2, 'queueTimeoutS': 30.0}  requests/user=10  warm-up: ok
+users reqs  ok  429 err     rps  ttft p50  ttft p99  itl p50  total p50  total p85  total p99 tok/s p50
+    5   50  50    0   0   25.82      57.7    1595.8      0.1       63.7       92.8     1599.1       n/a
+tok/s is n/a: the baseline streams extractive words, not model tokens (raw values stay in the JSON, labelled pipeline-only)
+output: /tmp/lear-rec-20261106T1219Z/bench/bench.json

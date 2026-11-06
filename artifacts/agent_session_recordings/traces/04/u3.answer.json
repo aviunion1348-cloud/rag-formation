@@ -1,0 +1,130 @@
+{
+  "status": "ABSTAINED",
+  "answer": "The indexed Lear documentation never mentions 'p99', so this cannot be answered from it. Ask about the Lear backend code (CLI, actions, permissions, connectors, desktop server) instead.",
+  "citations": [],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": null,
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "session": {
+    "id": "rec-s04c-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "What is Lear's p99 request latency in production?",
+    "retrievalQuery": null,
+    "candidates": [],
+    "selected": [],
+    "excluded": [],
+    "quarantined": [],
+    "bestSupport": null,
+    "stages": {},
+    "unknownTerms": [
+      "p99"
+    ]
+  },
+  "timings": {
+    "ttftMs": null,
+    "totalMs": 24.62,
+    "streamEvents": 0,
+    "completionTokens": null,
+    "tokensEstimated": false,
+    "tokensPerSec": null,
+    "decodeEventsPerSec": null,
+    "itlMs": {
+      "count": 0,
+      "mean": null,
+      "p50": null,
+      "p85": null,
+      "p99": null,
+      "min": null,
+      "max": null
+    },
+    "stages": {},
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 27.075,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.001,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.023
+        },
+        {
+          "stage": "session",
+          "startMs": 0.026,
+          "ms": 1.513
+        },
+        {
+          "stage": "compaction",
+          "startMs": 1.539,
+          "ms": 0.042
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 1.581,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 1.583,
+          "ms": 0.092
+        },
+        {
+          "stage": "prompt",
+          "startMs": 1.675,
+          "ms": 0.011
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 1.686,
+          "ms": 0.932
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 2.618,
+          "ms": 0.346
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 2.964,
+          "ms": 21.659
+        },
+        {
+          "stage": "persist",
+          "startMs": 24.623,
+          "ms": 2.448
+        }
+      ]
+    }
+  },
+  "correlationId": null,
+  "engineStatus": "not_called",
+  "abstainReason": "unknown_term",
+  "conflict": null,
+  "warnings": [
+    "unknown_term"
+  ],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

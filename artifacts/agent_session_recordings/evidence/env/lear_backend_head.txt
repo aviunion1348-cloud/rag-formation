@@ -1,0 +1,6 @@
+$ git -C /tmp/lear-rec-20261106T1219Z/lear-backend log -1 --format=%H %cI
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:20:03Z
+
+60cf9abf84088c3a5ec05e8700c52185444e215f 2026-10-01T19:21:30+05:30

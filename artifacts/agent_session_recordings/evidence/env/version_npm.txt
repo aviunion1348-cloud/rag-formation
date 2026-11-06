@@ -1,0 +1,6 @@
+$ npm --version
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+10.9.8

@@ -1,0 +1,335 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/server.py:L2641-L2700`. - [implemented] For the duration of that call the handler swaps `cli.CliAsk` for an ask object that always answers yes, so prompts raised by the permission engine are approved automatically. [1] Evidence: `prash/cli.py:L1254`, `prash/cli.py:L277`. - [implemented] A dry run consults the permission engine but never calls `execute`; a refusal is reported as refused instead of showing a plan. [3]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-0aa7224dfb#c008-2447b1e4",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+      "lines": "56-60",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L704-L722",
+        "prash/server.py:L2641-L2700",
+        "prash/server.py:L2705-L2726"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3764,
+      "excerpt": "Evidence: `prash/server.py:L2641-L2700`.\n\n- [implemented] For the duration of that call the handler swaps `cli.CliAsk` for an ask object that always answers yes, so prompts raised by the permission engine are approved automatically."
+    },
+    {
+      "id": 3,
+      "chunkId": "src-51cdac4a6f#c008-f9566633",
+      "document": "docs/lear_backend/authentication_authorization.md",
+      "heading": "Authentication and authorization > Dry runs",
+      "lines": "43-46",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/cli.py:L1254",
+        "prash/cli.py:L277",
+        "prash/dispatch.py:L177-L209",
+        "tests/test_actions.py:L187-L217",
+        "tests/test_actions.py:L854-L861"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3259,
+      "excerpt": "Dry runs\n\n- [implemented] A dry run consults the permission engine but never calls `execute`; a refusal is reported as refused instead of showing a plan."
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 825,
+  "session": {
+    "id": "rec-s07-20261106T1219Z",
+    "turn": 6,
+    "summaryVersion": "lear-compaction-v1",
+    "compaction": {
+      "version": "lear-compaction-v1",
+      "throughMessageId": 30,
+      "tokensBefore": 942,
+      "tokensAfter": 644,
+      "latencyMs": 0.443,
+      "folded": 2,
+      "changed": true,
+      "skipped": null,
+      "summarySha256": "deddc8a867e6aaeb8e867a3a3f23dabadc0e623847ad27b47d3b885e02bc113f"
+    },
+    "historyMessages": 4
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-0aa7224dfb#c008-2447b1e4",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+        "score": 0.026154,
+        "support": 0.376442,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c009-c1d0c5f6",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash investigate",
+        "score": 0.014706,
+        "support": 0.270833,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c008-f9566633",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Dry runs",
+        "score": 0.028624,
+        "support": 0.325875,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c001-48d3ff30",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Identity and credentials",
+        "score": 0.015385,
+        "support": 0.328793,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-cceb028542#c001-74f530b3",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash run`: one action through the pipeline",
+        "score": 0.032266,
+        "support": 0.338458,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c013-92c13a78",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Desktop API exposure > Chat-initiated actions are pre-approved",
+        "score": 0.026838,
+        "support": 0.326962,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c004-10cc0499",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.014085,
+        "support": 0.270833,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c014-e5b746dc",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Desktop API exposure > Demo incident approvals",
+        "score": 0.015152,
+        "support": 0.291146,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c004-3c0a4ee9",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Permission engine",
+        "score": 0.032522,
+        "support": 0.263661,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c012-67ed963d",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Safe-tier actions > terraform-init",
+        "score": 0.015873,
+        "support": 0.207008,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-0aa7224dfb#c008-2447b1e4",
+      "src-3665f86d99#c009-c1d0c5f6",
+      "src-51cdac4a6f#c008-f9566633",
+      "src-51cdac4a6f#c001-48d3ff30",
+      "src-cceb028542#c001-74f530b3",
+      "src-51cdac4a6f#c013-92c13a78",
+      "src-0aa7224dfb#c004-10cc0499",
+      "src-51cdac4a6f#c014-e5b746dc",
+      "src-51cdac4a6f#c004-3c0a4ee9",
+      "src-8b2cf583b7#c012-67ed963d"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-a641769236#c006-5ed592ba",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Security-relevant observations",
+        "score": 0.014706,
+        "support": 0.273206,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c003-18877ad0",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.013514,
+        "support": 0.251155,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1770,
+    "bestSupport": 0.3764,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.465
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.16
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.065
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.014
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 3.611
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 58.97,
+    "totalMs": 66.59,
+    "streamEvents": 19,
+    "completionTokens": 109,
+    "tokensEstimated": true,
+    "tokensPerSec": 28775.08,
+    "decodeEventsPerSec": 14016.29,
+    "itlMs": {
+      "count": 18,
+      "mean": 0.072,
+      "p50": 0.07,
+      "p85": 0.072,
+      "p99": 0.086,
+      "min": 0.07,
+      "max": 0.086
+    },
+    "stages": {
+      "retrievalMs": 15.315,
+      "generationMs": 3.788,
+      "ttftMs": 2.407,
+      "contextTokens": 1770,
+      "promptTokens": 27,
+      "evidenceTokens": 1770
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 69.166,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.001,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.026
+        },
+        {
+          "stage": "session",
+          "startMs": 0.029,
+          "ms": 0.253
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.282,
+          "ms": 1.86
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 2.142,
+          "ms": 0.036
+        },
+        {
+          "stage": "memory",
+          "startMs": 2.178,
+          "ms": 0.19
+        },
+        {
+          "stage": "prompt",
+          "startMs": 2.368,
+          "ms": 0.031
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 2.399,
+          "ms": 1.049
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 3.448,
+          "ms": 0.327
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.775,
+          "ms": 21.633
+        },
+        {
+          "stage": "engine",
+          "startMs": 25.408,
+          "ms": 37.718
+        },
+        {
+          "stage": "mapping",
+          "startMs": 63.126,
+          "ms": 3.512
+        },
+        {
+          "stage": "persist",
+          "startMs": 66.638,
+          "ms": 2.524
+        }
+      ]
+    }
+  },
+  "correlationId": "q-dea61f02dcba",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

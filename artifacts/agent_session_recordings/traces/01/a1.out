@@ -1,0 +1,324 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/cli.py:L631-L636`. - [inferred] Under environment-scoped mode, a SAFE-tier fix is therefore auto-allowed in any namespace not literally named `production`. [1] Evidence: `tests/test_circuit_breaker.py:L10-L54`. - [implemented] The dispatcher logs refused, skipped, needs-approval, errored and executed outcomes with action id, risk tier, mode, decision, result, environment and whether a grant was used. [5]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-cceb028542#c005-41a6252e",
+      "document": "docs/lear_backend/services_and_workflows.md",
+      "heading": "Services and workflows > `prash fix`: diagnose, then act",
+      "lines": "27-28",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/fix.py:L59-L84",
+        "prash/cli.py:L649-L652",
+        "prash/cli.py:L631-L636"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.5175,
+      "excerpt": "Evidence: `prash/cli.py:L631-L636`.\n\n- [inferred] Under environment-scoped mode, a SAFE-tier fix is therefore auto-allowed in any namespace not literally named `production`."
+    },
+    {
+      "id": 5,
+      "chunkId": "src-51cdac4a6f#c010-89e43766",
+      "document": "docs/lear_backend/authentication_authorization.md",
+      "heading": "Authentication and authorization > Audit trail",
+      "lines": "55-57",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "tests/test_circuit_breaker.py:L10-L54",
+        "prash/dispatch.py:L215-L227",
+        "prash/audit.py:L36-L65",
+        "tests/test_audit.py:L12-L45",
+        "tests/test_actions.py:L818-L824"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3837,
+      "excerpt": "Audit trail\n\n- [implemented] The dispatcher logs refused, skipped, needs-approval, errored and executed outcomes with action id, risk tier, mode, decision, result, environment and whether a grant was used."
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s01-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-cceb028542#c005-41a6252e",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash fix`: diagnose, then act",
+        "score": 0.032787,
+        "support": 0.517472,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c004-3c0a4ee9",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Permission engine",
+        "score": 0.029828,
+        "support": 0.41765,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c006-6a170019",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > How a prompt becomes a grant",
+        "score": 0.026993,
+        "support": 0.379854,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c002-95a9d20b",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash run",
+        "score": 0.015625,
+        "support": 0.291146,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c010-89e43766",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Audit trail",
+        "score": 0.026154,
+        "support": 0.383687,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c012-66d7eda8",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Desktop API exposure > Chat-initiated actions are pre-approved",
+        "score": 0.028191,
+        "support": 0.367158,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c003-c7176a6e",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.031258,
+        "support": 0.339703,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c004-10cc0499",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.014925,
+        "support": 0.33451,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c003-8ef4a176",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Permission engine",
+        "score": 0.015873,
+        "support": 0.345313,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-cceb028542#c005-41a6252e",
+      "src-51cdac4a6f#c004-3c0a4ee9",
+      "src-51cdac4a6f#c006-6a170019",
+      "src-3665f86d99#c002-95a9d20b",
+      "src-51cdac4a6f#c010-89e43766",
+      "src-51cdac4a6f#c012-66d7eda8",
+      "src-ed704ce6ff#c003-c7176a6e",
+      "src-0aa7224dfb#c004-10cc0499",
+      "src-51cdac4a6f#c003-8ef4a176"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-0aa7224dfb#c009-ed0e2da0",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints",
+        "score": 0.026901,
+        "support": 0.313636,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-3665f86d99#c007-c141955c",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash fix",
+        "score": 0.02901,
+        "support": 0.330807,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-00287151c3#c001-e5b313f3",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Action contract (`prash/actions/contract.py`)",
+        "score": 0.025679,
+        "support": 0.304879,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1640,
+    "bestSupport": 0.5175,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.874
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 1.506
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.073
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.015
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 3.019
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 59.43,
+    "totalMs": 67.42,
+    "streamEvents": 18,
+    "completionTokens": 106,
+    "tokensEstimated": true,
+    "tokensPerSec": 31975.87,
+    "decodeEventsPerSec": 13353.65,
+    "itlMs": {
+      "count": 17,
+      "mean": 0.075,
+      "p50": 0.071,
+      "p85": 0.078,
+      "p99": 0.111,
+      "min": 0.07,
+      "max": 0.111
+    },
+    "stages": {
+      "retrievalMs": 15.487,
+      "generationMs": 3.315,
+      "ttftMs": 1.931,
+      "contextTokens": 1640,
+      "promptTokens": 28,
+      "evidenceTokens": 1640
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 70.838,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.006,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.008,
+          "ms": 0.028
+        },
+        {
+          "stage": "session",
+          "startMs": 0.036,
+          "ms": 1.99
+        },
+        {
+          "stage": "compaction",
+          "startMs": 2.025,
+          "ms": 0.022
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 2.048,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 2.05,
+          "ms": 0.082
+        },
+        {
+          "stage": "prompt",
+          "startMs": 2.132,
+          "ms": 0.011
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 2.143,
+          "ms": 0.886
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 3.028,
+          "ms": 0.427
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.455,
+          "ms": 22.308
+        },
+        {
+          "stage": "engine",
+          "startMs": 25.763,
+          "ms": 37.941
+        },
+        {
+          "stage": "mapping",
+          "startMs": 63.704,
+          "ms": 3.769
+        },
+        {
+          "stage": "persist",
+          "startMs": 67.473,
+          "ms": 3.36
+        }
+      ]
+    }
+  },
+  "correlationId": "q-4f56b050c0eb",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

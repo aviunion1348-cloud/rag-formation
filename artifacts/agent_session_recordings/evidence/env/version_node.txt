@@ -1,0 +1,6 @@
+$ node --version
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+v22.22.3

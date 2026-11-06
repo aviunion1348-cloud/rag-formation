@@ -1,0 +1,112 @@
+{
+  "session": {
+    "session_id": "rec-s02-20261106T1219Z",
+    "user_id": "rec-u02",
+    "title": "",
+    "created_at": 1793967621.2008526,
+    "updated_at": 1793967621.762374,
+    "expires_at": 1794572421.762374,
+    "summary": "",
+    "summary_version": "",
+    "summary_through": 0,
+    "expired": false
+  },
+  "messages": [
+    {
+      "message_id": 3,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "user",
+      "content": "What is Lear's audit log?",
+      "status": null,
+      "query_id": null,
+      "tokens": 7,
+      "created_at": 1793967621.26392,
+      "citations": []
+    },
+    {
+      "message_id": 4,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "assistant",
+      "content": "Evidence: `prash/circuit_breaker.py:L40-L100`. - [implemented] The audit log appends one JSON object per line and is never rewritten in place. [1] Module: `prash.audit`. - Docstring summary: Append-only audit log of every action Prash takes. - Classes: `AuditLog` (object) `prash/audit.py:L27-L90`. - Imported by tests: `tests/test_audit.py`, `tests/test_desktop_api.py`. [3] Values are never echoed to the console or audit log — only key names are. - Capabilities: `('get_secret_keys', 'update_secret')`. [4]",
+      "status": "GROUNDED",
+      "query_id": "q-2e7b3d1a9a23",
+      "tokens": 128,
+      "created_at": 1793967621.26528,
+      "citations": [
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit"
+        },
+        {
+          "document": "docs/lear_backend/reference/modules.md",
+          "heading": "Lear backend — module index > prash/audit.py"
+        },
+        {
+          "document": "docs/lear_backend/reference/actions.md",
+          "heading": "Lear backend — action catalogue > Approval-tier actions > edit-secret"
+        }
+      ]
+    },
+    {
+      "message_id": 5,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "user",
+      "content": "Could two processes write the same sequence number to it?",
+      "status": null,
+      "query_id": null,
+      "tokens": 15,
+      "created_at": 1793967621.5490763,
+      "citations": []
+    },
+    {
+      "message_id": 6,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "assistant",
+      "content": "Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [1]",
+      "status": "GROUNDED",
+      "query_id": "q-87e8e39dad5d",
+      "tokens": 96,
+      "created_at": 1793967621.550916,
+      "citations": [
+        {
+          "document": "docs/lear_backend/database.md",
+          "heading": "Persistence and storage > CLI state files"
+        }
+      ]
+    },
+    {
+      "message_id": 7,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "user",
+      "content": "Which file implements it, and where does it write by default?",
+      "status": null,
+      "query_id": null,
+      "tokens": 16,
+      "created_at": 1793967621.7598567,
+      "citations": []
+    },
+    {
+      "message_id": 8,
+      "session_id": "rec-s02-20261106T1219Z",
+      "user_id": "rec-u02",
+      "role": "assistant",
+      "content": "Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [1]",
+      "status": "GROUNDED",
+      "query_id": "q-3111c301eeb2",
+      "tokens": 96,
+      "created_at": 1793967621.7617714,
+      "citations": [
+        {
+          "document": "docs/lear_backend/database.md",
+          "heading": "Persistence and storage > CLI state files"
+        }
+      ]
+    }
+  ],
+  "compactions": []
+}

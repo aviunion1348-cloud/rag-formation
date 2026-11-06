@@ -1,0 +1,339 @@
+{
+  "status": "GROUNDED",
+  "answer": "Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [1] Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [5] Evidence: `prash/permissions.py:L37-L64`. - [implemented] The circuit breaker opens for a resource after `max_actions` executions inside `window_seconds` and keeps its state in a JSON file so the cap survives restarts. [3]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-9e094965d7#c003-f65bcf66",
+      "document": "docs/lear_backend/README.md",
+      "heading": "Lear backend — engineering documentation > How to read these pages",
+      "lines": "15-27",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/server.py:L1-L7",
+        "prash/server.py:L397"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.454,
+      "excerpt": "How to read these pages\n\nEach claim carries one evidence label:\n\nLabel  |  Meaning\n\n--- | ---\n\nimplemented  |  read directly from code at the pinned commit\n\nconfigured  |  a default, environment variable, packaging or launcher setting\n\ntest"
+    },
+    {
+      "id": 3,
+      "chunkId": "src-0a61e382fa#c006-e2594647",
+      "document": "docs/lear_backend/architecture.md",
+      "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+      "lines": "49-53",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/dispatch.py:L177-L209",
+        "prash/permissions.py:L37-L64",
+        "prash/circuit_breaker.py:L40-L100",
+        "prash/audit.py:L27-L65"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.3202,
+      "excerpt": "Policy: permissions, circuit breaker, audit\n\n- [implemented] `decide(mode, risk_tier, environment, grant)` returns ALLOW, PROMPT or REFUSE; the NEVER tier is always refused and the APPROVAL tier needs an explicit per-action grant."
+    },
+    {
+      "id": 5,
+      "chunkId": "src-6b77f48dab#c003-409e673d",
+      "document": "docs/lear_backend/database.md",
+      "heading": "Persistence and storage > CLI state files",
+      "lines": "18-22",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/credentials.py:L28-L36",
+        "prash/credentials.py:L61-L66",
+        "prash/audit.py:L67-L80",
+        "prash/circuit_breaker.py:L68-L71"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.224,
+      "excerpt": "Evidence: `prash/audit.py:L67-L80`.\n\n- [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guarante"
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s07-20261106T1219Z",
+    "turn": 3,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 4
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "Where does Lear write its audit log by default?",
+    "retrievalQuery": "Where does Lear write its audit log by default? (follow-up to: Which environment variable moves the circuit breaker state file, and what is the default path?) 60cf9abf8408 python -m ragformation lear docs verify --source <checkout> max_actions window_seconds",
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-9e094965d7#c003-f65bcf66",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > How to read these pages",
+        "score": 0.032522,
+        "support": 0.453956,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c002-9252158c",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.026172,
+        "support": 0.271759,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0a61e382fa#c006-e2594647",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+        "score": 0.031514,
+        "support": 0.320157,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-b85eb60416#c000-3ceb6d4f",
+        "document": "docs/lear_backend/reference/configuration_env.md",
+        "heading": "Lear backend — environment variables and configuration keys",
+        "score": 0.027921,
+        "support": 0.29112,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-6b77f48dab#c003-409e673d",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > CLI state files",
+        "score": 0.026316,
+        "support": 0.223956,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-cceb028542#c004-2c9bf128",
+        "document": "docs/lear_backend/services_and_workflows.md",
+        "heading": "Services and workflows > `prash fix`: diagnose, then act",
+        "score": 0.015873,
+        "support": 0.201038,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c000-294e81ae",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation",
+        "score": 0.029911,
+        "support": 0.22832,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c007-96a8825c",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Robustness observations",
+        "score": 0.028898,
+        "support": 0.220649,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c004-d30bed55",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.014493,
+        "support": 0.141375,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-9e094965d7#c003-f65bcf66",
+      "src-0aa7224dfb#c002-9252158c",
+      "src-0a61e382fa#c006-e2594647",
+      "src-b85eb60416#c000-3ceb6d4f",
+      "src-6b77f48dab#c003-409e673d",
+      "src-cceb028542#c004-2c9bf128",
+      "src-9e094965d7#c000-294e81ae",
+      "src-a641769236#c007-96a8825c",
+      "src-ed704ce6ff#c004-d30bed55"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-718227fd24#c000-487cad65",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference",
+        "score": 0.024563,
+        "support": 0.24628,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-3665f86d99#c000-697e44a4",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`)",
+        "score": 0.029857,
+        "support": 0.281529,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      },
+      {
+        "chunkId": "src-0a61e382fa#c011-5ad974b4",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Trust model",
+        "score": 0.013699,
+        "support": 0.157313,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1645,
+    "bestSupport": 0.454,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.154
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 2.154
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.061
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.019
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 3.004
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 71.0,
+    "totalMs": 80.95,
+    "streamEvents": 49,
+    "completionTokens": 294,
+    "tokensEstimated": true,
+    "tokensPerSec": 40867.39,
+    "decodeEventsPerSec": 14597.68,
+    "itlMs": {
+      "count": 48,
+      "mean": 0.068,
+      "p50": 0.067,
+      "p85": 0.07,
+      "p99": 0.111,
+      "min": 0.049,
+      "max": 0.111
+    },
+    "stages": {
+      "retrievalMs": 15.392,
+      "generationMs": 7.194,
+      "ttftMs": 3.804,
+      "contextTokens": 1645,
+      "promptTokens": 40,
+      "evidenceTokens": 1645
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 84.486,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.025
+        },
+        {
+          "stage": "session",
+          "startMs": 0.028,
+          "ms": 0.175
+        },
+        {
+          "stage": "compaction",
+          "startMs": 0.203,
+          "ms": 0.02
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 0.223,
+          "ms": 0.202
+        },
+        {
+          "stage": "memory",
+          "startMs": 0.425,
+          "ms": 0.076
+        },
+        {
+          "stage": "prompt",
+          "startMs": 0.501,
+          "ms": 0.01
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 0.511,
+          "ms": 0.842
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 1.353,
+          "ms": 0.347
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 1.7,
+          "ms": 21.764
+        },
+        {
+          "stage": "engine",
+          "startMs": 23.464,
+          "ms": 54.005
+        },
+        {
+          "stage": "mapping",
+          "startMs": 77.469,
+          "ms": 3.544
+        },
+        {
+          "stage": "persist",
+          "startMs": 81.013,
+          "ms": 3.467
+        }
+      ]
+    }
+  },
+  "correlationId": "q-b3f56da8e145",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

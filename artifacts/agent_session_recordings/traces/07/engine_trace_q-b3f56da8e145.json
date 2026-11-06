@@ -1,0 +1,212 @@
+{
+  "query_id": "q-b3f56da8e145",
+  "question": "Where does Lear write its audit log by default? (follow-up to: Which environment variable moves the circuit breaker state file, and what is the default path?)",
+  "status": "answered",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 53.467,
+  "retrieval_ms": 15.392,
+  "generation_ms": 7.194,
+  "ttft_ms": 3.804,
+  "itl_ms": 0.069,
+  "prompt_tokens": 40,
+  "completion_tokens": 294,
+  "tokens_estimated": 1,
+  "citations_total": 3,
+  "citations_valid": 3,
+  "abstain_reason": null,
+  "created_at": "2026-11-06T12:20:25Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 158,
+        "retrievalQueryChars": 258,
+        "retrievalQueryRewritten": true
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 1.262,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 37.471,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.454
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 10.154
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 2.154
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.061
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.019
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 3.004
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 1.2,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 0.053,
+      "detail": {
+        "selected": 9,
+        "tokens": 1645,
+        "excluded": 3
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.2,
+        "topP": 0.9,
+        "evidenceTokens": 1645
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 7.237,
+      "detail": {
+        "provider": "extractive",
+        "chars": 1173,
+        "ttftMs": 3.804,
+        "itlMs": 0.069,
+        "finishReason": "stop"
+      }
+    },
+    {
+      "stage": "citation_validation",
+      "status": "started",
+      "at": "2026-11-06T12:20:25Z"
+    },
+    {
+      "stage": "citation_validation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "durationMs": 0.666,
+      "detail": {
+        "cited": 3,
+        "invalid": 0,
+        "uncited": false
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:25Z",
+      "detail": {
+        "status": "answered"
+      }
+    }
+  ]
+}

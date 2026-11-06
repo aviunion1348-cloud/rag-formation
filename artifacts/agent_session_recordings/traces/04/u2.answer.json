@@ -1,0 +1,287 @@
+{
+  "status": "ABSTAINED",
+  "answer": "I could not find enough evidence in the indexed sources to answer this. The best passage reached only 0.16 retrieval support, below the 0.21 threshold, so no answer was generated.",
+  "citations": [],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 472,
+  "session": {
+    "id": "rec-s04b-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [],
+  "retrieval": {
+    "query": "How much does a Lear enterprise licence cost per seat?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-de4b0bbf6e#c032-e5413820",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/admin_panel.py",
+        "score": 0.015873,
+        "support": 0.156033,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c003-f65bcf66",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > How to read these pages",
+        "score": 0.029877,
+        "support": 0.146137,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-00287151c3#c008-11326dad",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Diagnosis schema (`prash/brain/schemas.py`)",
+        "score": 0.028665,
+        "support": 0.148566,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-6b77f48dab#c000-997c75e9",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage",
+        "score": 0.015385,
+        "support": 0.149731,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-718227fd24#c018-bc6aa200",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference > Routes under `/api/email`",
+        "score": 0.014286,
+        "support": 0.146,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a641769236#c001-92c382d9",
+        "document": "docs/lear_backend/unknowns_and_gaps.md",
+        "heading": "Unknowns and gaps > Not verifiable from this environment",
+        "score": 0.014925,
+        "support": 0.147548,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c010-e923f6ec",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash stats",
+        "score": 0.031754,
+        "support": 0.087527,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0a61e382fa#c001-c9611387",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Component map",
+        "score": 0.015625,
+        "support": 0.085964,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-e3a26eb8ea#c007-28bf0bd7",
+        "document": "docs/lear_backend/reference/connectors.md",
+        "heading": "Lear backend — connector reference > gitlab connector",
+        "score": 0.013699,
+        "support": 0.073796,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-51cdac4a6f#c009-c0c57353",
+        "document": "docs/lear_backend/authentication_authorization.md",
+        "heading": "Authentication and authorization > Circuit breaker",
+        "score": 0.013699,
+        "support": 0.069643,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-a8ce8fa5f1#c006-e2515ca5",
+        "document": "docs/lear_backend/integrations.md",
+        "heading": "Integrations > Model providers",
+        "score": 0.016393,
+        "support": 0.095128,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-00287151c3#c005-04153316",
+        "document": "docs/lear_backend/domain_model.md",
+        "heading": "Domain model > Connector types (`prash/connectors/base.py`)",
+        "score": 0.014706,
+        "support": 0.076516,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-de4b0bbf6e#c032-e5413820",
+      "src-9e094965d7#c003-f65bcf66",
+      "src-00287151c3#c008-11326dad",
+      "src-6b77f48dab#c000-997c75e9",
+      "src-718227fd24#c018-bc6aa200",
+      "src-a641769236#c001-92c382d9",
+      "src-3665f86d99#c010-e923f6ec",
+      "src-0a61e382fa#c001-c9611387",
+      "src-e3a26eb8ea#c007-28bf0bd7",
+      "src-51cdac4a6f#c009-c0c57353",
+      "src-a8ce8fa5f1#c006-e2515ca5",
+      "src-00287151c3#c005-04153316"
+    ],
+    "excluded": [],
+    "quarantined": [],
+    "contextTokens": 1534,
+    "bestSupport": 0.156,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.292
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 0.99
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.075
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.014
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.866
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": null,
+    "totalMs": 57.48,
+    "streamEvents": 0,
+    "completionTokens": 0,
+    "tokensEstimated": false,
+    "tokensPerSec": null,
+    "decodeEventsPerSec": null,
+    "itlMs": {
+      "count": 0,
+      "mean": null,
+      "p50": null,
+      "p85": null,
+      "p99": null,
+      "min": null,
+      "max": null
+    },
+    "stages": {
+      "retrievalMs": 14.237,
+      "contextTokens": 1534
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 60.308,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.001
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.028
+        },
+        {
+          "stage": "session",
+          "startMs": 0.031,
+          "ms": 1.991
+        },
+        {
+          "stage": "compaction",
+          "startMs": 2.022,
+          "ms": 0.023
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 2.045,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 2.047,
+          "ms": 0.081
+        },
+        {
+          "stage": "prompt",
+          "startMs": 2.128,
+          "ms": 0.011
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 2.139,
+          "ms": 0.964
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 3.103,
+          "ms": 0.417
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.52,
+          "ms": 21.879
+        },
+        {
+          "stage": "engine",
+          "startMs": 25.399,
+          "ms": 28.632
+        },
+        {
+          "stage": "mapping",
+          "startMs": 54.031,
+          "ms": 3.466
+        },
+        {
+          "stage": "persist",
+          "startMs": 57.498,
+          "ms": 2.805
+        }
+      ]
+    }
+  },
+  "correlationId": "q-7925ae11a4fb",
+  "engineStatus": "abstained",
+  "abstainReason": "insufficient_support",
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

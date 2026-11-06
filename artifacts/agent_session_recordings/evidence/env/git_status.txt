@@ -1,0 +1,8 @@
+$ git status --porcelain=v1 --untracked-files=all
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+?? artifacts/agent_session_recordings/evidence/env/git_branch.txt
+?? artifacts/agent_session_recordings/evidence/env/git_head.txt
+?? artifacts/agent_session_recordings/evidence/env/git_toplevel.txt

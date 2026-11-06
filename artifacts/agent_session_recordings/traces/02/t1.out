@@ -1,0 +1,340 @@
+{
+  "status": "GROUNDED",
+  "answer": "Evidence: `prash/circuit_breaker.py:L40-L100`. - [implemented] The audit log appends one JSON object per line and is never rewritten in place. [1] Module: `prash.audit`. - Docstring summary: Append-only audit log of every action Prash takes. - Classes: `AuditLog` (object) `prash/audit.py:L27-L90`. - Imported by tests: `tests/test_audit.py`, `tests/test_desktop_api.py`. [3] Values are never echoed to the console or audit log — only key names are. - Capabilities: `('get_secret_keys', 'update_secret')`. [4]",
+  "citations": [
+    {
+      "id": 1,
+      "chunkId": "src-0a61e382fa#c006-e2594647",
+      "document": "docs/lear_backend/architecture.md",
+      "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+      "lines": "49-53",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/dispatch.py:L177-L209",
+        "prash/permissions.py:L37-L64",
+        "prash/circuit_breaker.py:L40-L100",
+        "prash/audit.py:L27-L65"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.5143,
+      "excerpt": "Evidence: `prash/circuit_breaker.py:L40-L100`.\n\n- [implemented] The audit log appends one JSON object per line and is never rewritten in place."
+    },
+    {
+      "id": 3,
+      "chunkId": "src-de4b0bbf6e#c033-f46ad0a9",
+      "document": "docs/lear_backend/reference/modules.md",
+      "heading": "Lear backend — module index > prash/audit.py",
+      "lines": "219-224",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/audit.py:L27-L90"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4945,
+      "excerpt": "Module: `prash.audit`.\n\n- Docstring summary: Append-only audit log of every action Prash takes.\n\n- Classes: `AuditLog` (object) `prash/audit.py:L27-L90`.\n\n- Imported by tests: `tests/test_audit.py`, `tests/test_desktop_api.py`."
+    },
+    {
+      "id": 4,
+      "chunkId": "src-8b2cf583b7#c019-65aa62d1",
+      "document": "docs/lear_backend/reference/actions.md",
+      "heading": "Lear backend — action catalogue > Approval-tier actions > edit-secret",
+      "lines": "163-169",
+      "linePrecision": "lines",
+      "sourceRefs": [
+        "prash/actions/edit_config.py:L118-L157",
+        "prash/actions/edit_config.py:L120-L127"
+      ],
+      "commit": "60cf9abf8408",
+      "support": 0.4858,
+      "excerpt": "Values are never echoed to the console or audit log — only key names are.\n\n- Capabilities: `('get_secret_keys', 'update_secret')`."
+    }
+  ],
+  "qualifying": false,
+  "backend": "baseline",
+  "models": {
+    "generation": {
+      "configured": "extractive (baseline)",
+      "used": "extractive:extractive-synthesis-v1",
+      "fallbackUsed": false
+    },
+    "embedding": {
+      "provider": "hashing",
+      "model": "hashing-lexical-v1",
+      "dimension": 512,
+      "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    }
+  },
+  "promptVersion": "lear-assistant-v1",
+  "promptTokens": 561,
+  "session": {
+    "id": "rec-s02-20261106T1219Z",
+    "turn": 1,
+    "summaryVersion": null,
+    "compaction": null,
+    "historyMessages": 0
+  },
+  "memoryUsed": [
+    "m-c7104453b800"
+  ],
+  "retrieval": {
+    "query": "What is Lear's audit log?",
+    "retrievalQuery": null,
+    "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+    "candidates": [
+      {
+        "chunkId": "src-0a61e382fa#c006-e2594647",
+        "document": "docs/lear_backend/architecture.md",
+        "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit",
+        "score": 0.032266,
+        "support": 0.514277,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-718227fd24#c003-e2aa1ebb",
+        "document": "docs/lear_backend/reference/http_api.md",
+        "heading": "Lear backend — desktop HTTP/WebSocket API reference > Routes under `/api/activity`",
+        "score": 0.029572,
+        "support": 0.504612,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-de4b0bbf6e#c033-f46ad0a9",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/audit.py",
+        "score": 0.030769,
+        "support": 0.494519,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-8b2cf583b7#c019-65aa62d1",
+        "document": "docs/lear_backend/reference/actions.md",
+        "heading": "Lear backend — action catalogue > Approval-tier actions > edit-secret",
+        "score": 0.026993,
+        "support": 0.485758,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-1e7c9f8a18#c008-9fbd2027",
+        "document": "docs/lear_backend/testing.md",
+        "heading": "Testing > Behaviour that is well covered",
+        "score": 0.029631,
+        "support": 0.486305,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-9e094965d7#c001-5c378822",
+        "document": "docs/lear_backend/README.md",
+        "heading": "Lear backend — engineering documentation > What Lear is",
+        "score": 0.030282,
+        "support": 0.483422,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-ed704ce6ff#c004-d30bed55",
+        "document": "docs/lear_backend/configuration.md",
+        "heading": "Configuration > Behaviour switches",
+        "score": 0.015625,
+        "support": 0.40625,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-6b77f48dab#c003-409e673d",
+        "document": "docs/lear_backend/database.md",
+        "heading": "Persistence and storage > CLI state files",
+        "score": 0.031754,
+        "support": 0.413938,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-0aa7224dfb#c002-9252158c",
+        "document": "docs/lear_backend/api_reference.md",
+        "heading": "API reference > The `prash` CLI",
+        "score": 0.014493,
+        "support": 0.40625,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c000-697e44a4",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`)",
+        "score": 0.013514,
+        "support": 0.325,
+        "channel": "reranked",
+        "reason": null
+      },
+      {
+        "chunkId": "src-3665f86d99#c013-f935944b",
+        "document": "docs/lear_backend/reference/cli.md",
+        "heading": "Lear backend — CLI reference (`prash`) > prash audit",
+        "score": 0.014706,
+        "support": 0.24375,
+        "channel": "reranked",
+        "reason": null
+      }
+    ],
+    "selected": [
+      "src-0a61e382fa#c006-e2594647",
+      "src-718227fd24#c003-e2aa1ebb",
+      "src-de4b0bbf6e#c033-f46ad0a9",
+      "src-8b2cf583b7#c019-65aa62d1",
+      "src-1e7c9f8a18#c008-9fbd2027",
+      "src-9e094965d7#c001-5c378822",
+      "src-ed704ce6ff#c004-d30bed55",
+      "src-6b77f48dab#c003-409e673d",
+      "src-0aa7224dfb#c002-9252158c",
+      "src-3665f86d99#c000-697e44a4",
+      "src-3665f86d99#c013-f935944b"
+    ],
+    "excluded": [
+      {
+        "chunkId": "src-de4b0bbf6e#c039-508e0c57",
+        "document": "docs/lear_backend/reference/modules.md",
+        "heading": "Lear backend — module index > prash/brain/gitlab_log_fetcher.py",
+        "score": 0.016129,
+        "support": 0.264168,
+        "channel": "reranked",
+        "reason": "context_token_budget"
+      }
+    ],
+    "quarantined": [],
+    "contextTokens": 1765,
+    "bestSupport": 0.5143,
+    "stages": {
+      "retrieval.semantic": {
+        "status": "completed",
+        "ms": 10.769
+      },
+      "retrieval.lexical": {
+        "status": "completed",
+        "ms": 0.864
+      },
+      "retrieval.fusion": {
+        "status": "completed",
+        "ms": 0.069
+      },
+      "retrieval.rerank": {
+        "status": "completed",
+        "ms": 0.013
+      },
+      "retrieval.mmr": {
+        "status": "completed",
+        "ms": 2.82
+      }
+    },
+    "mode": "hybrid"
+  },
+  "timings": {
+    "ttftMs": 53.93,
+    "totalMs": 63.07,
+    "streamEvents": 22,
+    "completionTokens": 128,
+    "tokensEstimated": true,
+    "tokensPerSec": 34390.11,
+    "decodeEventsPerSec": 8206.2,
+    "itlMs": {
+      "count": 21,
+      "mean": 0.122,
+      "p50": 0.072,
+      "p85": 0.097,
+      "p99": 0.898,
+      "min": 0.07,
+      "max": 0.898
+    },
+    "stages": {
+      "retrievalMs": 14.535,
+      "generationMs": 3.722,
+      "ttftMs": 1.022,
+      "contextTokens": 1765,
+      "promptTokens": 7,
+      "evidenceTokens": 1765
+    },
+    "lifecycle": {
+      "schema": "lear-lifecycle-v1",
+      "clock": "time.perf_counter (monotonic), ms since ask start",
+      "totalMs": 65.508,
+      "stages": [
+        {
+          "stage": "validate",
+          "startMs": 0.002,
+          "ms": 0.002
+        },
+        {
+          "stage": "admission",
+          "startMs": 0.003,
+          "ms": 0.028
+        },
+        {
+          "stage": "session",
+          "startMs": 0.031,
+          "ms": 1.684
+        },
+        {
+          "stage": "compaction",
+          "startMs": 1.716,
+          "ms": 0.022
+        },
+        {
+          "stage": "rewrite",
+          "startMs": 1.738,
+          "ms": 0.002
+        },
+        {
+          "stage": "memory",
+          "startMs": 1.74,
+          "ms": 0.124
+        },
+        {
+          "stage": "prompt",
+          "startMs": 1.864,
+          "ms": 0.016
+        },
+        {
+          "stage": "engine.open",
+          "startMs": 1.88,
+          "ms": 0.886
+        },
+        {
+          "stage": "fingerprint",
+          "startMs": 2.767,
+          "ms": 0.343
+        },
+        {
+          "stage": "scopeGuard",
+          "startMs": 3.109,
+          "ms": 22.146
+        },
+        {
+          "stage": "engine",
+          "startMs": 25.255,
+          "ms": 34.36
+        },
+        {
+          "stage": "mapping",
+          "startMs": 59.616,
+          "ms": 3.51
+        },
+        {
+          "stage": "persist",
+          "startMs": 63.126,
+          "ms": 2.378
+        }
+      ]
+    }
+  },
+  "correlationId": "q-2e7b3d1a9a23",
+  "engineStatus": "answered",
+  "abstainReason": null,
+  "conflict": null,
+  "warnings": [],
+  "sourceCommit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+  "error": null
+}

@@ -1,0 +1,61 @@
+{
+  "run": "/tmp/lear-rec-20261106T1219Z/eval/rec-s09/run.json",
+  "baseline": "evals/lear/results/round-3/run.json",
+  "casesNew": 42,
+  "casesBaseline": 42,
+  "common": 42,
+  "onlyNew": [],
+  "onlyBaseline": [],
+  "identical": {
+    "status": 42,
+    "correct": 42,
+    "correctStrict": 0,
+    "answerText": 42,
+    "citations": 42
+  },
+  "differences": [],
+  "summaryNew": {
+    "correct": 0.5476,
+    "retrieval": {
+      "cases": 37,
+      "hitAtK": 0.973,
+      "mrr": 0.6257,
+      "docRecall": 0.8468,
+      "contextPrecision": 0.2903
+    },
+    "proxyScores": {
+      "citation_quality": 1.91,
+      "groundedness": 3.8974,
+      "answer_relevance": 2.4,
+      "context_precision": 1.1608,
+      "context_recall": 3.3876
+    },
+    "statusCounts": {
+      "GROUNDED": 38,
+      "ABSTAINED": 4
+    }
+  },
+  "summaryBaseline": {
+    "correct": 0.5476,
+    "retrieval": {
+      "cases": 37,
+      "hitAtK": 0.973,
+      "mrr": 0.6257,
+      "docRecall": 0.8468,
+      "contextPrecision": 0.2903
+    },
+    "proxyScores": {
+      "citation_quality": 1.91,
+      "groundedness": 3.8974,
+      "answer_relevance": 2.4,
+      "context_precision": 1.1608,
+      "context_recall": 3.3876
+    },
+    "statusCounts": {
+      "GROUNDED": 38,
+      "ABSTAINED": 4
+    }
+  },
+  "baselineFinishedAt": "2026-11-05T18:55:32Z",
+  "newFinishedAt": "2026-11-06T12:20:29Z"
+}

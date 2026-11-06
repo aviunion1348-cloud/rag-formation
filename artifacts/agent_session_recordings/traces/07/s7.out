@@ -1,0 +1,352 @@
+{
+  "session": {
+    "session_id": "rec-s07-20261106T1219Z",
+    "user_id": "rec-u07",
+    "title": "",
+    "created_at": 1793967625.0790203,
+    "updated_at": 1793967626.7881024,
+    "expires_at": 1794572426.7881024,
+    "summary": "# Conversation summary (lear-compaction-v1)\n## exchanges\n- Q: Does `prash run --dry-run` execute the action? → [GROUNDED] Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then r… (cited: docs/lear_backend/api_reference.md)\n## identifiers\n- prash/cli.py:L631-L636\n- production\n- tests/test_circuit_breaker.py:L10-L54\n- path:Lstart-Lend\n- 60cf9abf8408\n- python -m ragformation lear docs verify --source <checkout>\n- prash/permissions.py:L37-L64\n- max_actions\n- window_seconds\n- prash/audit.py:L67-L80\n- seq\n- write_text\n- prash run\n- python -m ragformation lear\n- prash-v2\n- prash\n- prash.cli:main\n- run\n- fix\n- investigate\n- stats\n- logs\n- actions\n- config\n- circuit\n- watch\n- notify\n- tui\n- repl\n- setup\n- prash run --dry-run\n- prash/cli.py:L1252\n- prash/cli.py:L273\n- --dry-run\n- --grant\n- --noninteractive\n- NEEDS_INPUT\n## constraints\n- What exit code does `prash run` return when the action needs a secret that was not supplied?",
+    "summary_version": "lear-compaction-v1",
+    "summary_through": 34,
+    "expired": false
+  },
+  "messages": [
+    {
+      "message_id": 25,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "In environment-scoped mode, what decision does a SAFE-tier action get when the target environment is production?",
+      "status": null,
+      "query_id": null,
+      "tokens": 28,
+      "created_at": 1793967625.14578,
+      "citations": []
+    },
+    {
+      "message_id": 26,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/cli.py:L631-L636`. - [inferred] Under environment-scoped mode, a SAFE-tier fix is therefore auto-allowed in any namespace not literally named `production`. [1] Evidence: `tests/test_circuit_breaker.py:L10-L54`. - [implemented] The dispatcher logs refused, skipped, needs-approval, errored and executed outcomes with action id, risk tier, mode, decision, result, environment and whether a grant was used. [5]",
+      "status": "GROUNDED",
+      "query_id": "q-f954290f0552",
+      "tokens": 106,
+      "created_at": 1793967625.147214,
+      "citations": [
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash fix`: diagnose, then act"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "heading": "Authentication and authorization > Audit trail"
+        }
+      ]
+    },
+    {
+      "message_id": 27,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Which environment variable moves the circuit breaker state file, and what is the default path?",
+      "status": null,
+      "query_id": null,
+      "tokens": 24,
+      "created_at": 1793967625.3370397,
+      "citations": []
+    },
+    {
+      "message_id": 28,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [2] Evidence: `prash/permissions.py:L37-L64`. - [implemented] The circuit breaker opens for a resource after `max_actions` executions inside `window_seconds` and keeps its state in a JSON file so the cap survives restarts. [1]",
+      "status": "GROUNDED",
+      "query_id": "q-e71a7ff483e6",
+      "tokens": 196,
+      "created_at": 1793967625.3388913,
+      "citations": [
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit"
+        },
+        {
+          "document": "docs/lear_backend/README.md",
+          "heading": "Lear backend — engineering documentation > How to read these pages"
+        }
+      ]
+    },
+    {
+      "message_id": 29,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Where does Lear write its audit log by default?",
+      "status": null,
+      "query_id": null,
+      "tokens": 12,
+      "created_at": 1793967625.5486028,
+      "citations": []
+    },
+    {
+      "message_id": 30,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [1] Evidence: `prash/audit.py:L67-L80`. - [inferred] Because the sequence is read and then appended without a lock, two processes appending at the same moment can write the same `seq`; the log stays append-only but the sequence is not guaranteed unique under concurrency. - [implemented] The circuit-breaker state is written with a plain `write_text` (no temporary file and rename). [5] Evidence: `prash/permissions.py:L37-L64`. - [implemented] The circuit breaker opens for a resource after `max_actions` executions inside `window_seconds` and keeps its state in a JSON file so the cap survives restarts. [3]",
+      "status": "GROUNDED",
+      "query_id": "q-b3f56da8e145",
+      "tokens": 292,
+      "created_at": 1793967625.5506892,
+      "citations": [
+        {
+          "document": "docs/lear_backend/README.md",
+          "heading": "Lear backend — engineering documentation > How to read these pages"
+        },
+        {
+          "document": "docs/lear_backend/architecture.md",
+          "heading": "Architecture > Layers > Policy: permissions, circuit breaker, audit"
+        },
+        {
+          "document": "docs/lear_backend/database.md",
+          "heading": "Persistence and storage > CLI state files"
+        }
+      ]
+    },
+    {
+      "message_id": 31,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "What exit code does `prash run` return when the action needs a secret that was not supplied?",
+      "status": null,
+      "query_id": null,
+      "tokens": 23,
+      "created_at": 1793967625.7613325,
+      "citations": []
+    },
+    {
+      "message_id": 32,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Each claim carries one evidence label: implemented | read directly from code at the pinned commit configured | a default, environment variable, packaging or launcher setting tested | exercised by a test in the Lear repository (and, where stated, run on 2026-11-05) inferred | a conclusion drawn from reading the code; no single line proves it Evidence is written `path:Lstart-Lend`, relative to the Lear repository root, at commit `60cf9abf8408`. `python -m ragformation lear docs verify --source <checkout>` re-checks every reference against that commit. [1] They are the knowledge base of the `python -m ragformation lear` assistant, so every factual statement points at the code that supports it. - [implemented] Lear is packaged as the Python distribution `prash-v2` version 0.2.0, requires Python 3.10 or newer, and installs one console script, `prash`, mapped to `prash.cli:main`. [3] Subcommands (14): `run`, `fix`, `investigate`, `stats`, `logs`, `actions`, `audit`, `config`, `circuit`, `watch`, `notify`, `tui`, `repl`, `setup`. [4]",
+      "status": "GROUNDED",
+      "query_id": "q-6ad52b07fded",
+      "tokens": 261,
+      "created_at": 1793967625.763424,
+      "citations": [
+        {
+          "document": "docs/lear_backend/README.md",
+          "heading": "Lear backend — engineering documentation > How to read these pages"
+        },
+        {
+          "document": "docs/lear_backend/README.md",
+          "heading": "Lear backend — engineering documentation > What Lear is"
+        },
+        {
+          "document": "docs/lear_backend/reference/cli.md",
+          "heading": "Lear backend — CLI reference (`prash`)"
+        }
+      ]
+    },
+    {
+      "message_id": 33,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Does `prash run --dry-run` execute the action?",
+      "status": null,
+      "query_id": null,
+      "tokens": 12,
+      "created_at": 1793967625.9595873,
+      "citations": []
+    },
+    {
+      "message_id": 34,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/cli.py:L1252`, `prash/cli.py:L273`. - [implemented] `--dry-run` plans without touching infrastructure, `--grant` pre-grants a single action, and `--noninteractive` never prompts (a missing secret then returns NEEDS_INPUT). [4]",
+      "status": "GROUNDED",
+      "query_id": "q-0a39f90321ee",
+      "tokens": 61,
+      "created_at": 1793967625.961405,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The `prash` CLI"
+        }
+      ]
+    },
+    {
+      "message_id": 35,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?",
+      "status": null,
+      "query_id": null,
+      "tokens": 27,
+      "created_at": 1793967626.163668,
+      "citations": []
+    },
+    {
+      "message_id": 36,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/server.py:L2641-L2700`. - [implemented] For the duration of that call the handler swaps `cli.CliAsk` for an ask object that always answers yes, so prompts raised by the permission engine are approved automatically. [1] Evidence: `prash/cli.py:L1254`, `prash/cli.py:L277`. - [implemented] A dry run consults the permission engine but never calls `execute`; a refusal is reported as refused instead of showing a plan. [3]",
+      "status": "GROUNDED",
+      "query_id": "q-dea61f02dcba",
+      "tokens": 109,
+      "created_at": 1793967626.1651292,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints"
+        },
+        {
+          "document": "docs/lear_backend/authentication_authorization.md",
+          "heading": "Authentication and authorization > Dry runs"
+        }
+      ]
+    },
+    {
+      "message_id": 37,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Which subcommands does the prash CLI provide?",
+      "status": null,
+      "query_id": null,
+      "tokens": 12,
+      "created_at": 1793967626.375882,
+      "citations": []
+    },
+    {
+      "message_id": 38,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/server.py:L704-L722`. - [implemented] `POST /api/chat/execute` (`execute_chat_action`) turns a JSON `command` list (or an action id) into CLI arguments, prefixing `run` when the first word is not a known subcommand, and re-enters `cli.build_parser()` in the same process. [1] Reversible: True. - Class: `TerraformInitAction` at `prash/actions/terraform_init.py:L16-L78`; spec at `prash/actions/terraform_init.py:L17-L23`. - Registered in the CLI dispatcher: yes. - Contract methods defined in the class: execute, plan, verify. - Summary (from the spec): Run terraform init to download modules and providers. - Capabilities: `('init',)`. [4]",
+      "status": "GROUNDED",
+      "query_id": "q-1ccecd66e3b7",
+      "tokens": 165,
+      "created_at": 1793967626.3777385,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The desktop HTTP/WebSocket API > Selected endpoints"
+        },
+        {
+          "document": "docs/lear_backend/reference/actions.md",
+          "heading": "Lear backend — action catalogue > Safe-tier actions > terraform-init"
+        }
+      ]
+    },
+    {
+      "message_id": 39,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Which permission mode does `prash run` use when --mode is not given?",
+      "status": null,
+      "query_id": null,
+      "tokens": 17,
+      "created_at": 1793967626.5766675,
+      "citations": []
+    },
+    {
+      "message_id": 40,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/cli.py:L348-L350`. - 2. [implemented] Resolve the permission mode from `--mode`, else `PRASH_PERMISSION_MODE`, else `ask`, and build a dispatcher for it. [1] Common options on the acting subcommands: - [implemented] `--mode` selects the permission mode (read-only, ask, auto-safe, environment-scoped, bypass); when omitted, `run` and `fix` read `PRASH_PERMISSION_MODE` from the credentials file and fall back to `ask`. [3]",
+      "status": "GROUNDED",
+      "query_id": "q-c6e759b1f1fd",
+      "tokens": 110,
+      "created_at": 1793967626.5785549,
+      "citations": [
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash run`: one action through the pipeline"
+        },
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The `prash` CLI"
+        }
+      ]
+    },
+    {
+      "message_id": 41,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "user",
+      "content": "Going back to the state file from my second question: what happens if that file is corrupted?",
+      "status": null,
+      "query_id": null,
+      "tokens": 24,
+      "created_at": 1793967626.785702,
+      "citations": []
+    },
+    {
+      "message_id": 42,
+      "session_id": "rec-s07-20261106T1219Z",
+      "user_id": "rec-u07",
+      "role": "assistant",
+      "content": "Evidence: `prash/cli.py:L348-L350`. - 2. [implemented] Resolve the permission mode from `--mode`, else `PRASH_PERMISSION_MODE`, else `ask`, and build a dispatcher for it. [3] Common options on the acting subcommands: - [implemented] `--mode` selects the permission mode (read-only, ask, auto-safe, environment-scoped, bypass); when omitted, `run` and `fix` read `PRASH_PERMISSION_MODE` from the credentials file and fall back to `ask`. [1]",
+      "status": "GROUNDED",
+      "query_id": "q-a1dc5c6aca7b",
+      "tokens": 110,
+      "created_at": 1793967626.7876534,
+      "citations": [
+        {
+          "document": "docs/lear_backend/api_reference.md",
+          "heading": "API reference > The `prash` CLI"
+        },
+        {
+          "document": "docs/lear_backend/services_and_workflows.md",
+          "heading": "Services and workflows > `prash run`: one action through the pipeline"
+        }
+      ]
+    }
+  ],
+  "compactions": [
+    {
+      "compaction_id": 1,
+      "session_id": "rec-s07-20261106T1219Z",
+      "version": "lear-compaction-v1",
+      "through_message_id": 28,
+      "tokens_before": 942,
+      "tokens_after": 869,
+      "latency_ms": 0.521,
+      "summary_sha256": "09b62a54cf3b125ff6f0f740a2a1799097361f7e66a11edeabc936816e641f44",
+      "created_at": 1793967625.88741
+    },
+    {
+      "compaction_id": 2,
+      "session_id": "rec-s07-20261106T1219Z",
+      "version": "lear-compaction-v1",
+      "through_message_id": 30,
+      "tokens_before": 942,
+      "tokens_after": 644,
+      "latency_ms": 0.443,
+      "summary_sha256": "deddc8a867e6aaeb8e867a3a3f23dabadc0e623847ad27b47d3b885e02bc113f",
+      "created_at": 1793967626.0977883
+    },
+    {
+      "compaction_id": 3,
+      "session_id": "rec-s07-20261106T1219Z",
+      "version": "lear-compaction-v1",
+      "through_message_id": 34,
+      "tokens_before": 957,
+      "tokens_after": 587,
+      "latency_ms": 1.176,
+      "summary_sha256": "6296151b1a7bb2cd38420789130d1642fbaaca061aef324561ea27c0a0cf31f0",
+      "created_at": 1793967626.5122
+    }
+  ]
+}

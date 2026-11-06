@@ -1,0 +1,212 @@
+{
+  "query_id": "q-1ccecd66e3b7",
+  "question": "Which subcommands does the prash CLI provide? (follow-up to: What happens when the permission engine returns PROMPT but `prash run` was started with --noninteractive?)",
+  "status": "answered",
+  "mode": "hybrid",
+  "provider": "extractive",
+  "model": "extractive-synthesis-v1",
+  "top_k": 6,
+  "temperature": 0.2,
+  "latency_ms": 43.154,
+  "retrieval_ms": 15.15,
+  "generation_ms": 3.894,
+  "ttft_ms": 1.865,
+  "itl_ms": 0.071,
+  "prompt_tokens": 42,
+  "completion_tokens": 165,
+  "tokens_estimated": 1,
+  "citations_total": 2,
+  "citations_valid": 2,
+  "abstain_reason": null,
+  "created_at": "2026-11-06T12:20:26Z",
+  "tenant_id": "local",
+  "principal": "local-operator",
+  "trace": [
+    {
+      "stage": "query_received",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "topK": 6,
+        "mode": "hybrid",
+        "questionChars": 167,
+        "retrievalQueryChars": 193,
+        "retrievalQueryRewritten": true
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      }
+    },
+    {
+      "stage": "query_embedding",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 1.295,
+      "detail": {
+        "dimension": 512
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "mode": "hybrid"
+      }
+    },
+    {
+      "stage": "retrieval",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 30.321,
+      "detail": {
+        "semanticCandidates": 24,
+        "lexicalCandidates": 24,
+        "fused": 24,
+        "reranked": true,
+        "bestSupport": 0.2963
+      }
+    },
+    {
+      "stage": "retrieval.semantic",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "candidates": 24,
+        "provider": "hashing",
+        "ms": 10.287
+      }
+    },
+    {
+      "stage": "retrieval.lexical",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "candidates": 24,
+        "ms": 1.872
+      }
+    },
+    {
+      "stage": "retrieval.fusion",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "fused": 24,
+        "rrfK": 60,
+        "ms": 0.07
+      }
+    },
+    {
+      "stage": "retrieval.rerank",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "reranked": true,
+        "strategy": "heuristic",
+        "ms": 0.015
+      }
+    },
+    {
+      "stage": "retrieval.mmr",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "candidates": 12,
+        "lambda": 0.72,
+        "ms": 2.906
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "candidates": 12
+      }
+    },
+    {
+      "stage": "guardrail_scan",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 1.215,
+      "detail": {
+        "quarantined": 0,
+        "usable": 12
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "budgetTokens": 1800
+      }
+    },
+    {
+      "stage": "context_assembly",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 0.059,
+      "detail": {
+        "selected": 9,
+        "tokens": 1736,
+        "excluded": 3
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "provider": "extractive",
+        "model": "extractive-synthesis-v1",
+        "temperature": 0.2,
+        "topP": 0.9,
+        "evidenceTokens": 1736
+      }
+    },
+    {
+      "stage": "generation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 3.942,
+      "detail": {
+        "provider": "extractive",
+        "chars": 657,
+        "ttftMs": 1.865,
+        "itlMs": 0.071,
+        "finishReason": "stop"
+      }
+    },
+    {
+      "stage": "citation_validation",
+      "status": "started",
+      "at": "2026-11-06T12:20:26Z"
+    },
+    {
+      "stage": "citation_validation",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "durationMs": 0.543,
+      "detail": {
+        "cited": 2,
+        "invalid": 0,
+        "uncited": false
+      }
+    },
+    {
+      "stage": "response_ready",
+      "status": "completed",
+      "at": "2026-11-06T12:20:26Z",
+      "detail": {
+        "status": "answered"
+      }
+    }
+  ]
+}

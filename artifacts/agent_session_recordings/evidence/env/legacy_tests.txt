@@ -1,0 +1,21 @@
+$ python3 -m unittest discover -s tests
+# cwd /home/user/rag-formation/engine
+# exit 0
+# at 2026-11-06T12:20:01Z
+
+
+[stderr]
+[rag] "GET /api/corpus HTTP/1.1" 200 -
+.[rag] "GET /api/health HTTP/1.1" 200 -
+.[rag] "POST /api/lifecycle/update HTTP/1.1" 200 -
+[rag] "POST /api/lifecycle/delete HTTP/1.1" 200 -
+.[rag] "POST /api/query HTTP/1.1" 400 -
+.[rag] "POST /api/query HTTP/1.1" 200 -
+.[rag] "POST /api/query HTTP/1.1" 400 -
+[rag] "POST /api/query HTTP/1.1" 400 -
+.[rag] "GET /api/nope HTTP/1.1" 404 -
+.......................
+----------------------------------------------------------------------
+Ran 29 tests in 0.649s
+
+OK

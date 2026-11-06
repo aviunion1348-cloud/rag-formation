@@ -1,0 +1,312 @@
+{
+  "schema": "lear-session-recording-result-v1",
+  "runId": "lear-rec-20261106T1219Z",
+  "scenario": "04",
+  "name": "abstention",
+  "title": "Unanswerable question and abstention",
+  "status": "PASS",
+  "cap": null,
+  "startedAt": "2026-11-06T12:20:22.837Z",
+  "endedAt": "2026-11-06T12:20:23.402Z",
+  "git": {
+    "commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "trackedFilesClean": true
+  },
+  "planSha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089",
+  "cast": "terminal/04_abstention_session.cast",
+  "steps": [
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s04a-20261106T1219Z",
+        "--user",
+        "rec-u04",
+        "Which Kafka topics does Lear publish incident events to?"
+      ],
+      "exit": 3,
+      "startedAt": "2026-11-06T12:20:22.844Z",
+      "endedAt": "2026-11-06T12:20:23.006Z",
+      "ms": 161.9,
+      "out": "traces/04/u1.out",
+      "outBytes": 3068,
+      "outSha256": "e3db4cca358348b55dc2d1739adc0f3c3fe576cd5172cb95ac548add761d570a",
+      "question": "Which Kafka topics does Lear publish incident events to?",
+      "questionSource": "golden lear-068 (dev split)",
+      "correlationId": null,
+      "sessionId": "rec-s04a-20261106T1219Z",
+      "stepId": "u1"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s04b-20261106T1219Z",
+        "--user",
+        "rec-u04",
+        "How much does a Lear enterprise licence cost per seat?"
+      ],
+      "exit": 3,
+      "startedAt": "2026-11-06T12:20:23.057Z",
+      "endedAt": "2026-11-06T12:20:23.240Z",
+      "ms": 183.7,
+      "out": "traces/04/u2.out",
+      "outBytes": 8415,
+      "outSha256": "441ae7b030178fea50852961d4c1bd00a272920b90e69e0afb91610bb687a55c",
+      "question": "How much does a Lear enterprise licence cost per seat?",
+      "questionSource": "golden lear-069 (dev split)",
+      "correlationId": "q-7925ae11a4fb",
+      "sessionId": "rec-s04b-20261106T1219Z",
+      "stepId": "u2"
+    },
+    {
+      "argv": [
+        "python3",
+        "-m",
+        "ragformation",
+        "lear",
+        "--backend",
+        "baseline",
+        "--data-dir",
+        "/tmp/lear-rec-20261106T1219Z/data",
+        "ask",
+        "--json",
+        "--session",
+        "rec-s04c-20261106T1219Z",
+        "--user",
+        "rec-u04",
+        "What is Lear's p99 request latency in production?"
+      ],
+      "exit": 3,
+      "startedAt": "2026-11-06T12:20:23.246Z",
+      "endedAt": "2026-11-06T12:20:23.395Z",
+      "ms": 149.1,
+      "out": "traces/04/u3.out",
+      "outBytes": 3062,
+      "outSha256": "58040ae15bd17d10175661c67f61c5f3eec108ecccdb93614880dc70c84d179b",
+      "question": "What is Lear's p99 request latency in production?",
+      "questionSource": "golden lear-067 (calibration split)",
+      "correlationId": null,
+      "sessionId": "rec-s04c-20261106T1219Z",
+      "stepId": "u3"
+    }
+  ],
+  "answers": {
+    "u1": {
+      "question": "Which Kafka topics does Lear publish incident events to?",
+      "questionSource": "golden lear-068 (dev split)",
+      "status": "ABSTAINED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": null,
+      "sessionId": "rec-s04a-20261106T1219Z",
+      "turn": 1,
+      "citations": [],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": null,
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      },
+      "metrics": {
+        "total_latency_ms": 28.61,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": 0,
+        "output_tokens": null,
+        "output_tokens_estimated": false,
+        "tokens_per_second": null,
+        "stages": {}
+      },
+      "error": null,
+      "abstainReason": "unknown_term",
+      "warnings": [
+        "unknown_term"
+      ]
+    },
+    "u2": {
+      "question": "How much does a Lear enterprise licence cost per seat?",
+      "questionSource": "golden lear-069 (dev split)",
+      "status": "ABSTAINED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": "q-7925ae11a4fb",
+      "sessionId": "rec-s04b-20261106T1219Z",
+      "turn": 1,
+      "citations": [],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": "extractive:extractive-synthesis-v1",
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1",
+        "dimension": 512,
+        "fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+      },
+      "metrics": {
+        "total_latency_ms": 57.48,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": 0,
+        "output_tokens": 0,
+        "output_tokens_estimated": false,
+        "tokens_per_second": null,
+        "stages": {
+          "retrievalMs": 14.237,
+          "contextTokens": 1534
+        }
+      },
+      "error": null,
+      "abstainReason": "insufficient_support",
+      "warnings": []
+    },
+    "u3": {
+      "question": "What is Lear's p99 request latency in production?",
+      "questionSource": "golden lear-067 (calibration split)",
+      "status": "ABSTAINED",
+      "backend": "baseline",
+      "qualifying": false,
+      "correlationId": null,
+      "sessionId": "rec-s04c-20261106T1219Z",
+      "turn": 1,
+      "citations": [],
+      "generation": {
+        "configured": "extractive (baseline)",
+        "used": null,
+        "fallbackUsed": false
+      },
+      "embedding": {
+        "provider": "hashing",
+        "model": "hashing-lexical-v1"
+      },
+      "metrics": {
+        "total_latency_ms": 24.62,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "stream_events": 0,
+        "output_tokens": null,
+        "output_tokens_estimated": false,
+        "tokens_per_second": null,
+        "stages": {}
+      },
+      "error": null,
+      "abstainReason": "unknown_term",
+      "warnings": [
+        "unknown_term"
+      ]
+    }
+  },
+  "checks": [
+    {
+      "id": "c1",
+      "type": "golden",
+      "description": "lear-068 is ABSTAINED with nothing forbidden (score_case).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "status": "ABSTAINED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": null,
+        "keyFactCoverageStrict": null,
+        "forbiddenHits": [],
+        "correct": true,
+        "correctStrict": true,
+        "citations": 0,
+        "proxy": {
+          "citation_quality": null,
+          "groundedness": null,
+          "answer_relevance": 4.0,
+          "context_precision": null,
+          "context_recall": null
+        }
+      }
+    },
+    {
+      "id": "c2",
+      "type": "golden",
+      "description": "lear-069 is ABSTAINED with nothing forbidden (score_case).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "status": "ABSTAINED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": null,
+        "keyFactCoverageStrict": null,
+        "forbiddenHits": [],
+        "correct": true,
+        "correctStrict": true,
+        "citations": 0,
+        "proxy": {
+          "citation_quality": null,
+          "groundedness": null,
+          "answer_relevance": 4.0,
+          "context_precision": null,
+          "context_recall": null
+        }
+      }
+    },
+    {
+      "id": "c3",
+      "type": "golden",
+      "description": "lear-067 is ABSTAINED with nothing forbidden (score_case).",
+      "onFail": "FAIL",
+      "outcome": "PASS",
+      "observed": {
+        "status": "ABSTAINED",
+        "statusOk": true,
+        "preferredStatus": true,
+        "keyFactCoverage": null,
+        "keyFactCoverageStrict": null,
+        "forbiddenHits": [],
+        "correct": true,
+        "correctStrict": true,
+        "citations": 0,
+        "proxy": {
+          "citation_quality": null,
+          "groundedness": null,
+          "answer_relevance": 4.0,
+          "context_precision": null,
+          "context_recall": null
+        }
+      }
+    }
+  ],
+  "events": "traces/04/events.jsonl",
+  "sessionIds": [
+    "rec-s04a-20261106T1219Z",
+    "rec-s04b-20261106T1219Z",
+    "rec-s04c-20261106T1219Z"
+  ],
+  "correlationIds": [
+    "q-7925ae11a4fb"
+  ]
+}

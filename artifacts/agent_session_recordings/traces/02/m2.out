@@ -1,0 +1,22 @@
+[
+  {
+    "memory_id": "m-c7104453b800",
+    "user_id": "rec-u02",
+    "scope": "user",
+    "session_id": null,
+    "type": "project_fact",
+    "text": "I am working on the Lear audit log (prash/audit.py) this week.",
+    "verification": "user_asserted",
+    "confidence": 0.5,
+    "content_sha256": "faf82864ac6a6ba0bd6e9e42f2b87294a756fa8bd422737925b6f27d015f40ec",
+    "created_at": 1793967621.0710561,
+    "updated_at": 1793967621.0710561,
+    "expires_at": null,
+    "deleted": 0,
+    "provenance": {
+      "command": "lear memory add",
+      "origin": "cli"
+    },
+    "expired": false
+  }
+]

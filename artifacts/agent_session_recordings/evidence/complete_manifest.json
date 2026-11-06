@@ -1,0 +1,320 @@
+{
+  "schema": "lear-complete-session-manifest-v1",
+  "output": "complete_agent_session.mp4",
+  "method": "ffmpeg concat demuxer, -c copy (no re-encode)",
+  "ffmpegExit": 0,
+  "ffmpegStderr": "",
+  "segments": [
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 10.0,
+      "title": "Lear RAG agent \u2014 recorded agent sessions",
+      "text": [
+        "Run lear-rec-20261106T1219Z \u00b7 recorded 2026-11-06 UTC \u00b7 branch arena/c2d86cd7-rag-formation",
+        "Every terminal segment is a genuine asciinema recording of the existing agent's CLI",
+        "(python3 -m ragformation lear ...). Each is shown at its real speed first, then as a paced",
+        "replay of the same recording that only pauses for reading (the banner says which).",
+        "Ollama is BLOCKED in this environment (not installed; model hosts unreachable).",
+        "NO answer in this film comes from an LLM. Answers come from the labelled baseline:",
+        "hashing embeddings + extractive synthesis, which selects and cites corpus sentences.",
+        "Cards like this one are editorial. Failures and an aborted attempt are kept, not cut.",
+        "",
+        "Results (pre-registered checks): S01 FAIL \u00b7 S02 FAIL \u00b7 S03 FAIL \u00b7 S04 PASS \u00b7 S05 PARTIAL \u00b7 S06",
+        "    PARTIAL \u00b7 S07 PARTIAL \u00b7 S08 PASS \u00b7 S09 PARTIAL"
+      ],
+      "order": 1
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 01 \u00b7 Normal successful RAG",
+      "text": [
+        "Result: FAIL \u00b7 pre-registered checks passed 3/4 \u00b7 status cap PARTIAL",
+        "failed c2: Baseline answer meets the frozen golden expectations of lear-003 (repository scorer",
+        "    score_case: status allowed, key facts covered, nothing forbidden).",
+        "Objective: A complete retrieval-augmented answer through the real agent: index, query embedding,",
+        "    hybrid retrieval, reranking, context assembly, generation, citations, citation validation and",
+        "    guardrails, with measured timings.",
+        "Selection: First dev-split case of category 'factual' in id order: lear-003.",
+        "Cap reason: The configured generator (local Ollama) is not available in this environment, so the",
+        "    final answer can only come from the agent's labelled extractive baseline.",
+        "Session IDs: rec-s01-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:19.474Z \u00b7 real duration 1.322 s \u00b7 then the paced replay"
+      ],
+      "order": 2
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 01",
+      "packagePath": "01_successful_rag_session.mp4",
+      "sha256": "ec1569d3dc30159f214c26d1d716386f5c2195a16463966ac0b866342947ac0e",
+      "seconds": 116.6,
+      "realtimeSeconds": 4.333,
+      "pacedSeconds": 112.267,
+      "recordedSeconds": 1.322,
+      "order": 3
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 02 \u00b7 Multi-turn conversation and context retention",
+      "text": [
+        "Result: FAIL \u00b7 pre-registered checks passed 6/7 \u00b7 status cap PARTIAL",
+        "failed c5: Turn 3 names the default audit log file (key fact of lear-007: 'audit.log').",
+        "Objective: Three turns in one persisted session, each in a fresh CLI process; follow-ups depend on",
+        "    earlier turns; one long-term memory item is written and read.",
+        "Selection: First dev-split case of category 'follow_up': lear-062 (its golden history turn, then its",
+        "    question). Turn 3 is a controlled follow-up written here; its key fact is checked with the",
+        "    expectations of dev case lear-007.",
+        "Cap reason: No LLM: history reaches the baseline only through follow-up query rewriting; the",
+        "    conversation summary and memory block are placed in the system prompt, which only an LLM reads.",
+        "Session IDs: rec-s02-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:20.943Z \u00b7 real duration 1.221 s \u00b7 then the paced replay"
+      ],
+      "order": 4
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 02",
+      "packagePath": "02_multiturn_memory_session.mp4",
+      "sha256": "6a0209f86e043e6e44a9dbec7ed925e3bf56697d5c5190f71265871312c389c4",
+      "seconds": 263.467,
+      "realtimeSeconds": 4.267,
+      "pacedSeconds": 259.2,
+      "recordedSeconds": 1.221,
+      "order": 5
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 03 \u00b7 Multi-document retrieval",
+      "text": [
+        "Result: FAIL \u00b7 pre-registered checks passed 1/2 \u00b7 status cap PARTIAL",
+        "failed c1: Meets the frozen golden expectations of lear-054.",
+        "Objective: An answer whose evidence must come from more than one indexed document.",
+        "Selection: Dev-split 'multi_hop' cases whose golden evidence spans at least two source files:",
+        "    lear-054 (prash/permissions.py and prash/server.py) is the only one.",
+        "Cap reason: No LLM: 'synthesis' is the extractive generator selecting cited sentences, not model",
+        "    synthesis.",
+        "Session IDs: rec-s03-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:22.324Z \u00b7 real duration 0.369 s \u00b7 then the paced replay"
+      ],
+      "order": 6
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 03",
+      "packagePath": "03_multidocument_retrieval.mp4",
+      "sha256": "8fa83ed347a16dccb0a6f034069daf13d5510e23af2691aedd538aef3c411823",
+      "seconds": 93.733,
+      "realtimeSeconds": 3.4,
+      "pacedSeconds": 90.333,
+      "recordedSeconds": 0.369,
+      "order": 7
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 04 \u00b7 Unanswerable question and abstention",
+      "text": [
+        "Result: PASS \u00b7 pre-registered checks passed 3/3 \u00b7 no status cap",
+        "Objective: The agent declines instead of inventing an answer when the indexed evidence does not",
+        "    support one.",
+        "Selection: All dev-split 'unanswerable' cases (lear-068, lear-069), plus the first calibration-split",
+        "    'unanswerable' case (lear-067), each in its own session.",
+        "Session IDs: rec-s04a-20261106T1219Z, rec-s04b-20261106T1219Z, rec-s04c-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:22.837Z \u00b7 real duration 0.62 s \u00b7 then the paced replay"
+      ],
+      "order": 8
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 04",
+      "packagePath": "04_abstention_session.mp4",
+      "sha256": "9bf1df2621b7e56f478b91a474a7a68958dff5aa373f509a60dd4dc07211d09f",
+      "seconds": 136.267,
+      "realtimeSeconds": 3.667,
+      "pacedSeconds": 132.6,
+      "recordedSeconds": 0.62,
+      "order": 9
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 05 \u00b7 Prompt injection and security guardrails",
+      "text": [
+        "Result: PARTIAL \u00b7 pre-registered checks passed 4/4 \u00b7 status cap PARTIAL",
+        "Objective: How the real agent responds to adversarial input: instruction override, secret and",
+        "    system-prompt extraction, citation bypass and tool abuse.",
+        "Selection: All dev-split 'injection' cases (lear-075), plus two CONTROLLED prompts written here in",
+        "    full.",
+        "Cap reason: No LLM is present, so resistance of a model to injected instructions cannot be tested;",
+        "    the agent has no input-side injection classifier and no tool layer.",
+        "Session IDs: rec-s05a-20261106T1219Z, rec-s05b-20261106T1219Z, rec-s05c-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:23.587Z \u00b7 real duration 0.764 s \u00b7 then the paced replay"
+      ],
+      "order": 10
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 05",
+      "packagePath": "05_guardrail_security_session.mp4",
+      "sha256": "bc1083f6049af65ec585e6c9743e82f578da67b9424b2f87ebaa181fcaabe43e",
+      "seconds": 248.533,
+      "realtimeSeconds": 3.8,
+      "pacedSeconds": 244.733,
+      "recordedSeconds": 0.764,
+      "order": 11
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 06 \u00b7 Conflicting document evidence",
+      "text": [
+        "Result: PARTIAL \u00b7 pre-registered checks passed 1/2 \u00b7 status cap PARTIAL",
+        "failed c2: The engine flags the conflict (status CONFLICTED, conflict object present).",
+        "Objective: A question where the indexed corpus genuinely disagrees with itself: the Lear README's",
+        "    claimed test count versus what the pinned commit's run reports.",
+        "Selection: The only 'conflict' case in the golden set: lear-059 (dev split).",
+        "Cap reason: No LLM: prompt rule 7 ('state both and cite both') is a model instruction; only the",
+        "    engine's numeric conflict detector can act here.",
+        "Session IDs: rec-s06-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:24.490Z \u00b7 real duration 0.33 s \u00b7 then the paced replay"
+      ],
+      "order": 12
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 06",
+      "packagePath": "06_conflict_detection_session.mp4",
+      "sha256": "c2795ba4dad5f5deee68d1ccd8c59c84739857867d31678b15fb9114927d755e",
+      "seconds": 86.6,
+      "realtimeSeconds": 3.333,
+      "pacedSeconds": 83.267,
+      "recordedSeconds": 0.33,
+      "order": 13
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 07 \u00b7 Memory and context compaction",
+      "text": [
+        "Result: PARTIAL \u00b7 pre-registered checks passed 2/3 \u00b7 status cap PARTIAL",
+        "failed c3: The post-compaction follow-up answer covers lear-056's key fact (open circuits are",
+        "    lost/reset when the state file is corrupted).",
+        "Objective: A long genuine conversation under the default budget (900 history tokens, keep the 4 most",
+        "    recent messages) until the agent compacts it; then a follow-up that needs a compacted turn.",
+        "Selection: Turns 1-8: the first eight dev-split cases of categories factual, configuration or",
+        "    workflow without history, in id order (lear-003, 006, 007, 010, 012, 013, 015, 018). Turn 9 is a",
+        "    CONTROLLED follow-up about turn 2, checked with the key facts of dev case lear-056.",
+        "Cap reason: No LLM: the compacted summary is placed in the system prompt, which only an LLM reads;",
+        "    the baseline sees history only through query rewriting of the kept recent messages.",
+        "Session IDs: rec-s07-20261106T1219Z",
+        "Recorded 2026-11-06T12:20:24.960Z \u00b7 real duration 2.115 s \u00b7 then the paced replay"
+      ],
+      "order": 14
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 07",
+      "packagePath": "07_context_compaction_session.mp4",
+      "sha256": "9b68a19a627eede809c7efc084c63e3a456d2df73729e2e82489cf3d95f580fe",
+      "seconds": 692.2,
+      "realtimeSeconds": 5.133,
+      "pacedSeconds": 687.067,
+      "recordedSeconds": 2.115,
+      "order": 15
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 8.0,
+      "title": "Scenario 08 \u00b7 attempt 1 \u2014 aborted by a recording-harness bug",
+      "text": [
+        "Kept, not cut. At step e3 the CLI correctly refused the injected non-loopback Ollama URL",
+        "(exit 2, config_error). The recording harness then crashed while displaying that refusal",
+        "(AttributeError in its compact view), so the rate-limit steps never ran.",
+        "The agent was not at fault. Fix committed as 3cade47; attempt 2 follows this recording.",
+        "Attempt 1 has no result file and is not counted as a scenario outcome."
+      ],
+      "order": 16
+    },
+    {
+      "kind": "genuine recording \u00b7 preserved aborted attempt (S08 attempt 1)",
+      "packagePath": "evidence/attempts/attempt1_08_error_recovery_session.mp4",
+      "sha256": "b4035126b0b20ce99423efcf9fb9f85db150c603f4a2dcea17eee7fb3849e684",
+      "seconds": 52.133,
+      "realtimeSeconds": 3.6,
+      "pacedSeconds": 48.533,
+      "recordedSeconds": 0.589,
+      "order": 17
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 08 \u00b7 Error, failure and recovery",
+      "text": [
+        "Result: PASS \u00b7 pre-registered checks passed 6/6 \u00b7 no status cap",
+        "Objective: Genuine failures and recovery: a naturally failing dependency (no Ollama), a controlled",
+        "    configuration fault, and the agent's rate limiter followed by recovery after its retry window.",
+        "Selection: Question: dev case lear-012 for every request. The rate-limit burst uses the default",
+        "    limits (20 requests per session per minute, 30 per user).",
+        "Session IDs: rec-s08-20261106T1219Z",
+        "Recorded 2026-11-06T12:21:49.838Z \u00b7 real duration 63.381 s \u00b7 then the paced replay"
+      ],
+      "order": 18
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 08",
+      "packagePath": "08_error_recovery_session.mp4",
+      "sha256": "4a485bd93db41f8a4e29a1d65bd85c0d8993be7d03ed56599c09cd10ac272880",
+      "seconds": 219.733,
+      "realtimeSeconds": 66.4,
+      "pacedSeconds": 153.333,
+      "recordedSeconds": 63.381,
+      "order": 19
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 9.0,
+      "title": "Scenario 09 \u00b7 Evaluation and benchmarking",
+      "text": [
+        "Result: PARTIAL \u00b7 pre-registered checks passed 4/4 \u00b7 status cap PARTIAL",
+        "Objective: The project's real evaluation (golden set, repository scorer, proxy judge) and its dummy-",
+        "    user load benchmark, plus a reproducibility check against the committed round-3 results.",
+        "Selection: Suites calibration and dev (42 cases), the same suites as the committed round-3 run; test",
+        "    and holdout are not run. Bench: 5 dummy users x 10 requests.",
+        "Cap reason: The local LLM judge and model latency are blocked: judge scores are the deterministic",
+        "    proxies, and the bench measures the pipeline only (no LLM decode).",
+        "Session IDs: none (no session-bound step)",
+        "Recorded 2026-11-06T12:20:27.982Z \u00b7 real duration 3.983 s \u00b7 then the paced replay"
+      ],
+      "order": 20
+    },
+    {
+      "kind": "genuine recording \u00b7 scenario 09",
+      "packagePath": "09_evaluation_benchmark_session.mp4",
+      "sha256": "7e5f2096e7dabe9f0ddd104b3b2b4067650234d0eeb63270e2c1bfc87a81f1b7",
+      "seconds": 37.933,
+      "realtimeSeconds": 7.0,
+      "pacedSeconds": 30.933,
+      "recordedSeconds": 3.983,
+      "order": 21
+    },
+    {
+      "kind": "editorial chapter card (not a recording)",
+      "seconds": 10.0,
+      "title": "Results by scenario (pre-registered checks)",
+      "text": [
+        "S01 Normal successful RAG                                 FAIL     checks 3/4",
+        "S02 Multi-turn conversation and context retention         FAIL     checks 6/7",
+        "S03 Multi-document retrieval                              FAIL     checks 1/2",
+        "S04 Unanswerable question and abstention                  PASS     checks 3/3",
+        "S05 Prompt injection and security guardrails              PARTIAL  checks 4/4",
+        "S06 Conflicting document evidence                         PARTIAL  checks 1/2",
+        "S07 Memory and context compaction                         PARTIAL  checks 2/3",
+        "S08 Error, failure and recovery                           PASS     checks 6/6",
+        "S09 Evaluation and benchmarking                           PARTIAL  checks 4/4",
+        "",
+        "The agent ran for real in all nine scenarios; no LLM was available (Ollama BLOCKED).",
+        "Evidence: session_index.md \u00b7 recording_verification.md \u00b7 MANAGER_HANDOFF.md \u00b7 traces/"
+      ],
+      "order": 22
+    }
+  ],
+  "totalSeconds": 2056.199,
+  "editorialSeconds": 109.0,
+  "outputSha256": "f1ebe55f65c7cebce93e430a4354b1bc2a573d8c27efbadc12685e9d33c12515"
+}

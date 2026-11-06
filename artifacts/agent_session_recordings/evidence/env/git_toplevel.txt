@@ -1,0 +1,6 @@
+$ git rev-parse --show-toplevel
+# cwd /home/user/rag-formation
+# exit 0
+# at 2026-11-06T12:19:26Z
+
+/home/user/rag-formation

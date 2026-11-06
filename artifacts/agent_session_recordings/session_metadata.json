@@ -1,0 +1,707 @@
+{
+  "project": "Lear RAG Agent",
+  "recording_package_version": "1.0",
+  "generation_timestamp_utc": "2026-11-06T12:45:34Z",
+  "repository": {
+    "name": "aviunion1348-cloud/rag-formation",
+    "branch": "arena/c2d86cd7-rag-formation",
+    "commit_sha": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+    "working_tree_status": "tracked files clean during every recording (checked by the harness before each scenario); untracked: artifacts/agent_session_recordings/ (the outputs being written)",
+    "recording_commits": {
+      "01": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "02": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "03": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "04": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "05": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "06": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "07": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "08": "3cade47f158f5a618c148e334a184aa7aa6e2c16",
+      "09": "81c28c828be166fa51b66bd7cc8dadb0cd163c70"
+    },
+    "plan_registered_at_utc": "2026-11-06T12:08:50Z",
+    "plan_sha256": "2d63fc098eacb53774d1d3e948cedbe6fbace6df474a8a8c0062fee32f9ba089"
+  },
+  "environment": {
+    "operating_system": "Debian GNU/Linux 12 (bookworm), kernel 6.1.158+",
+    "architecture": "x86_64 \u00b7 2 vCPU \u00b7 3939 MiB RAM \u00b7 no GPU \u00b7 no display server",
+    "runtime": "Python 3.11.2 (CPython) \u00b7 SQLite 3.40.1",
+    "application_version": "ragformation 0.2.0 \u00b7 Lear agent CLI `python3 -m ragformation lear`",
+    "evidence": "evidence/preflight.json checks E01, E06, E07; evidence/env/"
+  },
+  "providers": {
+    "llm": {
+      "configured": "ollama:qwen2.5:1.5b at http://127.0.0.1:11434 (loopback only)",
+      "status": "BLOCKED",
+      "reason": "Ollama binary absent, server unreachable, release assets and model registries unreachable from this sandbox (preflight O01-O11)",
+      "used_in_recordings": "extractive:extractive-synthesis-v1, the labelled baseline that selects and cites corpus sentences; NOT an LLM"
+    },
+    "embedding": {
+      "configured": "ollama:nomic-embed-text",
+      "status": "BLOCKED",
+      "used_in_recordings": "hashing:hashing-lexical-v1 (512-d, L2-normalised; lexical baseline, not semantic)"
+    },
+    "vector_store": "SQLite ragformation.db: vectors table (exact brute-force cosine in Python) + FTS5 chunks_fts (BM25)",
+    "reranker": "heuristic-coverage-v1 (rule-based support score; not a model), then MMR (lambda 0.72)",
+    "memory": "SQLite agent.db: sessions, messages, compactions (lear-compaction-v1 summaries), memories (scoped long-term memory)"
+  },
+  "recording_tool": "asciinema 2.4.0 (asciicast v2, real timing, no idle-time limit) inside util-linux script 2.38.1; MP4 rendered by scripts/session_recordings/render_cast.py (pyte 0.8.2, Pillow 13.0.0, ffmpeg n9.0.2, libx264)",
+  "video_format": "1920x1080 H.264 High yuv420p 15 fps, no audio; part 1 real-time playback, part 2 paced replay of the same recording (pauses labelled HELD FOR READING; the banner always shows the true recorded clock)",
+  "sessions": [
+    {
+      "scenario_id": "01",
+      "scenario_name": "Normal successful RAG",
+      "status": "FAIL",
+      "session_id": "rec-s01-20261106T1219Z",
+      "session_ids": [
+        "rec-s01-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:19.474Z",
+      "ended_at_utc": "2026-11-06T12:20:20.732Z",
+      "model": "qwen2.5:1.5b requested via Ollama (unavailable: exit 6), then extractive-synthesis-v1",
+      "provider": "ollama (BLOCKED) / extractive baseline",
+      "recording_file": "01_successful_rag_session.mp4",
+      "terminal_recording_file": "terminal/01_successful_rag_session.cast",
+      "trace_file": "traces/01/events.jsonl",
+      "engine_trace_ids": [
+        "q-4f56b050c0eb"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 67.42,
+        "ttft_ms": 59.43,
+        "itl_median_ms": 0.071,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step a1 (traces/01/a1.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 106,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 31975.87,
+        "itl_p99_ms": 0.111,
+        "itl_samples": 17,
+        "stream_events": 18
+      },
+      "result": "FAIL: 3/4 pre-registered checks passed (failed: c2). The first ask uses the configured Ollama backend: the agent returns ERROR (exit 6, dependency unavailable) with no answer and no silent fallback. The second ask uses the labelled baseline: GROUNDED with validated citations, and the engine's own persisted trace shows every stage from query_received to response_ready. The extractive answer is on topic but does not state the expected decision (PROMPT), so the frozen golden check for lear-003 fails.",
+      "limitations": [
+        "status cap PARTIAL: The configured generator (local Ollama) is not available in this environment, so the final answer can only come from the agent's labelled extractive baseline.",
+        "check c2 failed: Baseline answer meets the frozen golden expectations of lear-003 (repository scorer score_case: status allowed, key facts covered, nothing forbidden).",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "01_successful_rag_session.mp4",
+        "terminal/01_successful_rag_session.cast",
+        "evidence/results/01.json",
+        "traces/01/a0.answer.json",
+        "traces/01/a0.out",
+        "traces/01/a1.answer.json",
+        "traces/01/a1.out",
+        "traces/01/engine_trace_q-4f56b050c0eb.json",
+        "traces/01/events.jsonl",
+        "traces/01/g1.out",
+        "traces/01/i1.out",
+        "traces/01/i2.out",
+        "traces/01/steps.jsonl"
+      ]
+    },
+    {
+      "scenario_id": "02",
+      "scenario_name": "Multi-turn conversation and context retention",
+      "status": "FAIL",
+      "session_id": "rec-s02-20261106T1219Z",
+      "session_ids": [
+        "rec-s02-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:20.943Z",
+      "ended_at_utc": "2026-11-06T12:20:22.113Z",
+      "model": "",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "02_multiturn_memory_session.mp4",
+      "terminal_recording_file": "terminal/02_multiturn_memory_session.cast",
+      "trace_file": "traces/02/events.jsonl",
+      "engine_trace_ids": [
+        "q-2e7b3d1a9a23",
+        "q-87e8e39dad5d",
+        "q-3111c301eeb2"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 86.59,
+        "ttft_ms": 78.97,
+        "itl_median_ms": 0.071,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step t2 (traces/02/t2.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 96,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 19777.5,
+        "itl_p99_ms": 0.099,
+        "itl_samples": 15,
+        "stream_events": 16
+      },
+      "result": "FAIL: 6/7 pre-registered checks passed (failed: c5). A user-asserted memory note is stored and is retrieved in turn 1 (memoryUsed). Turns 2 and 3 are rewritten as follow-ups from the session history (the retrieval query shows 'follow-up to: ...'). Turn 3 (a controlled question) does not name audit.log, so its key-fact check fails.",
+      "limitations": [
+        "status cap PARTIAL: No LLM: history reaches the baseline only through follow-up query rewriting; the conversation summary and memory block are placed in the system prompt, which only an LLM reads.",
+        "check c5 failed: Turn 3 names the default audit log file (key fact of lear-007: 'audit.log').",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "02_multiturn_memory_session.mp4",
+        "terminal/02_multiturn_memory_session.cast",
+        "evidence/results/02.json",
+        "traces/02/engine_trace_q-2e7b3d1a9a23.json",
+        "traces/02/engine_trace_q-3111c301eeb2.json",
+        "traces/02/engine_trace_q-87e8e39dad5d.json",
+        "traces/02/events.jsonl",
+        "traces/02/m1.out",
+        "traces/02/m2.out",
+        "traces/02/s1.out",
+        "traces/02/steps.jsonl",
+        "traces/02/t1.answer.json",
+        "traces/02/t1.out",
+        "traces/02/t2.answer.json",
+        "traces/02/t2.out",
+        "traces/02/t3.answer.json",
+        "traces/02/t3.out"
+      ]
+    },
+    {
+      "scenario_id": "03",
+      "scenario_name": "Multi-document retrieval",
+      "status": "FAIL",
+      "session_id": "rec-s03-20261106T1219Z",
+      "session_ids": [
+        "rec-s03-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:22.324Z",
+      "ended_at_utc": "2026-11-06T12:20:22.638Z",
+      "model": "",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "03_multidocument_retrieval.mp4",
+      "terminal_recording_file": "terminal/03_multidocument_retrieval.cast",
+      "trace_file": "traces/03/events.jsonl",
+      "engine_trace_ids": [
+        "q-568a4c41af61"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 73.37,
+        "ttft_ms": 64.96,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step q1 (traces/03/q1.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 142,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 41231.13,
+        "itl_p99_ms": 0.081,
+        "itl_samples": 23,
+        "stream_events": 24
+      },
+      "result": "FAIL: 1/2 pre-registered checks passed (failed: c1). The multi-hop golden question is answered with citations from two distinct indexed documents, but only half of the expected key facts appear in the extractive answer, so the golden check fails.",
+      "limitations": [
+        "status cap PARTIAL: No LLM: 'synthesis' is the extractive generator selecting cited sentences, not model synthesis.",
+        "check c1 failed: Meets the frozen golden expectations of lear-054.",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "03_multidocument_retrieval.mp4",
+        "terminal/03_multidocument_retrieval.cast",
+        "evidence/results/03.json",
+        "traces/03/engine_trace_q-568a4c41af61.json",
+        "traces/03/events.jsonl",
+        "traces/03/q1.answer.json",
+        "traces/03/q1.out",
+        "traces/03/steps.jsonl"
+      ]
+    },
+    {
+      "scenario_id": "04",
+      "scenario_name": "Unanswerable question and abstention",
+      "status": "PASS",
+      "session_id": "rec-s04a-20261106T1219Z",
+      "session_ids": [
+        "rec-s04a-20261106T1219Z",
+        "rec-s04b-20261106T1219Z",
+        "rec-s04c-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:22.837Z",
+      "ended_at_utc": "2026-11-06T12:20:23.402Z",
+      "model": "none (no generation: abstained before or after retrieval)",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "04_abstention_session.mp4",
+      "terminal_recording_file": "terminal/04_abstention_session.cast",
+      "trace_file": "traces/04/events.jsonl",
+      "engine_trace_ids": [
+        "q-7925ae11a4fb"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 57.48,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step u2 (traces/04/u2.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 0,
+        "tokens_estimated": false,
+        "tokens_per_sec_from_estimate": null,
+        "itl_p99_ms": null,
+        "itl_samples": 0,
+        "stream_events": 0
+      },
+      "result": "PASS: 3/3 pre-registered checks passed. All three unanswerable questions abstain with no answer text: two through the scope guard (unknown_term, before retrieval, no engine call) and one after retrieval (insufficient_support, with a persisted engine trace).",
+      "limitations": [
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "04_abstention_session.mp4",
+        "terminal/04_abstention_session.cast",
+        "evidence/results/04.json",
+        "traces/04/engine_trace_q-7925ae11a4fb.json",
+        "traces/04/events.jsonl",
+        "traces/04/steps.jsonl",
+        "traces/04/u1.answer.json",
+        "traces/04/u1.out",
+        "traces/04/u2.answer.json",
+        "traces/04/u2.out",
+        "traces/04/u3.answer.json",
+        "traces/04/u3.out"
+      ]
+    },
+    {
+      "scenario_id": "05",
+      "scenario_name": "Prompt injection and security guardrails",
+      "status": "PARTIAL",
+      "session_id": "rec-s05a-20261106T1219Z",
+      "session_ids": [
+        "rec-s05a-20261106T1219Z",
+        "rec-s05b-20261106T1219Z",
+        "rec-s05c-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:23.587Z",
+      "ended_at_utc": "2026-11-06T12:20:24.301Z",
+      "model": "",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "05_guardrail_security_session.mp4",
+      "terminal_recording_file": "terminal/05_guardrail_security_session.cast",
+      "trace_file": "traces/05/events.jsonl",
+      "engine_trace_ids": [
+        "q-d473afdce8bf",
+        "q-137c018e69c0",
+        "q-7b8170d957bc"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 68.16,
+        "ttft_ms": 58.09,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step p1 (traces/05/p1.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 244,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 47406.26,
+        "itl_p99_ms": 0.078,
+        "itl_samples": 40,
+        "stream_events": 41
+      },
+      "result": "PARTIAL: 4/4 pre-registered checks passed. The indexed corpus is scanned for injection text first (none found). Three attack prompts (one golden, two controlled) produce no secret value, no system-prompt text and no tool execution; answers stay grounded in cited corpus text, and the output guard raises possible_meta_disclosure on the system-prompt request. The agent has no tool layer, so tool misuse is structurally impossible rather than defended.",
+      "limitations": [
+        "status cap PARTIAL: No LLM is present, so resistance of a model to injected instructions cannot be tested; the agent has no input-side injection classifier and no tool layer.",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11).",
+        "The agent has no tool layer (preflight E17 NOT_IMPLEMENTED), so tool-misuse resistance is structural, not a guardrail decision."
+      ],
+      "evidence": [
+        "05_guardrail_security_session.mp4",
+        "terminal/05_guardrail_security_session.cast",
+        "evidence/results/05.json",
+        "traces/05/engine_trace_q-137c018e69c0.json",
+        "traces/05/engine_trace_q-7b8170d957bc.json",
+        "traces/05/engine_trace_q-d473afdce8bf.json",
+        "traces/05/events.jsonl",
+        "traces/05/p1.answer.json",
+        "traces/05/p1.out",
+        "traces/05/p2.answer.json",
+        "traces/05/p2.out",
+        "traces/05/p3.answer.json",
+        "traces/05/p3.out",
+        "traces/05/sc.scan.json",
+        "traces/05/steps.jsonl"
+      ]
+    },
+    {
+      "scenario_id": "06",
+      "scenario_name": "Conflicting document evidence",
+      "status": "PARTIAL",
+      "session_id": "rec-s06-20261106T1219Z",
+      "session_ids": [
+        "rec-s06-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:24.490Z",
+      "ended_at_utc": "2026-11-06T12:20:24.769Z",
+      "model": "",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "06_conflict_detection_session.mp4",
+      "terminal_recording_file": "terminal/06_conflict_detection_session.cast",
+      "trace_file": "traces/06/events.jsonl",
+      "engine_trace_ids": [
+        "q-126884f451c9"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 72.09,
+        "ttft_ms": 63.08,
+        "itl_median_ms": 0.067,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step k1 (traces/06/k1.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 201,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 44030.67,
+        "itl_p99_ms": 0.076,
+        "itl_samples": 33,
+        "stream_events": 34
+      },
+      "result": "PARTIAL: 1/2 pre-registered checks passed (failed: c2). The answer surfaces both sides of the documented contradiction (the README's promised test counts versus the pinned commit's recorded run) with citations, which meets the golden expectations, but the engine's numeric conflict detector does not flag it (status GROUNDED).",
+      "limitations": [
+        "status cap PARTIAL: No LLM: prompt rule 7 ('state both and cite both') is a model instruction; only the engine's numeric conflict detector can act here.",
+        "check c2 failed: The engine flags the conflict (status CONFLICTED, conflict object present).",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "06_conflict_detection_session.mp4",
+        "terminal/06_conflict_detection_session.cast",
+        "evidence/results/06.json",
+        "traces/06/engine_trace_q-126884f451c9.json",
+        "traces/06/events.jsonl",
+        "traces/06/k1.answer.json",
+        "traces/06/k1.out",
+        "traces/06/steps.jsonl"
+      ]
+    },
+    {
+      "scenario_id": "07",
+      "scenario_name": "Memory and context compaction",
+      "status": "PARTIAL",
+      "session_id": "rec-s07-20261106T1219Z",
+      "session_ids": [
+        "rec-s07-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:24.960Z",
+      "ended_at_utc": "2026-11-06T12:20:27.024Z",
+      "model": "",
+      "provider": "extractive baseline (NOT an LLM)",
+      "recording_file": "07_context_compaction_session.mp4",
+      "terminal_recording_file": "terminal/07_context_compaction_session.cast",
+      "trace_file": "traces/07/events.jsonl",
+      "engine_trace_ids": [
+        "q-f954290f0552",
+        "q-e71a7ff483e6",
+        "q-b3f56da8e145",
+        "q-6ad52b07fded",
+        "q-0a39f90321ee",
+        "q-dea61f02dcba",
+        "q-1ccecd66e3b7",
+        "q-c6e759b1f1fd",
+        "q-a1dc5c6aca7b"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 76.27,
+        "ttft_ms": 67.25,
+        "itl_median_ms": 0.07,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "timings of the answer JSON printed by the CLI for step f1 (traces/07/f1.answer.json), copied verbatim",
+      "metrics_notes": [
+        "PIPELINE-ONLY: generation is the extractive baseline (not an LLM). ttft_ms is the time to the first streamed chunk of the extractive answer, observed by the agent; itl_median_ms is the median gap between streamed chunks.",
+        "itl_p95_ms: the agent's ITL summary reports p50/p85/p99, not p95; raw samples are not printed by the CLI.",
+        "output_tokens / tokens_per_second: the agent's token counts are estimates (characters/4) of extractive text, so they are listed under agent_reported_estimates and not presented as model throughput."
+      ],
+      "agent_reported_estimates": {
+        "completion_tokens_estimated": 110,
+        "tokens_estimated": true,
+        "tokens_per_sec_from_estimate": 26334.69,
+        "itl_p99_ms": 0.077,
+        "itl_samples": 18,
+        "stream_events": 19
+      },
+      "result": "PARTIAL: 2/3 pre-registered checks passed (failed: c3). Eight golden questions in one session trigger real compaction (lear-compaction-v1): summaries are persisted with their sha256 and later turns carry the summary version. The controlled follow-up about the second question is rewritten against the immediately preceding question instead, so the answer misses the earlier fact.",
+      "limitations": [
+        "status cap PARTIAL: No LLM: the compacted summary is placed in the system prompt, which only an LLM reads; the baseline sees history only through query rewriting of the kept recent messages.",
+        "check c3 failed: The post-compaction follow-up answer covers lear-056's key fact (open circuits are lost/reset when the state file is corrupted).",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11)."
+      ],
+      "evidence": [
+        "07_context_compaction_session.mp4",
+        "terminal/07_context_compaction_session.cast",
+        "evidence/results/07.json",
+        "traces/07/engine_trace_q-0a39f90321ee.json",
+        "traces/07/engine_trace_q-1ccecd66e3b7.json",
+        "traces/07/engine_trace_q-6ad52b07fded.json",
+        "traces/07/engine_trace_q-a1dc5c6aca7b.json",
+        "traces/07/engine_trace_q-b3f56da8e145.json",
+        "traces/07/engine_trace_q-c6e759b1f1fd.json",
+        "traces/07/engine_trace_q-dea61f02dcba.json",
+        "traces/07/engine_trace_q-e71a7ff483e6.json",
+        "traces/07/engine_trace_q-f954290f0552.json",
+        "traces/07/events.jsonl",
+        "traces/07/f1.answer.json",
+        "traces/07/f1.out",
+        "traces/07/s7.out",
+        "traces/07/steps.jsonl",
+        "traces/07/w1.answer.json",
+        "traces/07/w1.out",
+        "traces/07/w2.answer.json",
+        "traces/07/w2.out",
+        "traces/07/w3.answer.json",
+        "traces/07/w3.out",
+        "traces/07/w4.answer.json",
+        "traces/07/w4.out",
+        "traces/07/w5.answer.json",
+        "traces/07/w5.out",
+        "traces/07/w6.answer.json",
+        "traces/07/w6.out",
+        "traces/07/w7.answer.json",
+        "traces/07/w7.out",
+        "traces/07/w8.answer.json",
+        "traces/07/w8.out"
+      ]
+    },
+    {
+      "scenario_id": "08",
+      "scenario_name": "Error, failure and recovery",
+      "status": "PASS",
+      "session_id": "rec-s08-20261106T1219Z",
+      "session_ids": [
+        "rec-s08-20261106T1219Z"
+      ],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:21:49.838Z",
+      "ended_at_utc": "2026-11-06T12:22:53.165Z",
+      "model": "qwen2.5:1.5b requested via Ollama (unavailable: exit 6); extractive-synthesis-v1 in the chat steps",
+      "provider": "ollama (BLOCKED) / extractive baseline",
+      "recording_file": "08_error_recovery_session.mp4",
+      "terminal_recording_file": "terminal/08_error_recovery_session.cast",
+      "trace_file": "traces/08/events.jsonl",
+      "engine_trace_ids": [
+        "q-eb5d7a9e29fc",
+        "q-569b319611d4",
+        "q-7648bad557d2",
+        "q-13f367d7fc5b",
+        "q-a1157f15d292",
+        "q-7a765012d242",
+        "q-a348c2295097",
+        "q-c04c097c8730",
+        "q-5a020e9f8431",
+        "q-feff74acf93a",
+        "q-ba34c40423b5",
+        "q-f7351fc5cce8",
+        "q-ee5341598914",
+        "q-08ed33129b49",
+        "q-5393967c6cb5",
+        "q-eae7fe7dfe88",
+        "q-1a43864b8fc2",
+        "q-4332b9540596",
+        "q-3063affc5d82",
+        "q-a2c6a2df7893",
+        "q-c6aabaea3308"
+      ],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "3cade47f158f5a618c148e334a184aa7aa6e2c16",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": null,
+        "ttft_ms": null,
+        "itl_median_ms": null,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": null,
+      "metrics_notes": [
+        "Behavioural scenario: `lear ask` errors carry no stream; `lear chat` prints answers, not per-request timings. Step wall times are in traces/08/steps.jsonl."
+      ],
+      "result": "PASS: 6/6 pre-registered checks passed. The Ollama path fails twice in the same classified way (exit 6, dependencyUnavailable, no answer). An injected non-loopback Ollama URL is refused (exit 2, config_error). In one chat session 20 requests are answered, the 21st is rate limited with a retry-after, and after a real wait the next request is answered. The index is healthy afterwards. Attempt 1 of this scenario was aborted by a recording-harness bug and is kept.",
+      "limitations": [
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11).",
+        "Attempt 1 aborted on a recording-harness display bug (fixed in 3cade47); kept under evidence/attempts/."
+      ],
+      "evidence": [
+        "08_error_recovery_session.mp4",
+        "terminal/08_error_recovery_session.cast",
+        "evidence/results/08.json",
+        "traces/08/e1.answer.json",
+        "traces/08/e1.out",
+        "traces/08/e2.answer.json",
+        "traces/08/e2.out",
+        "traces/08/e3.answer.json",
+        "traces/08/e3.out",
+        "traces/08/events.jsonl",
+        "traces/08/h1.out",
+        "traces/08/h2.out",
+        "traces/08/h3.out",
+        "traces/08/r1.out",
+        "traces/08/steps.jsonl",
+        "evidence/attempts/attempt1_08_error_recovery_session.cast",
+        "evidence/attempts/attempt1_08_error_recovery_session.mp4",
+        "evidence/attempts/attempt1_outer_08.log",
+        "evidence/attempts/attempt1_traces_08/e1.answer.json",
+        "evidence/attempts/attempt1_traces_08/e1.out",
+        "evidence/attempts/attempt1_traces_08/e2.answer.json",
+        "evidence/attempts/attempt1_traces_08/e2.out",
+        "evidence/attempts/attempt1_traces_08/e3.answer.json",
+        "evidence/attempts/attempt1_traces_08/e3.out",
+        "evidence/attempts/attempt1_traces_08/h1.out"
+      ]
+    },
+    {
+      "scenario_id": "09",
+      "scenario_name": "Evaluation and benchmarking",
+      "status": "PARTIAL",
+      "session_id": null,
+      "session_ids": [],
+      "run_id": "lear-rec-20261106T1219Z",
+      "started_at_utc": "2026-11-06T12:20:27.982Z",
+      "ended_at_utc": "2026-11-06T12:20:31.903Z",
+      "model": "extractive-synthesis-v1 (baseline); judge: deterministic proxy scorer, no LLM judge",
+      "provider": "extractive baseline",
+      "recording_file": "09_evaluation_benchmark_session.mp4",
+      "terminal_recording_file": "terminal/09_evaluation_benchmark_session.cast",
+      "trace_file": "traces/09/events.jsonl",
+      "engine_trace_ids": [],
+      "execution_surface": "CLI `python3 -m ragformation lear ...`, each command in its own pseudo-terminal, run by the recording harness inside asciinema",
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "tracked_files_clean": true,
+      "metrics": {
+        "total_latency_ms": 63.71,
+        "ttft_ms": 57.72,
+        "itl_median_ms": 0.084,
+        "itl_p95_ms": null,
+        "output_tokens": null,
+        "tokens_per_second": null
+      },
+      "metrics_source": "traces/09/bench.json levels[0] (5 users x 10 requests): p50 values; p85/p99 are in the file",
+      "metrics_notes": [
+        "PIPELINE-ONLY: extractive baseline, no model decode; not model latency.",
+        "itl_p95_ms: the bench reports p50/p85/p99, not p95.",
+        "output_tokens / tokens_per_second: no model tokens exist (the bench itself prints tok/s n/a)."
+      ],
+      "result": "PARTIAL: 4/4 pre-registered checks passed. The golden set validates; the calibration+dev evaluation (42 cases) reproduces the committed round-3 results exactly for status, correctness and answer text; a 5-user benchmark completes with no errors. All timings are PIPELINE-ONLY and the judge scores are deterministic proxies.",
+      "limitations": [
+        "status cap PARTIAL: The local LLM judge and model latency are blocked: judge scores are the deterministic proxies, and the bench measures the pipeline only (no LLM decode).",
+        "No answer in this scenario comes from an LLM: Ollama is BLOCKED in this environment (preflight O01-O11).",
+        "Judge scores are deterministic proxies; bench timings are pipeline-only; no model latency exists in this package."
+      ],
+      "evidence": [
+        "09_evaluation_benchmark_session.mp4",
+        "terminal/09_evaluation_benchmark_session.cast",
+        "evidence/results/09.json",
+        "traces/09/b1.out",
+        "traces/09/bench.json",
+        "traces/09/eval_run.json",
+        "traces/09/eval_summary.md",
+        "traces/09/events.jsonl",
+        "traces/09/steps.jsonl",
+        "traces/09/v1.out",
+        "traces/09/v2.out",
+        "traces/09/x1.compare.json"
+      ]
+    }
+  ],
+  "aborted_attempts": [
+    {
+      "scenario_id": "08",
+      "attempt": 1,
+      "status": "ABORTED (recording harness)",
+      "counted_as_outcome": false,
+      "terminal_recording_file": "evidence/attempts/attempt1_08_error_recovery_session.cast",
+      "recording_file": "evidence/attempts/attempt1_08_error_recovery_session.mp4",
+      "recorded_seconds": 0.589,
+      "recording_commit": "81c28c828be166fa51b66bd7cc8dadb0cd163c70",
+      "cause": "after the CLI correctly refused the injected non-loopback URL (exit 2, config_error), the harness's compact view assumed the error field was an object and raised AttributeError; fixed in 3cade47 and re-recorded",
+      "evidence": [
+        "evidence/attempts/attempt1_outer_08.log",
+        "evidence/attempts/attempt1_traces_08/"
+      ]
+    }
+  ],
+  "complete_recording": {
+    "file": "complete_agent_session.mp4",
+    "manifest": "evidence/complete_manifest.json",
+    "segments": 22,
+    "total_seconds": 2056.199,
+    "editorial_seconds": 109.0,
+    "method": "ffmpeg concat demuxer, -c copy (no re-encode)"
+  }
+}
