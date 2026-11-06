@@ -37,7 +37,19 @@ python3 scripts/session_recordings/verify_package.py checksums  # always last
 ```
 
 All agent data lives under `/tmp/$RUN/` (index, sessions, memory, eval and bench outputs); nothing is written to the
-repository's `data/`. With a running loopback Ollama that serves the configured models, the Ollama steps in S01 and
-S08 would succeed instead of failing with exit 6, and the scenarios' status caps would no longer apply. A
-re-recording needs a new run ID: existing casts are never overwritten, and failed attempts belong under
-`evidence/attempts/`.
+repository's `data/`. A re-recording needs a new run ID: existing casts are never overwritten, and failed attempts
+belong under `evidence/attempts/`.
+
+## Re-running where Ollama works
+
+This plan records the environment it was registered for, where Ollama was unavailable. Re-running it unchanged on a
+machine with Ollama would **not** produce LLM recordings:
+
+- every answer-producing step (22 of the 26 `ask`/`chat` calls, plus the S09 `eval run` and `bench`) is pinned to
+  `--backend baseline`; only S01 `a0` and S08 `e1`–`e3` use Ollama, to record the failure path;
+- the no-LLM status caps are fixed in the plan and the harness always applies them;
+- three checks (S01 `c1`, S08 `c1`, S08 `c2`) expect the Ollama dependency failure, so they would fail.
+
+A qualifying recording needs a new plan version, committed before execution: answer steps on `--backend ollama`,
+caps removed where the capability is now present, and the S08 failure path driven by a labelled injected fault (for
+example an unused loopback port) instead of the missing server.
