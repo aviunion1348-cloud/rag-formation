@@ -1,95 +1,92 @@
 # `lear demo` evidence
 
 Everything on this page was produced by the commands shown, on 2026-11-05 (UTC)
-in the audit sandbox. The sandbox had no Ollama, no GPU, 2 vCPU and Python
-3.11.2 (see [audit_environment.md](audit_environment.md)).
+in the audit sandbox, at rag-formation commit `954c8d624515` with a clean
+tracked tree. The sandbox had no Ollama, no GPU, 2 vCPU and Python 3.11.2 (see
+[audit_environment.md](audit_environment.md)). The Lear source was
+`Lear-backend-Avi` @ `60cf9abf`, on branch `main`.
 
-## Recorded replay bundle
+## Replay bundles
 
-[`ragformation/lear/demo_replay/lear_demo_replay_v1.json`](../../ragformation/lear/demo_replay/lear_demo_replay_v1.json)
-is shipped in the wheel through `[tool.setuptools.package-data]` in
-`pyproject.toml`. It was produced with this command:
+The format is described in [demo_replay_format.md](demo_replay_format.md).
+
+| Bundle | Run | Body sha256 | Text | Ships in wheel |
+|---|---|---|---|---|
+| [`ragformation/lear/demo_replay/lear_demo_replay_v2.json`](../../ragformation/lear/demo_replay/lear_demo_replay_v2.json) | `demo-20261105T205910Z` | `84cefeec093c0296f2863d768ce0a0cc1e163589bb2dec5d3f20a86a45593f68` | redacted | yes |
+| [`evidence/demo/lear_demo_replay_v2_full.json`](evidence/demo/lear_demo_replay_v2_full.json) | `demo-20261105T205915Z` | `772b94cc75c49cdacf474208717da0ed823b97d5a8fdc60a4bc33ccb9175a5a0` | full | no |
+| [`evidence/demo/lear_demo_replay_v1.json`](evidence/demo/lear_demo_replay_v1.json) | `demo-20261105T200214Z` (commit `132838754d0a`) | `cb7ce8fb8360d57b5848014615c6164565c4df9d2cb45d107b5cb2766f0b3b70` | full | no (moved out of the package) |
+
+The v2 bundles were captured with these commands:
 
 ```bash
-python3 -m ragformation lear --backend baseline demo capture \
-    --source <Lear checkout> --out ragformation/lear/demo_replay/lear_demo_replay_v1.json
+python3 -m ragformation lear --backend baseline demo capture --source ../lear-backend \
+    --out ragformation/lear/demo_replay/lear_demo_replay_v2.json
+python3 -m ragformation lear --backend baseline demo capture --full --source ../lear-backend \
+    --out docs/lear_agent/evidence/demo/lear_demo_replay_v2_full.json
 ```
 
-| Field | Value |
-|---|---|
-| schema | `lear-demo-replay-v1` |
-| runId | `demo-20261105T200214Z` |
-| capturedAt | `2026-11-05T20:02:14Z` |
-| gitCommit / dirty | `132838754d0a` / false (tracked tree clean at capture) |
-| backend / qualifying | `baseline` / **false** |
-| scenes | S00–S11 (12) |
-| body sha256 | `cb7ce8fb8360d57b5848014615c6164565c4df9d2cb45d107b5cb2766f0b3b70` |
-| evidence hashes | sha256 of 20 cited repository files, re-checked on every replay |
-
-### Integrity rules
-
-These rules are implemented in `validate_bundle` in
-[`demo.py`](../../ragformation/lear/demo.py).
-
-**Hard failures.** Each makes replay exit 5, and the demo then shows explanations only:
-
-- the schema is wrong;
-- a provenance field is missing (`provenance`, `runId`, `capturedAt`, `gitCommit`, `backend`, `demoVersion`);
-- the body checksum does not match;
-- the scene records are malformed.
-
-**Warnings.** A cited evidence file that is missing or has changed since capture. An installed wheel has no `docs/`, so it warns that each file is missing.
-
-The tests are in `ReplayTests` in [`tests/test_lear_demo.py`](../../tests/test_lear_demo.py):
-
-- `test_bundle_round_trip_and_tamper_detection`
-- `test_missing_evidence_is_a_warning_not_a_crash`
-- `test_replay_marks_every_scene_recorded`
-- `test_corrupt_bundle_exits_5_with_explanation_only`
-- `test_packaged_bundle_is_valid_and_not_qualifying`
+Both bundles record `backend: baseline`, `qualifying: false` and
+`models.availability: UNVERIFIED: doctor did not pass`. Each holds the sha256
+of 19 cited repository files.
 
 ## Transcripts
 
-All files below are in [`evidence/demo/`](evidence/demo/). The first line of
-each `.txt` file is the command, and the last line is the exit code.
+All files are in [`evidence/demo/`](evidence/demo/). Commands are run from the
+repository root, with `--source ../lear-backend` where shown.
 
 | File | Command | Exit | What it demonstrates |
 |---|---|---|---|
-| [`examiner_baseline_plain.txt`](evidence/demo/examiner_baseline_plain.txt) | `lear --backend baseline demo examiner --plain --source <Lear checkout>` | 0 | All 12 scenes live on the baseline: docs 11/11 PASS and 10/10 rebuilt files identical; 355-chunk scratch index; doctor exit 6; lear-012 answered GROUNDED with citation `[4]` → `api_reference.md` lines 32-34 → `prash/cli.py:L1251`, `L351`, `L460` (each within the file at the pin); compactions; guardrails; bench; BLOCKED readiness |
-| [`examiner_baseline_s04_s06_s08.json`](evidence/demo/examiner_baseline_s04_s06_s08.json) | `lear --backend baseline demo examiner --json --scene 4,6,8` | 0 | JSON event log. It parses as one object and contains no ANSI escapes (also asserted in tests) |
-| [`replay_plain.txt`](evidence/demo/replay_plain.txt) | `lear demo replay --plain` | 0 | 12 scenes, each under `RECORDED REPLAY - run demo-20261105T200214Z …`; no `[LIVE]` label |
-| [`live_ollama_plain.txt`](evidence/demo/live_ollama_plain.txt) | `lear demo live --plain` (default ollama backend) | **6** | Stops at S03 with `LIVE MODE STOPPED AT THE DEPENDENCY GATE` and offers replay |
-| [`director_ollama_plain.txt`](evidence/demo/director_ollama_plain.txt) | `lear demo director --plain --auto` (default ollama backend) | **6** | Live where possible; blocked scenes are followed by recorded evidence labelled `LIVE BLOCKED` |
-| [`effects_plain.txt`](evidence/demo/effects_plain.txt) | `lear demo effects --plain` | 0 | 36 effects, each with trigger, reduced-motion equivalent and data source |
+| [`examiner_baseline_plain.txt`](evidence/demo/examiner_baseline_plain.txt) | `lear --backend baseline demo examiner --plain --source ../lear-backend` | 0 | All 12 scenes live on the baseline. See the list after this table |
+| [`examiner_baseline_s04_s06_s08.json`](evidence/demo/examiner_baseline_s04_s06_s08.json) | `lear --backend baseline demo examiner --json --scene 4,6,8` | 0 | One JSON object, no ANSI (also asserted in tests) |
+| [`replay_plain.txt`](evidence/demo/replay_plain.txt) | `lear demo replay --plain` | 0 | Checksum verified first; all 12 scenes under `RECORDED REPLAY - run demo-20261105T205915Z …`; no `[LIVE]` label |
+| [`live_ollama_plain.txt`](evidence/demo/live_ollama_plain.txt) | `lear demo live --plain` (default ollama backend) | **6** | S02/S03 `BLOCKED`; stops with `LIVE MODE STOPPED AT THE DEPENDENCY GATE` and offers replay |
+| [`director_ollama_plain.txt`](evidence/demo/director_ollama_plain.txt) | `lear demo director --plain` (default ollama backend) | **6** | Live where possible; blocked scenes followed by recorded evidence labelled `LIVE BLOCKED` |
+| [`effects_plain.txt`](evidence/demo/effects_plain.txt) | `lear demo effects --plain` | 0 | Registry `lear-demo-effects-v2`: 118 recipes, 40 families |
+| [`effects_preview_plain.txt`](evidence/demo/effects_preview_plain.txt) | `lear demo effects --plain --preview all` | 0 | Every recipe rendered from labelled example data (`[ILLUSTRATIVE]`) |
+| [`render_overhead_2026-11-06.json`](evidence/demo/render_overhead_2026-11-06.json) | `python3 scripts/measure_demo_render.py --bundle docs/lear_agent/evidence/demo/lear_demo_replay_v2_full.json` | 0 | 12 scenes: 6.33 ms static, 11.59 ms with all 560 frames, 20.96 s of deliberate pacing at speed 1 |
 
-**The live bench numbers differ between runs.** Each run is a new 2-vCPU
-measurement over 2–10 requests per level. The bundle's live levels were:
+The examiner transcript shows, scene by scene:
 
-| Users | ok/requests | p50 (ms) | p99 (ms) |
-|---|---|---|---|
-| 1 | 2/2 | 29.7 | 55.1 |
-| 2 | 4/4 | 72.3 | 88.2 |
-| 5 | 10/10 | 91.9 | 450.7 |
+- **S01:** docs checks 11/11 PASS; 10/10 rebuilt files byte-identical.
+- **S02:** a 355-chunk scratch index.
+- **S03:** doctor exit 6.
+- **S04:** 13 lifecycle spans.
+- **S05:** 10 selected chunks, 2 excluded by the context budget, context 1684/1800 tokens.
+- **S06:** the lear-012 answer with its citation traced to Lear source lines.
+- **S08:** 7 MATCH and 2 LIMITATION.
+- **S09:** five proxy dimensions and the failure explorer.
+- **S10:** live and recorded bench, `INDICATIVE — SMALL SAMPLE`.
+- **S11:** `OVERALL: BLOCKED`.
 
-With n ≤ 10, these p99 values are the maximum and are unstable. That is why the
-screen prints a warning. The official recorded baseline is in
-[benchmark_report.md](benchmark_report.md).
+**Bench numbers differ between runs.** Each live run is a new 2-vCPU
+measurement over 2–10 requests per level, so its p99 is the maximum of a small
+sample. The screen labels it `INDICATIVE — SMALL SAMPLE`. The official recorded
+baseline is in [benchmark_report.md](benchmark_report.md).
+
+## Video
+
+[`demo_video/`](demo_video/README.md) holds a real pty recording (asciicast v2,
+1157 events, 132 s) of `lear demo live` (exit 6) followed by the baseline
+director, navigated with real key presses (exit 0). It is rendered to MP4
+(H.264, 984×834, 10 fps, 2 min 14 s, 4.3 MB) and to one poster frame.
 
 ## Test and packaging results
 
 | Gate | Command | Result |
 |---|---|---|
-| Demo tests | `python3 -m unittest discover -s tests -p 'test_lear_demo.py'` | 21 tests OK |
-| Full unit suite | `python3 -m unittest discover -s tests` | 240 tests OK (219 before the demo + 21) |
-| Wheel contents | `python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/whl` then `python3 -m zipfile -l …` | Contains `ragformation/lear/demo.py`, `demo_render.py` and `demo_replay/lear_demo_replay_v1.json` |
-| Installed replay | `/tmp/whlvenv/bin/python -m ragformation lear demo replay --plain`, run from `/tmp` | exit 0, with "evidence missing here" warnings because the wheel has no `docs/` |
-| Installed examiner | `RAG_LEAR_DOCS_DIR=<repo>/docs/lear_backend …/python -m ragformation lear --backend baseline --data-dir /tmp/whl-data demo examiner --json` | exit 0. S09 is `UNAVAILABLE` because the golden set is not in the wheel. `/tmp/whl-data` was never created |
-| Installed live | `…/python -m ragformation lear demo live --json` | exit 6 |
-| TTY path | `TERM=xterm-256color script -qec "… demo director --auto --speed 0 …" /dev/null` | exit 0; colour output ends with an ANSI reset |
-| Keys | pty with `Enter`, `d`, `q` | three control prompts, then a clean exit 0 |
+| Demo tests | `python3 -m unittest discover -s tests -p 'test_lear_demo.py'` | 37 tests OK |
+| Full unit suite | `python3 -m unittest discover -s tests` | 256 tests OK |
+| Legacy engine | `cd engine && python3 -m unittest discover -s tests` | 29 tests OK |
+| Python 3.9 grammar | `ast.parse(..., feature_version=(3, 9))` on the changed files | OK |
+| Wheel contents | `python3 -m pip wheel . --no-deps --no-build-isolation -w /tmp/whl` | Contains `demo.py`, `demo_render.py`, `demo_effects.py` and `demo_replay/lear_demo_replay_v2.json`; no `docs/`, no v1 bundle, no test or holdout question |
+| Installed replay | clean venv, from `/tmp`: `python -m ragformation lear demo replay --plain` | exit 0; checksum verified; "evidence missing here" warnings, because the wheel has no `docs/` |
+| Installed examiner | `… lear --backend baseline --data-dir /tmp/whl-data --docs-dir <repo>/docs/lear_backend demo examiner --json` | exit 0; S09 `UNAVAILABLE` with `EVALUATION DATA UNAVAILABLE - PROVIDE AN AUTHORISED SOURCE CHECKOUT`; `/tmp/whl-data` never created |
+| Installed live | `… lear demo live --json` | exit 6 |
+| Installed effects | `… lear demo effects --preview all --plain` / `--preview nope` | exit 0 / exit 2 |
+| Real TTY | `PtyKeyTests` (pseudo-terminal, `TERM=xterm-256color`) | keys `n b → 9 q` → S00, S01, S00, S01, S09, exit 0, ends with an ANSI reset; Ctrl-C → exit 130 with the reset |
 
 ## What is not evidence
 
-- **No model result.** The demo contains none: no TTFT, ITL, tok/s or judge score. It cannot produce one in this environment, and the tests assert that it does not invent one.
-- **Not a qualifying run.** The baseline answers and timings are pipeline behaviour.
-- **The final readiness decision is unchanged.** It is still BLOCKED ([final_report.md](final_report.md)).
+- **No model result.** There is no TTFT, ITL, tok/s or judge score. The demo cannot produce one in this environment, and the tests assert that it does not invent one.
+- **Not a qualifying run.** Baseline answers and timings are pipeline behaviour, labelled `NOT QUALIFYING`.
+- **The readiness decision is unchanged.** It is still BLOCKED ([final_report.md](final_report.md)).

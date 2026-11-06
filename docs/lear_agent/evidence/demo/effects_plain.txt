@@ -1,78 +1,328 @@
-$ python3 -m ragformation lear demo effects --plain
--- motion library: 36 effects (each has a reduced-motion equivalent) -------------------------------
-effect             | family          | trigger            | reduced motion     | data
+-- effect registry lear-demo-effects-v2: 118 recipes, 40 families, 31 layouts x 11 motions ---------
+  error/retry/recovery         ############################## 6
+  final evidence/report assemb ############################## 6
+  TTFT/ITL readout             #########################..... 5
+  checksum/replay verification #########################..... 5
+  evaluation comparison        #########################..... 5
+  chunk-boundary tracing       ####################.......... 4
+  dummy-user lanes             ####################.......... 4
+  line-by-line document regist ####################.......... 4
+  model readiness/blocking     ####################.......... 4
+  precision text reveal        ####################.......... 4
+  session timeline             ####################.......... 4
+  abstention gate              ###############............... 3
+id                      | family                   | layout + motion      | purpose (real datum or
+                        |                          |                      | event)
 ----------------------------------------------------------------------------------------------------
-paper_feed         | archival        | a list of real     | all lines at once  | docs verify pages,
-                   |                 | pages/lines is     |                    | transcript lines
-                   |                 | shown              |                    |
-registration_marks | archival        | a scene opens      | plain header rule  | scene id/title
-heading_indent_rev | archival        | a chunk's heading  | indented list      | manifest
-eal                |                 | path is shown      |                    | heading_path
-chunk_segmentation | archival        | index statistics   | same strip, no     | manifest token
-                   |                 | are shown          | delay              | counts
-citation_stamp     | archival        | a citation is      | same text          | answer citations +
-                   |                 | validated          |                    | manifest
-hash_seal          | archival        | a fingerprint or   | full hash          | SOURCE_PIN, dataset
-                   |                 | checksum is shown  |                    | sha256, index
-                   |                 |                    |                    | fingerprint
-quarantine_hatch   | archival        | a retrieved chunk  | text label         | retrieval.quarantin
-                   |                 | is quarantined     | QUARANTINED        | ed
-source_margin      | archival        | a fact is shown    | same               | fact provenance
-query_ribbon       | retrieval       | a question enters  | terms listed       | agent.salient_terms
-                   |                 | the pipeline       |                    |
-candidate_fanout   | retrieval       | retrieval returns  | indented list      | retrieval.candidate
-                   |                 | candidates         |                    | s
-score_ladder       | retrieval       | candidate scores   | numbers only in    | candidate
-                   |                 | exist              | plain              | score/support
-selection_rail     | retrieval       | context is         | SELECTED/EXCLUDED  | retrieval.selected/
-                   |                 | assembled          | words              | excluded
-context_meter      | retrieval       | context tokens are | numbers            | retrieval.contextTo
-                   |                 | known              |                    | kens + settings
-stage_waterfall    | retrieval       | stage timings      | table              | retrieval.stages ms
-                   |                 | exist              |                    |
-teletype           | generation      | a REAL model       | full text at once  | streamed tokens
-                   |                 | stream exists      |                    | only (never for
-                   |                 |                    |                    | extractive output)
-abstention_gate    | generation      | an answer abstains | ABSTAINED: reason  | status +
-                   |                 |                    |                    | abstainReason
-status_stamp       | generation      | an answer          | status line        | status,
-                   |                 | completes          |                    | exit_code_for
-claim_trace        | generation      | an answer has      | list               | citations +
-                   |                 | citations          |                    | manifest
-session_timeline   | sessions        | a session has      | numbered list      | session turns
-                   |                 | turns              |                    |
-compaction_fold    | sessions        | compaction runs    | before/after       | compaction report
-                   |                 |                    | numbers            |
-token_counter      | sessions        | before/after token | before -> after    | tokens_before/after
-                   |                 | counts exist       |                    | (estimated,
-                   |                 |                    |                    | labelled)
-memory_gate        | sessions        | memory is listed   | counts             | MemoryStore.list
-expiry_clock       | sessions        | an expiry          | timestamp          | memory/session
-                   |                 | timestamp exists   |                    | expires_at
-handshake_trace    | instrumentation | doctor runs        | table              | doctor checks
-loopback_lamp      | instrumentation | the Ollama URL is  | word               | settings.ollama_url
-                   |                 | shown              |                    |
-model_card         | instrumentation | model              | table              | doctor summary
-                   |                 | configuration is   |                    |
-                   |                 | shown              |                    |
-percentile_plot    | instrumentation | latency samples    | table              | stats.describe over
-                   |                 | exist              |                    | real samples
-concurrency_lanes  | instrumentation | bench levels exist | table              | bench records
-admission_gate     | instrumentation | rate limiting is   | counts             | limiter counters /
-                   |                 | shown              |                    | RATE_LIMITED
-                   |                 |                    |                    | outcomes
-dependency_panel   | instrumentation | a dependency is    | same text          | doctor /
-                   |                 | unavailable        |                    | ProviderUnavailable
-round_ledger       | evaluation      | evaluation runs    | table              | report.evaluation_r
-                   |                 | are listed         |                    | uns
-delta_arrows       | evaluation      | two comparable     | signed numbers     | run summaries
-                   |                 | runs exist         |                    |
-regression_ledger  | evaluation      | per-case results   | list               | run.json cases
-                   |                 | exist              |                    |
-split_ruler        | evaluation      | the golden set is  | counts             | golden set splits
-                   |                 | shown              |                    |
-exit_code_ledger   | evaluation      | guardrail steps    | table              | real exit codes
-                   |                 | finish             |                    |
-readiness_card     | evaluation      | the walkthrough    | same text          | final_report + live
-                   |                 | ends               |                    | gates
-[exit 0]
+scene_registration      | precision text reveal    | registration + stamp | scene id, title and
+                        |                          |                      | provenance label of the
+                        |                          |                      | scene being rendered
+narrative_reveal        | precision text reveal    | box + feed           | the conceptual
+                        |                          |                      | explanation text,
+                        |                          |                      | labelled as such
+provenance_legend       | precision text reveal    | ledger + feed        | the meaning of LIVE,
+                        |                          |                      | RECORDED, ILLUSTRATIVE,
+                        |                          |                      | UNAVAILABLE, BLOCKED and
+                        |                          |                      | NOT QUALIFYING
+question_entry          | typewriter/teletype      | chain + type_input   | the golden question text
+                        |                          |                      | that will be asked
+answer_stream           | typewriter/teletype      | margin + type_stream | answer text, typed only
+                        |                          |                      | when it came from a real
+                        |                          |                      | model stream
+command_echo            | typewriter/teletype      | margin + type_input  | the exact CLI commands
+                        |                          |                      | that reproduce the scene
+docs_check_feed         | line-by-line document    | checklist + feed     | status and summary of
+                        | registration             |                      | every docs-verify check
+docs_page_register      | line-by-line document    | ledger + feed        | narrative and generated
+                        | registration             |                      | page counts
+refs_by_file_bars       | line-by-line document    | bars + grow          | number of path:line
+                        | registration             |                      | references per Lear
+                        |                          |                      | source file
+chunk_heading_tree      | heading hierarchy        | tree + feed          | heading path of one
+                        | expansion                |                      | manifest chunk
+document_outline_tree   | heading hierarchy        | tree + instant       | distinct section
+                        | expansion                |                      | headings of one
+                        |                          |                      | generated document
+chunk_token_strip       | chunk-boundary tracing   | strip + grow         | token counts of
+                        |                          |                      | consecutive manifest
+                        |                          |                      | chunks
+chunk_line_margin       | chunk-boundary tracing   | margin + feed        | start and end line of
+                        |                          |                      | one chunk in its source
+                        |                          |                      | document
+chunk_token_histogram   | chunk-boundary tracing   | histogram + instant  | distribution of chunk
+                        |                          |                      | token counts in buckets
+neighbour_chain         | overlap/adjacency        | chain + feed         | the previous, current
+                        | demonstration            |                      | and next chunk ids of
+                        |                          |                      | one document
+overlap_policy_ledger   | overlap/adjacency        | ledger + instant     | configured chunk size,
+                        | demonstration            |                      | overlap and splitter
+document_chunk_bars     | page and section         | bars + grow          | number of chunks per
+                        | indexing                 |                      | source document
+line_precision_ledger   | page and section         | ledger + feed        | count of chunks with
+                        | indexing                 |                      | exact line spans versus
+                        |                          |                      | section-level spans
+coverage_gauge          | page and section         | gauge + grow         | Lear modules cited by
+                        | indexing                 |                      | narrative pages out of
+                        |                          |                      | all modules
+embedded_chunk_counter  | embedding batch progress | counter + count      | number of chunks
+                        | using real counts        |                      | embedded and stored
+embedding_batch_slots   | embedding batch progress | slots + feed         | embedding batches
+                        | using real counts        |                      | completed for the corpus
+query_vector_axis       | vector axis/coordinate   | axis + feed          | first dimensions of the
+                        | readout                  |                      | query vector from the
+                        |                          |                      | configured embedder
+vector_shape_ledger     | vector axis/coordinate   | ledger + instant     | embedding provider,
+                        | readout                  |                      | dimension, normalisation
+                        |                          |                      | and metric
+score_support_split     | similarity/distance      | split + instant      | fused rank score next to
+                        | comparison               |                      | evidence support for the
+                        |                          |                      | top candidates
+support_spark           | similarity/distance      | spark + instant      | evidence support values
+                        | comparison               |                      | across all candidates
+candidate_fanout        | candidate arrival and    | margin + feed        | candidate chunk ids in
+                        | rank ordering            |                      | the order the engine
+                        |                          |                      | returned them
+candidate_rank_ladder   | candidate arrival and    | ladder + settle      | fused score and
+                        | rank ordering            |                      | selection of each
+                        |                          |                      | candidate
+scope_term_checklist    | lexical hit marking      | checklist + feed     | named terms of the
+                        |                          |                      | question found or
+                        |                          |                      | missing in the corpus
+                        |                          |                      | vocabulary
+salient_terms_ledger    | lexical hit marking      | ledger + instant     | salient terms extracted
+                        |                          |                      | from the question
+dense_stage_bar         | dense retrieval          | bars + grow          | measured duration of the
+                        | candidate marking        |                      | semantic retrieval stage
+channel_rank_unavailabl | dense retrieval          | stamp + stamp        | the fact that the core
+e                       | candidate marking        |                      | does not expose
+                        |                          |                      | dense/BM25/RRF ranks
+hybrid_stage_chain      | hybrid merge             | chain + feed         | the retrieval stages
+                        |                          |                      | that ran, in order
+retrieval_mode_stamp    | hybrid merge             | stamp + stamp        | retrieval mode reported
+                        |                          |                      | by the engine
+rrf_definition          | RRF rank reconciliation  | ledger + instant     | the reciprocal rank
+                        |                          |                      | fusion formula and its k
+fused_score_bars        | RRF rank reconciliation  | bars + grow          | fused score of each
+                        |                          |                      | selected chunk
+support_bars            | rerank comparison        | bars + feed          | heuristic support score
+                        |                          |                      | of each candidate
+rerank_method_stamp     | rerank comparison        | stamp + stamp        | that the reranker is
+                        |                          |                      | heuristic-coverage-v1,
+                        |                          |                      | not a model
+selection_checklist     | MMR diversity selection  | checklist + feed     | which candidates were
+                        |                          |                      | selected or excluded
+mmr_lambda_gauge        | MMR diversity selection  | gauge + instant      | the configured MMR
+                        |                          |                      | relevance/diversity
+                        |                          |                      | balance
+context_budget_gauge    | context-budget packing   | gauge + grow         | context tokens used
+                        |                          |                      | against the configured
+                        |                          |                      | budget
+context_chunk_strip     | context-budget packing   | strip + grow         | token count of each
+                        |                          |                      | selected chunk in
+                        |                          |                      | context order
+exclusion_checklist     | context                  | checklist + instant  | excluded candidates and
+                        | exclusion/overflow       |                      | the engine's reasons
+overflow_counter        | context                  | counter + count      | number of candidates not
+                        | exclusion/overflow       |                      | selected for context
+prompt_delimiters       | prompt-section           | delimiters + feed    | sizes of system,
+                        | delimiting               |                      | history, memory,
+                        |                          |                      | evidence and user
+                        |                          |                      | sections
+prompt_version_flap     | prompt-section           | flap + flap          | the system prompt
+                        | delimiting               |                      | version identifier
+quarantine_hatch        | quarantine isolation     | hatch + instant      | chunk id and injection
+                        |                          |                      | rules that quarantined
+                        |                          |                      | it
+quarantine_rule_grid    | quarantine isolation     | grid + instant       | which injection rules
+                        |                          |                      | matched which
+                        |                          |                      | quarantined chunks
+citation_stamp          | citation marker          | stamp + stamp        | whether one citation
+                        | resolution               |                      | resolves to a retrieved
+                        |                          |                      | manifest chunk
+marker_chain            | citation marker          | chain + feed         | marker number, evidence
+                        | resolution               |                      | id and chunk id
+source_traceback        | source-line traceback    | trace + feed         | chunk, document lines
+                        |                          |                      | and pinned Lear source
+                        |                          |                      | lines of a citation
+ref_line_margin         | source-line traceback    | margin + feed        | each cited Lear
+                        |                          |                      | path:line and the file's
+                        |                          |                      | line count at the pin
+conflict_split          | conflict highlighting    | split + instant      | expected CONFLICTED
+                        |                          |                      | status next to the
+                        |                          |                      | observed status
+conflict_scope_ledger   | conflict highlighting    | ledger + instant     | units the core conflict
+                        |                          |                      | detector compares
+abstention_gate         | abstention gate          | box + instant        | abstention reason and
+                        |                          |                      | the evidence threshold
+abstain_counter         | abstention gate          | counter + count      | number of ABSTAINED
+                        |                          |                      | answers in a recorded
+                        |                          |                      | run
+session_timeline        | session timeline         | timeline + feed      | status and retrieval
+                        |                          |                      | rewrite of each session
+                        |                          |                      | turn
+turn_role_grid          | session timeline         | grid + instant       | user and assistant
+                        |                          |                      | messages stored per turn
+followup_rewrite_chain  | session timeline         | chain + type_input   | a follow-up question and
+                        |                          |                      | its retrieval-only
+                        |                          |                      | rewrite
+session_isolation_stamp | session timeline         | stamp + stamp        | the exit code returned
+                        |                          |                      | when another user opens
+                        |                          |                      | the session
+compaction_token_diff   | history compaction       | diff + count         | estimated history tokens
+                        |                          |                      | before and after one
+                        |                          |                      | compaction
+compaction_fold_slots   | history compaction       | slots + feed         | messages kept verbatim
+                        |                          |                      | versus folded into the
+                        |                          |                      | summary
+memory_gate_checklist   | memory selection/expiry  | checklist + feed     | outcomes of the
+                        |                          |                      | outdated-memory, guard
+                        |                          |                      | and scoping checks
+memory_expiry_counter   | memory selection/expiry  | counter + count      | time-to-live of the
+                        |                          |                      | stored memory item in
+                        |                          |                      | seconds
+admission_window        | rate-limit               | window + count       | requests used in a
+                        | admission/refusal        |                      | sliding window and
+                        |                          |                      | refusals
+rate_limited_bars       | rate-limit               | bars + grow          | number of 429 responses
+                        | admission/refusal        |                      | per bench level
+concurrency_slots       | concurrency queue        | slots + flap         | peak in-flight requests
+                        |                          |                      | against the concurrency
+                        |                          |                      | limit
+queue_timeout_gauge     | concurrency queue        | gauge + instant      | configured queue timeout
+                        |                          |                      | against the request
+                        |                          |                      | budget
+dependency_block        | model readiness/blocking | box + stamp          | doctor exit code,
+                        |                          |                      | blocked reason and the
+                        |                          |                      | fix
+model_card              | model readiness/blocking | ledger + feed        | configured model tags,
+                        |                          |                      | caps and whether they
+                        |                          |                      | were verified
+loopback_lamp           | model readiness/blocking | stamp + stamp        | whether the Ollama
+                        |                          |                      | endpoint is loopback
+doctor_checklist        | model readiness/blocking | checklist + feed     | status of every doctor
+                        |                          |                      | probe
+stream_event_counter    | token stream display     | counter + count      | number of streamed token
+                        |                          |                      | events
+no_stream_stamp         | token stream display     | stamp + stamp        | that no model stream
+                        |                          |                      | exists for this answer
+ttft_itl_ledger         | TTFT/ITL readout         | ledger + instant     | TTFT, ITL and decode
+                        |                          |                      | tokens/sec with their
+                        |                          |                      | definitions
+itl_spark               | TTFT/ITL readout         | spark + instant      | inter-token latencies of
+                        |                          |                      | a real stream
+lifecycle_waterfall     | TTFT/ITL readout         | waterfall + grow     | measured start and
+                        |                          |                      | duration of each agent
+                        |                          |                      | lifecycle stage
+percentile_ruler        | percentile ruler         | ruler + sweep        | p50, p85 and p99 of
+                        |                          |                      | total latency on one
+                        |                          |                      | scale
+sample_size_stamp       | percentile ruler         | stamp + stamp        | the sample size behind
+                        |                          |                      | each percentile
+round_table             | evaluation comparison    | table + feed         | correctness, strict
+                        |                          |                      | correctness and MRR of
+                        |                          |                      | each recorded run
+round_delta             | evaluation comparison    | diff + count         | change in correctness
+                        |                          |                      | between the first and
+                        |                          |                      | last round
+split_strip             | evaluation comparison    | strip + instant      | number of cases per
+                        |                          |                      | split
+judge_blocked_stamp     | evaluation comparison    | stamp + stamp        | that no LLM-judge scores
+                        |                          |                      | exist
+regression_ledger       | regression detection     | ledger + feed        | case ids fixed and
+                        |                          |                      | regressed between
+                        |                          |                      | consecutive rounds
+case_flip_grid          | regression detection     | grid + instant       | per-case correctness
+                        |                          |                      | across rounds for
+                        |                          |                      | flipped cases
+request_lanes           | dummy-user lanes         | lanes + feed         | outcome of every request
+                        |                          |                      | per bench level
+throughput_bars         | dummy-user lanes         | bars + grow          | requests per second per
+                        |                          |                      | bench level
+wall_time_bars          | dummy-user lanes         | bars + instant       | wall-clock seconds per
+                        |                          |                      | bench level
+exit_code_ledger        | error/retry/recovery     | ledger + instant     | exit code observed for
+                        |                          |                      | each guardrail step
+error_panel             | error/retry/recovery     | box + stamp          | error message and
+                        |                          |                      | remediation hint of a
+                        |                          |                      | failed step
+guardrail_grid          | error/retry/recovery     | grid + instant       | verdict of each
+                        |                          |                      | guardrail step
+status_exit_stamp       | error/retry/recovery     | stamp + stamp        | answer status and its
+                        |                          |                      | process exit code
+bundle_seal             | checksum/replay          | seal + flap          | sha256 of the replay
+                        | verification             |                      | bundle body
+evidence_checklist      | checksum/replay          | checklist + feed     | per-file evidence hash
+                        | verification             |                      | status
+source_pin_seal         | checksum/replay          | seal + flap          | the pinned Lear commit
+                        | verification             |                      | id
+golden_seal             | checksum/replay          | seal + stamp         | sha256 of the frozen
+                        | verification             |                      | golden set
+correlation_seal        | checksum/replay          | flap + flap          | the correlation id of
+                        | verification             |                      | the request
+readiness_card          | final evidence/report    | box + feed           | overall readiness and
+                        | assembly                 |                      | the steps to qualify
+evidence_index          | final evidence/report    | margin + feed        | evidence files that back
+                        | assembly                 |                      | the scene
+qualify_checklist       | final evidence/report    | checklist + feed     | the remaining steps to
+                        | assembly                 |                      | qualify the local model
+                        |                          |                      | path
+registry_family_bars    | final evidence/report    | bars + instant       | number of recipes per
+                        | assembly                 |                      | effect family
+report_runs_counter     | final evidence/report    | counter + count      | number of evaluation
+                        | assembly                 |                      | runs listed by the
+                        |                          |                      | report
+bench_table             | percentile ruler         | table + feed         | count, mean and
+                        |                          |                      | percentiles per bench
+                        |                          |                      | level
+scene_step_table        | error/retry/recovery     | table + instant      | expected versus observed
+                        |                          |                      | result of each
+                        |                          |                      | demonstrated step
+git_commit_flap         | precision text reveal    | flap + flap          | the rag-formation git
+                        |                          |                      | commit being
+                        |                          |                      | demonstrated
+doc_rebuild_gauge       | line-by-line document    | gauge + grow         | generated files
+                        | registration             |                      | byte-identical to the
+                        |                          |                      | committed docs
+stage_timing_table      | hybrid merge             | table + instant      | status and duration of
+                        |                          |                      | each core retrieval
+                        |                          |                      | stage
+memory_used_slots       | memory selection/expiry  | slots + instant      | memory items used
+                        |                          |                      | against the per-turn
+                        |                          |                      | limit
+history_budget_gauge    | history compaction       | gauge + instant      | configured history token
+                        |                          |                      | budget against the
+                        |                          |                      | summary size
+injection_split         | quarantine isolation     | split + instant      | quarantine count next to
+                        |                          |                      | whether the answer
+                        |                          |                      | obeyed the page
+provider_failure_chain  | error/retry/recovery     | chain + feed         | the path from provider
+                        |                          |                      | error to ERROR status
+                        |                          |                      | and exit 6
+level_status_grid       | dummy-user lanes         | grid + instant       | answer statuses observed
+                        |                          |                      | per bench level
+partial_counter         | abstention gate          | counter + instant    | number of PARTIAL
+                        |                          |                      | answers across recorded
+                        |                          |                      | runs
+readiness_scan          | final evidence/report    | ledger + scan        | doctor state, recorded
+                        | assembly                 |                      | decision and overall
+                        |                          |                      | readiness
+chunk_content_seal      | chunk-boundary tracing   | seal + flap          | content hash of one
+                        |                          |                      | manifest chunk
+lifecycle_result_table  | TTFT/ITL readout         | table + feed         | what each agent
+                        |                          |                      | lifecycle stage did,
+                        |                          |                      | with its measured
+                        |                          |                      | duration
+core_substage_bars      | TTFT/ITL readout         | bars + grow          | retrieval, generation
+                        |                          |                      | and the derived
+                        |                          |                      | remainder inside the
+                        |                          |                      | core request
+five_dimension_table    | evaluation comparison    | table + instant      | five deterministic proxy
+                        |                          |                      | dimensions per recorded
+                        |                          |                      | run
+failure_explorer        | regression detection     | table + feed         | incorrect round-3 cases
+                        |                          |                      | with status, key-fact
+                        |                          |                      | coverage, citation
+                        |                          |                      | precision and reciprocal
+                        |                          |                      | rank
+  preview one: python3 -m ragformation lear demo effects --preview <id>   (every recipe: --preview
+  all)

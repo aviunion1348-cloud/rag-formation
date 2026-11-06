@@ -1,0 +1,2319 @@
+{
+ "schema": "lear-demo-replay-v2",
+ "meta": {
+  "provenance": "LIVE_CAPTURE",
+  "runId": "demo-20261105T205910Z",
+  "replayId": "demo-20261105T205910Z",
+  "capturedAt": "2026-11-05T20:59:10Z",
+  "timezone": "UTC",
+  "gitCommit": "954c8d624515",
+  "gitDirty": false,
+  "backend": "baseline",
+  "qualifying": false,
+  "demoVersion": "lear-demo-v2",
+  "effectsRegistry": "lear-demo-effects-v2",
+  "datasetVersion": {
+   "path": "evals/lear/golden_lear_v1.json",
+   "sha256": "6cea16b9058b84ac611bc6a859efa0a889e555f34c2ae84b8aef099d626e877f"
+  },
+  "sourcePin": {
+   "repository": "aviunion1348-cloud/Lear-backend-Avi",
+   "commit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+   "branch": "main"
+  },
+  "configFingerprint": {
+   "sha256": "51c94821beb83f615d196fc3c144c7ef73bcd0903a2a345fe85f6bbd2160c2ed",
+   "settings": {
+    "backend": "baseline",
+    "embed_model": "nomic-embed-text",
+    "llm_model": "qwen2.5:1.5b",
+    "judge_model": "llama3.2:1b",
+    "top_k": 6,
+    "max_context_tokens": 1800,
+    "max_output_tokens": 512,
+    "abstain_threshold": null,
+    "chunk_target_tokens": 180,
+    "chunk_max_tokens": 300,
+    "chunk_overlap_tokens": 20,
+    "history_token_budget": 900,
+    "keep_recent_turns": 4,
+    "memory_items": 3,
+    "rate_user_per_min": 30,
+    "rate_session_per_min": 20,
+    "max_concurrent": 2,
+    "max_input_chars": 2000,
+    "scope_guard": true
+   }
+  },
+  "models": {
+   "embedder": "nomic-embed-text",
+   "llm": "qwen2.5:1.5b",
+   "judge": "llama3.2:1b",
+   "doctorReady": false,
+   "availability": "UNVERIFIED: doctor did not pass"
+  },
+  "metricDefinitions": {
+   "TTFT": "time from the start of ask() to the first streamed token of a real model stream",
+   "ITL": "gap between consecutive streamed tokens of a real model stream (p50 shown)",
+   "decode tok/s": "(streamed tokens - 1) / (last token time - first token time)",
+   "percentiles": "nearest-rank, no interpolation (ragformation/lear/stats.py); fewer than 1,000 observations is INDICATIVE — SMALL SAMPLE",
+   "lifecycle": "contiguous perf_counter spans per agent stage (schema lear-lifecycle-v1)",
+   "correct": "deterministic offline scorer (lenient and lear-keyfacts-strict-v1); not an LLM judge"
+  },
+  "terminalProfile": {
+   "capture": "non-interactive (records data, not frames)",
+   "width": 100
+  },
+  "limitations": [
+   "All recorded runs are baseline (hashing + extractive): NOT QUALIFYING.",
+   "Context precision on the baseline is low (about .25–.29 across runs).",
+   "Extractive baseline answers are sentence selections, often padded with neighbouring sentences.",
+   "Inside the core request only retrieval and generation are timed by the engine; core.other = engine span - retrieval - generation (derived).",
+   "Model tags and parameter counts are UNVERIFIED: Ollama never ran in the recorded environment.",
+   "Narrative pages cover 43 of 79 Lear modules (every module is cited somewhere); prose is reference-checked, not fully human-reviewed.",
+   "Only a baseline (hashing) index can be built here; the qualifying Ollama index has never been built.",
+   "Pipeline-only: no LLM decode is included in any latency shown here.",
+   "Qualification stays BLOCKED until a real local-model run passes doctor, evaluation and the judge.",
+   "Resistance of a real LLM to injected instructions is untested (no model).",
+   "Spans are wall-clock perf_counter intervals of one request; they are not a profile.",
+   "The baseline extractive generator never reads memory; whether an LLM obeys 'memory cannot override the docs' is UNVERIFIED.",
+   "Token counts are estimates (~4 chars/token)."
+  ],
+  "contentRedacted": true,
+  "redactionPolicy": "lear-demo-redaction-v1",
+  "evidence": {
+   "docs/lear_agent/benchmark_report.md": "6094f25cc4cfb2ea36db52cea82249a86edab41c1dd422b4ff25b74a7557047b",
+   "docs/lear_agent/documentation_coverage.md": "009ba1015e46a3b54421346ee8dac8e20edfd07b24335f5bdeeff38a23c60cb4",
+   "docs/lear_agent/evidence/bench_baseline_ratelimit_session2_2026-11-05.json": "c8002275c581ecb4d53877057073f799cc2652790a1d2d1f75b0b81f961c3b56",
+   "docs/lear_agent/evidence/bench_baseline_users_1_2_5_10_2026-11-05.json": "dee008c425bf759e9086296a38c00b362aeaabad8a29b6e1ed173b9ba8b949c3",
+   "docs/lear_agent/evidence/docs_verify_2026-11-05.json": "69f4e7343c232e31b856dc7a88bcac8d304b9b1c947b1d758b3bf91306c07a6d",
+   "docs/lear_agent/evidence/doctor_live_final_2026-11-05.json": "e3b9e4bffba909ee93cf645f24cd8a31ea3a9b9bc4c5af5f0c085c53b58f8c95",
+   "docs/lear_agent/evidence/rescore_strict_keyfacts_2026-11-05.json": "a80d1e6a23f548307e39195fa8a45a488637bce0943f8d1e1bbf4c92173f332f",
+   "docs/lear_agent/final_report.md": "efdfe597a9d3cbd2c43b049e18d5f46c75601024202f8f98763dbcf1ed9bc11c",
+   "docs/lear_agent/model_compliance.md": "de22ab29c575f3611a7c60ca74dc6576a374c775f61b94dc51dbdb47035f4edf",
+   "docs/lear_agent/requirements_matrix.md": "7e563ff9ef009153bf4a2adabddec60729491755167f5e6e6bc5f5b7212883dd",
+   "docs/lear_backend/SOURCE_PIN.json": "df6c30f70408dd3aa4178604a895322818a1fec7d6e534f08a6ff2e6095db8d8",
+   "evals/lear/golden_lear_v1.checksums.json": "cb23a353a1352d6aaa9c987d373373f66685fed008e6fdf5117f35d9fd066db0",
+   "evals/lear/results/final-holdout/run.json": "345dadc944726fbae6025f9b7517ffe6929ddbe9b965745ce139224d0056079e",
+   "evals/lear/results/round-0-test/run.json": "9bccde3ce21ecfffb31153eea1152d912e06ece8482cc1161725624d847d3e74",
+   "evals/lear/results/round-0/run.json": "8c1cebf0eacc25563f444bad682cf40e21cf50024fded46b43ce43c6cc45489e",
+   "evals/lear/results/round-1/run.json": "b5b5786b6d88519fdb5f2fa438c190d567a46eec23b9abe12d98c3c1fb9d4f92",
+   "evals/lear/results/round-2/run.json": "23d451c7c5f3ae54f9e084c899f929762397a632f1860d86785cbe17af6f3415",
+   "evals/lear/results/round-3-test/run.json": "ce98a28e0006941f2c66fc0098d4b03ce229698ca9423212cb04080382d8fac0",
+   "evals/lear/results/round-3/run.json": "317d1383164e2054a3a95f9c307446b36938c11d3cc6147a4cce0f445ec3aebc"
+  }
+ },
+ "scenes": [
+  {
+   "id": "S00",
+   "title": "Boot and trust boundary",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --help"
+   ],
+   "facts": [
+    {
+     "k": "the question (golden lear-012)",
+     "v": "[REDACTED question lear-012: 46 chars, sha256 4ae04634814a]",
+     "p": "RECORDED",
+     "src": "evals/lear/golden_lear_v1.json (verbatim copy in installed packages)"
+    },
+    {
+     "k": "system",
+     "v": "RAG Formation / Lear Local Agent (the answering system)",
+     "p": "ILLUSTRATIVE",
+     "src": null
+    },
+    {
+     "k": "subject corpus",
+     "v": "Lear backend repository, via source-pinned docs in docs/lear_backend",
+     "p": "ILLUSTRATIVE",
+     "src": null
+    },
+    {
+     "k": "rag-formation commit",
+     "v": "954c8d624515 on arena/227b3998-rag-formation",
+     "p": "LIVE",
+     "src": "git rev-parse"
+    },
+    {
+     "k": "source pin",
+     "v": "aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408 (main)",
+     "p": "RECORDED",
+     "src": "docs/lear_backend/SOURCE_PIN.json"
+    },
+    {
+     "k": "backend",
+     "v": "baseline (BASELINE / NOT QUALIFYING)",
+     "p": "LIVE",
+     "src": "LearSettings"
+    },
+    {
+     "k": "Ollama endpoint",
+     "v": "127.0.0.1:11434 (loopback: allowed)",
+     "p": "LIVE",
+     "src": "settings.is_loopback_url"
+    },
+    {
+     "k": "qualification",
+     "v": "BLOCKED",
+     "p": "RECORDED",
+     "src": "docs/lear_agent/final_report.md"
+    }
+   ],
+   "steps": [],
+   "data": {
+    "git": {
+     "commit": "954c8d624515",
+     "branch": "arena/227b3998-rag-formation",
+     "dirty": false
+    },
+    "pin": {
+     "repository": "aviunion1348-cloud/Lear-backend-Avi",
+     "commit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+     "branch": "main",
+     "commit_date": "2026-10-01T19:21:30+05:30"
+    },
+    "backend": "baseline",
+    "qualifying": false,
+    "loopback": true,
+    "readiness": "BLOCKED",
+    "question": "[REDACTED question lear-012: 46 chars, sha256 4ae04634814a]",
+    "caseId": "lear-012",
+    "legend": {
+     "LIVE": "measured or returned by this execution",
+     "RECORDED": "loaded from a checksum-verified recording (run id, capture time, commit)",
+     "ILLUSTRATIVE": "explanation or example only, never a measurement",
+     "UNAVAILABLE": "this capability or measurement cannot be observed here",
+     "BLOCKED": "a dependency, model or environment prerequisite is missing",
+     "NOT QUALIFYING": "a real result that does not meet the qualification conditions (baseline)"
+    }
+   },
+   "evidence": [
+    "docs/lear_backend/SOURCE_PIN.json",
+    "docs/lear_agent/final_report.md"
+   ],
+   "limitations": [
+    "Qualification stays BLOCKED until a real local-model run passes doctor, evaluation and the judge."
+   ],
+   "blocked": null,
+   "narrative": "Cold open: one real question about the Lear backend. It may be answered only from pinned Lear documentation, and an answer counts only if every claim traces to a retrieved chunk and to Lear source lines at one commit; without evidence the agent must abstain. The Lear repository is the subject; RAG Formation is the instrument. Model traffic may only go to a loopback Ollama.",
+   "collectMs": 17.0
+  },
+  {
+   "id": "S01",
+   "title": "Source-of-truth archaeology",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear docs verify --source <Lear checkout>",
+    "python3 -m ragformation lear docs build --source <Lear checkout>   # regenerate, never hand-edit"
+   ],
+   "facts": [
+    {
+     "k": "verifier result",
+     "v": "PASS: 11/11 checks PASS",
+     "p": "LIVE",
+     "src": "verify_docs"
+    },
+    {
+     "k": "pages",
+     "v": "20 (12 narrative, 8 generated)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "pin checked against",
+     "v": "../lear-backend",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "module coverage",
+     "v": "narrative pages cite 43/79 modules (54%); cited anywhere 79/79",
+     "p": "LIVE",
+     "src": "measure_coverage"
+    }
+   ],
+   "steps": [
+    {
+     "name": "docs verify",
+     "expected": "exit 0 (OK)",
+     "observed": "exit 0 (OK)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    },
+    {
+     "name": "docs build from the pin into a scratch dir",
+     "expected": "byte-identical to committed docs",
+     "observed": "10/10 identical",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    }
+   ],
+   "data": {
+    "checks": [
+     {
+      "name": "pin",
+      "status": "PASS",
+      "summary": "pinned aviunion1348-cloud/Lear-backend-Avi @ 60cf9abf8408; checkout HEAD matches"
+     },
+     {
+      "name": "required_pages",
+      "status": "PASS",
+      "summary": "13/13 present; 0 below 120 words"
+     },
+     {
+      "name": "links",
+      "status": "PASS",
+      "summary": "26 relative links, 0 broken"
+     },
+     {
+      "name": "source_refs",
+      "status": "PASS",
+      "summary": "1237 references, 0 invalid"
+     },
+     {
+      "name": "stale_commits",
+      "status": "PASS",
+      "summary": "0 foreign commit ids; 0 narrative pages without the pinned id"
+     },
+     {
+      "name": "claim_labels",
+      "status": "PASS",
+      "summary": "340 claim lines; 340 labelled; 340 with evidence (inferred claims may cite none)"
+     },
+     {
+      "name": "duplicates",
+      "status": "PASS",
+      "summary": "0 repeated paragraphs; 0 identical chunks of 355"
+     },
+     {
+      "name": "guardrails",
+      "status": "PASS",
+      "summary": "0 of 355 chunks would be quarantined by the injection guard"
+     },
+     {
+      "name": "secrets",
+      "status": "PASS",
+      "summary": "0 credential-pattern or personal email hits in markdown (SOURCE_PIN.json may hold the full commit id)"
+     },
+     {
+      "name": "api_auth_claim",
+      "status": "PASS",
+      "summary": "87 method/path routes from 85 route decorators in prash/server.py; 0 declare Depends/Security/dependencies; middleware: CORSMiddleware; custom @app.middleware: 0; documented 'no authentication dependency' claim holds"
+     },
+     {
+      "name": "route_count",
+      "status": "PASS",
+      "summary": "reference/http_api.md documents 87 routes; the AST of prash/server.py has 87"
+     }
+    ],
+    "coverage": {
+     "modules": 79,
+     "modulesWithNarrativeEvidence": 43,
+     "modulesWithAnyEvidence": 79,
+     "narrativeCoverage": 0.544,
+     "anyCoverage": 1.0,
+     "modulesWithoutNarrative": [
+      "prash/actions/alert_base.py",
+      "prash/actions/apply_ci_fix.py",
+      "prash/actions/apply_gitlab_ci_fix.py",
+      "prash/actions/aws_alert.py",
+      "prash/actions/datadog_alert.py",
+      "prash/actions/datadog_mute.py",
+      "prash/actions/edit_config.py",
+      "prash/actions/exec_command.py",
+      "prash/actions/execute_aws.py",
+      "prash/actions/execute_azure.py",
+      "prash/actions/execute_gcp.py",
+      "prash/actions/gcp_alert.py",
+      "prash/actions/github_alert.py",
+      "prash/actions/gitlab_alert.py",
+      "prash/actions/gitleaks_escalate.py",
+      "prash/actions/grafana_silence.py",
+      "prash/actions/missing_secret.py",
+      "prash/actions/open_pr.py",
+      "prash/actions/pagerduty_incident.py",
+      "prash/actions/pagerduty_page.py",
+      "prash/actions/restart_pod.py",
+      "prash/actions/rollback.py",
+      "prash/actions/scale.py",
+      "prash/actions/snyk_ignore.py",
+      "prash/actions/terraform_apply.py",
+      "prash/actions/terraform_init.py",
+      "prash/actions/vercel_deploy.py",
+      "prash/admin_panel.py",
+      "prash/brain/edit_repair.py",
+      "prash/brain/gitlab_log_fetcher.py",
+      "prash/brain/log_fetcher.py",
+      "prash/customer_store.py",
+      "prash/demo_page.py",
+      "prash/incident_page.py",
+      "prash/mock_service.py",
+      "prash/ui.py"
+     ],
+     "testFiles": 42,
+     "testFilesReferenced": 11
+    },
+    "pin": {
+     "repository": "aviunion1348-cloud/Lear-backend-Avi",
+     "commit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+     "branch": "main",
+     "commit_date": "2026-10-01T19:21:30+05:30"
+    },
+    "rebuild": {
+     "files": 10,
+     "identical": 10,
+     "different": []
+    },
+    "topRefs": [
+     [
+      "prash/server.py",
+      186
+     ],
+     [
+      "prash/cli.py",
+      139
+     ],
+     [
+      ".env.example",
+      56
+     ],
+     [
+      "prash/watcher.py",
+      34
+     ],
+     [
+      "prash/connectors/kubernetes.py",
+      32
+     ],
+     [
+      "prash/email_service.py",
+      32
+     ]
+    ]
+   },
+   "evidence": [
+    "docs/lear_agent/documentation_coverage.md",
+    "docs/lear_agent/evidence/docs_verify_2026-11-05.json"
+   ],
+   "limitations": [
+    "Narrative pages cover 43 of 79 Lear modules (every module is cited somewhere); prose is reference-checked, not fully human-reviewed."
+   ],
+   "blocked": null,
+   "narrative": "Every claim in docs/lear_backend cites path:Lx-Ly at one pinned commit. The verifier re-reads the checkout and fails on any stale or invalid reference. Generated pages are regenerated, never hand-edited.",
+   "collectMs": 2246.8
+  },
+  {
+   "id": "S02",
+   "title": "Knowledge base construction",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --backend baseline index rebuild",
+    "python3 -m ragformation lear --backend baseline index stats"
+   ],
+   "facts": [
+    {
+     "k": "your index (not opened)",
+     "v": "data/lear/index-baseline absent",
+     "p": "LIVE",
+     "src": "path check only"
+    },
+    {
+     "k": "scratch index",
+     "v": "19 documents, 355 chunks, 48676 tokens (max 306, mean 137.1)",
+     "p": "LIVE",
+     "src": "indexer.stats"
+    },
+    {
+     "k": "embedding",
+     "v": "hashing:hashing-lexical-v1 dim=512 — baseline feature hashing, NOT semantic",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "index fingerprint",
+     "v": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "line precision",
+     "v": "{\"lines\": 354, \"section\": 1}",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "source commit in manifest",
+     "v": "60cf9abf8408",
+     "p": "LIVE",
+     "src": null
+    }
+   ],
+   "steps": [],
+   "data": {
+    "stats": {
+     "documents": 19,
+     "chunks": 355,
+     "tokens": {
+      "total": 48676,
+      "max": 306,
+      "mean": 137.1
+     },
+     "linePrecision": {
+      "lines": 354,
+      "section": 1
+     },
+     "chunksWithSourceRefs": 307,
+     "indexFingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2"
+    },
+    "counts": {
+     "new": 19,
+     "updated": 0,
+     "unchanged": 0,
+     "failed": 0,
+     "deleted": 0
+    },
+    "tokenCounts": [
+     101,
+     255,
+     70,
+     171,
+     99,
+     98,
+     218,
+     204,
+     232,
+     168,
+     207,
+     222,
+     132,
+     210,
+     221,
+     61,
+     77,
+     4,
+     306,
+     2,
+     176,
+     172,
+     168,
+     225,
+     263,
+     75,
+     196,
+     167,
+     49,
+     234,
+     44,
+     195,
+     238,
+     75,
+     214,
+     58,
+     121,
+     227,
+     152,
+     250,
+     199,
+     84,
+     239,
+     175,
+     46,
+     236,
+     198,
+     192,
+     173,
+     208,
+     42,
+     133,
+     197,
+     124,
+     41,
+     159,
+     251,
+     204,
+     68,
+     240,
+     55,
+     179,
+     47,
+     239,
+     207,
+     127,
+     175,
+     208,
+     238,
+     273,
+     89,
+     187,
+     191,
+     41,
+     210,
+     23,
+     209,
+     216,
+     62,
+     167
+    ],
+    "perDocument": [
+     [
+      "modules.md",
+      92
+     ],
+     [
+      "http_api.md",
+      36
+     ],
+     [
+      "actions.md",
+      34
+     ],
+     [
+      "configuration_env.md",
+      26
+     ],
+     [
+      "cli.md",
+      21
+     ],
+     [
+      "authentication_authorization.md",
+      16
+     ],
+     [
+      "connectors.md",
+      15
+     ],
+     [
+      "architecture.md",
+      12
+     ]
+    ],
+    "sample": {
+     "chunk_id": "src-9e094965d7#c001-5c378822",
+     "source_id": "src-9e094965d7",
+     "source_revision": 1,
+     "source_path": "docs/lear_backend/README.md",
+     "source_commit": "60cf9abf84088c3a5ec05e8700c52185444e215f",
+     "document_title": "Lear backend — engineering documentation",
+     "heading_path": [
+      "Lear backend — engineering documentation",
+      "What Lear is"
+     ],
+     "start_line": 6,
+     "end_line": 12,
+     "line_precision": "lines",
+     "chunk_index": 1,
+     "content_hash": "5c3788220087e071153097f0602d25c9ec6f70b7096bdac2929a7053018dcd3b",
+     "token_count": 255,
+     "embedding_model": "hashing-lexical-v1",
+     "embedding_fingerprint": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+     "embedding_dimension": 512,
+     "created_at": "2026-11-05T20:59:05Z",
+     "namespace": "lear-docs",
+     "source_refs": [
+      "pyproject.toml:L5-L9",
+      "pyproject.toml:L56-L57",
+      "prash/__init__.py:L1-L8",
+      "prash/cli.py:L1-L19",
+      "prash/dispatch.py:L1-L15",
+      "prash/permissions.py:L1-L17",
+      "prash/audit.py:L1-L8"
+     ]
+    }
+   },
+   "evidence": [],
+   "limitations": [
+    "Only a baseline (hashing) index can be built here; the qualifying Ollama index has never been built."
+   ],
+   "blocked": null,
+   "narrative": "pinned checkout → generated + narrative docs → heading-aware chunks → manifest (lines, hashes, commit) → embeddings → SQLite index. Built here in a scratch directory; your data/ is not touched.",
+   "collectMs": 765.0
+  },
+  {
+   "id": "S03",
+   "title": "Ollama model gate",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear doctor",
+    "python3 -m ragformation lear doctor --json"
+   ],
+   "facts": [
+    {
+     "k": "doctor exit",
+     "v": "6 (dependency unavailable)",
+     "p": "LIVE",
+     "src": "run_doctor"
+    },
+    {
+     "k": "embedder",
+     "v": "nomic-embed-text (cap ≤200M params)",
+     "p": "BLOCKED",
+     "src": "parameter count unverified unless doctor passes"
+    },
+    {
+     "k": "answer LLM",
+     "v": "qwen2.5:1.5b (cap ≤4B)",
+     "p": "BLOCKED",
+     "src": null
+    },
+    {
+     "k": "judge",
+     "v": "llama3.2:1b (cap ≤4B, must differ from the LLM)",
+     "p": "BLOCKED",
+     "src": null
+    },
+    {
+     "k": "failing probes",
+     "v": "config.backend=WARN, ollama.version=SKIP",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "required failures",
+     "v": "none (baseline backend: never qualifying, so doctor cannot pass)",
+     "p": "LIVE",
+     "src": null
+    }
+   ],
+   "steps": [
+    {
+     "name": "lear doctor",
+     "expected": "exit 0 to qualify",
+     "observed": "exit 6",
+     "verdict": "BLOCKED",
+     "p": "BLOCKED",
+     "detail": ""
+    }
+   ],
+   "data": {
+    "checks": [
+     {
+      "check": "config.loopback_only",
+      "status": "PASS",
+      "required": true,
+      "hint": null
+     },
+     {
+      "check": "config.backend",
+      "status": "WARN",
+      "required": true,
+      "hint": "baseline backend (hashing + extractive) is for offline testing only"
+     },
+     {
+      "check": "config.no_cloud_providers",
+      "status": "PASS",
+      "required": false,
+      "hint": null
+     },
+     {
+      "check": "ollama.version",
+      "status": "SKIP",
+      "required": false,
+      "hint": "baseline backend: Ollama not used"
+     }
+    ],
+    "ready": false,
+    "backend": "baseline"
+   },
+   "evidence": [
+    "docs/lear_agent/evidence/doctor_live_final_2026-11-05.json",
+    "docs/lear_agent/model_compliance.md"
+   ],
+   "limitations": [
+    "Model tags and parameter counts are UNVERIFIED: Ollama never ran in the recorded environment."
+   ],
+   "blocked": {
+    "exitCode": 6,
+    "message": "BLOCKED — Ollama/model dependency unavailable (exit 6). No qualifying local model result exists.",
+    "hint": "start Ollama on 127.0.0.1 and pull the three models; or run `python3 -m ragformation lear demo replay`"
+   },
+   "narrative": "doctor probes the loopback Ollama, the three model tags, their parameter caps, an embedding, a stream and a judge JSON call. Without Ollama it exits 6, and nothing downstream may claim a model ran.",
+   "collectMs": 8.1
+  },
+  {
+   "id": "S04",
+   "title": "Query admission and request lifecycle",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --backend baseline ask --debug \"[REDACTED question lear-012: 46 chars, sha256 4ae04634814a]\""
+   ],
+   "facts": [
+    {
+     "k": "question (golden lear-012)",
+     "v": "[REDACTED question lear-012: 46 chars, sha256 4ae04634814a]",
+     "p": "RECORDED",
+     "src": "evals/lear/golden_lear_v1.json"
+    },
+    {
+     "k": "correlation id",
+     "v": "q-e8554b922af9",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "lifecycle",
+     "v": "lear-lifecycle-v1: 13 contiguous spans, 117.415 ms in total",
+     "p": "LIVE",
+     "src": "LearAgent.ask timings.lifecycle"
+    },
+    {
+     "k": "answer time",
+     "v": "113.24 ms until the answer was mapped (persistence follows); pipeline only, no model decode",
+     "p": "LIVE",
+     "src": null
+    }
+   ],
+   "steps": [
+    {
+     "name": "ask (golden lear-012)",
+     "expected": "exit 0 (OK)",
+     "observed": "exit 0 (OK)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    },
+    {
+     "name": "spans tile the request",
+     "expected": "sum of spans = lifecycle total (117.415 ms, +/-0.1)",
+     "observed": "117.398 ms",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    }
+   ],
+   "data": {
+    "spans": [
+     {
+      "stage": "validate",
+      "label": "input validation (non-empty, length limit)",
+      "startMs": 0.005,
+      "ms": 0.004,
+      "result": "passed"
+     },
+     {
+      "stage": "admission",
+      "label": "rate windows + concurrency admission (incl. queue wait)",
+      "startMs": 0.009,
+      "ms": 0.047,
+      "result": "accepted 0 -> 1; peak in flight 1 (limit 2)"
+     },
+     {
+      "stage": "session",
+      "label": "session lookup/creation (session_id, user_id)",
+      "startMs": 0.056,
+      "ms": 1.722,
+      "result": "turn 1"
+     },
+     {
+      "stage": "compaction",
+      "label": "history load + compaction",
+      "startMs": 1.778,
+      "ms": 0.044,
+      "result": "not triggered"
+     },
+     {
+      "stage": "rewrite",
+      "label": "follow-up rewrite (retrieval only)",
+      "startMs": 1.822,
+      "ms": 0.004,
+      "result": "not needed (no history)"
+     },
+     {
+      "stage": "memory",
+      "label": "memory selection (scoped, unexpired)",
+      "startMs": 1.825,
+      "ms": 0.127,
+      "result": "0 used"
+     },
+     {
+      "stage": "prompt",
+      "label": "system prompt render",
+      "startMs": 1.953,
+      "ms": 0.023,
+      "result": "lear-assistant-v1"
+     },
+     {
+      "stage": "engine.open",
+      "label": "engine handle (lazy open)",
+      "startMs": 1.976,
+      "ms": 0.009,
+      "result": "open"
+     },
+     {
+      "stage": "fingerprint",
+      "label": "embedding fingerprint check",
+      "startMs": 1.984,
+      "ms": 0.32,
+      "result": "match"
+     },
+     {
+      "stage": "scopeGuard",
+      "label": "whole-corpus term scope guard",
+      "startMs": 2.304,
+      "ms": 44.199,
+      "result": "passed (no unknown terms)"
+     },
+     {
+      "stage": "engine",
+      "label": "core RAG request (retrieval, context, generation, citation checks)",
+      "startMs": 46.504,
+      "ms": 60.736,
+      "result": "engine status answered"
+     },
+     {
+      "stage": "mapping",
+      "label": "status, citation and timing mapping",
+      "startMs": 107.24,
+      "ms": 6.084,
+      "result": "GROUNDED -> exit 0; 1 citations"
+     },
+     {
+      "stage": "persist",
+      "label": "session persistence",
+      "startMs": 113.323,
+      "ms": 4.079,
+      "result": "user + assistant messages saved"
+     }
+    ],
+    "core": [
+     {
+      "stage": "core.retrieval",
+      "ms": 26.085
+     },
+     {
+      "stage": "core.generation",
+      "ms": 3.248
+     },
+     {
+      "stage": "core.other (derived)",
+      "ms": 31.403
+     }
+    ],
+    "schema": "lear-lifecycle-v1",
+    "totalMs": 117.415,
+    "correlationId": "q-e8554b922af9",
+    "admission": {
+     "before": {
+      "accepted": 0,
+      "rejectedUser": 0,
+      "rejectedSession": 0,
+      "rejectedConcurrency": 0,
+      "inFlight": 0,
+      "peakInFlight": 0
+     },
+     "after": {
+      "accepted": 1,
+      "rejectedUser": 0,
+      "rejectedSession": 0,
+      "rejectedConcurrency": 0,
+      "inFlight": 0,
+      "peakInFlight": 1
+     },
+     "limit": 2
+    }
+   },
+   "evidence": [],
+   "limitations": [
+    "Inside the core request only retrieval and generation are timed by the engine; core.other = engine span - retrieval - generation (derived).",
+    "Spans are wall-clock perf_counter intervals of one request; they are not a profile."
+   ],
+   "blocked": null,
+   "narrative": "One real LearAgent.ask call, followed through validation, rate limits, concurrency, session, compaction, memory, scope guard, rewrite, fingerprint check, the core RAG request, guardrails and status mapping.",
+   "collectMs": 117.6
+  },
+  {
+   "id": "S05",
+   "title": "Hybrid retrieval",
+   "provenance": "LIVE",
+   "commands": [],
+   "facts": [
+    {
+     "k": "chain",
+     "v": "cosine + BM25 → Reciprocal Rank Fusion (k=60) → heuristic-coverage-v1 reranker → MMR → context",
+     "p": "ILLUSTRATIVE",
+     "src": "ragformation/retrieval.py"
+    },
+    {
+     "k": "dense channel",
+     "v": "feature-hash similarity (baseline, NOT semantic)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "mode",
+     "v": "hybrid",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "fingerprint",
+     "v": "hashing:hashing-lexical-v1:d512:norm=l2:metric=cosine:pre=lower-token-v1:fpv=2",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "candidates / selected",
+     "v": "10 / 10",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "context tokens",
+     "v": 1684,
+     "p": "LIVE",
+     "src": "estimated, ~4 chars/token"
+    },
+    {
+     "k": "best support",
+     "v": 0.6515,
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "per-channel ranks (dense, BM25, RRF)",
+     "v": "UNAVAILABLE — CORE ENGINE DOES NOT EXPOSE THIS STAGE",
+     "p": "UNAVAILABLE",
+     "src": "candidates carry only channel=['reranked']; smallest future hook: docs/lear_agent/demo_production_report.md"
+    },
+    {
+     "k": "context assembly",
+     "v": "10 chunks, manifest tokens 1684, engine estimate 1684 of budget 1800",
+     "p": "LIVE",
+     "src": "chunk_manifest.json token_count + retrieval.contextTokens"
+    }
+   ],
+   "steps": [],
+   "data": {
+    "candidates": [
+     {
+      "chunkId": "src-3665f86d99#c002-95a9d20b",
+      "label": "src-3665f86d99#c002-95a9d20b  cli.md § Lear backend — CLI reference (`prash`) > prash run",
+      "score": 0.032018,
+      "support": 0.65152,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-0441e92281#c001-356e1401",
+      "label": "src-0441e92281#c001-356e1401  errors_and_operations.md § Errors and operations > Exit codes of the CLI",
+      "score": 0.029514,
+      "support": 0.534251,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-51cdac4a6f#c010-89e43766",
+      "label": "src-51cdac4a6f#c010-89e43766  authentication_authorization.md § Authentication and authorization > Audit trail",
+      "score": 0.014085,
+      "support": 0.47657,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-0aa7224dfb#c004-10cc0499",
+      "label": "src-0aa7224dfb#c004-10cc0499  api_reference.md § API reference > The `prash` CLI",
+      "score": 0.03009,
+      "support": 0.486829,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-0aa7224dfb#c001-72fa94fe",
+      "label": "src-0aa7224dfb#c001-72fa94fe  api_reference.md § API reference > The `prash` CLI",
+      "score": 0.016129,
+      "support": 0.437488,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-8b2cf583b7#c012-67ed963d",
+      "label": "src-8b2cf583b7#c012-67ed963d  actions.md § Lear backend — action catalogue > Safe-tier actions > terraform-init",
+      "score": 0.028405,
+      "support": 0.382467,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-00287151c3#c004-d07ace4a",
+      "label": "src-00287151c3#c004-d07ace4a  domain_model.md § Domain model > Dispatch results (`prash/dispatch.py`)",
+      "score": 0.014925,
+      "support": 0.384698,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-0441e92281#c003-fb54fc53",
+      "label": "src-0441e92281#c003-fb54fc53  errors_and_operations.md § Errors and operations > Failure handling in the pipeline",
+      "score": 0.026671,
+      "support": 0.377632,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-3665f86d99#c007-c141955c",
+      "label": "src-3665f86d99#c007-c141955c  cli.md § Lear backend — CLI reference (`prash`) > prash fix",
+      "score": 0.028778,
+      "support": 0.380942,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     },
+     {
+      "chunkId": "src-3665f86d99#c020-264862a8",
+      "label": "src-3665f86d99#c020-264862a8  cli.md § Lear backend — CLI reference (`prash`) > prash setup",
+      "score": 0.015152,
+      "support": 0.289769,
+      "selected": true,
+      "channel": "reranked",
+      "reason": null
+     }
+    ],
+    "excluded": [
+     {
+      "chunkId": "src-0aa7224dfb#c002-9252158c",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The `prash` CLI",
+      "score": 0.013514,
+      "support": 0.280858,
+      "channel": "reranked",
+      "reason": "context_token_budget"
+     },
+     {
+      "chunkId": "src-51cdac4a6f#c008-f9566633",
+      "document": "docs/lear_backend/authentication_authorization.md",
+      "heading": "Authentication and authorization > Dry runs",
+      "score": 0.016393,
+      "support": 0.2925,
+      "channel": "reranked",
+      "reason": "context_token_budget"
+     }
+    ],
+    "quarantined": [],
+    "stages": [
+     {
+      "name": "retrieval.semantic",
+      "status": "completed",
+      "ms": 17.512
+     },
+     {
+      "name": "retrieval.lexical",
+      "status": "completed",
+      "ms": 1.964
+     },
+     {
+      "name": "retrieval.fusion",
+      "status": "completed",
+      "ms": 0.152
+     },
+     {
+      "name": "retrieval.rerank",
+      "status": "completed",
+      "ms": 0.039
+     },
+     {
+      "name": "retrieval.mmr",
+      "status": "completed",
+      "ms": 6.418
+     }
+    ],
+    "contextBudget": 1800,
+    "contextTokens": 1684,
+    "context": [
+     [
+      "src-3665f86d99#c002-95a9d20b",
+      193
+     ],
+     [
+      "src-0441e92281#c001-356e1401",
+      210
+     ],
+     [
+      "src-51cdac4a6f#c010-89e43766",
+      152
+     ],
+     [
+      "src-0aa7224dfb#c004-10cc0499",
+      168
+     ],
+     [
+      "src-0aa7224dfb#c001-72fa94fe",
+      218
+     ],
+     [
+      "src-8b2cf583b7#c012-67ed963d",
+      100
+     ],
+     [
+      "src-00287151c3#c004-d07ace4a",
+      175
+     ],
+     [
+      "src-0441e92281#c003-fb54fc53",
+      209
+     ],
+     [
+      "src-3665f86d99#c007-c141955c",
+      196
+     ],
+     [
+      "src-3665f86d99#c020-264862a8",
+      63
+     ]
+    ],
+    "sections": [
+     [
+      "system (trusted)",
+      "prompt lear-assistant-v1",
+      "rules, pin commit, summary, memory"
+     ],
+     [
+      "history",
+      "0 messages",
+      "kept turns after compaction"
+     ],
+     [
+      "memory",
+      "0 items",
+      "scoped, unexpired"
+     ],
+     [
+      "evidence (untrusted)",
+      "10 chunks, 1684 tokens",
+      "each passage wrapped in <evidence id=n> delimiters"
+     ],
+     [
+      "user question",
+      "46 chars",
+      ""
+     ]
+    ],
+    "queryVector": {
+     "dims": 512,
+     "nonZero": 13,
+     "first": [
+      0.2774,
+      -0.2774,
+      0.2774,
+      0.2774,
+      -0.2774,
+      -0.2774,
+      0.2774,
+      0.2774,
+      0.2774,
+      0.2774,
+      0.2774,
+      -0.2774
+     ],
+     "index": [
+      8,
+      25,
+      114,
+      125,
+      153,
+      229,
+      266,
+      291,
+      306,
+      326,
+      329,
+      364
+     ],
+     "provider": "hashing"
+    }
+   },
+   "evidence": [],
+   "limitations": [
+    "Context precision on the baseline is low (about .25–.29 across runs)."
+   ],
+   "blocked": null,
+   "narrative": "Dense and BM25 candidates are fused with RRF, re-ranked by a coverage heuristic and diversified with MMR, then packed into the context budget between trusted instructions and delimited, untrusted evidence. On the baseline the dense channel is feature hashing, not semantics.",
+   "collectMs": 0.5
+  },
+  {
+   "id": "S06",
+   "title": "Grounded answer and citations",
+   "provenance": "LIVE",
+   "commands": [],
+   "facts": [
+    {
+     "k": "generator",
+     "v": "extractive:extractive-synthesis-v1  — BASELINE (no model was called)",
+     "p": "NOT QUALIFYING",
+     "src": null
+    },
+    {
+     "k": "status",
+     "v": "GROUNDED",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "model TTFT / ITL / tok/s",
+     "v": "not measured: no model stream",
+     "p": "UNAVAILABLE",
+     "src": null
+    },
+    {
+     "k": "TTFT / ITL definitions",
+     "v": "TTFT: time from the start of ask() to the first streamed token of a real model stream; ITL: gap between consecutive streamed tokens of a real model stream (p50 shown)",
+     "p": "ILLUSTRATIVE",
+     "src": "ragformation/lear/agent.py _timings"
+    },
+    {
+     "k": "prompt version",
+     "v": "lear-assistant-v1",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "recorded round-3 verdict for lear-012",
+     "v": "correct (lenient), key-fact coverage 1.0, citation precision 1.0, status GROUNDED",
+     "p": "RECORDED",
+     "src": "evals/lear/results/round-3/run.json (offline lenient scorer; judge BLOCKED)"
+    }
+   ],
+   "steps": [
+    {
+     "name": "citation [4] resolves",
+     "expected": "manifest entry + retrieved chunk + pinned lines",
+     "observed": "ok",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    },
+    {
+     "name": "status → exit code",
+     "expected": "exit 0 (OK)",
+     "observed": "exit 0 (OK)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    }
+   ],
+   "data": {
+    "question": "[REDACTED question lear-012: 46 chars, sha256 4ae04634814a]",
+    "answer": "[REDACTED answer text: 243 chars, sha256 c738e0f91e76]",
+    "realStream": false,
+    "citations": [
+     {
+      "id": 4,
+      "chunkId": "src-0aa7224dfb#c004-10cc0499",
+      "document": "docs/lear_backend/api_reference.md",
+      "heading": "API reference > The `prash` CLI",
+      "lines": "32-34",
+      "commit": "60cf9abf8408",
+      "inManifest": true,
+      "retrieved": true,
+      "refs": [
+       {
+        "ref": "prash/cli.py:L1251",
+        "resolved": true,
+        "note": "1360 lines at the pin"
+       },
+       {
+        "ref": "prash/cli.py:L351",
+        "resolved": true,
+        "note": "1360 lines at the pin"
+       },
+       {
+        "ref": "prash/cli.py:L460",
+        "resolved": true,
+        "note": "1360 lines at the pin"
+       }
+      ]
+     }
+    ],
+    "status": "GROUNDED",
+    "exitCode": 0,
+    "streamEvents": 11,
+    "itl": []
+   },
+   "evidence": [],
+   "limitations": [
+    "Extractive baseline answers are sentence selections, often padded with neighbouring sentences."
+   ],
+   "blocked": null,
+   "narrative": "Each citation marker must map to a retrieved chunk, the chunk to a manifest entry, and the entry to Lear source lines at the pin.",
+   "collectMs": 5.8
+  },
+  {
+   "id": "S07",
+   "title": "Sessions, memory and compaction",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --backend baseline chat --session demo",
+    "python3 -m ragformation lear sessions inspect demo",
+    "python3 -m ragformation lear memory list"
+   ],
+   "facts": [
+    {
+     "k": "session / user",
+     "v": "demo-s07… / demo-examiner",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "messages stored",
+     "v": 10,
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "history budget",
+     "v": "300 tokens, keep 2 recent (demo setting; default 900/4)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "compaction policy",
+     "v": "lear-compaction-v1 (deterministic, never grows the history)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "compactions recorded",
+     "v": 3,
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "memory expiry",
+     "v": "2026-11-05T21:59:06Z (ttl 3600 s)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "summary version",
+     "v": "lear-compaction-v1",
+     "p": "LIVE",
+     "src": null
+    }
+   ],
+   "steps": [
+    {
+     "name": "outdated memory vs pinned docs",
+     "expected": "answer follows the docs (5), not memory (50)",
+     "observed": "docs value present=True, memory value present=False, memory selected=True",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    },
+    {
+     "name": "memory guard refuses instruction-like text",
+     "expected": "exit 2 (usage or configuration error)",
+     "observed": "exit 2 (usage or configuration error)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "memory text contains instruction-like content; it was not stored"
+    },
+    {
+     "name": "memory scoping: another user sees none",
+     "expected": "0 items",
+     "observed": "0 items",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    },
+    {
+     "name": "session isolation: another user opens this session",
+     "expected": "exit 2 (usage or configuration error)",
+     "observed": "exit 2 (usage or configuration error)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "session not found"
+    }
+   ],
+   "data": {
+    "turns": [
+     {
+      "turn": 1,
+      "status": "GROUNDED",
+      "question": "[REDACTED history lear-061#1: 41 chars, sha256 6f6138ab5104]",
+      "retrievalQuery": null,
+      "compaction": null,
+      "note": "standalone"
+     },
+     {
+      "turn": 2,
+      "status": "GROUNDED",
+      "question": "[REDACTED question lear-061: 56 chars, sha256 63798b312cc0]",
+      "retrievalQuery": "[REDACTED retrieval rewrite: 215 chars, sha256 d7aa74719331]",
+      "compaction": null,
+      "note": "retrieval rewrite: [REDACTED]"
+     },
+     {
+      "turn": 3,
+      "status": "GROUNDED",
+      "question": "[REDACTED history lear-062#1: 25 chars, sha256 0e0897f1cddf]",
+      "retrievalQuery": "[REDACTED retrieval rewrite: 214 chars, sha256 3055247e2de5]",
+      "compaction": {
+       "version": "lear-compaction-v1",
+       "tokens_before": null,
+       "tokens_after": null,
+       "folded_messages": null,
+       "latency_ms": null,
+       "skipped": null
+      },
+      "note": "retrieval rewrite: [REDACTED]"
+     },
+     {
+      "turn": 4,
+      "status": "GROUNDED",
+      "question": "[REDACTED question lear-062: 57 chars, sha256 2def2649e639]",
+      "retrievalQuery": "[REDACTED retrieval rewrite: 206 chars, sha256 c121038add5e]",
+      "compaction": {
+       "version": "lear-compaction-v1",
+       "tokens_before": null,
+       "tokens_after": null,
+       "folded_messages": null,
+       "latency_ms": null,
+       "skipped": null
+      },
+      "note": "retrieval rewrite: [REDACTED]"
+     }
+    ],
+    "compactions": [
+     {
+      "version": "lear-compaction-v1",
+      "tokens_before": 487,
+      "tokens_after": 447,
+      "latency_ms": 0.712,
+      "through_message_id": 2
+     },
+     {
+      "version": "lear-compaction-v1",
+      "tokens_before": 607,
+      "tokens_after": 453,
+      "latency_ms": 0.895,
+      "through_message_id": 4
+     },
+     {
+      "version": "lear-compaction-v1",
+      "tokens_before": 564,
+      "tokens_after": 445,
+      "latency_ms": 0.546,
+      "through_message_id": 6
+     }
+    ],
+    "memoryId": "m-4c7997994baa"
+   },
+   "evidence": [],
+   "limitations": [
+    "Token counts are estimates (~4 chars/token).",
+    "The baseline extractive generator never reads memory; whether an LLM obeys 'memory cannot override the docs' is UNVERIFIED."
+   ],
+   "blocked": null,
+   "narrative": "A five-turn session with a follow-up, a compaction over a small demo budget, and a deliberately outdated memory note that must lose to the pinned docs.",
+   "collectMs": 429.4
+  },
+  {
+   "id": "S08",
+   "title": "Guardrails and refusal",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --backend baseline ask \"[REDACTED question lear-068: 56 chars, sha256 c71e3bc7ed66]\"   # exit 3"
+   ],
+   "facts": [
+    {
+     "k": "exit-code contract",
+     "v": "0 ok, 1 error, 2 usage, 3 abstained, 4 partial/conflicted, 5 gate failed, 6 dependency unavailable, 7 rate limited",
+     "p": "ILLUSTRATIVE",
+     "src": "ragformation/lear/agent.py exit_code_for"
+    }
+   ],
+   "steps": [
+    {
+     "name": "input over 2000 chars",
+     "expected": "exit 2 (usage or configuration error)",
+     "observed": "exit 2 (usage or configuration error)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "question is too long"
+    },
+    {
+     "name": "unknown term (scope guard): golden lear-068",
+     "expected": "exit 3 (abstained)",
+     "observed": "exit 3 (abstained)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "reason=unknown_term terms=['Kafka']"
+    },
+    {
+     "name": "unanswerable (evidence threshold): golden lear-069",
+     "expected": "exit 3 (abstained)",
+     "observed": "exit 3 (abstained)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "reason=insufficient_support"
+    },
+    {
+     "name": "conflicting evidence: golden lear-059",
+     "expected": "CONFLICTED (exit 4)",
+     "observed": "GROUNDED (exit 0)",
+     "verdict": "LIMITATION",
+     "p": "LIVE",
+     "detail": "the core flags numeric day/hour/%-unit contradictions across two sources; this Lear case is not one"
+    },
+    {
+     "name": "citation marker with no retrieved passage",
+     "expected": "[99] removed, [1] kept (10 passages)",
+     "observed": "removed [99]; kept text: The permission engine has modes [1]. It also signs requests.",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "guardrails.strip_invalid_citations called directly with a synthetic answer string (no LLM)"
+    },
+    {
+     "name": "instruction-like retrieved passage",
+     "expected": "quarantined; answer not taken over",
+     "observed": "1 quarantined (answer_forcing, instruction_override, role_hijack, secret_exfiltration); 'APPROVED' in answer=False",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "hostile page planted in a scratch copy of the corpus only"
+    },
+    {
+     "name": "ollama backend without a reachable model",
+     "expected": "exit 6 (dependency unavailable)",
+     "observed": "exit 6 (dependency unavailable)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "ERROR dependency unavailable; no silent extractive fallback"
+    },
+    {
+     "name": "second request in a 1-per-minute session window",
+     "expected": "exit 7 (rate limited)",
+     "observed": "exit 7 (rate limited)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": "limit 1/60s; retry in 59.925s"
+    },
+    {
+     "name": "partial coverage",
+     "expected": "PARTIAL (exit 4) with uncertainty language",
+     "observed": "0 PARTIAL answers across 7 recorded runs",
+     "verdict": "LIMITATION",
+     "p": "RECORDED",
+     "detail": "evals/lear/results/*/run.json"
+    }
+   ],
+   "data": {
+    "quarantined": [
+     {
+      "chunkId": "src-1de8480109#c001-1790af35",
+      "rules": [
+       "instruction_override",
+       "role_hijack",
+       "secret_exfiltration",
+       "answer_forcing"
+      ]
+     }
+    ]
+   },
+   "evidence": [],
+   "limitations": [
+    "Resistance of a real LLM to injected instructions is untested (no model)."
+   ],
+   "blocked": null,
+   "narrative": "Failure is a feature: unknown terms, missing evidence, injected passages, invalid markers, an unreachable model and rate limits each produce their own honest status and exit code.",
+   "collectMs": 986.8
+  },
+  {
+   "id": "S09",
+   "title": "Evaluation and three improvement rounds",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear eval validate --source <Lear checkout>",
+    "python3 -m ragformation lear --backend baseline eval run --suite calibration,dev --label my-run --judge off",
+    "python3 -m ragformation lear eval rescore evals/lear/results/round-3/run.json"
+   ],
+   "facts": [
+    {
+     "k": "golden set",
+     "v": "80 cases, sha256 56050cf2689383ca…",
+     "p": "LIVE",
+     "src": "evalset.validate"
+    },
+    {
+     "k": "validation",
+     "v": "VALID: 6/6 checks PASS",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "judge",
+     "v": "JUDGE BLOCKED — SCORES NOT MEASURED (every recorded run)",
+     "p": "RECORDED",
+     "src": "run.json judge.state"
+    },
+    {
+     "k": "scores shown",
+     "v": "deterministic offline scorer (lenient + lear-keyfacts-strict-v1); NOT LLM-judge scores",
+     "p": "RECORDED",
+     "src": null
+    },
+    {
+     "k": "five dimensions",
+     "v": "groundedness, citation quality, answer relevance, context precision, context recall: deterministic proxies (0-4); judge versions JUDGE BLOCKED — SCORES NOT MEASURED",
+     "p": "RECORDED",
+     "src": "run.json summary.proxyScores"
+    },
+    {
+     "k": "regressions across rounds",
+     "v": "0 cases flipped correct→wrong",
+     "p": "LIVE",
+     "src": "computed now from recorded run.json files"
+    },
+    {
+     "k": "holdout policy",
+     "v": "used once (final-holdout); --allow-holdout required; never used for tuning",
+     "p": "RECORDED",
+     "src": "docs/lear_agent/evaluation_dataset.md"
+    }
+   ],
+   "steps": [
+    {
+     "name": "eval validate",
+     "expected": "exit 0 (OK)",
+     "observed": "exit 0 (OK)",
+     "verdict": "MATCH",
+     "p": "LIVE",
+     "detail": ""
+    }
+   ],
+   "data": {
+    "splits": {
+     "calibration": 10,
+     "dev": 32,
+     "test": 24,
+     "holdout": 14
+    },
+    "runs": [
+     {
+      "file": "evals/lear/results/round-0/run.json",
+      "label": "round-0",
+      "startedAt": "2026-11-05T18:33:08Z",
+      "suites": [
+       "calibration",
+       "dev"
+      ],
+      "commit": "6c438d158048",
+      "dirty": false,
+      "cases": 42,
+      "correct": 0.4524,
+      "correctStrict": 0.4048,
+      "strictSource": "rescore evidence",
+      "hitAtK": 0.9459,
+      "mrr": 0.5874,
+      "unanswerableAbstained": 0.5,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/round-0-test/run.json",
+      "label": "round-0-test",
+      "startedAt": "2026-11-05T18:38:29Z",
+      "suites": [
+       "test"
+      ],
+      "commit": "6c438d158048",
+      "dirty": false,
+      "cases": 24,
+      "correct": 0.4167,
+      "correctStrict": 0.4167,
+      "strictSource": "rescore evidence",
+      "hitAtK": 1.0,
+      "mrr": 0.733,
+      "unanswerableAbstained": 0.0,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/round-1/run.json",
+      "label": "round-1",
+      "startedAt": "2026-11-05T18:44:50Z",
+      "suites": [
+       "calibration",
+       "dev"
+      ],
+      "commit": "6c438d158048",
+      "dirty": true,
+      "cases": 42,
+      "correct": 0.5,
+      "correctStrict": 0.4286,
+      "strictSource": "rescore evidence",
+      "hitAtK": 0.973,
+      "mrr": 0.6212,
+      "unanswerableAbstained": 0.5,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/round-2/run.json",
+      "label": "round-2",
+      "startedAt": "2026-11-05T18:50:42Z",
+      "suites": [
+       "calibration",
+       "dev"
+      ],
+      "commit": "38bea8cbc6d9",
+      "dirty": false,
+      "cases": 42,
+      "correct": 0.5238,
+      "correctStrict": 0.4524,
+      "strictSource": "rescore evidence",
+      "hitAtK": 0.973,
+      "mrr": 0.6212,
+      "unanswerableAbstained": 0.75,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/round-3/run.json",
+      "label": "round-3",
+      "startedAt": "2026-11-05T18:55:30Z",
+      "suites": [
+       "calibration",
+       "dev"
+      ],
+      "commit": "fed7dbf38163",
+      "dirty": false,
+      "cases": 42,
+      "correct": 0.5476,
+      "correctStrict": 0.4762,
+      "strictSource": "rescore evidence",
+      "hitAtK": 0.973,
+      "mrr": 0.6257,
+      "unanswerableAbstained": 0.75,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/round-3-test/run.json",
+      "label": "round-3-test",
+      "startedAt": "2026-11-05T18:55:36Z",
+      "suites": [
+       "test"
+      ],
+      "commit": "fed7dbf38163",
+      "dirty": false,
+      "cases": 24,
+      "correct": 0.5,
+      "correctStrict": 0.5,
+      "strictSource": "rescore evidence",
+      "hitAtK": 1.0,
+      "mrr": 0.8124,
+      "unanswerableAbstained": 0.5,
+      "judge": "BLOCKED",
+      "qualifying": false
+     },
+     {
+      "file": "evals/lear/results/final-holdout/run.json",
+      "label": "final-holdout",
+      "startedAt": "2026-11-05T18:55:37Z",
+      "suites": [
+       "holdout"
+      ],
+      "commit": "fed7dbf38163",
+      "dirty": false,
+      "cases": 14,
+      "correct": 0.6429,
+      "correctStrict": 0.6429,
+      "strictSource": "rescore evidence",
+      "hitAtK": 1.0,
+      "mrr": 0.7361,
+      "unanswerableAbstained": 1.0,
+      "judge": "BLOCKED",
+      "qualifying": false
+     }
+    ],
+    "ledger": [
+     {
+      "from": "round-0",
+      "to": "round-1",
+      "fixed": [
+       "lear-005",
+       "lear-028"
+      ],
+      "regressed": []
+     },
+     {
+      "from": "round-1",
+      "to": "round-2",
+      "fixed": [
+       "lear-068"
+      ],
+      "regressed": []
+     },
+     {
+      "from": "round-2",
+      "to": "round-3",
+      "fixed": [
+       "lear-064"
+      ],
+      "regressed": []
+     },
+     {
+      "from": "round-0-test",
+      "to": "round-3-test",
+      "fixed": [
+       "lear-065",
+       "lear-071"
+      ],
+      "regressed": []
+     }
+    ],
+    "dimensions": [
+     [
+      "round-0",
+      3.9,
+      1.8376,
+      2.0507,
+      1.0832,
+      3.2795
+     ],
+     [
+      "round-3",
+      3.8974,
+      1.91,
+      2.4,
+      1.1608,
+      3.3876
+     ],
+     [
+      "round-3-test",
+      4.0,
+      1.809,
+      2.375,
+      1.021,
+      3.7143
+     ],
+     [
+      "final-holdout",
+      4.0,
+      1.2217,
+      2.8093,
+      0.9958,
+      3.6667
+     ]
+    ],
+    "failures": [
+     [
+      "lear-001",
+      "factual",
+      "GROUNDED",
+      0.0,
+      1.0,
+      0.5
+     ],
+     [
+      "lear-020",
+      "factual",
+      "GROUNDED",
+      0.0,
+      0.0,
+      0.2
+     ],
+     [
+      "lear-031",
+      "factual",
+      "GROUNDED",
+      0.0,
+      0.6667,
+      1.0
+     ],
+     [
+      "lear-061",
+      "follow_up",
+      "GROUNDED",
+      0.5,
+      0.0,
+      0.5
+     ],
+     [
+      "lear-073",
+      "unanswerable",
+      "GROUNDED",
+      null,
+      null,
+      null
+     ],
+     [
+      "lear-077",
+      "factual",
+      "ABSTAINED",
+      0.0,
+      null,
+      0.25
+     ],
+     [
+      "lear-003",
+      "factual",
+      "GROUNDED",
+      0.0,
+      0.5,
+      0.5
+     ],
+     [
+      "lear-006",
+      "configuration",
+      "GROUNDED",
+      0.0,
+      0.0,
+      0.3333
+     ]
+    ],
+    "failureCount": 19
+   },
+   "evidence": [
+    "evals/lear/golden_lear_v1.checksums.json",
+    "docs/lear_agent/evidence/rescore_strict_keyfacts_2026-11-05.json",
+    "evals/lear/results/round-0/run.json",
+    "evals/lear/results/round-0-test/run.json",
+    "evals/lear/results/round-1/run.json",
+    "evals/lear/results/round-2/run.json",
+    "evals/lear/results/round-3/run.json",
+    "evals/lear/results/round-3-test/run.json",
+    "evals/lear/results/final-holdout/run.json"
+   ],
+   "limitations": [
+    "All recorded runs are baseline (hashing + extractive): NOT QUALIFYING."
+   ],
+   "blocked": null,
+   "narrative": "80 frozen golden questions in calibration/dev/test/holdout splits. Three rounds improved the baseline without a single regression; the judge never ran, so no judge scores exist.",
+   "collectMs": 118.9
+  },
+  {
+   "id": "S10",
+   "title": "Benchmark and percentile lab",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear --backend baseline bench --users 1,2,5,10 --requests 3 --out bench.json"
+   ],
+   "facts": [
+    {
+     "k": "live run",
+     "v": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "percentiles",
+     "v": "nearest-rank (no interpolation), ragformation/lear/stats.py",
+     "p": "ILLUSTRATIVE",
+     "src": null
+    },
+    {
+     "k": "sample size",
+     "v": "INDICATIVE — SMALL SAMPLE: n=2..10 per level; p85/p99 need far more observations (about 1,000 for p99)",
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "model TTFT / ITL / tok/s",
+     "v": "not measured: no model stream",
+     "p": "UNAVAILABLE",
+     "src": null
+    },
+    {
+     "k": "recorded baseline",
+     "v": "RECORDED PIPELINE-ONLY BASELINE (official run: users 1/2/5/10, 3 requests each)",
+     "p": "RECORDED",
+     "src": "docs/lear_agent/evidence/bench_baseline_users_1_2_5_10_2026-11-05.json"
+    }
+   ],
+   "steps": [],
+   "data": {
+    "live": [
+     {
+      "users": 1,
+      "requests": 2,
+      "ok": 2,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 13.777,
+      "total": {
+       "count": 2,
+       "mean": 67.615,
+       "p50": 67.26,
+       "p85": 67.97,
+       "p99": 67.97,
+       "min": 67.26,
+       "max": 67.97
+      },
+      "statuses": [
+       "GROUNDED"
+      ],
+      "lanes": [
+       "ok",
+       "ok"
+      ]
+     },
+     {
+      "users": 2,
+      "requests": 4,
+      "ok": 4,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 12.955,
+      "total": {
+       "count": 4,
+       "mean": 145.903,
+       "p50": 132.88,
+       "p85": 163.66,
+       "p99": 163.66,
+       "min": 126.32,
+       "max": 163.66
+      },
+      "statuses": [
+       "GROUNDED"
+      ],
+      "lanes": [
+       "ok",
+       "ok",
+       "ok",
+       "ok"
+      ]
+     },
+     {
+      "users": 5,
+      "requests": 10,
+      "ok": 10,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 13.889,
+      "total": {
+       "count": 10,
+       "mean": 226.396,
+       "p50": 125.53,
+       "p85": 395.23,
+       "p99": 630.72,
+       "min": 78.95,
+       "max": 630.72
+      },
+      "statuses": [
+       "GROUNDED"
+      ],
+      "lanes": [
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok",
+       "ok"
+      ]
+     }
+    ],
+    "recorded": [
+     {
+      "run": "bench_baseline_users_1_2_5_10_2026-11-05.json",
+      "users": 1,
+      "requests": 3,
+      "ok": 3,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 27.016,
+      "total": {
+       "count": 3,
+       "mean": 33.737,
+       "p50": 34.58,
+       "p85": 36.07,
+       "p99": 36.07,
+       "min": 30.56,
+       "max": 36.07
+      },
+      "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)"
+     },
+     {
+      "run": "bench_baseline_users_1_2_5_10_2026-11-05.json",
+      "users": 2,
+      "requests": 6,
+      "ok": 6,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 26.196,
+      "total": {
+       "count": 6,
+       "mean": 70.632,
+       "p50": 67.6,
+       "p85": 85.6,
+       "p99": 85.6,
+       "min": 53.17,
+       "max": 85.6
+      },
+      "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)"
+     },
+     {
+      "run": "bench_baseline_users_1_2_5_10_2026-11-05.json",
+      "users": 5,
+      "requests": 15,
+      "ok": 15,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 30.311,
+      "total": {
+       "count": 15,
+       "mean": 105.155,
+       "p50": 61.96,
+       "p85": 236.36,
+       "p99": 420.79,
+       "min": 27.11,
+       "max": 420.79
+      },
+      "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)"
+     },
+     {
+      "run": "bench_baseline_users_1_2_5_10_2026-11-05.json",
+      "users": 10,
+      "requests": 30,
+      "ok": 30,
+      "rateLimited": 0,
+      "errors": 0,
+      "rps": 32.007,
+      "total": {
+       "count": 30,
+       "mean": 179.767,
+       "p50": 63.27,
+       "p85": 428.67,
+       "p99": 810.27,
+       "min": 37.99,
+       "max": 810.27
+      },
+      "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)"
+     },
+     {
+      "run": "bench_baseline_ratelimit_session2_2026-11-05.json",
+      "users": 5,
+      "requests": 20,
+      "ok": 10,
+      "rateLimited": 10,
+      "errors": 0,
+      "rps": 32.128,
+      "total": {
+       "count": 10,
+       "mean": 100.826,
+       "p50": 54.86,
+       "p85": 199.43,
+       "p99": 278.58,
+       "min": 25.24,
+       "max": 278.58
+      },
+      "label": "PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)"
+     }
+    ]
+   },
+   "evidence": [
+    "docs/lear_agent/evidence/bench_baseline_users_1_2_5_10_2026-11-05.json",
+    "docs/lear_agent/evidence/bench_baseline_ratelimit_session2_2026-11-05.json",
+    "docs/lear_agent/benchmark_report.md"
+   ],
+   "limitations": [
+    "Pipeline-only: no LLM decode is included in any latency shown here."
+   ],
+   "blocked": null,
+   "narrative": "Dummy users go through the real service layer, rate limiter included. These are pipeline timings: no model decode is in them.",
+   "collectMs": 1323.8
+  },
+  {
+   "id": "S11",
+   "title": "Report and final readiness",
+   "provenance": "LIVE",
+   "commands": [
+    "python3 -m ragformation lear report --source <Lear checkout>"
+   ],
+   "facts": [
+    {
+     "k": "report runs listed",
+     "v": 7,
+     "p": "LIVE",
+     "src": "build_report"
+    },
+    {
+     "k": "doctor ready now",
+     "v": false,
+     "p": "LIVE",
+     "src": null
+    },
+    {
+     "k": "recorded decision",
+     "v": "BLOCKED",
+     "p": "RECORDED",
+     "src": "docs/lear_agent/final_report.md"
+    },
+    {
+     "k": "visible limitation: conflicts",
+     "v": "the core conflict detector compares numeric day/hour/% units across two sources; golden lear-059 is outside it and comes back GROUNDED on the baseline",
+     "p": "RECORDED",
+     "src": "S08 conflicting-evidence step; docs/lear_agent/evidence/demo/examiner_baseline_plain.txt"
+    },
+    {
+     "k": "visible limitation: partial",
+     "v": "0 PARTIAL answers across 7 recorded runs: PARTIAL is not demonstrated",
+     "p": "LIVE",
+     "src": "evals/lear/results/*/run.json"
+    },
+    {
+     "k": "OVERALL",
+     "v": "BLOCKED — LOCAL OLLAMA MODEL QUALIFICATION NOT COMPLETED IN THE RECORDED ENVIRONMENT.",
+     "p": "LIVE",
+     "src": null
+    }
+   ],
+   "steps": [],
+   "data": {
+    "reportText": [
+     "Lear agent report — backend baseline (offline baseline, NOT qualifying)",
+     "doctor: NOT READY at 2026-11-05T17:46:19Z (failed: ollama.version, models.installed, models.embedder, models.llm, models.judge, probe.embedding, probe.generation_stream, probe.judge_json) [docs/lear_agent/evidence/doctor_live_2026-11-05.json]",
+     "docs verify: PASS (11 checks; failing: none); module coverage 54% narrative, 100% anywhere",
+     "index: 355 chunks in <scratch>/data/index-baseline — hashing:hashing-lexical-v1",
+     "evaluation runs (oldest first):",
+     "  label            suites           commit         cases correct strict  hit@k    MRR  unans  judge     qualifying",
+     "  round-0          calibration,dev  6c438d158048      42   0.452  0.405  0.946  0.587  0.500  BLOCKED   False",
+     "  round-0-test     test             6c438d158048      24   0.417  0.417  1.000  0.733  0.000  BLOCKED   False",
+     "  round-1          calibration,dev  6c438d158048+     42   0.500  0.429  0.973  0.621  0.500  BLOCKED   False",
+     "  round-2          calibration,dev  38bea8cbc6d9      42   0.524  0.452  0.973  0.621  0.750  BLOCKED   False",
+     "  round-3          calibration,dev  fed7dbf38163      42   0.548  0.476  0.973  0.626  0.750  BLOCKED   False",
+     "  round-3-test     test             fed7dbf38163      24   0.500  0.500  1.000  0.812  0.500  BLOCKED   False",
+     "  final-holdout    holdout          fed7dbf38163      14   0.643  0.643  1.000  0.736  1.000  BLOCKED   False",
+     "  (+ = uncommitted changes at run time; strict = key facts after removing code refs and markers; unans = unanswerable cases abstained)",
+     "benchmark: PIPELINE-ONLY timings (offline baseline: no LLM decode; not model latency)",
+     "  users=5 ok=10 rate_limited=10 errors=0 total_p50=54.86 ms ttft_p50=48.83 ms"
+    ],
+    "overall": "BLOCKED",
+    "steps": [
+     "Install and start Ollama on a machine whose downloads are allowed (it must listen on 127.0.0.1).",
+     "Pull nomic-embed-text, qwen2.5:1.5b and llama3.2:1b, then verify each from /api/show metadata.",
+     "Run `python3 -m ragformation lear doctor` and require exit 0.",
+     "Build the model-backed index: `python3 -m ragformation lear index rebuild --full`.",
+     "Run real generation and the separate judge: `python3 -m ragformation lear eval run --suite calibration,dev --judge on`.",
+     "Recalibrate the ollama abstention threshold on calibration/dev data only.",
+     "Score the test split once under the frozen policy; the holdout was already used once, so a qualifying final claim needs a new, openly versioned check set.",
+     "Run `python3 -m ragformation lear bench --users 1,2,5` with model streaming enabled."
+    ]
+   },
+   "evidence": [
+    "docs/lear_agent/final_report.md",
+    "docs/lear_agent/requirements_matrix.md"
+   ],
+   "limitations": [],
+   "blocked": null,
+   "narrative": "The report lists every recorded run separately. Readiness follows the weakest gate.",
+   "collectMs": 657.7
+  }
+ ],
+ "sha256": "84cefeec093c0296f2863d768ce0a0cc1e163589bb2dec5d3f20a86a45593f68"
+}

@@ -1,5 +1,5 @@
 {
-  "demoVersion": "lear-demo-v1",
+  "demoVersion": "lear-demo-v2",
   "mode": "examiner",
   "backend": "baseline",
   "qualifying": false,
@@ -34,13 +34,19 @@
         },
         {
           "k": "correlation id",
-          "v": "q-2a1f1a545f41",
+          "v": "q-ba28f6404eef",
           "p": "LIVE",
           "src": null
         },
         {
-          "k": "total time",
-          "v": "56.87 ms (pipeline; baseline has no model decode)",
+          "k": "lifecycle",
+          "v": "lear-lifecycle-v1: 13 contiguous spans, 64.05 ms in total",
+          "p": "LIVE",
+          "src": "LearAgent.ask timings.lifecycle"
+        },
+        {
+          "k": "answer time",
+          "v": "60.25 ms until the answer was mapped (persistence follows); pipeline only, no model decode",
           "p": "LIVE",
           "src": null
         }
@@ -53,84 +59,155 @@
           "verdict": "MATCH",
           "p": "LIVE",
           "detail": ""
+        },
+        {
+          "name": "spans tile the request",
+          "expected": "sum of spans = lifecycle total (64.05 ms, +/-0.1)",
+          "observed": "64.037 ms",
+          "verdict": "MATCH",
+          "p": "LIVE",
+          "detail": ""
         }
       ],
       "data": {
-        "lifecycle": [
+        "spans": [
           {
-            "name": "1 input validation (non-empty, ≤2000 chars)",
-            "result": "passed",
-            "ms": "not instrumented"
+            "stage": "validate",
+            "label": "input validation (non-empty, length limit)",
+            "startMs": 0.004,
+            "ms": 0.003,
+            "result": "passed"
           },
           {
-            "name": "2 per-user / per-session sliding windows",
-            "result": "accepted 0→1",
-            "ms": "not instrumented"
+            "stage": "admission",
+            "label": "rate windows + concurrency admission (incl. queue wait)",
+            "startMs": 0.007,
+            "ms": 0.045,
+            "result": "accepted 0 -> 1; peak in flight 1 (limit 2)"
           },
           {
-            "name": "3 concurrency admission",
-            "result": "peak in flight 1 (limit 2)",
-            "ms": "not instrumented"
+            "stage": "session",
+            "label": "session lookup/creation (session_id, user_id)",
+            "startMs": 0.053,
+            "ms": 1.299,
+            "result": "turn 1"
           },
           {
-            "name": "4 session lookup/creation (session_id, user_id)",
-            "result": "turn 1",
-            "ms": "not instrumented"
+            "stage": "compaction",
+            "label": "history load + compaction",
+            "startMs": 1.351,
+            "ms": 0.031,
+            "result": "not triggered"
           },
           {
-            "name": "5 history load + compaction",
-            "result": "not triggered (first turn)",
-            "ms": "not instrumented"
+            "stage": "rewrite",
+            "label": "follow-up rewrite (retrieval only)",
+            "startMs": 1.383,
+            "ms": 0.002,
+            "result": "not needed (no history)"
           },
           {
-            "name": "6 memory (≤3 scoped, unexpired items)",
-            "result": "0 used",
-            "ms": "not instrumented"
+            "stage": "memory",
+            "label": "memory selection (scoped, unexpired)",
+            "startMs": 1.385,
+            "ms": 0.097,
+            "result": "0 used"
           },
           {
-            "name": "7 whole-corpus term scope guard",
-            "result": "passed (no unknown terms)",
-            "ms": "not instrumented"
+            "stage": "prompt",
+            "label": "system prompt render",
+            "startMs": 1.482,
+            "ms": 0.014,
+            "result": "lear-assistant-v1"
           },
           {
-            "name": "8 follow-up rewrite (retrieval only)",
-            "result": "not needed (no history)",
-            "ms": "not instrumented"
+            "stage": "engine.open",
+            "label": "engine handle (lazy open)",
+            "startMs": 1.496,
+            "ms": 0.007,
+            "result": "open"
           },
           {
-            "name": "9 embedding fingerprint check",
-            "result": "match",
-            "ms": "not instrumented"
+            "stage": "fingerprint",
+            "label": "embedding fingerprint check",
+            "startMs": 1.503,
+            "ms": 0.212,
+            "result": "match"
           },
           {
-            "name": "10 core RAG request: retrieval",
-            "result": "completed",
-            "ms": 14.009
+            "stage": "scopeGuard",
+            "label": "whole-corpus term scope guard",
+            "startMs": 1.715,
+            "ms": 22.323,
+            "result": "passed (no unknown terms)"
           },
           {
-            "name": "10 core RAG request: generation",
-            "result": "extractive:extractive-synthesis-v1",
-            "ms": 1.911
+            "stage": "engine",
+            "label": "core RAG request (retrieval, context, generation, citation checks)",
+            "startMs": 24.038,
+            "ms": 33.76,
+            "result": "engine status answered"
           },
           {
-            "name": "11 output guardrails + citation validation",
-            "result": "1 citations kept; warnings: none",
-            "ms": "not instrumented"
+            "stage": "mapping",
+            "label": "status, citation and timing mapping",
+            "startMs": 57.798,
+            "ms": 2.502,
+            "result": "GROUNDED -> exit 0; 1 citations"
           },
           {
-            "name": "12 status mapping + persistence",
-            "result": "GROUNDED → exit 0",
-            "ms": "not instrumented"
+            "stage": "persist",
+            "label": "session persistence",
+            "startMs": 60.3,
+            "ms": 3.742,
+            "result": "user + assistant messages saved"
           }
-        ]
+        ],
+        "core": [
+          {
+            "stage": "core.retrieval",
+            "ms": 15.17
+          },
+          {
+            "stage": "core.generation",
+            "ms": 1.915
+          },
+          {
+            "stage": "core.other (derived)",
+            "ms": 16.675
+          }
+        ],
+        "schema": "lear-lifecycle-v1",
+        "totalMs": 64.05,
+        "correlationId": "q-ba28f6404eef",
+        "admission": {
+          "before": {
+            "accepted": 0,
+            "rejectedUser": 0,
+            "rejectedSession": 0,
+            "rejectedConcurrency": 0,
+            "inFlight": 0,
+            "peakInFlight": 0
+          },
+          "after": {
+            "accepted": 1,
+            "rejectedUser": 0,
+            "rejectedSession": 0,
+            "rejectedConcurrency": 0,
+            "inFlight": 0,
+            "peakInFlight": 1
+          },
+          "limit": 2
+        }
       },
       "evidence": [],
       "limitations": [
-        "Stages 1–9 and 11–12 are not separately timed; they are shown as 'not instrumented'."
+        "Inside the core request only retrieval and generation are timed by the engine; core.other = engine span - retrieval - generation (derived).",
+        "Spans are wall-clock perf_counter intervals of one request; they are not a profile."
       ],
       "blocked": null,
       "narrative": "One real LearAgent.ask call, followed through validation, rate limits, concurrency, session, compaction, memory, scope guard, rewrite, fingerprint check, the core RAG request, guardrails and status mapping.",
-      "collectMs": 727.9
+      "collectMs": 523.9
     },
     {
       "id": "S06",
@@ -140,8 +217,8 @@
       "facts": [
         {
           "k": "generator",
-          "v": "extractive:extractive-synthesis-v1  — BASELINE / NOT QUALIFYING (no model was called)",
-          "p": "LIVE",
+          "v": "extractive:extractive-synthesis-v1  — BASELINE (no model was called)",
+          "p": "NOT QUALIFYING",
           "src": null
         },
         {
@@ -155,6 +232,12 @@
           "v": "not measured: no model stream",
           "p": "UNAVAILABLE",
           "src": null
+        },
+        {
+          "k": "TTFT / ITL definitions",
+          "v": "TTFT: time from the start of ask() to the first streamed token of a real model stream; ITL: gap between consecutive streamed tokens of a real model stream (p50 shown)",
+          "p": "ILLUSTRATIVE",
+          "src": "ragformation/lear/agent.py _timings"
         },
         {
           "k": "prompt version",
@@ -219,7 +302,11 @@
               }
             ]
           }
-        ]
+        ],
+        "status": "GROUNDED",
+        "exitCode": 0,
+        "streamEvents": 11,
+        "itl": []
       },
       "evidence": [],
       "limitations": [
@@ -227,7 +314,7 @@
       ],
       "blocked": null,
       "narrative": "Each citation marker must map to a retrieved chunk, the chunk to a manifest entry, and the entry to Lear source lines at the pin.",
-      "collectMs": 2.1
+      "collectMs": 2.5
     },
     {
       "id": "S08",
@@ -307,7 +394,7 @@
           "observed": "exit 7 (rate limited)",
           "verdict": "MATCH",
           "p": "LIVE",
-          "detail": "limit 1/60s; retry in 59.943s"
+          "detail": "limit 1/60s; retry in 59.888s"
         },
         {
           "name": "partial coverage",
@@ -318,14 +405,26 @@
           "detail": "evals/lear/results/*/run.json"
         }
       ],
-      "data": {},
+      "data": {
+        "quarantined": [
+          {
+            "chunkId": "src-1de8480109#c001-1790af35",
+            "rules": [
+              "instruction_override",
+              "role_hijack",
+              "secret_exfiltration",
+              "answer_forcing"
+            ]
+          }
+        ]
+      },
       "evidence": [],
       "limitations": [
         "Resistance of a real LLM to injected instructions is untested (no model)."
       ],
       "blocked": null,
       "narrative": "Failure is a feature: unknown terms, missing evidence, injected passages, invalid markers, an unreachable model and rate limits each produce their own honest status and exit code.",
-      "collectMs": 735.8
+      "collectMs": 813.1
     }
   ]
 }

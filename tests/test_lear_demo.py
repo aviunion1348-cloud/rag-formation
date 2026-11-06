@@ -5,16 +5,23 @@ from __future__ import annotations
 
 import argparse
 import copy
+import dataclasses
+import hashlib
 import io
 import json
+import os
 import re
+import select
+import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from unittest import mock
 
 from ragformation.lear import demo
-from ragformation.lear.demo_render import EFFECTS, RESET, Renderer, TermCaps, detect_caps
+from ragformation.lear import demo_effects as fx
+from ragformation.lear.demo_render import _CI_VARS, RESET, Renderer, TermCaps, detect_caps
 from ragformation.lear.settings import LearSettings
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -38,7 +45,7 @@ class _Stream(io.StringIO):
 
 def _args(**kw):
     base = dict(mode="examiner", json=True, plain=False, no_animate=False, scene=None, source=None, bundle=None,
-                out=None, speed=0.0, auto=True, keep_scratch=False)
+                out=None, speed=0.0, auto=True, keep_scratch=False, full=False, preview=None)
     base.update(kw)
     return argparse.Namespace(**base)
 
@@ -100,20 +107,82 @@ class SceneSelectionAndEffectsTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             demo.select_scenes("42")
 
-    def test_effect_library_is_documented_and_unique(self):
-        names = [e.name for e in EFFECTS]
-        self.assertEqual(len(names), len(set(names)))
-        for e in EFFECTS:
-            for field in (e.family, e.trigger, e.grammar, e.purpose, e.reduced, e.data):
-                self.assertTrue(field)
-        teletype = next(e for e in EFFECTS if e.name == "teletype")
-        self.assertIn("never for extractive", teletype.data)
-
     def test_effects_json(self):
         out = io.StringIO()
         code = demo.run_demo(_args(mode="effects"), _settings(tempfile.mkdtemp()), out=out)
         self.assertEqual(code, 0)
-        self.assertEqual(json.loads(out.getvalue())["count"], len(EFFECTS))
+        data = json.loads(out.getvalue())
+        self.assertEqual(data["count"], len(fx.RECIPES))
+        self.assertEqual(data["registry"], fx.REGISTRY_VERSION)
+        for row in data["effects"]:
+            for key in ("id", "name", "family", "trigger", "transformation", "timing", "purpose", "scene", "interrupt",
+                        "terminal", "reduced", "noColour", "cost", "cleanup", "seed", "test", "accessibility"):
+                self.assertTrue(row.get(key), (row.get("id"), key))
+
+
+def _caps(**kw) -> TermCaps:
+    base = dict(tty=False, color=False, unicode=False, width=100, animate=False, interactive=False)
+    base.update(kw)
+    return TermCaps(**base)
+
+
+class EffectRegistryTests(unittest.TestCase):
+    def test_registry_has_at_least_100_genuinely_distinct_recipes(self):
+        self.assertEqual(fx.validate_registry(), [])
+        self.assertGreaterEqual(len(fx.RECIPES), 100)
+        ids = [r.id for r in fx.RECIPES]
+        purposes = [r.purpose for r in fx.RECIPES]
+        combos = [(r.layout, r.motion, r.purpose) for r in fx.RECIPES]
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertEqual(len(purposes), len(set(purposes)))  # no renamed copies
+        self.assertEqual(len(combos), len(set(combos)))
+        self.assertGreaterEqual(len({r.family for r in fx.RECIPES}), 40)
+        self.assertGreaterEqual(len(fx.LAYOUTS), 30)
+
+    def test_every_recipe_renders_plain_ascii_without_ansi(self):
+        for recipe in fx.RECIPES:
+            out = _Stream(False, encoding="ascii")
+            r = Renderer(_caps(), out)
+            lines = fx.play(r, recipe.id, fx.example_for(recipe))
+            text = out.getvalue()
+            self.assertTrue(lines and text.strip(), recipe.id)
+            self.assertTrue(all(ord(ch) < 128 for ch in text), recipe.id)
+            self.assertIsNone(ANSI.search(text), recipe.id)
+
+    def test_static_form_is_the_final_frame_of_the_animated_form(self):
+        animated_any = False
+        for recipe in fx.RECIPES:
+            data = fx.example_for(recipe)
+            static = fx.play(Renderer(_caps(tty=True, color=True, unicode=True), _Stream(True)), recipe.id, data)
+            out = _Stream(True)
+            moving = fx.play(Renderer(_caps(tty=True, color=True, unicode=True, animate=True), out, speed=1e-6), recipe.id, data)
+            self.assertEqual(static, moving, recipe.id)
+            frames = out.getvalue().count("\r")
+            self.assertLessEqual(frames, 50 * max(1, len(moving)), recipe.id)  # bounded frame count
+            animated_any = animated_any or frames > 0
+        self.assertTrue(animated_any)
+
+    def test_typing_is_reserved_for_a_real_model_stream(self):
+        data = {"rows": [["", "an extractive answer that must not be typed out"]]}
+        for real, expect_frames in ((False, False), (True, True)):
+            out = _Stream(True)
+            r = Renderer(_caps(tty=True, color=True, unicode=True, animate=True), out, speed=1e-6)
+            fx.play(r, "answer_stream", {**data, "realStream": real})
+            self.assertEqual("\r" in out.getvalue(), expect_frames)
+
+    def test_registry_page_is_generated_from_the_current_registry(self):
+        page = (REPO_ROOT / "docs" / "lear_agent" / "demo_effects.md").read_text(encoding="utf-8")
+        self.assertIn(f"**{len(fx.RECIPES)} recipes**", page)
+        self.assertIn(fx.REGISTRY_VERSION, page)
+        missing = [r.id for r in fx.RECIPES if f"| `{r.id}` |" not in page]
+        self.assertEqual(missing, [], "rerun: python3 scripts/gen_demo_effects_doc.py")
+
+    def test_preview_renders_labelled_example_data(self):
+        out = _Stream(False)
+        code = demo.run_demo(_args(mode="effects", json=False, preview="chunk_token_strip,percentile_ruler"), _settings(tempfile.mkdtemp()), out=out)
+        self.assertEqual(code, 0)
+        self.assertEqual(out.getvalue().count("[ILLUSTRATIVE]"), 2)
+        self.assertEqual(demo.run_demo(_args(mode="effects", json=False, preview="no_such_effect"), _settings(tempfile.mkdtemp()), out=_Stream(False)), 2)
 
 
 class ExitCodeTests(unittest.TestCase):
@@ -196,14 +265,29 @@ class ReplayTests(unittest.TestCase):
         self.assertIn("EVIDENCE INTEGRITY FAILURE", out.getvalue())
         self.assertIn("[ILLUSTRATIVE]", out.getvalue())
 
-    def test_packaged_bundle_is_valid_and_not_qualifying(self):
+    def test_packaged_bundle_is_valid_redacted_and_not_qualifying(self):
         bundle, check = demo.load_bundle(demo.DEFAULT_BUNDLE)
         self.assertTrue(check["valid"], check)
+        self.assertEqual(bundle["schema"], demo.REPLAY_SCHEMA)
         self.assertEqual(bundle["meta"]["provenance"], "LIVE_CAPTURE")
         self.assertFalse(bundle["meta"]["qualifying"])
+        self.assertTrue(bundle["meta"]["contentRedacted"])
+        raw = demo.DEFAULT_BUNDLE.read_text(encoding="utf-8")
+        golden = json.loads((REPO_ROOT / "evals" / "lear" / "golden_lear_v1.json").read_text(encoding="utf-8"))["cases"]
+        leaked = [c["id"] for c in golden if c["question"] in raw]
+        self.assertEqual(leaked, [])  # no evaluation question ships in the wheel
+        self.assertNotIn(str(Path.home()), raw)
         s06 = next(s for s in bundle["scenes"] if s["id"] == "S06")
         ttft = next(f for f in s06["facts"] if f["k"].startswith("model TTFT"))
         self.assertEqual(ttft["p"], "UNAVAILABLE")
+
+    def test_full_and_v1_bundles_in_the_repository_still_replay(self):
+        for path in (demo.FULL_BUNDLE, REPO_ROOT / "docs" / "lear_agent" / "evidence" / "demo" / "lear_demo_replay_v1.json"):
+            bundle, check = demo.load_bundle(path)
+            self.assertTrue(check["valid"], (path, check))
+            out = _Stream(False)
+            self.assertEqual(demo.run_demo(_args(mode="replay", json=False, bundle=str(path)), _settings(tempfile.mkdtemp()), out=out), 0)
+            self.assertNotIn("visual unavailable", out.getvalue())
 
     def test_sanitize_redacts_secrets_and_scratch_paths(self):
         scratch = Path("/tmp/lear-demo-xyz")
@@ -232,7 +316,7 @@ class LiveBaselineTests(unittest.TestCase):
         # no fake model timings on the baseline
         ttft = next(f for f in scenes["S06"]["facts"] if f["k"].startswith("model TTFT"))
         self.assertEqual(ttft["p"], "UNAVAILABLE")
-        self.assertIn("NOT QUALIFYING", next(f for f in scenes["S06"]["facts"] if f["k"] == "generator")["v"])
+        self.assertEqual(next(f for f in scenes["S06"]["facts"] if f["k"] == "generator")["p"], "NOT QUALIFYING")
         # guardrail steps preserve the real exit codes
         observed = {s["name"]: s for s in scenes["S08"]["steps"]}
         self.assertEqual(observed["second request in a 1-per-minute session window"]["observed"], "exit 7 (rate limited)")
@@ -255,6 +339,226 @@ class LiveBaselineTests(unittest.TestCase):
 
         args = build_parser().parse_args(["lear", "demo", "examiner", "--plain", "--scene", "0"])
         self.assertEqual((args.lear_command, args.mode, args.plain, args.scene), ("demo", "examiner", True, "0"))
+
+
+
+def _scratch_settings(tmp: str) -> LearSettings:
+    return dataclasses.replace(_settings(tmp), data_dir=Path(tmp) / "scratch-data", agent_db_path=None)
+
+
+def _tree_hash(root: Path) -> str:
+    h = hashlib.sha256()
+    for path in sorted(root.rglob("*")):
+        h.update(str(path.relative_to(root)).encode())
+        if path.is_file():
+            h.update(path.read_bytes())
+    return h.hexdigest()
+
+
+class LifecycleTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        from ragformation.lear import indexer
+        from ragformation.lear.agent import LearAgent
+
+        cls.tmp = tempfile.mkdtemp(prefix="lear-test-")
+        cls.settings = _scratch_settings(cls.tmp)
+        cls.agent = LearAgent(cls.settings)
+        indexer.rebuild(cls.agent.engine, cls.settings)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.agent.close()
+
+    def test_spans_are_contiguous_monotonic_and_tile_the_request(self):
+        answer = self.agent.ask(demo.GOLDEN_FALLBACK["lear-012"]["question"], user_id="t", session_id="life-1")
+        life = answer["timings"]["lifecycle"]
+        self.assertEqual(life["schema"], "lear-lifecycle-v1")
+        names = [x["stage"] for x in life["stages"]]
+        self.assertEqual(names, ["validate", "admission", "session", "compaction", "rewrite", "memory", "prompt",
+                                 "engine.open", "fingerprint", "scopeGuard", "engine", "mapping", "persist"])
+        previous_end = 0.0
+        for x in life["stages"]:
+            self.assertGreaterEqual(x["ms"], 0.0)
+            self.assertGreaterEqual(x["startMs"] + 0.01, previous_end)
+            self.assertLessEqual(abs(x["startMs"] - previous_end), 0.01)
+            previous_end = x["startMs"] + x["ms"]
+        self.assertLessEqual(abs(sum(x["ms"] for x in life["stages"]) - life["totalMs"]), 0.1)
+        self.assertLessEqual(answer["timings"]["totalMs"], life["totalMs"] + 0.01)
+
+    def test_scope_abstention_has_a_scope_guard_span_but_no_engine_span(self):
+        answer = self.agent.ask(demo.GOLDEN_FALLBACK["lear-068"]["question"], user_id="t")
+        self.assertEqual(answer["status"], "ABSTAINED")
+        names = [x["stage"] for x in answer["timings"]["lifecycle"]["stages"]]
+        self.assertIn("scopeGuard", names)
+        self.assertNotIn("engine", names)
+
+    def test_selected_ids_are_identical_with_and_without_demo_diagnostics(self):
+        question = demo.GOLDEN_FALLBACK["lear-012"]["question"]
+        plain = self.agent.ask(question, user_id="t2", save=False)["retrieval"]["selected"]
+        again = self.agent.ask(question, user_id="t3", save=False)["retrieval"]["selected"]
+        out = io.StringIO()
+        demo.run_demo(_args(scene="5"), _settings(tempfile.mkdtemp()), out=out)
+        s05 = json.loads(out.getvalue())["scenes"][0]
+        shown = [c["chunkId"] for c in s05["data"]["candidates"] if c["selected"]]
+        self.assertEqual(plain, again)
+        self.assertEqual(sorted(plain), sorted(shown))
+        self.assertEqual(s05["data"]["context"] and [c for c, _ in s05["data"]["context"]], plain)
+
+
+class SafetyTests(unittest.TestCase):
+    def test_scratch_deletion_refuses_anything_but_lear_demo_temp_dirs(self):
+        ok = Path(tempfile.mkdtemp(prefix="lear-demo-"))
+        other = Path(tempfile.mkdtemp(prefix="keep-me-"))
+        nested = Path(tempfile.mkdtemp(prefix="outer-")) / "lear-demo-nested"
+        nested.mkdir()
+        link = Path(tempfile.gettempdir()) / f"lear-demo-link-{os.getpid()}"
+        link.symlink_to(other, target_is_directory=True)
+        try:
+            self.assertTrue(demo.safe_scratch(ok))
+            self.assertFalse(demo.safe_scratch(other))
+            self.assertFalse(demo.safe_scratch(nested))
+            self.assertFalse(demo.safe_scratch(link))
+            self.assertFalse(demo.safe_scratch(Path(tempfile.gettempdir()) / "lear-demo-missing"))
+        finally:
+            link.unlink()
+
+    def test_permanent_data_directory_is_byte_identical_after_a_live_demo(self):
+        import sqlite3
+
+        tmp = Path(tempfile.mkdtemp())
+        permanent = tmp / "permanent-data"
+        (permanent / "lear").mkdir(parents=True)
+        (permanent / "lear" / "notes.txt").write_text("user data", encoding="utf-8")
+        con = sqlite3.connect(permanent / "lear" / "agent.db")
+        con.execute("create table t (x)")
+        con.execute("insert into t values (1)")
+        con.commit()
+        con.close()
+        before = _tree_hash(permanent)
+        settings = LearSettings.from_env(backend="baseline", data_dir=permanent, docs_dir=DOCS)
+        out = io.StringIO()
+        demo.run_demo(_args(scene="2,4,7"), settings, out=out)
+        self.assertEqual(json.loads(out.getvalue())["exitCode"], 0)
+        self.assertEqual(_tree_hash(permanent), before)
+
+    def test_capture_is_atomic_redacted_by_default_and_full_on_request(self):
+        tmp = Path(tempfile.mkdtemp())
+        question = demo.GOLDEN_FALLBACK["lear-012"]["question"]
+        for full in (False, True):
+            target = tmp / f"bundle-{full}.json"
+            out = io.StringIO()
+            code = demo.run_demo(_args(mode="capture", json=False, scene="0,6", out=str(target), full=full), _settings(str(tmp)), out=out)
+            self.assertEqual(code, 0)
+            self.assertEqual(json.loads(out.getvalue())["contentRedacted"], not full)
+            raw = target.read_text(encoding="utf-8")
+            bundle, check = demo.load_bundle(target)
+            self.assertTrue(check["valid"], check)
+            self.assertEqual(question in raw, full)
+            self.assertEqual("[REDACTED question lear-012" in raw, not full)
+            for key in demo.REQUIRED_META_V2:
+                self.assertIn(key, bundle["meta"])
+        self.assertEqual(sorted(p.name for p in tmp.iterdir() if p.name.startswith(".")), [])  # no temp files left
+
+    def test_no_test_or_holdout_question_ships_in_the_package(self):
+        golden = json.loads((REPO_ROOT / "evals" / "lear" / "golden_lear_v1.json").read_text(encoding="utf-8"))["cases"]
+        package = REPO_ROOT / "ragformation"
+        blob = "".join(f.read_text(encoding="utf-8", errors="replace") for f in sorted(package.rglob("*"))
+                       if f.is_file() and f.suffix in (".py", ".json", ".md", ".txt", ".html", ".js", ".css"))
+        shipped = {c["id"]: c["split"] for c in golden if c["question"] in blob}
+        self.assertEqual([cid for cid, split in shipped.items() if split in ("test", "holdout")], [])
+        # the demo's live inputs: calibration/dev only; adding one must be a deliberate, reviewed change
+        self.assertEqual(sorted(shipped), ["lear-001", "lear-012", "lear-059", "lear-061", "lear-062", "lear-068", "lear-069"])
+
+    def test_atomic_write_keeps_the_old_bundle_when_the_replace_fails(self):
+        target = Path(tempfile.mkdtemp()) / "b.json"
+        target.write_text("old", encoding="utf-8")
+        with mock.patch("os.replace", side_effect=OSError("disk full")):
+            with self.assertRaises(OSError):
+                demo.write_atomic(target, "new")
+        self.assertEqual(target.read_text(encoding="utf-8"), "old")
+        self.assertEqual([p.name for p in target.parent.iterdir()], ["b.json"])
+
+
+@unittest.skipUnless(sys.platform != "win32" and hasattr(os, "fork"), "needs a POSIX pty")
+class PtyKeyTests(unittest.TestCase):
+    """Drive the real director in a pseudo-terminal: keys, arrows, Ctrl-C, terminal restore."""
+
+    PROMPT = demo.CONTROLS.encode()
+
+    def _spawn(self, scenes: str = "0,1,9"):
+        import pty
+
+        tmp = tempfile.mkdtemp()
+        cmd = [sys.executable, "-m", "ragformation", "lear", "--backend", "baseline", "--data-dir", str(Path(tmp) / "d"),
+               "--docs-dir", str(DOCS), "demo", "director", "--speed", "0", "--scene", scenes]
+        pid, fd = pty.fork()
+        if pid == 0:  # child: a real controlling terminal
+            # This simulates a person at a terminal, so it must not inherit the
+            # runner's CI markers (GitHub Actions sets CI and GITHUB_ACTIONS): in a
+            # CI environment the director deliberately runs non-interactively, which
+            # is covered by CapabilityTests, not here.
+            for name in _CI_VARS:
+                os.environ.pop(name, None)
+            os.environ.update({"TERM": "xterm-256color", "COLUMNS": "110", "LINES": "40", "PYTHONPATH": str(REPO_ROOT)})
+            os.chdir(str(REPO_ROOT))
+            os.execv(sys.executable, cmd)
+        return pid, fd
+
+    def _read_until(self, fd: int, buf: bytearray, count: int, timeout: float = 90.0) -> None:
+        deadline = time.time() + timeout
+        while buf.count(self.PROMPT) < count and time.time() < deadline:
+            if select.select([fd], [], [], 0.2)[0]:
+                try:
+                    chunk = os.read(fd, 65536)
+                except OSError:
+                    return
+                if not chunk:
+                    return
+                buf.extend(chunk)
+
+    def _finish(self, pid: int, fd: int, buf: bytearray) -> int:
+        deadline = time.time() + 60
+        while time.time() < deadline:
+            done, status = os.waitpid(pid, os.WNOHANG)
+            if select.select([fd], [], [], 0.1)[0]:
+                try:
+                    chunk = os.read(fd, 65536)
+                    buf.extend(chunk)
+                except OSError:
+                    pass
+            if done:
+                os.close(fd)
+                return os.waitstatus_to_exitcode(status)
+        os.kill(pid, 9)
+        os.waitpid(pid, 0)
+        self.fail("demo did not exit")
+
+    @staticmethod
+    def _headers(buf: bytearray):
+        text = re.sub(r"\x1b\[[0-9;?]*[A-Za-z]", "", buf.decode("utf-8", "replace"))
+        return re.findall(r"(S\d\d)  [A-Z][^\n]*?\[(?:LIVE|RECORDED|UNAVAILABLE|ILLUSTRATIVE|BLOCKED)", text)
+
+    def test_keys_navigate_forward_back_arrows_digits_and_quit(self):
+        pid, fd = self._spawn()
+        buf = bytearray()
+        for n, key in enumerate([b"n", b"b", b"\x1b[C", b"9", b"q"], start=1):
+            self._read_until(fd, buf, n)
+            os.write(fd, key)
+        code = self._finish(pid, fd, buf)
+        self.assertEqual(code, 0, buf[-400:])
+        self.assertEqual(self._headers(buf), ["S00", "S01", "S00", "S01", "S09"])
+        self.assertTrue(bytes(buf).rstrip(b"\r\n").endswith(RESET.encode()), buf[-80:])
+
+    def test_ctrl_c_exits_130_and_restores_the_terminal(self):
+        pid, fd = self._spawn("0,1")
+        buf = bytearray()
+        self._read_until(fd, buf, 1)
+        os.write(fd, b"\x03")
+        code = self._finish(pid, fd, buf)
+        self.assertEqual(code, 130, buf[-400:])
+        self.assertIn(b"interrupted", bytes(buf))
+        self.assertIn(RESET.encode(), bytes(buf[-200:]))
 
 
 if __name__ == "__main__":

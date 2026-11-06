@@ -1,0 +1,21 @@
+{
+  "bundle": "docs/lear_agent/evidence/demo/lear_demo_replay_v2_full.json",
+  "scenes": 12,
+  "repeat": 5,
+  "staticMs": {
+    "median": 6.33,
+    "max": 6.54
+  },
+  "animatedFrameGenerationMs": {
+    "median": 11.59,
+    "max": 12.48
+  },
+  "outputBytes": {
+    "static": 52760,
+    "animated": 79978,
+    "carriageReturnFrames": 560
+  },
+  "deliberatePauseAtSpeed1S": 20.96,
+  "pauseCalls": 655,
+  "note": "pauses are deliberate pacing, skipped by --speed 0, --no-animate, --plain, CI and non-TTY output"
+}
