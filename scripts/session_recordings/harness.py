@@ -501,8 +501,11 @@ class Harness:
         gen, emb = models.get("generation") or {}, models.get("embedding") or {}
         if mode == "compact":
             self.say("VIEW", f"status {answer.get('status')} · backend {answer.get('backend')} · qualifying {answer.get('qualifying')} · turn {sess.get('turn')} · kept history {sess.get('historyMessages')} msgs · prompt ≈{answer.get('promptTokens')} tok · total {t.get('totalMs')} ms · ttft {t.get('ttftMs')} ms · correlation {answer.get('correlationId')}")
-            if answer.get("error"):
-                self.say("VIEW", f"error {answer['error'].get('code')}: {answer['error'].get('message')} · dependencyUnavailable={answer['error'].get('dependencyUnavailable')}")
+            err = answer.get("error")
+            if isinstance(err, dict):
+                self.say("VIEW", f"error {err.get('code')}: {err.get('message')} · dependencyUnavailable={err.get('dependencyUnavailable')}")
+            elif err:
+                self.say("VIEW", f"error {err}: {answer.get('message')} · hint {answer.get('hint')}")
             if answer.get("answer"):
                 flat = " ".join(answer["answer"].split())
                 self.say("VIEW", "answer: " + (flat[:300] + " …" if len(flat) > 300 else flat))
@@ -545,7 +548,7 @@ class Harness:
         ok = False
         if kind == "dependency_error":
             r, a = self.ctx[chk["step"]], self.answer_of(chk["step"])
-            err = a.get("error") or {}
+            err = a.get("error") if isinstance(a.get("error"), dict) else {}
             obs = {"exit": r["exit"], "status": a.get("status"), "errorCode": err.get("code"), "message": err.get("message"),
                    "dependencyUnavailable": err.get("dependencyUnavailable"), "answerChars": len(a.get("answer") or "")}
             ok = r["exit"] == 6 and a.get("status") == "ERROR" and bool(err.get("dependencyUnavailable")) and not a.get("answer")
@@ -720,9 +723,13 @@ class Harness:
             self.ctx[step["id"]] = result
             self.finish_step(step, result)
             if kind == "ask":
-                self.view(step, result)
-                if isinstance(result.get("json"), dict):
-                    self.export_trace(step["id"], result["json"])
+                try:
+                    self.view(step, result)
+                    if isinstance(result.get("json"), dict):
+                        self.export_trace(step["id"], result["json"])
+                except Exception as exc:  # recorded, never hidden; the step's raw output is already saved
+                    self.say("EXIT", f"HARNESS DISPLAY ERROR in step {step['id']}: {type(exc).__name__}: {exc}", style=OUTCOME_STYLE["FAIL"])
+                    result["harnessDisplayError"] = f"{type(exc).__name__}: {exc}"
         checks = []
         for chk in self.scenario.get("checks", []):
             try:
