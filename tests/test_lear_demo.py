@@ -21,7 +21,7 @@ from unittest import mock
 
 from ragformation.lear import demo
 from ragformation.lear import demo_effects as fx
-from ragformation.lear.demo_render import RESET, Renderer, TermCaps, detect_caps
+from ragformation.lear.demo_render import _CI_VARS, RESET, Renderer, TermCaps, detect_caps
 from ragformation.lear.settings import LearSettings
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -494,6 +494,12 @@ class PtyKeyTests(unittest.TestCase):
                "--docs-dir", str(DOCS), "demo", "director", "--speed", "0", "--scene", scenes]
         pid, fd = pty.fork()
         if pid == 0:  # child: a real controlling terminal
+            # This simulates a person at a terminal, so it must not inherit the
+            # runner's CI markers (GitHub Actions sets CI and GITHUB_ACTIONS): in a
+            # CI environment the director deliberately runs non-interactively, which
+            # is covered by CapabilityTests, not here.
+            for name in _CI_VARS:
+                os.environ.pop(name, None)
             os.environ.update({"TERM": "xterm-256color", "COLUMNS": "110", "LINES": "40", "PYTHONPATH": str(REPO_ROOT)})
             os.chdir(str(REPO_ROOT))
             os.execv(sys.executable, cmd)
